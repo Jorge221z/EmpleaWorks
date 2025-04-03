@@ -12,6 +12,7 @@ import AuthLayout from '@/layouts/auth-layout';
 type RegisterForm = {
     name: string;
     email: string;
+    role: string;
     password: string;
     password_confirmation: string;
 };
@@ -20,6 +21,7 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
         email: '',
+        role: '',
         password: '',
         password_confirmation: '',
     });
@@ -67,6 +69,28 @@ export default function Register() {
                             placeholder="email@example.com"
                         />
                         <InputError message={errors.email} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="role">Role</Label>
+                        <div className='border border-input rounded-md gap-2 flex items-center p-2'>
+                        <select
+                            id="role"
+                            required
+                            tabIndex={2}
+                            value={data.role}
+                            onChange={(e) => setData('role', e.target.value)}
+                            disabled={processing}
+                            style={{
+                                backgroundColor: '#0a0a0a',}}
+                        >
+                        
+                            <option value="">Pick a role</option>
+                            <option value="candidate">Candidate</option>
+                            <option value="company">Company</option>
+                            </select>
+                        </div>
+                        <InputError message={errors.role} />
                     </div>
 
                     <div className="grid gap-2">

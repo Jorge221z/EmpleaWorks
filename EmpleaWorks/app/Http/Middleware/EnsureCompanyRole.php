@@ -20,6 +20,6 @@ class EnsureCompanyRole
             return $next($request);
         }
 
-        return response()->json(['error' => 'Acceso denegado'], 403);
+        return $next($request);
     }
 }
