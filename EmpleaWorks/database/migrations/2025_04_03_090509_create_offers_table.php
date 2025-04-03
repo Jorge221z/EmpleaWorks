@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
-            $table->text('descripcion');
-            $table->string('categoria');
-            $table->string('grado');
+            $table->string('name')->unique();
+            $table->text('description');
+            $table->string('category');
+            $table->string('degree'); // Grado
             $table->string('email');
-            $table->string('tipo_contrato');
-            $table->string('localizacion_oferta');
-            $table->date('fecha_cierre');
+            $table->string('contract_type');
+            $table->string('job_location');
+            $table->date('closing_date');
             $table->foreignId('company_id')->constrained('companys')->onDelete('cascade');
             $table->timestamps();
         });
