@@ -84,7 +84,6 @@ export default function Register() {
                             style={{
                                 backgroundColor: '#0a0a0a',}}
                         >
-                        
                             <option value="">Pick a role</option>
                             <option value="candidate">Candidate</option>
                             <option value="company">Company</option>
