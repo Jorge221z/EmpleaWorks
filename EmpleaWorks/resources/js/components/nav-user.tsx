@@ -12,24 +12,25 @@ export function NavUser() {
     const getInitials = useInitials();
 
     return (
-        <SidebarFooter className="p-2">
+        <SidebarFooter className="p-0 border-t border-t-border overflow-visible">
+            <div className="flex items-center justify-between px-0 py-2 w-full">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <button className="flex h-10 w-full items-center gap-2 rounded-md px-2 outline-none ring-offset-2 ring-neutral-950 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-offset-2">
+                    <button className="flex h-10 w-full items-center gap-2 rounded-md outline-none ring-offset-5 ring-neutral-950 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-offset-2">
                         {auth.user ? (
-                            <Avatar className="size-7">
+                            <Avatar className="">
                                 <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
                                 <AvatarFallback className="text-xs font-semibold">{getInitials(auth.user.name)}</AvatarFallback>
                             </Avatar>
                         ) : (
-                            <Avatar className="size-7">
+                            <Avatar className="">
                                 <AvatarFallback className="text-xs font-semibold bg-primary text-primary-foreground">
                                     <User className="size-4" />
                                 </AvatarFallback>
                             </Avatar>
                         )}
-                        <div className="flex flex-1 items-center justify-between">
-                            <span className="truncate text-sm">
+                        <div className="flex start-2 justify-items-start gap-2 overflow-hidden text-ellipsis">
+                            <span className="truncate text-sm font-medium leading-none text-foreground">
                                 {auth.user ? auth.user.name : 'Guest User'}
                             </span>
                         </div>
@@ -38,7 +39,8 @@ export function NavUser() {
                 <DropdownMenuContent align="end" className="w-56">
                     <UserMenuContent user={auth.user} />
                 </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenu>
+                </div>
         </SidebarFooter>
     );
 }
