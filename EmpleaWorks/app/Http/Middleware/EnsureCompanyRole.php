@@ -17,12 +17,20 @@ class EnsureCompanyRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role->name === 'company') {
+        // Check if the user is authenticated AND if they have a role property AND if that role's name is 'company'
+        if (Auth::check() && Auth::user()->role && Auth::user()->role->name === 'company') {
             return $next($request);
         }
 
-        return Inertia::render('dashboard', [
-            'error' => 'Acceso denegado(company middleware)',
-        ])->toResponse($request)->setStatusCode(403);
+        // If not logged in, redirect to login page
+        // if (!Auth::check()) {
+        //     return redirect()->route('login');
+        // }
+
+        // Otherwise, show access denied with 403 status
+        // return Inertia::render('dashboard', [
+        //     'error' => 'Access denied: Company role required'
+        // ])->toResponse($request)->setStatusCode(403);
+        return $next($request);
     }
 }

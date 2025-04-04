@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ use Inertia\Response;
 class RegisteredUserController extends Controller
 {
     /**
-     * Show the registration page.
+     * Display the registration view.
      */
     public function create(): Response
     {
@@ -33,30 +33,39 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'role' => 'required|string|in:candidate,company',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:candidate,company'],
         ]);
+        
+        try {
+            // Get role ID based on role name
+            $role = Role::where('name', $request->role)->first();
+            $roleId = $role ? $role->id : null;
 
-        $role = Role::where('name', $request->role)->first(); //buscamos el rol que coincida con el nombre de entrada//
-        if (!$role) { //mayor seguridad en caso de que el formulario no haya enviado correctamente el nombre del rol//
-            return back()->withErrors(['role' => 'Invalid role selected.']);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => $roleId,
+            ]);
+
+            event(new Registered($user));
+
+            Auth::login($user);
+            
+            // Redirect to dashboard instead of using RouteServiceProvider::HOME
+            return redirect()->route('dashboard');
+            
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Registration error: ' . $e->getMessage());
+            
+            // Return back with error message
+            return back()->withErrors([
+                'error' => 'There was a problem creating your account. Please try again.'
+            ]);
         }
-        $role_id = $role->id; //obtenemos el id del rol que coincide con el nombre de entrada(ya que el campo en la tabla users es role_id)//
-
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $role_id, //asignamos el id del rol al nuevo usuario// 
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return to_route('dashboard');
     }
 }
 

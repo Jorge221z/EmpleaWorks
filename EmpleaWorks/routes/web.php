@@ -2,16 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('dashboard');
 })->name('home');
 
-//Route::middleware(['auth', 'verified', 'guest', 'candidate', 'company'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-//});
+// Main dashboard route
+Route::get('dashboard', function () {
+    return Inertia::render('dashboard');
+})->name('dashboard');
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+// Fallback routes in case auth.php routes aren't working properly
+Route::get('/login-direct', [AuthenticatedSessionController::class, 'create'])
+    ->name('login.direct');
+
+Route::get('/register-direct', [RegisteredUserController::class, 'create'])
+    ->name('register.direct');
+
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

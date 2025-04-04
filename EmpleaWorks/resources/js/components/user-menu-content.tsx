@@ -1,38 +1,72 @@
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { UserInfo } from '@/components/user-info';
-import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { type User } from '@/types';
-import { Link } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { Link } from "@inertiajs/react";
+import { LogOut, Settings, User } from "lucide-react";
 
 interface UserMenuContentProps {
-    user: User;
+    user: {
+        name: string;
+        email: string;
+    } | null;
 }
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
-    const cleanup = useMobileNavigation();
+    // Function to handle direct navigation without Inertia
+    const navigateToLogin = () => {
+        window.location.href = route('login');
+    };
+
+    const navigateToRegister = () => {
+        window.location.href = route('register');
+    };
+
+    if (!user) {
+        return (
+            <>
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={navigateToLogin}>
+                        <User className="mr-2 size-4" />
+                        <span>Log in</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={navigateToRegister}>
+                        <User className="mr-2 size-4" />
+                        <span>Register</span>
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+            </>
+        );
+    }
 
     return (
         <>
-            <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <UserInfo user={user} showEmail={true} />
-                </div>
-            </DropdownMenuLabel>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                    <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
-                        <Settings className="mr-2" />
-                        Settings
+                    <Link href={route('profile.edit')}>
+                        <User className="mr-2 size-4" />
+                        <span>Profile</span>
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href={route('password.edit')}>
+                        <Settings className="mr-2 size-4" />
+                        <span>Password</span>
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href={route('appearance')}>
+                        <Settings className="mr-2 size-4" />
+                        <span>Appearance</span>
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-                <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={cleanup}>
-                    <LogOut className="mr-2" />
-                    Log out
+                <Link href={route('logout')} method="post" as="button" className="w-full">
+                    <LogOut className="mr-2 size-4" />
+                    <span>Log out</span>
                 </Link>
             </DropdownMenuItem>
         </>

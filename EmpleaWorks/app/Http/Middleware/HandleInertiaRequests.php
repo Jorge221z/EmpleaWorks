@@ -44,13 +44,31 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user() ? $request->user()->load('role') : null, //relacion role del usuario(importante para verificar en frontend)// 
+                'user' => $request->user() ? $request->user()->load('role') : null,
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                'message' => session('message'),
+                'error' => session('error'),
+            ],
+            'currentRoute' => $request->route() ? $request->route()->getName() : null,
         ];
+    }
+
+    /**
+     * Defines the props that are specific to a page or component.
+     * 
+     * @param Request $request
+     * @return array
+     */
+    public function resolveComponent($request, $component)
+    {
+        \Log::info("Resolving Inertia component: {$component}");
+        
+        return parent::resolveComponent($request, $component);
     }
 }
