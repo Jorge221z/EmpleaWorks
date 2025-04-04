@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class EnsureCompanyRole
 {
@@ -20,6 +21,8 @@ class EnsureCompanyRole
             return $next($request);
         }
 
-        return $next($request);
+        return Inertia::render('dashboard', [
+            'error' => 'Acceso denegado(company middleware)',
+        ])->toResponse($request)->setStatusCode(403);
     }
 }
