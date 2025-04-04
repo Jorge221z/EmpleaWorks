@@ -33,7 +33,7 @@ export default function Register() {
                 <div className="w-full max-w-md space-y-6">
                     <div className="flex flex-col items-center space-y-2 text-center">
                         <Link href="/">
-                            <AppLogo className="mx-auto h-10 w-10" />
+                            <AppLogo />
                         </Link>
                         <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
                         <p className="text-sm text-muted-foreground">
