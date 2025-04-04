@@ -16,7 +16,7 @@ export function NavUser() {
             <div className="flex items-center justify-between px-0 py-2 w-full">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <button className="flex h-10 w-full items-center gap-2 rounded-md outline-none ring-offset-5 ring-neutral-950 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-offset-2">
+                    <button className="flex h-10 w-full items-center gap-2 rounded-md outline-none ring-offset-5 ring-gray-950 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-offset-2">
                         {auth.user ? (
                             <Avatar className="">
                                 <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
