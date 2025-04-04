@@ -13,12 +13,17 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Mis Ofertas',
+        href: '#',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/Jorge221z/EmpleaWorks',
         icon: Folder,
     },
     {
