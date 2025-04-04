@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import { LogOut } from "lucide-react";
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -31,6 +32,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     }
 
     const currentPath = window.location.pathname;
+    const { post } = useForm({});
+
+    const handleLogout = () => {
+        post(route('logout'));
+    };
 
     return (
         <div className="px-4 py-6">
@@ -54,6 +60,22 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 </Link>
                             </Button>
                         ))}
+
+                        {/* Separator before logout */}
+                        <div className="pt-3">
+                            <Separator className="mb-3" />
+                        </div>
+
+                        {/* Logout button */}
+                        <Button
+                            size="sm"
+                            variant="ghost"
+                            className="w-full justify-start text-left cursor-pointer hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-400/20"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                            <LogOut className="ml-26 size-4" />
+                        </Button>
                     </nav>
                 </aside>
 
