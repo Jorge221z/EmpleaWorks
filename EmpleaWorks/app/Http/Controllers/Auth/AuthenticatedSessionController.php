@@ -33,7 +33,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Redirigir según el rol
+        $user = $request->user();
+        if ($user->isCandidate()) {
+            return redirect()->intended(route('candidate.dashboard'));
+        } elseif ($user->isCompany()) {
+            return redirect()->intended(route('company.dashboard'));
+        }
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

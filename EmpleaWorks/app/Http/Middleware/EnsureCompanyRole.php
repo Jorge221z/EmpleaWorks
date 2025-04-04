@@ -16,10 +16,10 @@ class EnsureCompanyRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role->name === 'company') {
+        if (Auth::check() && Auth::user()->role && Auth::user()->role->name === 'company') {
             return $next($request);
         }
 
-        return $next($request);
+        return redirect()->route('home')->with('error', 'Acceso denegado. Solo empresas pueden acceder a esta página.');
     }
 }

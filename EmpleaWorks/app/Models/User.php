@@ -50,4 +50,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    // Métodos para verificar roles
+    public function isCandidate()
+    {
+        return $this->role && $this->role->name === 'candidate';
+    }
+    
+    public function isCompany()
+    {
+        return $this->role && $this->role->name === 'company';
+    }
 }

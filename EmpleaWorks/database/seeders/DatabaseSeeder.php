@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             CompaniesTableSeeder::class,
             CandidatesTableSeeder::class,
             OffersTableSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

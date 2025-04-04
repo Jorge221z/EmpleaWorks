@@ -16,10 +16,10 @@ class EnsureCandidateRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role->name === 'candidates') {
+        if (Auth::check() && Auth::user()->role && Auth::user()->role->name === 'candidate') {
             return $next($request);
         }
 
-        return $next($request);
+        return redirect()->route('home')->with('error', 'Acceso denegado. Solo candidatos pueden acceder a esta página.');
     }
 }

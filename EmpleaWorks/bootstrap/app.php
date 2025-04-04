@@ -22,8 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-            EnsureCandidateRole::class,
-            EnsureCompanyRole::class,
+        ]);
+        $middleware->alias([
+            'candidate' => EnsureCandidateRole::class,
+            'company' => EnsureCompanyRole::class,
         ]);
 
     })
