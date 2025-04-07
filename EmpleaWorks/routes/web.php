@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\OfferController;
 
 Route::get('/', function () {
     return Inertia::render('dashboard');
@@ -23,3 +24,7 @@ Route::get('/register-direct', [RegisteredUserController::class, 'create'])
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
+
+// Offer routes
+Route::get('/api/offers', [OfferController::class, 'list'])->name('api.offers.list');
+Route::get('/offers/{offer}', [OfferController::class, 'getOffer'])->name('offers.getOffer');
