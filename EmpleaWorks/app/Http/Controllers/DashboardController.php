@@ -41,7 +41,7 @@ class DashboardController extends Controller
         // Usamos el método getOffer() del OfferController
         $offerWithCompany = $this->offerController->getOffer($offer);
         
-        return Inertia::render('dashboard', [
+        return Inertia::render('showOffer', [
             'offer' => $offerWithCompany
         ]);
     }
