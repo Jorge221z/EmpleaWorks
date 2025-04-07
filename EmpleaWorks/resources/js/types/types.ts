@@ -27,3 +27,7 @@ export interface Company {
   description: string;
   web_link: string;
 }
+
+export interface ShowOfferProps {
+  offer: Offer;
+}

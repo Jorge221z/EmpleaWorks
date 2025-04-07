@@ -6,11 +6,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { type BreadcrumbItem } from '@/types';
-import { Offer, Company } from '@/types/types';
+import { ShowOfferProps } from '@/types/types';
 
-interface ShowOfferProps {
-  offer: Offer;
-}
 
 export default function ShowOffer({ offer }: ShowOfferProps) {
   const { company } = offer;
