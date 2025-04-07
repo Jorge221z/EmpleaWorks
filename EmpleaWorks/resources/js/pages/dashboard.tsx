@@ -3,7 +3,31 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { CalendarIcon, MapPinIcon, BriefcaseIcon } from 'lucide-react';
 
+interface Company {
+    id: number;
+    created_at: string;
+    updated_at: string;
+    name: string;
+    logo: string | null;
+    email: string;
+    address: string | null;
+    description: string | null;
+    web_link: string | null;
+  }
+
+interface Offer {
+    id: number;
+    name: string;
+    description: string;
+    category: string;
+    degree: string;
+    contract_type: string;
+    job_location: string;
+    closing_date: string;
+    company: Company;
+  }
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -11,7 +35,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth.user;
 
@@ -52,20 +76,76 @@ export default function Dashboard() {
                     </div>
                 )}
                 
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+                {/* Título de las ofertas */}
+                <div className="px-2">
+                    <h2 className="text-2xl font-semibold mb-2">Ofertas de empleo recientes</h2>
+                    <p className="text-muted-foreground">Explora las últimas oportunidades disponibles</p>
                 </div>
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
+                
+                {/* Mostrar ofertas en el grid */}
+                {offers && offers.length > 0 ? (
+                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                        {offers.map((offer) => (
+                            <div 
+                                key={offer.id} 
+                                className="border-sidebar-border/70 dark:border-sidebar-border bg-card relative overflow-hidden rounded-xl border p-4 flex flex-col"
+                            >
+                                <div className="flex justify-between items-start mb-2">
+                                    <h3 className="font-semibold text-lg line-clamp-2">{offer.name}</h3>
+                                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                                        {offer.category}
+                                    </span>
+                                </div>
+                                
+                                <p className="text-sm text-muted-foreground mb-2">
+                                    {offer.company.name}
+                                </p>
+                                
+                                <p className="text-sm line-clamp-3 mb-4 flex-grow">
+                                    {offer.description}
+                                </p>
+                                
+                                <div className="flex flex-col gap-1 text-xs text-muted-foreground mb-4">
+                                    <div className="flex items-center gap-1">
+                                        <BriefcaseIcon className="size-3.5" />
+                                        <span>{offer.contract_type}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <MapPinIcon className="size-3.5" />
+                                        <span>{offer.job_location}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <CalendarIcon className="size-3.5" />
+                                        <span>Hasta: {new Date(offer.closing_date).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                                
+                                <Link
+                                    href={route('offers.show', offer.id)}
+                                    className="text-primary hover:text-primary/80 text-sm font-medium"
+                                >
+                                    Ver detalles →
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    // Mostrar placeholders cuando no hay ofertas
+                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                        <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
+                            <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                                No hay ofertas disponibles
+                            </div>
+                        </div>
+                        <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
+                            <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                        </div>
+                        <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
+                            <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                        </div>
+                    </div>
+                )}
             </div>
         </AppLayout>
     );
