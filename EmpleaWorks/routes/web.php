@@ -4,15 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\OfferController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return Inertia::render('dashboard');
-})->name('home');
-
-// Main dashboard route
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->name('dashboard');
+// Home y Dashboard (mostrar ofertas)
+Route::get('/', [DashboardController::class, 'index'])->name('home');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Fallback routes in case auth.php routes aren't working properly
 Route::get('/login-direct', [AuthenticatedSessionController::class, 'create'])
@@ -23,3 +20,10 @@ Route::get('/register-direct', [RegisteredUserController::class, 'create'])
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
+
+// Offer routes
+// API para obtener ofertas (solo datos)
+Route::get('/offers', [OfferController::class, 'list'])->name('offers.list');
+
+// Mostrar oferta específica
+Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offers.show');
