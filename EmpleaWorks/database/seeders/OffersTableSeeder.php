@@ -26,7 +26,7 @@ class OffersTableSeeder extends Seeder
                 'contract_type' => 'Permanente',
                 'job_location' => 'Madrid',
                 'closing_date' => $faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
-                'company_id' => 1, // TechNova
+                'user_id' => 1, // TechNova
             ],
             [
                 'name' => 'Ingeniero de Datos',
@@ -37,7 +37,7 @@ class OffersTableSeeder extends Seeder
                 'contract_type' => 'Temporal',
                 'job_location' => 'Remoto',
                 'closing_date' => $faker->dateTimeBetween('now', '+2 months')->format('Y-m-d'),
-                'company_id' => 1, // TechNova (segunda oferta)
+                'user_id' => 1, // TechNova (segunda oferta)
             ],
             [
                 'name' => 'Especialista en Energías Renovables',
@@ -48,7 +48,7 @@ class OffersTableSeeder extends Seeder
                 'contract_type' => 'Permanente',
                 'job_location' => 'Barcelona',
                 'closing_date' => $faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
-                'company_id' => 2, // GreenEnergy
+                'user_id' => 2, // GreenEnergy
             ],
             [
                 'name' => 'Analista de Marketing Digital',
@@ -59,7 +59,7 @@ class OffersTableSeeder extends Seeder
                 'contract_type' => 'Temporal',
                 'job_location' => 'Valencia',
                 'closing_date' => $faker->dateTimeBetween('now', '+3 months')->format('Y-m-d'),
-                'company_id' => 3, // MarketPro
+                'user_id' => 3, // MarketPro
             ],
             [
                 'name' => 'Arquitecto Junior',
@@ -70,7 +70,7 @@ class OffersTableSeeder extends Seeder
                 'contract_type' => 'Permanente',
                 'job_location' => 'Sevilla',
                 'closing_date' => $faker->dateTimeBetween('now', '+2 months')->format('Y-m-d'),
-                'company_id' => 4, // BuildCorp
+                'user_id' => 4, // BuildCorp
             ],
         ];
 

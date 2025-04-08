@@ -13,17 +13,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // First seed the roles table - this is critical for foreign key references
+        $this->call(RoleSeeder::class);
+        
+        $this->call(CandidatesTableSeeder::class);
+        $this->call(CompaniesTableSeeder::class);
+        $this->call(OffersTableSeeder::class);
+        
+        
+        
+        // Add any other seeders below
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-        ]);
-        $this->call([
-            CompaniesTableSeeder::class,
-            CandidatesTableSeeder::class,
-            OffersTableSeeder::class,
-            RoleSeeder::class,
         ]);
     }
 }
