@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         // First seed the roles table - this is critical for foreign key references
         $this->call(RoleSeeder::class);
-        
-        $this->call(CandidatesTableSeeder::class);
+
         $this->call(CompaniesTableSeeder::class);
+        $this->call(CandidatesTableSeeder::class);
         $this->call(OffersTableSeeder::class);
         
         
