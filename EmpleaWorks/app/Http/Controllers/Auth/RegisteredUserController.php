@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\Rules\Can;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -54,17 +53,24 @@ class RegisteredUserController extends Controller
             ]);
 
             // Create a company or candidate based on the role
-            if ($role->id === 1) {
+            if ($request->role === 'candidate') {
+                // Create a candidate profile
                 Candidate::create([
                     'user_id' => $user->id,
-                    // Add other candidate-specific fields here
+                    'surname' => '', // Default empty value
+                    'cv' => null
                 ]);
-
-            } elseif ($role->id === 2) {
+                
+                \Log::info("Candidate profile created for user ID: {$user->id}");
+            } elseif ($request->role === 'company') {
+                // Create a company profile
                 Company::create([
                     'user_id' => $user->id,
-                    // Add other company-specific fields here
+                    'address' => null,
+                    'web_link' => null
                 ]);
+                
+                \Log::info("Company profile created for user ID: {$user->id}");
             }
 
             event(new Registered($user));
@@ -77,6 +83,7 @@ class RegisteredUserController extends Controller
         } catch (\Exception $e) {
             // Log the error for debugging
             \Log::error('Registration error: ' . $e->getMessage());
+            \Log::error($e->getTraceAsString());
             
             // Return back with error message
             return back()->withErrors([
