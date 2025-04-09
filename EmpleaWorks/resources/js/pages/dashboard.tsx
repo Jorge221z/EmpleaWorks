@@ -93,7 +93,7 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                                 </div>
 
                                 <p className="text-sm text-muted-foreground mb-2">
-                                    {offer.company.name}
+                                    {offer.company ? offer.company.name : 'Empresa no disponible'}
                                 </p>
 
                                 <p className="text-sm line-clamp-3 mb-4 flex-grow">

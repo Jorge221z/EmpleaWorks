@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'image',
+        'description',
     ];
 
     /**
@@ -47,16 +49,51 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the user's role.
+     */
     public function role() 
     {
         return $this->belongsTo(Role::class);
     }
     
     /**
-     * Check if the user has a specific role
+     * Get the candidate profile associated with the user.
      */
-    public function hasRole(string $roleName): bool
+    public function candidate()
     {
-        return $this->role && $this->role->name === $roleName;
+        return $this->hasOne(Candidate::class);
+    }
+
+    /**
+     * Get the company profile associated with the user.
+     */
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
+
+    /**
+     * Get the offers created by this user (as a company).
+     */
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    /**
+     * Determine if the user is a company.
+     */
+    public function isCompany()
+    {
+        return $this->role_id === 2; // Asumiendo que role_id = 2 es para empresas
+    }
+
+    /**
+     * Determine if the user is a candidate.
+     */
+    public function isCandidate()
+    {
+        return $this->role_id === 1; // Asumiendo que role_id = 1 es para candidatos
     }
 }

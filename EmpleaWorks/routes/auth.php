@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,4 +57,10 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offers.show');
+
+    // Ruta para aplicar a una oferta
+    Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->name('offers.apply');
+    
+    // Ruta para crear una nueva oferta
+    Route::post('/offers', [OfferController::class, 'store'])->name('offers.store');
 });

@@ -24,7 +24,7 @@ export function AppSidebar() {
         },
         {
             title: 'Mis Ofertas',
-            href: isAuthenticated ? '/dashboard' : '/dashboard',
+            href: '/dashboard',
             icon: isAuthenticated ? LayoutGrid : Lock,
             disabled: !isAuthenticated,
             onClick: !isAuthenticated ? () => {

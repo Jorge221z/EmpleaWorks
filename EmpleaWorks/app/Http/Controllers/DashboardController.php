@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\OfferController;
 use App\Models\Offer;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -45,4 +47,5 @@ class DashboardController extends Controller
             'offer' => $offerWithCompany
         ]);
     }
+
 }
