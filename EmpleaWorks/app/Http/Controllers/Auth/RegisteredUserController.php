@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Candidate;
 use App\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Can;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -49,6 +52,20 @@ class RegisteredUserController extends Controller
                 'password' => Hash::make($request->password),
                 'role_id' => $roleId,
             ]);
+
+            // Create a company or candidate based on the role
+            if ($role->id === 1) {
+                Candidate::create([
+                    'user_id' => $user->id,
+                    // Add other candidate-specific fields here
+                ]);
+
+            } elseif ($role->id === 2) {
+                Company::create([
+                    'user_id' => $user->id,
+                    // Add other company-specific fields here
+                ]);
+            }
 
             event(new Registered($user));
 
