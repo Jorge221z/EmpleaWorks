@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -63,4 +64,9 @@ Route::middleware('auth')->group(function () {
     
     // Ruta para crear una nueva oferta
     Route::post('/offers', [OfferController::class, 'store'])->name('offers.store');
+
+    // Ruta del dashboard para empresas - protegida por el middleware de rol de empresa
+    Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])
+        ->middleware('company.role')
+        ->name('company.dashboard');
 });

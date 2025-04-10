@@ -22,8 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-            EnsureCandidateRole::class,
-            EnsureCompanyRole::class,
+        ]);
+
+        // Añadir alias para los middlewares
+        $middleware->alias([
+            'company.role' => EnsureCompanyRole::class,
+            'candidate.role' => EnsureCandidateRole::class,
         ]);
 
     })
