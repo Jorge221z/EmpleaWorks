@@ -28,7 +28,7 @@ class Candidate extends Model
      */
     public function appliedOffers()
     {
-        return $this->belongsToMany(Offer::class, 'candidate_offer')
+        return $this->belongsToMany(Offer::class, 'candidate_offer', 'user_id', 'offer_id')
                     ->withTimestamps();
     }
 
@@ -53,5 +53,10 @@ class Candidate extends Model
     public function getImageAttribute()
     {
         return $this->user->image;
+    }
+
+    public function getUserId()
+    {
+        return $this->user->id;
     }
 }

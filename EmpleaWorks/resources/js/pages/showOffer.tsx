@@ -101,7 +101,11 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Aplicar a esta oferta</Button>
+                <Button className="w-full" asChild>
+                  <Link href={route('apply.form', offer.id)}>
+                    Aplicar a esta oferta
+                  </Link>
+                </Button>
               </CardFooter>
             </Card>
           </div>

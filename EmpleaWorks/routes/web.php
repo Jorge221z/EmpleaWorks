@@ -18,9 +18,16 @@ Route::get('/login-direct', [AuthenticatedSessionController::class, 'create'])
 Route::get('/register-direct', [RegisteredUserController::class, 'create'])
     ->name('register.direct');
 
+// Application form route 
+Route::get('/apply-form/{offer}', [DashboardController::class, 'showForm'])->name('apply.form');
+
+// Submit application route
+Route::post('/apply', [OfferController::class, 'apply'])->name('apply');
+
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
 
 // Offer routes
 // Test de API para obtener ofertas (solo datos)
 Route::get('/offers', [OfferController::class, 'list'])->name('offers.list');
+Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offer.show');

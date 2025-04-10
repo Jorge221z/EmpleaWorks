@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidate;
 use App\Models\Offer;
 use App\Models\User;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class OfferController extends Controller
 {
@@ -149,24 +152,71 @@ class OfferController extends Controller
     /**
      * Apply to an offer.
      *
-     * @param  \App\Models\Offer  $offer
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse | \Inertia\Response
      */
-    // public function apply(Offer $offer)
-    // {
-    //     // Verificar que el usuario sea un candidato
-    //     if (!auth()->user()->isCandidate()) {
-    //         return response()->json(['error' => 'Solo los candidatos pueden aplicar a ofertas'], 403);
-    //     }
+    public function apply(Request $request)
+    {
+        $validated = $request->validate(
+            [
+                'phone' => ['required', 'string', 'min:7', 'max:20', 'regex:/^\+?[0-9\s\-()]+$/',],
+                'email' => 'required|email|max:255',
+                'cl' => 'required|string|max:255',
+            ],
+            [
+                'phone.required' => 'The phone field is required.',
+                'phone.regex' => 'The phone format is invalid.',
+                'email.required' => 'The email field is required.',
+                'email.email' => 'The email format is invalid.',
+                'email.max' => 'The email field cannot be more than 255 characters.',
+                'cl.required' => 'The cover letter field is required.',
+                'cl.max' => 'The cover letter field cannot be more than 255 characters.',
+            ]
+        );
+        
+        // Verificamos si el usuario está autenticado
+        if (!Auth::check()) {
+            return redirect()->back()->with('error', 'You must be logged in to apply for offers');
+        }
 
-    //     // Verificar que el usuario no haya aplicado ya a esta oferta
-    //     if (auth()->user()->candidate->appliedOffers()->where('offer_id', $offer->id)->exists()) {
-    //         return response()->json(['error' => 'Ya has aplicado a esta oferta'], 400);
-    //     }
+        // Obtenemos el usuario autenticado
+        $user = Auth::user();
+        
+        // Verificamos si el usuario es un candidato
+        if (!($user->role->name === 'candidate')) {
+            return redirect()->back()->with('error', 'Only candidates can apply for offers');
+        }
+        
+        // Verificamos si la oferta existe
+        $offer = Offer::find($request->offer_id);
+        if (!$offer) {
+            return redirect()->back()->with('error', 'Offer not found');
+        }
+        
+        // Verificamos si el candidato ya ha aplicado a esta oferta
+        // Corregido para usar la relación correcta
+        $existingApplication = $offer->candidates()->where('users.id', $user->id)->first();
+        if ($existingApplication) {
+            return redirect()->back()->with('error', 'You have already applied to this offer');
+        }
 
-    //     // Registrar la aplicación
-    //     auth()->user()->candidate->appliedOffers()->attach($offer->id);
+        $candidate = Candidate::where('user_id', $user->id)->first();
+        if (!$candidate) {
+            return redirect()->back()->with('error', 'Candidate profile not found');
+        }
 
-    //     return response()->json(['message' => 'Aplicación registrada con éxito'], 200);
-    // }
+        // En este punto del código:
+        // 1. Tenemos un candidato ($candidate)
+        // 2. Tenemos una oferta ($offer)
+        // 3. Queremos crear una relación entre ellos en la tabla pivot "candidate_offer"
+        
+        // Pasamos $offer->id al método attach() para indicar específicamente
+        // a qué oferta está aplicando este candidato
+        //$candidate->appliedOffers()->attach($offer->id);
+
+        return Inertia::render('dashboard', [
+            'message' => 'Application submitted successfully'
+        ]);
+        // volvemos al dashboard tras aplicar con un mensaje de exito
+    }
 }

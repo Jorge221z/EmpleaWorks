@@ -116,7 +116,7 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                                 </div>
 
                                 <Link
-                                    href={route('offers.show', offer.id)}
+                                    href={route('offer.show', offer.id)}
                                     className="text-primary hover:text-primary/80 text-sm font-medium"
                                 >
                                     Ver detalles →
