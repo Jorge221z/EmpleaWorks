@@ -188,7 +188,7 @@ class OfferController extends Controller
         }
         
         // Verificamos si la oferta existe
-        $offer = Offer::find($request->offer_id);
+        $offer = Offer::where('id', $request->offer_id)->firstOrFail();
         if (!$offer) {
             return redirect()->back()->with('error', 'Offer not found');
         }
@@ -205,14 +205,7 @@ class OfferController extends Controller
             return redirect()->back()->with('error', 'Candidate profile not found');
         }
 
-        // En este punto del código:
-        // 1. Tenemos un candidato ($candidate)
-        // 2. Tenemos una oferta ($offer)
-        // 3. Queremos crear una relación entre ellos en la tabla pivot "candidate_offer"
-        
-        // Pasamos $offer->id al método attach() para indicar específicamente
-        // a qué oferta está aplicando este candidato
-        //$candidate->appliedOffers()->attach($offer->id);
+        $user->applyToOffer($offer);
 
         return Inertia::render('dashboard', [
             'message' => 'Application submitted successfully'

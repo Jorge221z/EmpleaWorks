@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-
     use HasFactory;
 
     protected $fillable = [
@@ -25,33 +24,33 @@ class Company extends Model
     }
 
     /**
-     * Get the offers for the company.
+     * Get user information through accessor methods
      */
-    public function offers()
-    {
-        return $this->hasManyThrough(Offer::class, User::class);
-    }
-
-    /**
-     * Accede a los datos del usuario combinados con los de la empresa.
-     */
-    public function getNameAttribute()
+    public function getName()
     {
         return $this->user->name;
     }
 
-    public function getEmailAttribute()
+    public function getEmail()
     {
         return $this->user->email;
     }
 
-    public function getDescriptionAttribute()
+    public function getDescription()
     {
         return $this->user->description;
     }
 
-    public function getImageAttribute()
+    public function getImage()
     {
         return $this->user->image;
+    }
+
+    /**
+     * Delegate access to offers through the user
+     */
+    public function offers()
+    {
+        return $this->user->offers();
     }
 }

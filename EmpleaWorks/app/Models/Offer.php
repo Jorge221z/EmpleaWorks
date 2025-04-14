@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\User;
 class Offer extends Model
 {
     use HasFactory;
@@ -26,11 +26,11 @@ class Offer extends Model
     ];
 
     /**
-     * Get the user/company that created this offer.
+     * Get the company user that created this offer.
      */
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -38,23 +38,39 @@ class Offer extends Model
      */
     public function candidates()
     {
-        return $this->belongsToMany(User::class, 'candidate_offer', 'offer_id', 'user_id')
-                    ->whereHas('candidate')
-                    ->withTimestamps();
+        // This references the user_offer pivot table to track applications
+        return $this->belongsToMany(User::class, 'user_offer', 'offer_id', 'user_id')
+            ->whereHas('candidate')  // Only return users who have candidate profiles
+            ->withTimestamps();
     }
 
     /**
-     * Get the company related to this offer (via user).
+     * Get the company associated with this offer through the user.
      */
     public function company()
     {
-        return $this->hasOneThrough(
-            Company::class,
-            User::class,
-            'id', // Clave externa en User
-            'user_id', // Clave externa en Company
-            'user_id', // Clave local en Offer
-            'id' // Clave local en User
-        );
+        return $this->user->company;
+    }
+
+    /**
+     * Get company details for display purposes.
+     * 
+     * @return array|null Company details
+     */
+    public function getCompanyInfo()
+    {
+        return $this->user->getCompanyDetails();
+    }
+
+    /**
+     * Add a candidate application to this offer.
+     * 
+     * @param User $user The candidate user
+     * @return bool Success status
+     */
+    public function addCandidate(User $user)
+    {
+        // Delegate to the user's applyToOffer method
+        return $user->applyToOffer($this);
     }
 }

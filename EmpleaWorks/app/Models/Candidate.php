@@ -24,39 +24,41 @@ class Candidate extends Model
     }
 
     /**
-     * Get the offers applied to by this candidate.
+     * Get user information through accessor methods
      */
-    public function appliedOffers()
-    {
-        return $this->belongsToMany(Offer::class, 'candidate_offer', 'user_id', 'offer_id')
-                    ->withTimestamps();
-    }
-
-    /**
-     * Accede a los datos del usuario combinados con los del candidato.
-     */
-    public function getNameAttribute()
+    public function getName()
     {
         return $this->user->name;
     }
 
-    public function getEmailAttribute()
+    public function getEmail()
     {
         return $this->user->email;
     }
 
-    public function getDescriptionAttribute()
+    public function getDescription()
     {
         return $this->user->description;
     }
 
-    public function getImageAttribute()
+    public function getImage()
     {
         return $this->user->image;
     }
 
-    public function getUserId()
+    /**
+     * Delegate access to applied offers through the user
+     */
+    public function appliedOffers()
     {
-        return $this->user->id;
+        return $this->user->appliedOffers();
+    }
+
+    /**
+     * Delegate the apply to offer functionality to user
+     */
+    public function applyToOffer(Offer $offer)
+    {
+        return $this->user->applyToOffer($offer);
     }
 }

@@ -69,12 +69,9 @@ class DashboardController extends Controller
         if ($offer->exists) {
             $offerWithCompany = $this->offerController->getOffer($offer);
 
-            $user = Auth::user();
+            $user = Auth::user(); //obtenemos el usuario autenticado en ese momento//
             
-            // Get the candidate record associated with the user
-            $candidate = Candidate::where('user_id', $user->id)->first();
-            
-            if (!$candidate) {
+            if (!$user->candidate) { //usamos la relacion del modelo para hacer mas fluida esta comprobacion//
                 return Inertia::render('dashboard', [
                     'message' => 'Candidate profile not found'
                 ]);
