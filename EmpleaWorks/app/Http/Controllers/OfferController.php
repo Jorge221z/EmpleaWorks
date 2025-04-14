@@ -173,7 +173,7 @@ class OfferController extends Controller
                 'cl.max' => 'The cover letter field cannot be more than 255 characters.',
             ]
         );
-        
+
         // Verificamos si el usuario está autenticado
         if (!Auth::check()) {
             return redirect()->back()->with('error', 'You must be logged in to apply for offers');
@@ -181,18 +181,18 @@ class OfferController extends Controller
 
         // Obtenemos el usuario autenticado
         $user = Auth::user();
-        
+
         // Verificamos si el usuario es un candidato
         if (!($user->role->name === 'candidate')) {
             return redirect()->back()->with('error', 'Only candidates can apply for offers');
         }
-        
+
         // Verificamos si la oferta existe
         $offer = Offer::where('id', $request->offer_id)->firstOrFail();
         if (!$offer) {
             return redirect()->back()->with('error', 'Offer not found');
         }
-        
+
         // Verificamos si el candidato ya ha aplicado a esta oferta
         // Corregido para usar la relación correcta
         $existingApplication = $offer->candidates()->where('users.id', $user->id)->first();
@@ -207,8 +207,8 @@ class OfferController extends Controller
 
         $user->applyToOffer($offer);
 
-        return Inertia::render('dashboard', [
-            'message' => 'Application submitted successfully'
+        return redirect()->route('dashboard')->with([
+            'message' => 'Application submitted successfully',
         ]);
         // volvemos al dashboard tras aplicar con un mensaje de exito
     }
