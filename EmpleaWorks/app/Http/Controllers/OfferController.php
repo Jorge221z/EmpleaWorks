@@ -207,7 +207,7 @@ class OfferController extends Controller
 
         $user->applyToOffer($offer);
 
-        return redirect()->route('dashboard')->with(
+        return redirect()->route('candidate.dashboard')->with(
             'success' , 'Application submitted successfully',);
         // volvemos al dashboard tras aplicar con un mensaje de exito (reusamos la ruta del DasboardController) //
     }

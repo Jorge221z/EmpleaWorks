@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { CalendarIcon, MapPinIcon, BriefcaseIcon, FileIcon, UserIcon, UsersIcon } from 'lucide-react';
 import { Offer } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import toast, { Toaster } from 'react-hot-toast';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -15,11 +17,36 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CandidateDashboard({ candidateOffers = [] }: { candidateOffers?: Offer[] }) {
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+
     const { auth } = usePage<SharedData>().props;
     const user = auth.user;
 
+    useEffect(() => {
+        if (flash && flash.success) {
+            toast.success(flash.success);
+        }
+        if (flash && flash.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    className: 'toast-offers',
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '20px 28px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    },
+                    id: 'unique-toast',
+                }}
+            />
             <Head title="Candidate Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Dashboard Title */}

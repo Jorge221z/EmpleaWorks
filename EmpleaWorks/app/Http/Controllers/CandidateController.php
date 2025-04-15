@@ -41,7 +41,8 @@ class CandidateController extends Controller
                         'web_link' => $offer->user->company->web_link,
                     ];
                 }
-                
+
+                    
                 // Return formatted offer with company data
                 return [
                     'id' => $offer->id,
@@ -53,13 +54,18 @@ class CandidateController extends Controller
                     'job_location' => $offer->job_location,
                     'closing_date' => $offer->closing_date,
                     'created_at' => $offer->created_at,
-                    'company' => $companyData
+                    'company' => $companyData,
                 ];
             });
     }
-    
+        $flash = [
+            'success' => session('success'),
+            'error' => session('error')
+        ];
+
     return Inertia::render('candidateDashboard', [
-        'candidateOffers' => $candidateOffers
+        'candidateOffers' => $candidateOffers,
+            'flash' => $flash //pasamos explicitamente los flash a la vista //
     ]);
     }
 }
