@@ -18,7 +18,7 @@ class EnsureCompanyRole
         }
 
         // Check if the user has the company role
-        if (Auth::user()->role && Auth::user()->role->name === 'company') {
+        if (Auth::user()->isCompany()) {
             return $next($request);
         }
 

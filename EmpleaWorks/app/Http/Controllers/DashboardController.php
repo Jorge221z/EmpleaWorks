@@ -82,7 +82,7 @@ class DashboardController extends Controller
                     'message' => 'Candidate profile not found'
                 ]);
             }
-
+            
             return Inertia::render('AplicationForm', [
                 'offer' => $offerWithCompany,
             ]);
