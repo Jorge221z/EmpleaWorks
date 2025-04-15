@@ -29,8 +29,14 @@ class DashboardController extends Controller
         // Obtenemos las ofertas usando el método list() del OfferController
         $offers = $this->offerController->list();
 
+        $flash = [
+            'success' => session('success'),
+            'error' => session('error')
+        ];
+
         return Inertia::render('dashboard', [
-            'offers' => $offers
+            'offers' => $offers,
+            'flash' => $flash //pasamos explicitamente los flash a la vista //
         ]);
     }
 

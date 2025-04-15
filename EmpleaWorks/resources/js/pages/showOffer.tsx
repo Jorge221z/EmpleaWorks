@@ -1,5 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 import { BriefcaseIcon, CalendarIcon, MapPinIcon, BuildingIcon, MailIcon, GlobeIcon, ArrowLeftIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,9 +8,11 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { type BreadcrumbItem } from '@/types';
 import { ShowOfferProps } from '@/types/types';
-
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function ShowOffer({ offer }: ShowOfferProps) {
+  const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+  
   const { company } = offer;
   
   const breadcrumbs: BreadcrumbItem[] = [
@@ -22,9 +25,33 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
       href: `/offers/${offer.id}`,
     },
   ];
+
+  // Show flash messages
+  useEffect(() => {
+    if (flash && flash.success) {
+      toast.success(flash.success);
+    }
+    if (flash && flash.error) {
+      toast.error(flash.error);
+    }
+  }, [flash]);
+
   
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          className: 'toast-offers',
+          style: {
+            background: '#363636',
+            color: '#fff',
+            borderRadius: '8px',
+            padding: '20px 28px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          },
+        }}
+      />
       <Head title={`${offer.name} - EmpleaWorks`} />
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
         <div className="mb-6">

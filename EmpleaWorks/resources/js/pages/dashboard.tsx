@@ -6,7 +6,9 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { CalendarIcon, MapPinIcon, BriefcaseIcon } from 'lucide-react';
 import { Offer, Company } from '@/types/types';
 import SearchBar from '@/SearchBar/SearchBar';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,6 +18,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth.user;
 
@@ -35,8 +39,32 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
         setFilteredOffers(results);
     }, []);
 
+    // Mostramos los mensajes flash del backend
+    useEffect(() => {
+        if (flash && flash.success) {
+            toast.success(flash.success);
+        }
+        if (flash && flash.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    className: 'toast-offers',
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '20px 28px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    },
+                    id: 'unique-toast',
+                }}
+            />
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {!isAuthenticated && (

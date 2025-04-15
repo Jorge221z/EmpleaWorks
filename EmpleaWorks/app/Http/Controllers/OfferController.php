@@ -197,7 +197,7 @@ class OfferController extends Controller
         // Corregido para usar la relación correcta
         $existingApplication = $offer->candidates()->where('users.id', $user->id)->first();
         if ($existingApplication) {
-            return redirect()->back()->with('error', 'You have already applied to this offer');
+            return redirect()->route('offer.show', $offer->id)->with('error', 'You have already applied to this offer');
         }
 
         $candidate = Candidate::where('user_id', $user->id)->first();
@@ -207,9 +207,8 @@ class OfferController extends Controller
 
         $user->applyToOffer($offer);
 
-        return redirect()->route('dashboard')->with([
-            'message' => 'Application submitted successfully',
-        ]);
-        // volvemos al dashboard tras aplicar con un mensaje de exito
+        return redirect()->route('dashboard')->with(
+            'success' , 'Application submitted successfully',);
+        // volvemos al dashboard tras aplicar con un mensaje de exito (reusamos la ruta del DasboardController) //
     }
 }

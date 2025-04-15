@@ -6,6 +6,8 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { CalendarIcon, MapPinIcon, BriefcaseIcon, PlusCircleIcon, UsersIcon, BuildingIcon } from 'lucide-react';
 import { Offer, Company } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
