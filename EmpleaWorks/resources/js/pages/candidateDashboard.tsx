@@ -37,10 +37,6 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div className="text-3xl font-bold">{candidateOffers.length}</div>
-                            <Button size="sm" variant="outline" className="gap-1">
-                                <UsersIcon className="h-4 w-4" />
-                                View All
-                            </Button>
                         </CardContent>
                     </Card>
 
@@ -105,7 +101,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
 
                                 <div className="flex gap-2">
                                     <Link
-                                        href={`/offers/${offer.id}`}
+                                        href={route('offer.show', offer.id)}
                                         className="text-primary hover:text-primary/80 text-sm font-medium"
                                     >
                                         View details →
