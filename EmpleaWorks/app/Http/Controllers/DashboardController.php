@@ -60,19 +60,9 @@ class DashboardController extends Controller
      * Show the application form for a specific offer
      *
      * @param  \App\Models\Offer $offer
-     * @return \Inertia\Response
      */
     public function showForm(Offer $offer)
     {
-        // Get the authenticated user
-        $user = Auth::user();
-        //Check if user is authenticated and is a candidate
-        if (!$user || !$user->isCandidate()) {
-             return Inertia::render('dashboard', [
-                 'message' => 'You must be loged as candidate to apply an offer'
-             ]);
-         }
-
         // If an offer was provided, get the full offer details
         if ($offer->exists) {
             $offerWithCompany = $this->offerController->getOffer($offer);

@@ -30,6 +30,6 @@ class EnsureCandidateRole
 
         // For authenticated users with wrong role, redirect to dashboard
         // Add a flash message to inform the user why they were redirected
-        return redirect()->route('dashboard')->with('message', 'This section is only available for candidates');
+        return redirect()->route('dashboard')->with('error', 'This section is only available for candidates');
     }
 }
