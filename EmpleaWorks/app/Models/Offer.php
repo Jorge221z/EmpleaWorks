@@ -49,7 +49,10 @@ class Offer extends Model
      */
     public function company()
     {
-        return $this->user->company;
+        if ($this->user) {
+            return $this->user->company;
+        }
+        return null;
     }
 
     /**
@@ -59,7 +62,10 @@ class Offer extends Model
      */
     public function getCompanyInfo()
     {
-        return $this->user->getCompanyDetails();
+        if ($this->user) {
+            return $this->user->getCompanyDetails();
+        }
+        return null;
     }
 
     /**

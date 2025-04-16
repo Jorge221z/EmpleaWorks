@@ -62,14 +62,19 @@ Route::middleware('auth')->group(function () {
 
     // Ruta para aplicar a una oferta
     Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->name('offers.apply');
-    
-    // Ruta para crear una nueva oferta
-    Route::post('/offers', [OfferController::class, 'store'])->name('offers.store');
 
     // Ruta del dashboard para empresas - protegida por el middleware de rol de empresa
     Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])
         ->middleware('company.role')
         ->name('company.dashboard');
+    // Ruta para el formulario de creación de ofertas - protegida por el middleware de rol de empresa
+    Route::get('/company/create-job', [CompanyController::class, 'createJobForm'])
+        ->middleware('company.role')
+        ->name('company.create-job');
+    // Ruta para crear una nueva oferta
+    Route::post('/offers', [OfferController::class, 'store'])
+        ->middleware('company.role')
+        ->name('offers.store');
     // Ruta del dashboard para candidatos - protegida por el middleware de rol de candidato
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')

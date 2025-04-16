@@ -40,7 +40,9 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
                             <div className="text-3xl font-bold">{companyOffers.length}</div>
                             <Button size="sm" className="gap-1">
                                 <PlusCircleIcon className="h-4 w-4" />
-                                New Job
+                                <Link href={route('company.create-job')}>                                  
+                                    New Job
+                                </Link>
                             </Button>
                         </CardContent>
                     </Card>
@@ -120,7 +122,7 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
 
                                 <div className="flex gap-2">
                                     <Link
-                                        href={route('offers.show', offer.id)}
+                                        href={route('offer.show', offer.id)}
                                         className="text-primary hover:text-primary/80 text-sm font-medium"
                                     >
                                         Ver detalles →
@@ -139,8 +141,10 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
                             <p className="text-sm text-muted-foreground text-center mb-4">
                                 Add a new job opportunity to your listings
                             </p>
-                            <Button>
+                            <Button asChild>
+                                <Link href={route('company.create-job')}>
                                 Create Job Listing
+                                </Link>
                             </Button>
                         </div>
                     </div>
@@ -155,7 +159,9 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
                             </p>
                             <Button className="gap-1">
                                 <PlusCircleIcon className="h-4 w-4" />
-                                Create Your First Job Listing
+                                <Link href={route('company.create-job')}>                                
+                                    Create Your First Job Listing
+                                </Link>
                             </Button>
                         </div>
                         <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
