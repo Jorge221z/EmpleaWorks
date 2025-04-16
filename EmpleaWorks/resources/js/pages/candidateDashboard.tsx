@@ -74,10 +74,12 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div className="text-lg font-medium truncate max-w-[150px]">{user?.name}</div>
-                            <Button size="sm" variant="outline" className="gap-1">
-                                <UserIcon className="h-4 w-4" />
-                                Edit Profile
-                            </Button>
+                            <Link href="/settings/profile">
+                                <Button size="sm" variant="outline" className="gap-1">
+                                    <UserIcon className="h-4 w-4" />
+                                    Edit Profile
+                                </Button>
+                            </Link>
                         </CardContent>
                     </Card>
                 </div>

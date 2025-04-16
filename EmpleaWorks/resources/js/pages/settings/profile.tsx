@@ -126,7 +126,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 <div className='grid gap-2'>
                                     <Label htmlFor='address'>Company adress</Label>
                                     <Input
-                                        id='adress'
+                                        id='address'
                                         className='mt-1 block w-full'
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
@@ -142,6 +142,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     <Label htmlFor='weblink'>WebSite</Label>
                                     <Input
                                         id='weblink'
+                                        type='url'
                                         className='mt-1 block w-full'
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
