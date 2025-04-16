@@ -13,6 +13,52 @@ use Inertia\Inertia;
 class OfferController extends Controller
 {
     /**
+     * Store a newly created offer in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
+        // Validar los datos de la oferta
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:offers,name',
+            'description' => 'required|string',
+            'category' => 'required|string|max:255',
+            'degree' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'contract_type' => 'required|string|max:255',
+            'job_location' => 'required|string|max:255',
+            'closing_date' => 'required|date|after:today',
+        ]);
+
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Verificar que el usuario sea una empresa
+        if (!$user || !$user->isCompany()) {
+            return redirect()->back()->with('error', 'Only companies can create job listings');
+        }
+
+        try {
+            // Añadir el ID del usuario a los datos validados
+            $validated['user_id'] = $user->id;
+
+            // Crear la oferta
+            $offer = Offer::create($validated);
+
+            // Redireccionar con mensaje de éxito
+            return redirect()->route('company.dashboard')
+                ->with('success', 'Job listing created successfully!');
+        } catch (\Exception $e) {
+            // Manejar cualquier error
+            return redirect()->back()
+                ->with('error', 'There was a problem creating your job listing: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+    
+    /**
      * Get all offers as array.
      *
      * @return array
@@ -115,39 +161,6 @@ class OfferController extends Controller
 
         return $formattedOffer;
     }
-
-    /**
-     * Store a newly created offer.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(Request $request)
-    // {
-    //     // Validamos que el usuario sea una empresa
-    //     if (!auth()->user()->isCompany()) {
-    //         return response()->json(['error' => 'Solo las empresas pueden crear ofertas'], 403);
-    //     }
-
-    //     $validated = $request->validate([
-    //         'name' => 'required|string|max:255|unique:offers',
-    //         'description' => 'required|string',
-    //         'category' => 'required|string|max:255',
-    //         'degree' => 'required|string|max:255',
-    //         'email' => 'required|email|max:255',
-    //         'contract_type' => 'required|string|max:255',
-    //         'job_location' => 'required|string|max:255',
-    //         'closing_date' => 'required|date|after:today',
-    //     ]);
-
-    //     // Asignar el ID del usuario autenticado como creador de la oferta
-    //     $offer = Offer::create([
-    //         ...$validated,
-    //         'user_id' => auth()->id(),
-    //     ]);
-
-    //     return response()->json($offer, 201);
-    // }
 
     /**
      * Apply to an offer.
