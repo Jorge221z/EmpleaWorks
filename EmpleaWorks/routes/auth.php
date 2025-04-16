@@ -74,4 +74,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')
         ->name('candidate.dashboard');
+    // Ruta para mostrar el formulario de aplicación a una oferta
+    Route::get('/apply-form/{offer}', [DashboardController::class, 'showForm'])
+        ->middleware('candidate.role')
+        ->name('apply.form');
+    // Ruta para aplicar a una oferta
+    Route::post('/apply', [OfferController::class, 'apply'])
+        ->middleware('candidate.role')
+        ->name('apply');
 });

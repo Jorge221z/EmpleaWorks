@@ -64,8 +64,10 @@ class DashboardController extends Controller
      */
     public function showForm(Offer $offer)
     {
+        // Get the authenticated user
+        $user = Auth::user();
         //Check if user is authenticated and is a candidate
-        if (!Auth::check() /*|| Auth::user()->role->name !== 'candidate'*/) {
+        if (!$user || !$user->isCandidate()) {
              return Inertia::render('dashboard', [
                  'message' => 'You must be loged as candidate to apply an offer'
              ]);
