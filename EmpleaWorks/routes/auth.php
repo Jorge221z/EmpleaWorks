@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offers.show');
+    Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offer.show');
 
     // Ruta para aplicar a una oferta
     Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->name('offers.apply');

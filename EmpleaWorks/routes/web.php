@@ -29,9 +29,6 @@ Route::post('/apply', [OfferController::class, 'apply'])->name('apply');
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
 
-//mostramos cada oferta en concreto para ver sus detalles y poder aplicar //
-Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offer.show');
-
 
 // Test de API para obtener ofertas (solo datos)
 Route::get('/offers', [OfferController::class, 'list'])->name('offers.list');
