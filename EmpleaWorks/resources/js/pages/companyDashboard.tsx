@@ -70,7 +70,9 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
                             <div className="text-lg font-medium truncate max-w-[150px]">{auth.user.name}</div>
                             <Button size="sm" variant="outline" className="gap-1">
                                 <BuildingIcon className="h-4 w-4" />
-                                Edit Profile
+                                <Link href={'/settings/profile'}>                                  
+                                    Edit Profile
+                                </Link>
                             </Button>
                         </CardContent>
                     </Card>
