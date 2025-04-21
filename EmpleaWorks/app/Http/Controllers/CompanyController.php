@@ -21,7 +21,18 @@ public function dashboard()
     
     // Verificar si el usuario existe antes de intentar acceder a sus ofertas
     $companyOffers = [];
+    $totalApplicants = 0; // Variable para contar solicitantes
+
     if ($user && $user->isCompany()) {
+        // Obtener las ofertas creadas por la empresa del usuario actual
+        $offers = $user->offers()->get();
+        
+        // Calcular el total de aplicantes
+        foreach ($offers as $offer) {
+            $applicantsCount = $offer->candidates()->count();
+            $totalApplicants += $applicantsCount;
+        }
+
         // Obtener las ofertas creadas por la empresa del usuario actual
         $companyOffers = $user->offers()->get()->map(function ($offer) use ($user) {
             // Formatear datos para la vista
@@ -53,7 +64,8 @@ public function dashboard()
     }
     
     return Inertia::render('companyDashboard', [
-        'companyOffers' => $companyOffers
+        'companyOffers' => $companyOffers,
+        'totalApplicants' => $totalApplicants
     ]);
 }
 
