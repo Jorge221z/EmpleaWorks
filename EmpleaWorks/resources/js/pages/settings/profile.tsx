@@ -27,6 +27,7 @@ type ProfileForm = {
     surname: string; // Add the surname property
     cv?: File; // Add the cv property as optional
     address: string; // Add the adress property
+    weblink: string; // Add the weblink property
 }
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
@@ -41,6 +42,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         surname: typeof auth.user.surname === 'string' ? auth.user.surname : '', // Añadimos el campo surname
         cv: undefined, 
         address: typeof auth.user.adress === 'string' ? auth.user.adress : '', // Añadimos el campo adress
+        weblink: typeof auth.user.weblink === 'string' ? auth.user.weblink : '', // Añadimos el campo weblink
     });
 
     const submit: FormEventHandler = (e) => {
@@ -126,7 +128,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 <div className='grid gap-2'>
                                     <Label htmlFor='address'>Company adress</Label>
                                     <Input
-                                        id='adress'
+                                        id='address'
                                         className='mt-1 block w-full'
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
@@ -142,14 +144,15 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     <Label htmlFor='weblink'>WebSite</Label>
                                     <Input
                                         id='weblink'
+                                        type='url'
                                         className='mt-1 block w-full'
-                                        value={data.address}
-                                        onChange={(e) => setData('address', e.target.value)}
+                                        value={data.weblink}
+                                        onChange={(e) => setData('weblink', e.target.value)}
                                         //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
-                                        autoComplete='address'
-                                        placeholder='Company address'
+                                        autoComplete='weblink'
+                                        placeholder='Company weblink'
                                     />
-                                    <InputError className='mt-2' message={errors.address} />
+                                    <InputError className='mt-2' message={errors.weblink} />
                                 </div>
                             </div>
                         )}

@@ -51,7 +51,7 @@
         "laravel-vite-plugin": "^1.0",
         "lucide-react": "^0.487.0",
         "react": "^19.0.0",
-        "react-day-picker": "^8.10.1",
+        "react-day-picker": "^9.6.7",
         "react-dom": "^19.0.0",
         "react-hot-toast": "^2.5.2",
         "tailwind-merge": "^3.0.1",
