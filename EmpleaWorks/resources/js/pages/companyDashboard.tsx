@@ -16,7 +16,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function CompanyDashboard({ companyOffers = [] }: { companyOffers?: Offer[] }) {
+export default function CompanyDashboard({ companyOffers = [], totalApplicants = 0 }: { companyOffers?: Offer[], totalApplicants?: number }) {
     const { auth } = usePage<SharedData>().props;
     
     return (
@@ -53,7 +53,7 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
                             <CardDescription>Manage job applications</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
-                            <div className="text-3xl font-bold">0</div>
+                            <div className="text-3xl font-bold">{totalApplicants}</div>
                             <Button size="sm" variant="outline" className="gap-1">
                                 <UsersIcon className="h-4 w-4" />
                                 View All
@@ -68,12 +68,12 @@ export default function CompanyDashboard({ companyOffers = [] }: { companyOffers
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div className="text-lg font-medium truncate max-w-[150px]">{auth.user.name}</div>
-                            <Link href="/settings/profile">
-                                <Button size="sm" variant="outline" className="gap-1">
-                                    <BuildingIcon className="h-4 w-4" />
+                            <Button size="sm" variant="outline" className="gap-1">
+                                <BuildingIcon className="h-4 w-4" />
+                                <Link href={'/settings/profile'}>                                  
                                     Edit Profile
-                                </Button>
-                            </Link>
+                                </Link>
+                            </Button>
                         </CardContent>
                     </Card>
                 </div>

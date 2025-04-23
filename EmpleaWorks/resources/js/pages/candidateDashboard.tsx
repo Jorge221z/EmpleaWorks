@@ -74,12 +74,12 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div className="text-lg font-medium truncate max-w-[150px]">{user?.name}</div>
-                            <Link href="/settings/profile">
-                                <Button size="sm" variant="outline" className="gap-1">
-                                    <UserIcon className="h-4 w-4" />
+                            <Button size="sm" variant="outline" className="gap-1">
+                                <UserIcon className="h-4 w-4" />
+                                <Link href={'/settings/profile'}>                                  
                                     Edit Profile
-                                </Button>
-                            </Link>
+                                </Link>
+                            </Button>
                         </CardContent>
                     </Card>
                 </div>
@@ -92,48 +92,65 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
 
                 {/* Applied Offers Grid */}
                 {candidateOffers && candidateOffers.length > 0 ? (
-                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                    <div className="flex flex-col gap-4">
                         {candidateOffers.map((offer) => (
                             <div
                                 key={offer.id}
-                                className="border-sidebar-border/70 dark:border-sidebar-border bg-card relative overflow-hidden rounded-xl border p-4 flex flex-col"
+                                className="border-sidebar-border/70 dark:border-sidebar-border bg-card relative overflow-hidden rounded-xl border p-4 flex flex-col md:flex-row md:items-center md:gap-4"
                             >
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-lg line-clamp-2">{offer.name}</h3>
-                                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                                        {offer.category}
-                                    </span>
+                                <div className="flex-1">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="font-semibold text-lg">{offer.name}</h3>
+                                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                                            {offer.category}
+                                        </span>
+                                    </div>
+
+                                    <p className="text-sm text-muted-foreground mb-2">
+                                        {offer.company ? offer.company.name : 'Company not available'}
+                                    </p>
+
+                                    <p className="text-sm mb-4">
+                                        {offer.description}
+                                    </p>
                                 </div>
 
-                                <p className="text-sm text-muted-foreground mb-2">
-                                    {offer.company ? offer.company.name : 'Company not available'}
-                                </p>
-
-                                <p className="text-sm line-clamp-3 mb-4 flex-grow">
-                                    {offer.description}
-                                </p>
-
-                                <div className="flex flex-col gap-1 text-xs text-muted-foreground mb-4">
-                                    <div className="flex items-center gap-1">
-                                        <BriefcaseIcon className="size-3.5" />
-                                        <span>{offer.contract_type}</span>
+                                <div className="flex flex-col md:flex-row gap-4 md:items-center">
+                                    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                                        <div className="flex items-center gap-1">
+                                            <BriefcaseIcon className="size-3.5" />
+                                            <span>{offer.contract_type}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <MapPinIcon className="size-3.5" />
+                                            <span>{offer.job_location}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <CalendarIcon className="size-3.5" />
+                                            {(() => {
+                                                const closingDate = new Date(offer.closing_date);
+                                                const currentDate = new Date();
+                                                const daysLeft = Math.ceil((closingDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+                                                // Apply red text if less than 3 days left
+                                                return (
+                                                    <span className={daysLeft < 3 ? "text-red-500 font-medium" : ""}>
+                                                        Closed in: {daysLeft <= 0 ? "Closed" : `${daysLeft} day${daysLeft !== 1 ? 's' : ''}`}
+                                                    </span>
+                                                );
+                                            })()}
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-1">
-                                        <MapPinIcon className="size-3.5" />
-                                        <span>{offer.job_location}</span>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <CalendarIcon className="size-3.5" />
-                                        <span>Applied on: {new Date(offer.created_at).toLocaleDateString()}</span>
-                                    </div>
-                                </div>
 
-                                <div className="flex gap-2">
                                     <Link
                                         href={route('offer.show', offer.id)}
-                                        className="text-primary hover:text-primary/80 text-sm font-medium"
+                                        className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center gap-1.5 self-end md:self-center whitespace-nowrap"
                                     >
-                                        View details →
+                                        View details
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                            <path d="M5 12h14"></path>
+                                            <path d="m12 5 7 7-7 7"></path>
+                                        </svg>
                                     </Link>
                                 </div>
                             </div>

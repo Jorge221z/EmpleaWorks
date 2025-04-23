@@ -223,13 +223,18 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <Calendar
-                                                mode="single"
-                                                selected={date}
-                                                onSelect={setDate}
-                                                initialFocus
-                                                disabled={(date) => date < new Date()}
-                                            />
+                                        <Calendar
+                                            mode="single"
+                                            selected={date}
+                                            onSelect={(newDate) => {
+                                                setDate(newDate);
+                                                if (newDate) {
+                                                    setData('closing_date', format(newDate, 'yyyy-MM-dd'));
+                                                }
+                                            }}
+                                            initialFocus
+                                            disabled={(date) => date < new Date()}
+                                        />
                                         </PopoverContent>
                                     </Popover>
                                     {errors.closing_date && <p className="text-red-500 text-sm">{errors.closing_date}</p>}
