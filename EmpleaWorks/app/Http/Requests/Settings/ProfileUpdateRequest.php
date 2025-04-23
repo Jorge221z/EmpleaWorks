@@ -19,7 +19,6 @@ class ProfileUpdateRequest extends FormRequest
     {
         $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'surname' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -44,15 +43,16 @@ class ProfileUpdateRequest extends FormRequest
         $user = Auth::user();
 
         if ($user->isCandidate()) {
-            $rules['cv'] = ['required', 'file', 'mimes:pdf,docx,doc', 'max:2048',]; // validacion basica
-            $rules['surname'] = ['required', 'string','max:255','regex:/^[a-zA-Z\s]+$/']; // Permite solo letras y espacios
+            $rules['cv'] = ['nullable', 'file', 'mimes:pdf,docx,doc', 'max:2048',]; // validacion basica
+            $rules['surname'] = ['nullable', 'string','max:255','regex:/^[a-zA-Z\s]+$/']; // Permite solo letras y espacios
         }
 
         if ($user->isCompany()) {
-            $rules['address'] = ['required','string','max:255','regex:/^[a-zA-Z0-9\s,.-]+$/']; // Permite letras, números, espacios y algunos caracteres especiales
+            $rules['address'] = ['nullable','string','max:255','regex:/^[a-zA-Z0-9\s,.-]+$/']; // Permite letras, números, espacios y algunos caracteres especiales
             $rules['weblink'] = ['nullable', 'url', 'max:255', 'regex:/^(https?:\/\/)?(www\.)?[a-zA-Z0-9\-\.]+\.[a-z]{2,}(\/.*)?$/'];
         }
 
         return $rules;
     }
-}
+}//hemos dejado todos los campos que no son obligatorios como nullables para que no den error si no se pasan en el Request
+ // tal y como hemos hecho en el frontend, para evitar inconsistencias //

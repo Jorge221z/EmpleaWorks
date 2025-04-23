@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { Company, Candidate, User } from '@/types/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -19,30 +20,31 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type ProfileForm = {
-    name: string;
+type ProfileForm = { //solo hacemos que name y email sean obligatorios, los demas no tienen porque ser rellenados //
+    name: string;    //esta logica concide con los campos de nuestro formulario, que no tienen 'required' como atributo //
     email: string;
-    image?: File; // Add the image property as optional
-    description: string; // Add the description property
-    surname: string; // Add the surname property
-    cv?: File; // Add the cv property as optional
-    address: string; // Add the adress property
-    weblink: string; // Add the weblink property
+    image?: File; 
+    description?: string; 
+    surname?: string; 
+    cv?: File; 
+    address?: string; 
+    weblink?: string; 
 }
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
+
     const role_id = auth.user.role_id; //sacamos el role id para pedir unos campos u otros en el formulario //
     
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<ProfileForm>({
         name: auth.user.name,
         email: auth.user.email,
-        image: undefined, // No podemos convertir directamente una URL a un objeto File por lo que lo haremos de forma separada en el manejo de imagenes//
+        image: undefined,
         description: typeof auth.user.description === 'string' ? auth.user.description : '',
-        surname: typeof auth.user.surname === 'string' ? auth.user.surname : '', // Añadimos el campo surname
-        cv: undefined, 
-        address: typeof auth.user.adress === 'string' ? auth.user.adress : '', // Añadimos el campo adress
-        weblink: typeof auth.user.weblink === 'string' ? auth.user.weblink : '', // Añadimos el campo weblink
+        surname: role_id === 1 && auth.user.candidate?.surname ? auth.user.candidate.surname : undefined,
+        cv: undefined,
+        address: role_id === 2 && auth.user.company?.address ? auth.user.company.address : undefined,
+        weblink: role_id === 2 && auth.user.company?.weblink ? auth.user.company.weblink : undefined,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -126,7 +128,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {role_id === 2 && (
                             <div>
                                 <div className='grid gap-2'>
-                                    <Label htmlFor='address'>Company adress</Label>
+                                    <Label htmlFor='address'>Company address</Label>
                                     <Input
                                         id='address'
                                         className='mt-1 block w-full'
