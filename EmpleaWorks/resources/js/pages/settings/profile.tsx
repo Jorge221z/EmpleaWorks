@@ -23,19 +23,19 @@ const breadcrumbs: BreadcrumbItem[] = [
 type ProfileForm = { //solo hacemos que name y email sean obligatorios, los demas no tienen porque ser rellenados //
     name: string;    //esta logica concide con los campos de nuestro formulario, que no tienen 'required' como atributo //
     email: string;
-    image?: File; 
-    description?: string; 
-    surname?: string; 
-    cv?: File; 
-    address?: string; 
-    weblink?: string; 
+    image?: File;
+    description?: string;
+    surname?: string;
+    cv?: File;
+    address?: string;
+    weblink?: string;
 }
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
 
     const role_id = auth.user.role_id; //sacamos el role id para pedir unos campos u otros en el formulario //
-    
+
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<ProfileForm>({
         name: auth.user.name,
         email: auth.user.email,
@@ -49,9 +49,12 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
+        console.log('Datos antes de enviar:', data);
+        // La función patch ya conoce los datos del formulario gracias a useForm
+        // Solo necesitamos pasarle la ruta y las opciones
         patch(route('profile.update'), {
             preserveScroll: true,
+            // forceFormData: true
         });
     };
 
@@ -60,7 +63,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     );
 
     const [cvName, setCvName] = useState<string | null>(
-        auth.user.cv ? String(auth.user.cv).split('/').pop() ?? null : null // Extraemos el nombre del archivo del path
+        auth.user.candidate?.cv ? String(auth.user.candidate.cv).split('/').pop() ?? null : null // Extraemos el nombre del archivo del path
     );
 
     return (
@@ -79,15 +82,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 id="name"
                                 className="mt-1 block w-full"
                                 value={data.name}
+                                // defaultValue={auth.user.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                required
+                                //required
                                 autoComplete="name"
                                 placeholder="Full name"
                             />
 
                             <InputError className="mt-2" message={errors.name} />
                         </div>
-                        
+
                         {role_id === 1 && (
                         <div className='grid gap-2'>
                             <Label htmlFor='surname'>Surname</Label>
@@ -95,15 +99,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     id='surname'
                                     className='mt-1 block w-full'
                                     value={data.surname}
+                                    // defaultValue={auth.user.candidate?.surname}
                                     onChange={(e) => setData('surname', e.target.value)}
                                     //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                     autoComplete='surname'
                                     placeholder='Surname'
-                                
-                                
-                                /> 
-                               
-                        
+
+
+                                />
+
+
                         </div>
                         )}
 
@@ -115,8 +120,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 type="email"
                                 className="mt-1 block w-full"
                                 value={data.email}
+                                // defaultValue={auth.user.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                required
+                                //required
                                 autoComplete="username"
                                 placeholder="Email address"
                             />
@@ -133,15 +139,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         id='address'
                                         className='mt-1 block w-full'
                                         value={data.address}
+                                        // defaultValue={auth.user.company?.address}
                                         onChange={(e) => setData('address', e.target.value)}
                                         //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                         autoComplete='address'
                                         placeholder='Company address'
                                     />
-                        
+
                                     <InputError className='mt-2' message={errors.address} />
                                 </div>
-                        
+
                                 <div className='grid gap-2 mt-6'>
                                     <Label htmlFor='weblink'>WebSite</Label>
                                     <Input
@@ -149,6 +156,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         type='url'
                                         className='mt-1 block w-full'
                                         value={data.weblink}
+                                        // defaultValue={auth.user.company?.weblink}
                                         onChange={(e) => setData('weblink', e.target.value)}
                                         //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                         autoComplete='weblink'
@@ -238,7 +246,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 <InputError className='mt-2' message={errors.cv} />
                             </div>
                         )}
-                        
+
                         <div className='grid gap-2'>
                             <Label htmlFor='image'>Imagen</Label>
                             <div
@@ -335,6 +343,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 id='description'
                                 className='mt-1 block w-full min-h-[80px] p-3 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-input'
                                 value={data.description}
+                                // defaultValue={typeof auth.user.description === 'string' ? auth.user.description : ''}
                                 onChange={(e) => setData('description', e.target.value)}
                                 //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                 placeholder='Description'
@@ -346,18 +355,18 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
 
 
-                        
-                            
 
 
 
 
-                        
 
 
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
+
+
+
+                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
-                                <p className="text-muted-foreground -mt-4 text-sm">
+                                <p className="text-muted-foreground -mt-4 text-sm"/>
                                     Your email address is unverified.{' '}
                                     <Link
                                         href={route('verification.send')}
@@ -367,7 +376,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     >
                                         Click here to resend the verification email.
                                     </Link>
-                                </p>
 
                                 {status === 'verification-link-sent' && (
                                     <div className="mt-2 text-sm font-medium text-green-600">

@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Settings;
 
 use App\Models\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -18,14 +18,14 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255'],
             'email' => [
-                'required',
+                'sometimes',
                 'string',
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore(Auth::user()->id),
             ],
             'image' => [
                 'nullable',
@@ -39,7 +39,7 @@ class ProfileUpdateRequest extends FormRequest
                 'max:1000',
             ],
         ];
-        
+
         $user = Auth::user();
 
         if ($user->isCandidate()) {

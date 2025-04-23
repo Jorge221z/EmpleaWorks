@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Exception;
 use Inertia\Response;
@@ -28,65 +30,77 @@ class ProfileController extends Controller
     /**
      * Update the user's profile settings.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        try {
+    public function update(ProfileUpdateRequest $formRequest): RedirectResponse
+{
+    try {
+        $request = request(); // Para manejar archivos
+        $user = Auth::user();
+        $validated = $formRequest->validated();
 
-        $user = $request->user();
-        $validated = $request->validated();
-        //A la hora de recoger las validaciones del request hay que tener en cuenta que se pasan en forma de array hacia esta funcion //
-        // Actualizar datos básicos de usuario
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        
+        // Depurar datos validados y archivos
+        Log::info('Datos validados:', $validated);
+        Log::info('Archivos recibidos:', $request->files->all());
+
+        // Actualizar campos del usuario
+        if (isset($validated['name'])) {
+            $user->name = $validated['name'];
+        }
+        if (isset($validated['email'])) {
+            $user->email = $validated['email'];
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
+        }
         if (isset($validated['description'])) {
             $user->description = $validated['description'];
         }
-        
-        // Verificar si el email cambió
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-        
-        // Manejar imagen de perfil
+
+        // Manejar imagen
         if ($request->hasFile('image')) {
             $user->image = $request->file('image')->store('images', 'public');
         }
-        
-        $user->save(); //guardamos los campos comunes que tiene la tabla users
-        
-        // Actualizar campos específicos según el rol
-        if ($user->isCandidate() && $user->candidate) { //doble verificacion para evitar errores//
+
+        // Guardar cambios del usuario (temporalmente comentado hasta resolver el problema con save)
+        if ($user->isDirty()) {
+            $user->update($user->getDirty()); // Usar update en lugar de save
+            Log::info('Usuario actualizado: ' . $user->id . ' | Cambios: ' . json_encode($user->getChanges()));
+        } else {
+            Log::info('No hay cambios para guardar en usuario: ' . $user->id . ' | Atributos actuales: ' . json_encode($user->getAttributes()));
+        }
+
+        // Campos específicos por rol
+        if ($user->role_id === 1 && $user->candidate) {
             if (isset($validated['surname'])) {
                 $user->candidate->surname = $validated['surname'];
             }
-            
             if ($request->hasFile('cv')) {
                 $user->candidate->cv = $request->file('cv')->store('cvs', 'public');
             }
-            
-            $user->candidate->save();
+            if ($user->candidate->isDirty()) {
+                $user->candidate->save();
+                Log::info('Candidato guardado: ' . $user->candidate->id);
+            }
         }
-        
-        if ($user->isCompany() && $user->company) { //doble verificacion para evitar errores//
+
+        if ($user->role_id === 2 && $user->company) {
             if (isset($validated['address'])) {
                 $user->company->address = $validated['address'];
             }
-            
             if (isset($validated['weblink'])) {
                 $user->company->web_link = $validated['weblink'];
             }
-            
-            $user->company->save();
+            if ($user->company->isDirty()) {
+                $user->company->save();
+                Log::info('Empresa guardada: ' . $user->company->id);
+            }
         }
-        
-        return to_route('profile.edit');
 
-        } catch (Exception $e) { //mayor seguridad y manejo de errores con try/catch 
-            // Manejar cualquier error que pueda ocurrir durante la actualización
-            return redirect()->back()->with('error', 'Error updating profile: ' . $e->getMessage());
-        }
+        return redirect()->route('profile.edit')->with('status', '¡Perfil actualizado!');
+    } catch (Exception $e) {
+        Log::error('Error al actualizar perfil: ' . $e->getMessage());
+        return back()->with('error', 'Error: ' . $e->getMessage());
     }
+}
 
     /**
      * Delete the user's account.
