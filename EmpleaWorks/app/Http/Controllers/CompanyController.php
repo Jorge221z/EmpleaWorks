@@ -98,4 +98,40 @@ public function dashboard()
             'company' => $user->company
         ]);
     }
+/**
+ * Display the form to edit an existing job offer.
+ *
+ * @param  \App\Models\Offer  $offer
+ * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
+ */
+public function editJobForm(Offer $offer)
+{
+    // Verificar que la oferta pertenece a la empresa actual
+    $user = Auth::user();
+    
+    if ($offer->user_id !== $user->id) {
+        return redirect()->route('company.dashboard')
+            ->with('error', 'You can only edit your own job listings');
+    }
+    
+    // Preparar categorías y tipos de contrato para el formulario (igual que en createJobForm)
+    $categories = [
+        'Technology', 'Healthcare', 'Education', 'Finance', 
+        'Marketing', 'Sales', 'Customer Service', 'Administration',
+        'Engineering', 'Human Resources', 'Legal', 'Other'
+    ];
+    
+    $contractTypes = [
+        'Full-time', 'Part-time', 'Contract', 'Temporary', 
+        'Internship', 'Remote', 'Hybrid'
+    ];
+    
+    // Renderizar el formulario de edición con los datos actuales de la oferta
+    return Inertia::render('EditJobOffer', [
+        'offer' => $offer,
+        'categories' => $categories,
+        'contractTypes' => $contractTypes,
+        'company' => $user->company
+    ]);
+}
 }

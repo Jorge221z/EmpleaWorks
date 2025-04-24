@@ -224,4 +224,46 @@ class OfferController extends Controller
             'success' , 'Application submitted successfully',);
         // volvemos al dashboard tras aplicar con un mensaje de exito (reusamos la ruta del DasboardController) //
     }
+/**
+ * Update the specified offer in storage.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  \App\Models\Offer  $offer
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function update(Request $request, Offer $offer)
+{
+    // Verificar que la oferta pertenece a la empresa actual
+    $user = Auth::user();
+    
+    if ($offer->user_id !== $user->id) {
+        return redirect()->back()->with('error', 'You can only edit your own job listings');
+    }
+    
+    // Validar los datos de la oferta
+    $validated = $request->validate([
+        'name' => 'required|string|max:255|unique:offers,name,' . $offer->id,
+        'description' => 'required|string',
+        'category' => 'required|string|max:255',
+        'degree' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'contract_type' => 'required|string|max:255',
+        'job_location' => 'required|string|max:255',
+        'closing_date' => 'required|date',
+    ]);
+    
+    try {
+        // Actualizar la oferta
+        $offer->update($validated);
+        
+        // Redireccionar con mensaje de éxito
+        return redirect()->route('company.dashboard')
+            ->with('success', 'Job listing updated successfully!');
+    } catch (\Exception $e) {
+        // Manejar cualquier error
+        return redirect()->back()
+            ->with('error', 'There was a problem updating your job listing: ' . $e->getMessage())
+            ->withInput();
+    }
+}
 }

@@ -75,6 +75,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/offers', [OfferController::class, 'store'])
         ->middleware('company.role')
         ->name('offers.store');
+    Route::get('/company/edit-job/{offer}', [CompanyController::class, 'editJobForm'])
+        ->middleware('company.role')
+        ->name('company.edit-job');
+    Route::put('/offers/{offer}', [OfferController::class, 'update'])
+        ->middleware('company.role')
+        ->name('offers.update');
     // Ruta del dashboard para candidatos - protegida por el middleware de rol de candidato
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')

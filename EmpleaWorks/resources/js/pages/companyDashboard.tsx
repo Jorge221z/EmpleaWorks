@@ -125,12 +125,27 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 <div className="flex gap-2">
                                     <Link
                                         href={route('offer.show', offer.id)}
-                                        className="text-primary hover:text-primary/80 text-sm font-medium"
+                                        className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center gap-1.5 whitespace-nowrap"
                                     >
-                                        Ver detalles →
+                                        View details
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                            <path d="M5 12h14"></path>
+                                            <path d="m12 5 7 7-7 7"></path>
+                                        </svg>
                                     </Link>
-                                    <Button variant="ghost" size="sm" className="ml-auto text-sm">
-                                        Edit
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="ml-auto text-sm rounded-full border-primary/30 dark:border-primary/40 hover:bg-primary/10 hover:border-primary dark:hover:bg-primary/20 hover:text-primary transition-colors"
+                                        asChild
+                                    >
+                                        <Link href={route('company.edit-job', offer.id)} className="flex items-center gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            Edit
+                                        </Link>
                                     </Button>
                                 </div>
                             </div>
