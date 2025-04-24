@@ -100,7 +100,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 </div>
 
                                 <p className="text-sm text-muted-foreground mb-2">
-                                    {offer.company ? offer.company.name : 'Empresa no disponible'}
+                                    Posted: {new Date(offer.created_at).toLocaleDateString()}
                                 </p>
 
                                 <p className="text-sm line-clamp-3 mb-4 flex-grow">

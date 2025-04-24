@@ -106,8 +106,15 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                         </span>
                                     </div>
 
-                                    <p className="text-sm text-muted-foreground mb-2">
-                                        {offer.company ? offer.company.name : 'Company not available'}
+                                    <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                            <path d="M3 9v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9"></path>
+                                            <path d="M18 5V3a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"></path>
+                                            <path d="M21 5H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
+                                        </svg>
+                                        <span>
+                                            {offer.company ? (offer.company as any).name : 'Company not available'}
+                                        </span>
                                     </p>
 
                                     <p className="text-sm mb-4">
