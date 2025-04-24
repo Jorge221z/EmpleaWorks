@@ -159,7 +159,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                     </div>
 
 
-                                    <div className="flex flex-col sm:flex-row gap-2 self-end md:self-center">
+                                    <div className="flex flex-col gap-2 self-end md:self-center">
                                         {/* Company Info Dialog */}
                                         <Dialog>
                                             <DialogTrigger asChild>
