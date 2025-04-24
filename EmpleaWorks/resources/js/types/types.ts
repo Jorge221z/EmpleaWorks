@@ -17,8 +17,13 @@ export interface Offer {
 }
 
 export interface Company {
-  address: string;
-  weblink: string;
+  id?: number;
+  name?: string;       // Añadido para acceder a company.name
+  description?: string; // Añadido para acceder a company.description
+  address?: string;
+  weblink?: string;    // Nota: en tu SearchBar usas web_link pero aquí está como weblink
+  email?: string;
+  logo?: string | null;
 }
 
 export interface Candidate {

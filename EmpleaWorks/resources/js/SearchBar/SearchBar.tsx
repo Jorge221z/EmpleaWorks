@@ -18,16 +18,33 @@ function SearchBar({ data, onFilteredResults }: SearchBarProps) {
 
     const searchTerm = query.toLowerCase();
 
+    // Verificar si data es un array válido antes de filtrar
+    if (!Array.isArray(data) || data.length === 0) {
+      return [];
+    }
+
     return data.filter((offer) => {
+      // Verificar si offer es un objeto válido
+      if (!offer) return false;
+      
+      // Función de ayuda para búsqueda segura más robusta
+      const safeSearch = (value: any) => {
+        if (value === null || value === undefined) return false;
+        if (typeof value !== 'string') return false;
+        return value.toLowerCase().includes(searchTerm);
+      };
+
+      // Acceder a las propiedades de manera segura usando operador opcional
+      // y verificación de tipo
       return (
-        offer.name.toLowerCase().includes(searchTerm) ||
-        offer.description.toLowerCase().includes(searchTerm) ||
-        offer.category.toLowerCase().includes(searchTerm) ||
-        (offer.degree && offer.degree.toLowerCase().includes(searchTerm)) ||
-        offer.contract_type.toLowerCase().includes(searchTerm) ||
-        offer.job_location.toLowerCase().includes(searchTerm) ||
-        offer.company.name.toLowerCase().includes(searchTerm) ||
-        offer.company.description.toLowerCase().includes(searchTerm)
+        safeSearch(offer.name) ||
+        safeSearch(offer.description) ||
+        safeSearch(offer.category) ||
+        safeSearch(offer.degree) ||
+        safeSearch(offer.contract_type) ||
+        safeSearch(offer.job_location) ||
+        safeSearch(offer.company?.name) ||
+        safeSearch(offer.company?.description)
       );
     });
   }, [query, data]);
