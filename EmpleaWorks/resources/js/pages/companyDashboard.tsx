@@ -44,13 +44,17 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                 
                 {/* Acciones rápidas */}
                 <div className="grid gap-4 md:grid-cols-3">
-                    <Card>
+                    {/* Tarjeta de Job Listings */}
+                    <Card className="overflow-hidden border-t-4 border-t-primary">
                         <CardHeader>
                             <CardTitle>Job Listings</CardTitle>
                             <CardDescription>Manage your active job listings</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
-                            <div className="text-3xl font-bold">{companyOffers.length}</div>
+                            <div>
+                                <div className="text-3xl font-bold">{companyOffers.length}</div>
+                                <div className="text-sm text-muted-foreground">Active positions</div>
+                            </div>
                             <Button size="sm" className="gap-1">
                                 <PlusCircleIcon className="h-4 w-4" />
                                 <Link href={route('company.create-job')}>                                  
@@ -60,27 +64,29 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    {/* Tarjeta de Aplicantes */}
+                    <Card className="overflow-hidden border-t-4 border-t-blue-500">
                         <CardHeader>
                             <CardTitle>Applicants</CardTitle>
-                            <CardDescription>Manage job applications</CardDescription>
+                            <CardDescription>Applications to your jobs</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex justify-between items-center">
+                        <CardContent>
                             <div className="text-3xl font-bold">{totalApplicants}</div>
-                            <Button size="sm" variant="outline" className="gap-1">
-                                <UsersIcon className="h-4 w-4" />
-                                View All
-                            </Button>
+                            <div className="text-sm text-muted-foreground">Total candidates</div>
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    {/* Tarjeta de Perfil de Empresa */}
+                    <Card className="overflow-hidden border-t-4 border-t-green-500">
                         <CardHeader>
                             <CardTitle>Company Profile</CardTitle>
                             <CardDescription>Update your profile information</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
-                            <div className="text-lg font-medium truncate max-w-[150px]">{auth.user.name}</div>
+                            <div>
+                                <div className="text-lg font-medium truncate max-w-[150px]">{auth.user.name}</div>
+                                <div className="text-sm text-muted-foreground">Complete profile</div>
+                            </div>
                             <Button size="sm" variant="outline" className="gap-1">
                                 <BuildingIcon className="h-4 w-4" />
                                 <Link href={'/settings/profile'}>                                  
