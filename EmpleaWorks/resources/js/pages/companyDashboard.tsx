@@ -47,7 +47,13 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     {/* Tarjeta de Job Listings */}
                     <Card className="overflow-hidden border-t-4 border-t-primary">
                         <CardHeader>
-                            <CardTitle>Job Listings</CardTitle>
+                            <CardTitle className="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                                </svg>
+                                Job Listings
+                            </CardTitle>
                             <CardDescription>Manage your active job listings</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
@@ -67,7 +73,10 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     {/* Tarjeta de Aplicantes */}
                     <Card className="overflow-hidden border-t-4 border-t-blue-500">
                         <CardHeader>
-                            <CardTitle>Applicants</CardTitle>
+                            <CardTitle className="flex items-center gap-2">
+                                <UsersIcon className="h-5 w-5 text-blue-500/80" />
+                                Applicants
+                            </CardTitle>
                             <CardDescription>Applications to your jobs</CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -79,7 +88,10 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     {/* Tarjeta de Perfil de Empresa */}
                     <Card className="overflow-hidden border-t-4 border-t-green-500">
                         <CardHeader>
-                            <CardTitle>Company Profile</CardTitle>
+                            <CardTitle className="flex items-center gap-2">
+                                <BuildingIcon className="h-5 w-5 text-green-500/80" />
+                                Company Profile
+                            </CardTitle>
                             <CardDescription>Update your profile information</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
