@@ -65,24 +65,45 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                 </div>
                 
                 {/* Quick Actions */}
-                <div className="grid gap-4 md:grid-cols-3">
-                    <Card>
+                <div className="grid gap-4 md:grid-cols-2">
+                    {/* Tarjeta de Applications */}
+                    <Card className="overflow-hidden border-t-4 border-t-primary">
                         <CardHeader>
-                            <CardTitle>Applications</CardTitle>
+                            <CardTitle className="flex items-center gap-2">
+                                <FileIcon className="h-5 w-5 text-primary/80" />
+                                Applications
+                            </CardTitle>
                             <CardDescription>Track your job applications</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
-                            <div className="text-3xl font-bold">{candidateOffers.length}</div>
+                            <div>
+                                <div className="text-3xl font-bold">{candidateOffers.length}</div>
+                                <div className="text-sm text-muted-foreground">
+                                    Active application{candidateOffers.length !== 1 ? 's' : ''}
+                                </div>
+                            </div>
+                            <Button size="sm" className="gap-1">
+                                <Link href={route('dashboard')}>                                  
+                                    Find Jobs
+                                </Link>
+                            </Button>
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    {/* Tarjeta de Profile */}
+                    <Card className="overflow-hidden border-t-4 border-t-blue-500">
                         <CardHeader>
-                            <CardTitle>Profile</CardTitle>
+                            <CardTitle className="flex items-center gap-2">
+                                <UserIcon className="h-5 w-5 text-blue-500/80" />
+                                Profile
+                            </CardTitle>
                             <CardDescription>Your candidate information</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
-                            <div className="text-lg font-medium truncate max-w-[150px]">{user?.name}</div>
+                            <div>
+                                <div className="text-lg font-medium truncate max-w-[150px]">{user?.name}</div>
+                                <div className="text-sm text-muted-foreground">Complete profile</div>
+                            </div>
                             <Button size="sm" variant="outline" className="gap-1">
                                 <UserIcon className="h-4 w-4" />
                                 <Link href={'/settings/profile'}>                                  
