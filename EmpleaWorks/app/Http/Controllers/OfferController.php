@@ -266,4 +266,34 @@ public function update(Request $request, Offer $offer)
             ->withInput();
     }
 }
+
+/**
+ * Remove the specified offer from storage.
+ *
+ * @param  \App\Models\Offer  $offer
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function destroy(Offer $offer)
+{
+    // Verificar que la oferta pertenece a la empresa actual
+    $user = Auth::user();
+    
+    if ($offer->user_id !== $user->id) {
+        return redirect()->route('company.dashboard')
+            ->with('error', 'You can only delete your own job listings');
+    }
+    
+    try {
+        // Eliminar la oferta
+        $offer->delete();
+        
+        // Redireccionar con mensaje de éxito
+        return redirect()->route('company.dashboard')
+            ->with('success', 'Job listing deleted successfully!');
+    } catch (\Exception $e) {
+        // Manejar cualquier error
+        return redirect()->back()
+            ->with('error', 'There was a problem deleting your job listing: ' . $e->getMessage());
+    }
+}
 }

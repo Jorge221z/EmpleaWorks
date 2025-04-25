@@ -7,6 +7,19 @@ import { CalendarIcon, MapPinIcon, BriefcaseIcon, PlusCircleIcon, UsersIcon, Bui
 import { Offer } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import toast, { Toaster } from 'react-hot-toast';
+import { TrashIcon } from "lucide-react";
+import { router } from "@inertiajs/react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -122,10 +135,11 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                     </div>
                                 </div>
 
-                                <div className="flex gap-2">
+                                <div className="flex flex-col gap-2 w-full">
+                                    {/* Primera fila: View Details */}
                                     <Link
                                         href={route('offer.show', offer.id)}
-                                        className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center gap-1.5 whitespace-nowrap"
+                                        className="w-full px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center justify-center gap-1.5"
                                     >
                                         View details
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
@@ -133,20 +147,68 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                             <path d="m12 5 7 7-7 7"></path>
                                         </svg>
                                     </Link>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="ml-auto text-sm rounded-full border-primary/30 dark:border-primary/40 hover:bg-primary/10 hover:border-primary dark:hover:bg-primary/20 hover:text-primary transition-colors"
-                                        asChild
-                                    >
-                                        <Link href={route('company.edit-job', offer.id)} className="flex items-center gap-1.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                            </svg>
-                                            Edit
-                                        </Link>
-                                    </Button>
+                                    
+                                    {/* Segunda fila: Edit y Delete */}
+                                    <div className="flex gap-2 w-full">
+                                        {/* Edit Button */}
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="flex-1 text-sm rounded-full border-primary/30 dark:border-primary/40 hover:bg-primary/10 hover:border-primary dark:hover:bg-primary/20 hover:text-primary transition-colors"
+                                            asChild
+                                        >
+                                            <Link href={route('company.edit-job', offer.id)} className="flex items-center justify-center gap-1.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                                </svg>
+                                                Edit
+                                            </Link>
+                                        </Button>
+                                        
+                                        {/* Delete Button with Confirmation Dialog */}
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="flex-1 text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
+                                                >
+                                                    <span className="flex items-center justify-center gap-1.5">
+                                                        <TrashIcon className="size-3.5" />
+                                                        Delete
+                                                    </span>
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently delete your job listing 
+                                                        <span className="font-semibold"> "{offer.name}"</span> and remove all associated applications.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction 
+                                                        className="bg-red-500 hover:bg-red-600 text-white"
+                                                        onClick={() => {
+                                                            router.delete(route('offers.destroy', offer.id), {
+                                                                onSuccess: () => {
+                                                                    toast.success('Job listing deleted successfully!');
+                                                                },
+                                                                onError: () => {
+                                                                    toast.error('There was a problem deleting the job listing');
+                                                                }
+                                                            });
+                                                        }}
+                                                    >
+                                                        Delete
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </div>
                                 </div>
                             </div>
                         ))}
