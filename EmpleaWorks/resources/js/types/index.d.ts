@@ -28,6 +28,10 @@ export interface SharedData {
     auth: Auth;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
+    locale?: {
+        current: string;
+        available: Record<string, string>;
+    };
     [key: string]: unknown;
 }
 

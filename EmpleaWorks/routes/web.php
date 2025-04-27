@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocaleController;
 
 // Home y Dashboard (mostrar ofertas)
 Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -17,6 +18,10 @@ Route::get('/login-direct', [AuthenticatedSessionController::class, 'create'])
 
 Route::get('/register-direct', [RegisteredUserController::class, 'create'])
     ->name('register.direct');
+
+// Ruta para el cambio de idioma
+Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])
+    ->name('locale.change');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

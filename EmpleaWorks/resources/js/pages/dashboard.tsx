@@ -8,19 +8,12 @@ import { Offer, Company } from '@/types/types';
 import SearchBar from '@/SearchBar/SearchBar';
 import { useState, useCallback, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-];
+import { useTranslation } from '@/utils/i18n';
 
 export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
-
     const { auth } = usePage<SharedData>().props;
+    const { t } = useTranslation();
     const isAuthenticated = !!auth.user;
 
     const [filteredOffers, setFilteredOffers] = useState<Offer[]>(offers);
@@ -49,6 +42,13 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
         }
     }, [flash]);
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('dashboard'),
+            href: '/dashboard',
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Toaster
@@ -65,25 +65,25 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                     id: 'unique-toast',
                 }}
             />
-            <Head title="Dashboard" />
+            <Head title={t('dashboard')} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {!isAuthenticated && (
                     <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card p-6 overflow-hidden rounded-xl border mb-2">
                         <div className="flex flex-col gap-2 relative z-10">
-                            <h2 className="text-xl font-semibold">Welcome to EmpleaWorks</h2>
-                            <p className="text-muted-foreground">Sign in to access all features and personalize your experience.</p>
+                            <h2 className="text-xl font-semibold">{t('welcome_title')}</h2>
+                            <p className="text-muted-foreground">{t('welcome_subtitle')}</p>
                             <div className="flex gap-2 mt-2">
                                 <Button
                                     variant="default"
                                     onClick={navigateToLogin}
                                 >
-                                    Sign in
+                                    {t('sign_in')}
                                 </Button>
                                 <Button
                                     variant="outline"
                                     onClick={navigateToRegister}
                                 >
-                                    Create account
+                                    {t('create_account')}
                                 </Button>
                             </div>
                         </div>
@@ -93,8 +93,8 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
 
                 {/* Título de las ofertas */}
                 <div className="px-2">
-                    <h2 className="text-2xl font-semibold mb-2">Ofertas de empleo recientes</h2>
-                    <p className="text-muted-foreground">Explora las últimas oportunidades disponibles</p>
+                    <h2 className="text-2xl font-semibold mb-2">{t('recent_jobs')}</h2>
+                    <p className="text-muted-foreground">{t('explore_opportunities')}</p>
                 </div>
 
                 {/* Barra de búsqueda */}
@@ -127,7 +127,7 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                                         <path d="M21 5H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
                                     </svg>
                                     <span>
-                                        {offer.company ? (offer.company as any).name : 'Company not available'}
+                                        {offer.company ? (offer.company as any).name : t('company_not_available')}
                                     </span>
                                 </p>
 
@@ -146,7 +146,7 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <CalendarIcon className="size-3.5" />
-                                        <span>Hasta: {new Date(offer.closing_date).toLocaleDateString()}</span>
+                                        <span>{t('until')}: {new Date(offer.closing_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
 
@@ -154,7 +154,7 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                                     href={route('offer.show', offer.id)}
                                     className="text-primary hover:text-primary/80 text-sm font-medium"
                                 >
-                                    Ver detalles →
+                                    {t('view_details')} →
                                 </Link>
                             </div>
                         ))}
@@ -163,8 +163,8 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                     // Mostrar mensaje cuando no hay ofertas que coincidan con la búsqueda o mostrar placeholders si no hay ofertas
                     filteredOffers.length === 0 ? (
                         <div className="text-center p-8">
-                            <div className="text-xl font-medium mb-2">No se encontraron ofertas</div>
-                            <p className="text-muted-foreground">Intenta con otros términos de búsqueda</p>
+                            <div className="text-xl font-medium mb-2">{t('no_offers_found')}</div>
+                            <p className="text-muted-foreground">{t('try_other_terms')}</p>
                         </div>
                     ) : (
                         // Placeholders para cuando no hay ofertas en absoluto
@@ -172,7 +172,7 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                             <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                                 <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                                    No hay ofertas disponibles
+                                    {t('no_offers_available')}
                                 </div>
                             </div>
                             <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">

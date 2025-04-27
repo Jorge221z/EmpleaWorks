@@ -56,6 +56,12 @@ class HandleInertiaRequests extends Middleware
                 'error' => session('error'),
             ],
             'currentRoute' => $request->route() ? $request->route()->getName() : null,
+            
+            // Archivos de traducción
+            'locale' => [
+                'current' => app()->getLocale(),
+                'available' => config('app.available_locales', ['es' => 'Español']),
+            ],
         ];
     }
 
