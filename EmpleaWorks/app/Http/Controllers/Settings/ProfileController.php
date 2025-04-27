@@ -28,79 +28,143 @@ class ProfileController extends Controller
     }
 
     /**
+     * Generate a unique filename by adding a timestamp if necessary
+     */
+    private function getUniqueFilename(string $directory, string $originalName): string
+    {
+        $filename = pathinfo($originalName, PATHINFO_FILENAME);
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        
+        // Clean the filename to prevent issues with special characters
+        $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $filename);
+        
+        $newFilename = $filename . '.' . $extension;
+        
+        // Check if file exists, if so add timestamp to make it unique
+        if (Storage::disk('public')->exists($directory . '/' . $newFilename)) {
+            $newFilename = $filename . '_' . time() . '.' . $extension;
+        }
+        
+        return $newFilename;
+    }
+
+    /**
      * Update the user's profile settings.
      */
     public function update(ProfileUpdateRequest $formRequest): RedirectResponse
-{
-    try {
-        $request = request(); // Para manejar archivos
-        $user = Auth::user();
-        $validated = $formRequest->validated();
+    {
+        try {
+            $request = request(); // Para manejar archivos
+            $user = Auth::user();
+            $validated = $formRequest->validated();
 
-        // Depurar datos validados y archivos
-        Log::info('Datos validados:', $validated);
-        Log::info('Archivos recibidos:', $request->files->all());
+            // Depurar datos validados y archivos
+            Log::info('Datos validados:', $validated);
+            Log::info('Archivos recibidos:', $request->files->all());
 
-        // Actualizar campos del usuario
-        if (isset($validated['name'])) {
-            $user->name = $validated['name'];
-        }
-        if (isset($validated['email'])) {
-            $user->email = $validated['email'];
-            if ($user->isDirty('email')) {
-                $user->email_verified_at = null;
+            // Actualizar campos del usuario
+            if (isset($validated['name'])) {
+                $user->name = $validated['name'];
             }
-        }
-        if (isset($validated['description'])) {
-            $user->description = $validated['description'];
-        }
+            if (isset($validated['email'])) {
+                $user->email = $validated['email'];
+                if ($user->isDirty('email')) {
+                    $user->email_verified_at = null;
+                }
+            }
+            if (isset($validated['description'])) {
+                $user->description = $validated['description'];
+            }
 
-        // Manejar imagen
-        if ($request->hasFile('image')) {
-            $user->image = $request->file('image')->store('images', 'public');
-        }
+            // Manejar eliminación de imagen
+            if (isset($validated['delete_image']) && $validated['delete_image'] && $user->image) {
+                // Eliminar archivo físico
+                if (Storage::disk('public')->exists($user->image)) {
+                    Storage::disk('public')->delete($user->image);
+                }
+                $user->image = null;
+                $user->save(); // Guardar inmediatamente para asegurar la actualización en la BD
+                Log::info('Imagen eliminada para el usuario: ' . $user->id);
+            }
+            // Manejar imagen con nombre original (solo si no se está eliminando)
+            else if ($request->hasFile('image')) {
+                // Si hay una imagen previa, eliminarla
+                if ($user->image && Storage::disk('public')->exists($user->image)) {
+                    Storage::disk('public')->delete($user->image);
+                }
+                
+                $imageFile = $request->file('image');
+                $uniqueFilename = $this->getUniqueFilename('images', $imageFile->getClientOriginalName());
+                
+                // Almacena el archivo con el nombre original o uno único si ya existe
+                $path = $imageFile->storeAs('images', $uniqueFilename, 'public');
+                $user->image = $path;
+            }
 
-        // Guardar cambios del usuario (temporalmente comentado hasta resolver el problema con save)
-        if ($user->isDirty()) {
-            $user->update($user->getDirty()); // Usar update en lugar de save
-            Log::info('Usuario actualizado: ' . $user->id . ' | Cambios: ' . json_encode($user->getChanges()));
-        } else {
-            Log::info('No hay cambios para guardar en usuario: ' . $user->id . ' | Atributos actuales: ' . json_encode($user->getAttributes()));
-        }
+            // Guardar cambios del usuario
+            if ($user->isDirty()) {
+                $user->update($user->getDirty());
+                Log::info('Usuario actualizado: ' . $user->id . ' | Cambios: ' . json_encode($user->getChanges()));
+            } else {
+                Log::info('No hay cambios para guardar en usuario: ' . $user->id . ' | Atributos actuales: ' . json_encode($user->getAttributes()));
+            }
 
-        // Campos específicos por rol
-        if ($user->role_id === 1 && $user->candidate) {
-            if (isset($validated['surname'])) {
-                $user->candidate->surname = $validated['surname'];
+            // Campos específicos por rol
+            if ($user->role_id === 1 && $user->candidate) {
+                if (isset($validated['surname'])) {
+                    $user->candidate->surname = $validated['surname'];
+                }
+                
+                // Manejar eliminación de CV
+                if (isset($validated['delete_cv']) && $validated['delete_cv'] && $user->candidate->cv) {
+                    // Eliminar archivo físico
+                    if (Storage::disk('public')->exists($user->candidate->cv)) {
+                        Storage::disk('public')->delete($user->candidate->cv);
+                    }
+                    $user->candidate->cv = null;
+                    $user->candidate->save(); // Guardar inmediatamente para asegurar la actualización en la BD
+                    Log::info('CV eliminado para el candidato: ' . $user->candidate->id);
+                }
+                // Manejar CV con nombre original (solo si no se está eliminando)
+                else if ($request->hasFile('cv')) {
+                    // Si hay un CV previo, eliminarlo
+                    if ($user->candidate->cv && Storage::disk('public')->exists($user->candidate->cv)) {
+                        Storage::disk('public')->delete($user->candidate->cv);
+                    }
+                    
+                    $cvFile = $request->file('cv');
+                    $uniqueFilename = $this->getUniqueFilename('cvs', $cvFile->getClientOriginalName());
+                    
+                    // Almacena el CV con el nombre original o uno único si ya existe
+                    $path = $cvFile->storeAs('cvs', $uniqueFilename, 'public');
+                    $user->candidate->cv = $path;
+                }
+                
+                if ($user->candidate->isDirty()) {
+                    $user->candidate->save();
+                    Log::info('Candidato guardado: ' . $user->candidate->id);
+                }
             }
-            if ($request->hasFile('cv')) {
-                $user->candidate->cv = $request->file('cv')->store('cvs', 'public');
-            }
-            if ($user->candidate->isDirty()) {
-                $user->candidate->save();
-                Log::info('Candidato guardado: ' . $user->candidate->id);
-            }
-        }
 
-        if ($user->role_id === 2 && $user->company) {
-            if (isset($validated['address'])) {
-                $user->company->address = $validated['address'];
+            if ($user->role_id === 2 && $user->company) {
+                if (isset($validated['address'])) {
+                    $user->company->address = $validated['address'];
+                }
+                if (isset($validated['weblink'])) {
+                    $user->company->web_link = $validated['weblink'];
+                }
+                if ($user->company->isDirty()) {
+                    $user->company->save();
+                    Log::info('Empresa guardada: ' . $user->company->id);
+                }
             }
-            if (isset($validated['weblink'])) {
-                $user->company->web_link = $validated['weblink'];
-            }
-            if ($user->company->isDirty()) {
-                $user->company->save();
-                Log::info('Empresa guardada: ' . $user->company->id);
-            }
-        }
 
-        return redirect()->route('profile.edit')->with('status', '¡Perfil actualizado!');
-    } catch (Exception $e) {
-        Log::error('Error al actualizar perfil: ' . $e->getMessage());
-        return back()->with('error', 'Error: ' . $e->getMessage());
+            return redirect()->route('profile.edit')->with('status', '¡Perfil actualizado!');
+        } catch (Exception $e) {
+            Log::error('Error al actualizar perfil: ' . $e->getMessage());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
-}
 
     /**
      * Delete the user's account.

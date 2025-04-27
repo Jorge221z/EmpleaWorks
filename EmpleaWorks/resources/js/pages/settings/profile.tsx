@@ -20,13 +20,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type ProfileForm = { //solo hacemos que name y email sean obligatorios, los demas no tienen porque ser rellenados //
-    name: string;    //esta logica concide con los campos de nuestro formulario, que no tienen 'required' como atributo //
+type ProfileForm = {
+    name: string;
     email: string;
     image?: File;
+    delete_image?: boolean;
     description?: string;
     surname?: string;
     cv?: File;
+    delete_cv?: boolean;
     address?: string;
     weblink?: string;
 }
@@ -34,15 +36,17 @@ type ProfileForm = { //solo hacemos que name y email sean obligatorios, los dema
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
 
-    const role_id = auth.user.role_id; //sacamos el role id para pedir unos campos u otros en el formulario //
+    const role_id = auth.user.role_id;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<ProfileForm>({
+    const { data, setData, post, errors, processing, recentlySuccessful } = useForm<ProfileForm>({
         name: auth.user.name,
         email: auth.user.email,
         image: undefined,
+        delete_image: false,
         description: typeof auth.user.description === 'string' ? auth.user.description : '',
         surname: role_id === 1 && auth.user.candidate?.surname ? auth.user.candidate.surname : undefined,
         cv: undefined,
+        delete_cv: false,
         address: role_id === 2 && auth.user.company?.address ? auth.user.company.address : undefined,
         weblink: role_id === 2 && auth.user.company?.weblink ? auth.user.company.weblink : undefined,
     });
@@ -50,20 +54,17 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         console.log('Datos antes de enviar:', data);
-        // La función patch ya conoce los datos del formulario gracias a useForm
-        // Solo necesitamos pasarle la ruta y las opciones
-        patch(route('profile.update'), {
+        post(route('profile.update'), {
             preserveScroll: true,
-            // forceFormData: true
         });
     };
 
     const [imagePreview, setImagePreview] = useState<string | null>(
-        auth.user.image ? String(auth.user.image) : null //recuperamos la imagen si la hubiese ya subida //
+        auth.user.image ? String(auth.user.image) : null
     );
 
     const [cvName, setCvName] = useState<string | null>(
-        auth.user.candidate?.cv ? String(auth.user.candidate.cv).split('/').pop() ?? null : null // Extraemos el nombre del archivo del path
+        auth.user.candidate?.cv ? String(auth.user.candidate.cv).split('/').pop() ?? null : null
     );
 
     return (
@@ -82,9 +83,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 id="name"
                                 className="mt-1 block w-full"
                                 value={data.name}
-                                // defaultValue={auth.user.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                //required
                                 autoComplete="name"
                                 placeholder="Full name"
                             />
@@ -93,23 +92,17 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
 
                         {role_id === 1 && (
-                        <div className='grid gap-2'>
-                            <Label htmlFor='surname'>Surname</Label>
+                            <div className='grid gap-2'>
+                                <Label htmlFor='surname'>Surname</Label>
                                 <Input
                                     id='surname'
                                     className='mt-1 block w-full'
                                     value={data.surname}
-                                    // defaultValue={auth.user.candidate?.surname}
                                     onChange={(e) => setData('surname', e.target.value)}
-                                    //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                     autoComplete='surname'
                                     placeholder='Surname'
-
-
                                 />
-
-
-                        </div>
+                            </div>
                         )}
 
                         <div className="grid gap-2">
@@ -120,16 +113,13 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 type="email"
                                 className="mt-1 block w-full"
                                 value={data.email}
-                                // defaultValue={auth.user.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                //required
                                 autoComplete="username"
                                 placeholder="Email address"
                             />
 
                             <InputError className="mt-2" message={errors.email} />
                         </div>
-
 
                         {role_id === 2 && (
                             <div>
@@ -139,9 +129,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         id='address'
                                         className='mt-1 block w-full'
                                         value={data.address}
-                                        // defaultValue={auth.user.company?.address}
                                         onChange={(e) => setData('address', e.target.value)}
-                                        //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                         autoComplete='address'
                                         placeholder='Company address'
                                     />
@@ -156,9 +144,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         type='url'
                                         className='mt-1 block w-full'
                                         value={data.weblink}
-                                        // defaultValue={auth.user.company?.weblink}
                                         onChange={(e) => setData('weblink', e.target.value)}
-                                        //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                         autoComplete='weblink'
                                         placeholder='Company weblink'
                                     />
@@ -166,7 +152,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 </div>
                             </div>
                         )}
-
 
                         {role_id === 1 && (
                             <div className='grid gap-2'>
@@ -185,6 +170,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         const file = e.dataTransfer?.files?.[0];
                                         if (file && (file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
                                             setData('cv', file);
+                                            setData('delete_cv', false);
                                             setCvName(file.name);
                                         } else if (file) {
                                             alert('Por favor, sube solo archivos PDF o Word (DOC, DOCX)');
@@ -200,6 +186,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 const file = e.target.files[0];
                                                 if (file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                                                     setData('cv', file);
+                                                    setData('delete_cv', false);
                                                     setCvName(file.name);
                                                 } else {
                                                     e.target.value = '';
@@ -212,7 +199,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                                     {cvName ? (
                                         <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
-                                            {/* Icono de documento relleno cuando hay archivo */}
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-11 w-11 mb-2" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M7 5C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H7Z" />
                                                 <path d="M9 9H15M9 13H15M9 17H13" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -224,6 +210,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     setData('cv', undefined);
+                                                    setData('delete_cv', true);
                                                     setCvName(null);
                                                 }}
                                             >
@@ -232,7 +219,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         </div>
                                     ) : (
                                         <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
-                                            {/* Icono de documento vacío cuando no hay archivo */}
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V7.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9h6M9 13h6M9 17h3" />
@@ -252,7 +238,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <div
                                 className='relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors'
                                 onClick={() => {
-                                    if (!data.image) { // Solo activar el clic si no hay imagen seleccionada
+                                    if (!data.image) {
                                         const imageInput = document.getElementById('image');
                                         if (imageInput) {
                                             imageInput.click();
@@ -265,10 +251,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     const file = e.dataTransfer?.files?.[0];
                                     if (file && file.type.startsWith('image/')) {
                                         setData('image', file);
-                                        // Crear vista previa
+                                        setData('delete_image', false);
                                         const reader = new FileReader();
                                         reader.onload = (e) => {
-                                            // Necesitamos actualizar un estado para la vista previa
                                             setImagePreview(e.target?.result as string);
                                         };
                                         reader.readAsDataURL(file);
@@ -286,10 +271,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                             const file = e.target.files[0];
                                             if (file.type.startsWith('image/')) {
                                                 setData('image', file);
-                                                // Crear vista previa
+                                                setData('delete_image', false);
                                                 const reader = new FileReader();
                                                 reader.onload = (event) => {
-                                                    // Necesitamos actualizar un estado para la vista previa
                                                     setImagePreview(event.target?.result as string);
                                                 };
                                                 reader.readAsDataURL(file);
@@ -315,8 +299,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                             type="button"
                                             className="mt-2 text-xs text-red-600 hover:text-red-700 bg-red-200 hover:bg-red-300 rounded-md px-2 py-1"
                                             onClick={(e) => {
-                                                e.stopPropagation(); // Evitar que se active el input de archivo
+                                                e.stopPropagation();
                                                 setData('image', undefined);
+                                                setData('delete_image', true);
                                                 setImagePreview(null);
                                             }}
                                         >
@@ -343,28 +328,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 id='description'
                                 className='mt-1 block w-full min-h-[80px] p-3 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-input'
                                 value={data.description}
-                                // defaultValue={typeof auth.user.description === 'string' ? auth.user.description : ''}
                                 onChange={(e) => setData('description', e.target.value)}
-                                //required  de momento no lo hacemos requerido porque no queremos que el usuario tenga que rellenar todos los campos obligatoriamente //
                                 placeholder='Description'
                                 rows={4}
                             />
                             <InputError className='mt-2' message={errors.description} />
                         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-                         {mustVerifyEmail && auth.user.email_verified_at === null && (
+                        {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
                                 <p className="text-muted-foreground -mt-4 text-sm"/>
                                     Your email address is unverified.{' '}
@@ -396,7 +367,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 leaveTo="opacity-0"
                             >
                                 <p className="text-md font-bold text-black dark:text-white">Saved</p>
-                            </Transition> /*en el futuro pondremos un TOAST para hacer mas intutitivo el mensaje de guardado */
+                            </Transition>
                         </div>
                     </form>
                 </div>

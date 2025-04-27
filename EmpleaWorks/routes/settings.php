@@ -11,7 +11,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/settings/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
-    Route::patch('/settings/profile', [ProfileController::class, 'update'])
+    // Change from PATCH to POST for better file upload support
+    Route::post('/settings/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
 
     Route::delete('/settings/profile', [ProfileController::class, 'destroy'])

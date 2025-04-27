@@ -33,6 +33,7 @@ class ProfileUpdateRequest extends FormRequest
                 'mimes:jpeg,png,jpg,gif',
                 'max:2048',
             ],
+            'delete_image' => ['nullable', 'boolean'],
             'description' => [
                 'nullable',
                 'string',
@@ -44,6 +45,7 @@ class ProfileUpdateRequest extends FormRequest
 
         if ($user->isCandidate()) {
             $rules['cv'] = ['nullable', 'file', 'mimes:pdf,docx,doc', 'max:2048',]; // validacion basica
+            $rules['delete_cv'] = ['nullable', 'boolean'];
             $rules['surname'] = ['nullable', 'string','max:255','regex:/^[a-zA-Z\s]+$/']; // Permite solo letras y espacios
         }
 
