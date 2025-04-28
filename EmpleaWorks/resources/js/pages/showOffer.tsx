@@ -9,15 +9,17 @@ import { Badge } from '@/components/ui/badge';
 import { type BreadcrumbItem } from '@/types';
 import { ShowOfferProps } from '@/types/types';
 import toast, { Toaster } from 'react-hot-toast';
+import { useTranslation } from '@/utils/i18n';
 
 export default function ShowOffer({ offer }: ShowOfferProps) {
   const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+  const { t } = useTranslation();
   
   const { company } = offer;
   
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: 'Dashboard',
+      title: t('dashboard'),
       href: '/dashboard',
     },
     {
@@ -36,7 +38,6 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
     }
   }, [flash]);
 
-  
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Toaster
@@ -63,7 +64,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
           >
             <Link href={route('dashboard')}>
               <ArrowLeftIcon className="mr-2 h-4 w-4" />
-              Volver a ofertas
+              {t('back_to_offers')}
             </Link>
           </Button>
           
@@ -79,7 +80,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
           <div className="lg:col-span-2 space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Descripción de la oferta</CardTitle>
+                <CardTitle>{t('job_description')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-line">{offer.description}</p>
@@ -88,14 +89,14 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
             
             <Card>
               <CardHeader>
-                <CardTitle>Detalles del empleo</CardTitle>
+                <CardTitle>{t('job_details')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center">
                     <BriefcaseIcon className="size-5 mr-2 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Tipo de contrato</p>
+                      <p className="text-sm text-muted-foreground">{t('contract_type')}</p>
                       <p className="font-medium">{offer.contract_type}</p>
                     </div>
                   </div>
@@ -103,7 +104,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                   <div className="flex items-center">
                     <MapPinIcon className="size-5 mr-2 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Ubicación</p>
+                      <p className="text-sm text-muted-foreground">{t('location')}</p>
                       <p className="font-medium">{offer.job_location}</p>
                     </div>
                   </div>
@@ -111,7 +112,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                   <div className="flex items-center">
                     <CalendarIcon className="size-5 mr-2 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Fecha límite</p>
+                      <p className="text-sm text-muted-foreground">{t('deadline')}</p>
                       <p className="font-medium">{new Date(offer.closing_date).toLocaleDateString()}</p>
                     </div>
                   </div>
@@ -121,8 +122,8 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                       <span className="text-lg font-bold">D</span>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Titulación requerida</p>
-                      <p className="font-medium">{offer.degree || 'No especificado'}</p>
+                      <p className="text-sm text-muted-foreground">{t('required_degree')}</p>
+                      <p className="font-medium">{offer.degree || t('not_specified')}</p>
                     </div>
                   </div>
                 </div>
@@ -130,7 +131,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
               <CardFooter>
                 <Button className="w-full" asChild>
                   <Link href={route('apply.form', offer.id)}>
-                    Aplicar a esta oferta
+                    {t('apply_to_this_offer')}
                   </Link>
                 </Button>
               </CardFooter>
@@ -141,7 +142,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
           <div>
             <Card>
               <CardHeader>
-                <CardTitle>Sobre la empresa</CardTitle>
+                <CardTitle>{t('about_company')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center">
@@ -165,13 +166,13 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                 
                 {company.description && (
                   <div>
-                    <h4 className="font-medium mb-2">Descripción</h4>
+                    <h4 className="font-medium mb-2">{t('description')}</h4>
                     <p className="text-sm text-muted-foreground">{company.description}</p>
                   </div>
                 )}
                 
                 <div className="space-y-2">
-                  <h4 className="font-medium mb-1">Contacto</h4>
+                  <h4 className="font-medium mb-1">{t('contact')}</h4>
                   
                   <div className="flex items-center">
                     <MailIcon className="size-4 mr-2 text-muted-foreground" />

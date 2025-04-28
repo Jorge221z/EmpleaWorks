@@ -134,6 +134,14 @@ const translations: Record<string, Record<string, string>> = {
         'job_updated_success': 'Job listing updated successfully!',
         'job_updated_error': 'There was a problem updating your job listing',
         'not_your_listing': 'You can only edit your own job listings',
+
+        // Show Offer form
+        'back_to_offers': 'Back to offers',
+        'job_details': 'Job Details',
+        'not_specified': 'Not specified',
+        'apply_to_this_offer': 'Apply to this job offer',
+        'description': 'Description',
+        'contact': 'Contact',
     },
     es: {
         // Sidebar
@@ -266,6 +274,14 @@ const translations: Record<string, Record<string, string>> = {
         'job_updated_success': '¡Oferta de trabajo actualizada con éxito!',
         'job_updated_error': 'Hubo un problema al actualizar la oferta de trabajo',
         'not_your_listing': 'Solo puedes editar tus propias ofertas de empleo',
+
+        // Show Offer form
+        'back_to_offers': 'Volver a ofertas',
+        'job_details': 'Detalles del empleo',
+        'not_specified': 'No especificado',
+        'apply_to_this_offer': 'Aplicar a esta oferta',
+        'description': 'Descripción',
+        'contact': 'Contacto',
     }
 };
 

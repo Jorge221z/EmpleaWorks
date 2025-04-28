@@ -81,6 +81,7 @@ class CandidateController extends Controller
      * Show the application form for a specific offer
      *
      * @param  \App\Models\Offer $offer
+     * @return \Inertia\Response
      */
     public function showForm(Offer $offer)
     {
@@ -88,11 +89,11 @@ class CandidateController extends Controller
         if ($offer->exists) {
             $offerWithCompany = $this->offerController->getOffer($offer);
 
-            $user = Auth::user(); //obtenemos el usuario autenticado en ese momento//
+            $user = Auth::user(); // obtenemos el usuario autenticado en ese momento
             
-            if (!$user->candidate) { //usamos la relacion del modelo para hacer mas fluida esta comprobacion//
+            if (!$user->candidate) { // usamos la relacion del modelo para hacer mas fluida esta comprobacion
                 return Inertia::render('dashboard', [
-                    'message' => 'Candidate profile not found'
+                    'message' => __('messages.candidate_profile_not_found')
                 ]);
             }
             
@@ -101,9 +102,9 @@ class CandidateController extends Controller
             ]);
         }
         
-        // Salida por defecto para evitar warnings de return no esperado //
-         return Inertia::render('dashboard', [
-             'message' => 'Offer not found'
-         ]);
+        // Salida por defecto para evitar warnings de return no esperado
+        return Inertia::render('dashboard', [
+            'message' => __('messages.offer_not_found')
+        ]);
     }
 }

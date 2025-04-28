@@ -140,4 +140,12 @@ return [
     'job_updated_error' => 'There was a problem updating your job listing',
     'not_your_listing' => 'You can only edit your own job listings',
     'job_title_unique_edit' => 'This job title is already in use by another listing.',
+
+    // Show Offer form
+    'back_to_offers' => 'Back to offers',
+    'job_details' => 'Job Details',
+    'not_specified' => 'Not specified',
+    'apply_to_this_offer' => 'Apply to this job offer',
+    'description' => 'Description',
+    'contact' => 'Contact',
 ];
