@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import toast, { Toaster } from 'react-hot-toast';
 import { TrashIcon } from "lucide-react";
 import { router } from "@inertiajs/react";
+import { useTranslation } from '@/utils/i18n';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -21,25 +22,39 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Company Dashboard',
-        href: '/company/dashboard',
-    },
-];
-
 export default function CompanyDashboard({ companyOffers = [], totalApplicants = 0 }: { companyOffers?: Offer[], totalApplicants?: number }) {
     const { auth } = usePage<SharedData>().props;
+    const { t } = useTranslation();
+    
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('company_dashboard'),
+            href: '/company/dashboard',
+        },
+    ];
     
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Company Dashboard" />
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    className: 'toast-offers',
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '20px 28px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    },
+                    id: 'unique-toast',
+                }}
+            />
+            <Head title={t('company_dashboard')} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Título del Dashboard */}
                 <div className="px-2">
-                    <h2 className="text-2xl font-semibold mb-2">Company Dashboard</h2>
-                    <p className="text-muted-foreground">Manage your job listings and applicants</p>
+                    <h2 className="text-2xl font-semibold mb-2">{t('company_dashboard')}</h2>
+                    <p className="text-muted-foreground">{t('manage_company_listings')}</p>
                 </div>
                 
                 {/* Acciones rápidas */}
@@ -52,19 +67,19 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
                                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                                 </svg>
-                                Job Listings
+                                {t('job_listings')}
                             </CardTitle>
-                            <CardDescription>Manage your active job listings</CardDescription>
+                            <CardDescription>{t('manage_jobs')}</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div>
                                 <div className="text-3xl font-bold">{companyOffers.length}</div>
-                                <div className="text-sm text-muted-foreground">Active positions</div>
+                                <div className="text-sm text-muted-foreground">{t('active_positions')}</div>
                             </div>
                             <Button size="sm" className="gap-1">
                                 <PlusCircleIcon className="h-4 w-4" />
                                 <Link href={route('company.create-job')}>                                  
-                                    New Job
+                                    {t('new_job')}
                                 </Link>
                             </Button>
                         </CardContent>
@@ -75,13 +90,13 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <UsersIcon className="h-5 w-5 text-blue-500/80" />
-                                Applicants
+                                {t('applicants')}
                             </CardTitle>
-                            <CardDescription>Applications to your jobs</CardDescription>
+                            <CardDescription>{t('applications_to_jobs')}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">{totalApplicants}</div>
-                            <div className="text-sm text-muted-foreground">Total candidates</div>
+                            <div className="text-sm text-muted-foreground">{t('total_candidates')}</div>
                         </CardContent>
                     </Card>
 
@@ -90,19 +105,19 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <BuildingIcon className="h-5 w-5 text-green-500/80" />
-                                Company Profile
+                                {t('company_profile')}
                             </CardTitle>
-                            <CardDescription>Update your profile information</CardDescription>
+                            <CardDescription>{t('update_profile')}</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div>
                                 <div className="text-lg font-medium truncate max-w-[150px]">{auth.user.name}</div>
-                                <div className="text-sm text-muted-foreground">Complete profile</div>
+                                <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
                             </div>
                             <Button size="sm" variant="outline" className="gap-1">
                                 <BuildingIcon className="h-4 w-4" />
                                 <Link href={'/settings/profile'}>                                  
-                                    Edit Profile
+                                    {t('edit_profile')}
                                 </Link>
                             </Button>
                         </CardContent>
@@ -111,8 +126,8 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
 
                 {/* Título de las ofertas */}
                 <div className="px-2 mt-4">
-                    <h2 className="text-2xl font-semibold mb-2">Your Job Listings</h2>
-                    <p className="text-muted-foreground">Manage your current job postings</p>
+                    <h2 className="text-2xl font-semibold mb-2">{t('your_job_listings')}</h2>
+                    <p className="text-muted-foreground">{t('manage_current_postings')}</p>
                 </div>
 
                 {/* Mostrar ofertas en el grid */}
@@ -131,7 +146,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 </div>
 
                                 <p className="text-sm text-muted-foreground mb-2">
-                                    Posted: {new Date(offer.created_at).toLocaleDateString()}
+                                    {t('posted')}: {new Date(offer.created_at).toLocaleDateString()}
                                 </p>
 
                                 <p className="text-sm line-clamp-3 mb-4 flex-grow">
@@ -149,7 +164,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                     </div>
                                     <div className="flex items-center gap-1">
                                         <CalendarIcon className="size-3.5" />
-                                        <span>Hasta: {new Date(offer.closing_date).toLocaleDateString()}</span>
+                                        <span>{t('until')}: {new Date(offer.closing_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
 
@@ -159,7 +174,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                         href={route('offer.show', offer.id)}
                                         className="w-full px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center justify-center gap-1.5"
                                     >
-                                        View details
+                                        {t('view_details')}
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
                                             <path d="M5 12h14"></path>
                                             <path d="m12 5 7 7-7 7"></path>
@@ -180,7 +195,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                                 </svg>
-                                                Edit
+                                                {t('edit')}
                                             </Link>
                                         </Button>
                                         
@@ -194,34 +209,34 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                                 >
                                                     <span className="flex items-center justify-center gap-1.5">
                                                         <TrashIcon className="size-3.5" />
-                                                        Delete
+                                                        {t('delete')}
                                                     </span>
                                                 </Button>
                                             </AlertDialogTrigger>
                                             <AlertDialogContent>
                                                 <AlertDialogHeader>
-                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                    <AlertDialogTitle>{t('are_you_sure')}</AlertDialogTitle>
                                                     <AlertDialogDescription>
-                                                        This action cannot be undone. This will permanently delete your job listing 
-                                                        <span className="font-semibold"> "{offer.name}"</span> and remove all associated applications.
+                                                        {t('delete_confirmation')} 
+                                                        <span className="font-semibold"> "{offer.name}"</span> {t('and_remove_applications')}
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
                                                 <AlertDialogFooter>
-                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                                                     <AlertDialogAction 
                                                         className="bg-red-500 hover:bg-red-600 text-white"
                                                         onClick={() => {
                                                             router.delete(route('offers.destroy', offer.id), {
                                                                 onSuccess: () => {
-                                                                    toast.success('Job listing deleted successfully!');
+                                                                    toast.success(t('job_deleted_success'));
                                                                 },
                                                                 onError: () => {
-                                                                    toast.error('There was a problem deleting the job listing');
+                                                                    toast.error(t('job_deleted_error'));
                                                                 }
                                                             });
                                                         }}
                                                     >
-                                                        Delete
+                                                        {t('delete')}
                                                     </AlertDialogAction>
                                                 </AlertDialogFooter>
                                             </AlertDialogContent>
@@ -234,13 +249,13 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         {/* Card para añadir nueva oferta */}
                         <div className="border-sidebar-border/70 dark:border-sidebar-border bg-card/50 relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px]">
                             <PlusCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
-                            <h3 className="font-medium text-lg mb-1">Create New Job Posting</h3>
+                            <h3 className="font-medium text-lg mb-1">{t('create_new_job')}</h3>
                             <p className="text-sm text-muted-foreground text-center mb-4">
-                                Add a new job opportunity to your listings
+                                {t('add_job_opportunity')}
                             </p>
                             <Button asChild>
                                 <Link href={route('company.create-job')}>
-                                Create Job Listing
+                                {t('create_job_listing')}
                                 </Link>
                             </Button>
                         </div>
@@ -250,14 +265,14 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card/50 p-8 overflow-hidden rounded-xl border text-center my-6">
                         <div className="flex flex-col items-center gap-2 relative z-10">
                             <BuildingIcon className="h-12 w-12 mb-2 text-muted-foreground" />
-                            <h2 className="text-xl font-semibold">No Job Listings Yet</h2>
+                            <h2 className="text-xl font-semibold">{t('no_job_listings_yet')}</h2>
                             <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                                You haven't created any job listings yet. Start attracting talent by posting your first job opportunity.
+                                {t('no_job_listings_message')}
                             </p>
                             <Button className="gap-1">
                                 <PlusCircleIcon className="h-4 w-4" />
                                 <Link href={route('company.create-job')}>                                
-                                    Create Your First Job Listing
+                                    {t('create_first_job')}
                                 </Link>
                             </Button>
                         </div>

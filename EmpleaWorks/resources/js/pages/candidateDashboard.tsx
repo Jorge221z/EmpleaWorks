@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
-import { CalendarIcon, MapPinIcon, BriefcaseIcon, FileIcon, UserIcon, UsersIcon } from 'lucide-react';
+import { CalendarIcon, MapPinIcon, BriefcaseIcon, FileIcon, UserIcon } from 'lucide-react';
 import { Offer } from '@/types/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import toast, { Toaster } from 'react-hot-toast';
@@ -15,20 +15,14 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "@/components/ui/dialog";
-  import { BuildingIcon, ExternalLinkIcon } from "lucide-react";
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Candidate Dashboard',
-        href: '/candidate/dashboard',
-    },
-];
+} from "@/components/ui/dialog";
+import { BuildingIcon, ExternalLinkIcon } from "lucide-react";
+import { useTranslation } from '@/utils/i18n';
 
 export default function CandidateDashboard({ candidateOffers = [] }: { candidateOffers?: Offer[] }) {
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
-
     const { auth } = usePage<SharedData>().props;
+    const { t } = useTranslation();
     const user = auth.user;
 
     useEffect(() => {
@@ -39,6 +33,13 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
             toast.error(flash.error);
         }
     }, [flash]);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('candidate_dashboard_title'),
+            href: '/candidate/dashboard',
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -56,12 +57,12 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     id: 'unique-toast',
                 }}
             />
-            <Head title="Candidate Dashboard" />
+            <Head title={t('candidate_dashboard_title')} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Dashboard Title */}
                 <div className="px-2">
-                    <h2 className="text-2xl font-semibold mb-2">Candidate Dashboard</h2>
-                    <p className="text-muted-foreground">Track your applications and profile</p>
+                    <h2 className="text-2xl font-semibold mb-2">{t('candidate_dashboard_title')}</h2>
+                    <p className="text-muted-foreground">{t('candidate_dashboard_subtitle')}</p>
                 </div>
                 
                 {/* Quick Actions */}
@@ -71,20 +72,20 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <FileIcon className="h-5 w-5 text-primary/80" />
-                                Applications
+                                {t('applications')}
                             </CardTitle>
-                            <CardDescription>Track your job applications</CardDescription>
+                            <CardDescription>{t('track_applications')}</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div>
                                 <div className="text-3xl font-bold">{candidateOffers.length}</div>
                                 <div className="text-sm text-muted-foreground">
-                                    Active application{candidateOffers.length !== 1 ? 's' : ''}
+                                    {candidateOffers.length !== 1 ? t('active_applications_plural') : t('active_applications')}
                                 </div>
                             </div>
                             <Button size="sm" className="gap-1">
                                 <Link href={route('dashboard')}>                                  
-                                    Find Jobs
+                                    {t('find_jobs')}
                                 </Link>
                             </Button>
                         </CardContent>
@@ -95,19 +96,19 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <UserIcon className="h-5 w-5 text-blue-500/80" />
-                                Profile
+                                {t('profile')}
                             </CardTitle>
-                            <CardDescription>Your candidate information</CardDescription>
+                            <CardDescription>{t('your_information')}</CardDescription>
                         </CardHeader>
                         <CardContent className="flex justify-between items-center">
                             <div>
                                 <div className="text-lg font-medium truncate max-w-[150px]">{user?.name}</div>
-                                <div className="text-sm text-muted-foreground">Complete profile</div>
+                                <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
                             </div>
                             <Button size="sm" variant="outline" className="gap-1">
                                 <UserIcon className="h-4 w-4" />
                                 <Link href={'/settings/profile'}>                                  
-                                    Edit Profile
+                                    {t('edit_profile')}
                                 </Link>
                             </Button>
                         </CardContent>
@@ -116,8 +117,8 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
 
                 {/* Applications Heading */}
                 <div className="px-2 mt-4">
-                    <h2 className="text-2xl font-semibold mb-2">Your Applications</h2>
-                    <p className="text-muted-foreground">Jobs you've applied to</p>
+                    <h2 className="text-2xl font-semibold mb-2">{t('your_applications')}</h2>
+                    <p className="text-muted-foreground">{t('jobs_applied_to')}</p>
                 </div>
 
                 {/* Applied Offers Grid */}
@@ -143,7 +144,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                             <path d="M21 5H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
                                         </svg>
                                         <span>
-                                            {offer.company ? (offer.company as any).name : 'Company not available'}
+                                            {offer.company ? (offer.company as any).name : t('company_not_available')}
                                         </span>
                                     </p>
 
@@ -168,17 +169,21 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                 const closingDate = new Date(offer.closing_date);
                                                 const currentDate = new Date();
                                                 const daysLeft = Math.ceil((closingDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-        
+
                                                 // Apply red text if less than 3 days left
                                                 return (
                                                     <span className={daysLeft < 3 ? "text-red-500 font-medium" : ""}>
-                                                        Closed in: {daysLeft <= 0 ? "Closed" : `${daysLeft} day${daysLeft !== 1 ? 's' : ''}`}
+                                                        {t('closed_in')}: {daysLeft <= 0 
+                                                            ? t('closed') 
+                                                            : daysLeft === 1 
+                                                                ? t('days_remaining', {days: daysLeft}) 
+                                                                : t('days_remaining_plural', {days: daysLeft})
+                                                        }
                                                     </span>
                                                 );
                                             })()}
                                         </div>
                                     </div>
-
 
                                     <div className="flex flex-col gap-2 self-end md:self-center">
                                         {/* Company Info Dialog */}
@@ -190,13 +195,15 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                     className="gap-1.5 text-sm"
                                                 >
                                                     <BuildingIcon className="size-3.5" />
-                                                    Company Info
+                                                    {t('company_info')}
                                                 </Button>
                                             </DialogTrigger>
                                             <DialogContent className="sm:max-w-md">
                                                 <DialogHeader>
-                                                    <DialogTitle>{offer.company ? (offer.company as any).name : 'Company Information'}</DialogTitle>
-                                                    <DialogDescription>Details about the company offering this position</DialogDescription>
+                                                    <DialogTitle>
+                                                        {offer.company ? (offer.company as any).name : t('company_information')}
+                                                    </DialogTitle>
+                                                    <DialogDescription>{t('company_details')}</DialogDescription>
                                                 </DialogHeader>
 
                                                 <div className="py-4 space-y-4">
@@ -216,14 +223,14 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                     {/* Company Description */}
                                                     {offer.company && (offer.company as any).description && (
                                                         <div className="space-y-1">
-                                                            <h4 className="text-sm font-semibold">About the company</h4>
+                                                            <h4 className="text-sm font-semibold">{t('about_company')}</h4>
                                                             <p className="text-sm">{(offer.company as any).description}</p>
                                                         </div>
                                                     )}
 
                                                     {/* Company Contact Info */}
                                                     <div className="space-y-2">
-                                                        <h4 className="text-sm font-semibold">Contact Information</h4>
+                                                        <h4 className="text-sm font-semibold">{t('contact_information')}</h4>
 
                                                         {offer.company && (offer.company as any).address && (
                                                             <div className="flex items-start gap-2 text-sm">
@@ -253,7 +260,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                                     rel="noopener noreferrer"
                                                                     className="hover:underline text-primary"
                                                                 >
-                                                                    Visit Website
+                                                                    {t('visit_website')}
                                                                 </a>
                                                             </div>
                                                         )}
@@ -267,7 +274,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                             href={route('offer.show', offer.id)}
                                             className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center gap-1.5 whitespace-nowrap"
                                         >
-                                            View details
+                                            {t('view_details')}
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
                                                 <path d="M5 12h14"></path>
                                                 <path d="m12 5 7 7-7 7"></path>
@@ -283,16 +290,16 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card/50 p-8 overflow-hidden rounded-xl border text-center my-6">
                         <div className="flex flex-col items-center gap-2 relative z-10">
                             <FileIcon className="h-12 w-12 mb-2 text-muted-foreground" />
-                            <h2 className="text-xl font-semibold">No Applications Yet</h2>
+                            <h2 className="text-xl font-semibold">{t('no_applications_yet')}</h2>
                             <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                                You haven't applied to any job offers yet. Browse available jobs to get started.
+                                {t('no_applications_message')}
                             </p>
                             <Button 
                                 className="gap-1"
                                 asChild
                             >
                                 <Link href={route('dashboard')}>
-                                    Browse Available Jobs
+                                    {t('browse_available_jobs')}
                                 </Link>
                             </Button>
                         </div>

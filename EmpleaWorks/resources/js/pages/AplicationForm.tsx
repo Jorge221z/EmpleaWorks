@@ -13,6 +13,7 @@ import { type BreadcrumbItem } from '@/types';
 import { ShowOfferProps } from '@/types/types';
 import { useState } from 'react';
 import { Offer, Company } from "@/types/types";
+import { useTranslation } from '@/utils/i18n';
 
 interface ApplyFormProps {
     offer: Offer;  // Recibimos la oferta como prop
@@ -20,6 +21,7 @@ interface ApplyFormProps {
 
 export default function ApplyForm({ offer }: ApplyFormProps) {
     const { company } = offer;
+    const { t } = useTranslation();
 
     // Form state
     const [agreed, setAgreed] = useState(false);
@@ -46,7 +48,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
     // Breadcrumbs for navigation
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Dashboard',
+            title: t('dashboard'),
             href: '/dashboard',
         },
         {
@@ -54,14 +56,14 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
             href: `/offers/${offer.id}`,
         },
         {
-            title: 'Apply',
+            title: t('apply'),
             href: `/apply-form/${offer.id}`,
         },
     ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Apply for ${offer.name} - EmpleaWorks`} />
+            <Head title={`${t('apply_for')} ${offer.name} - EmpleaWorks`} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="mb-6">
                     <Button
@@ -72,11 +74,11 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                     >
                         <Link href={`/offers/${offer.id}`}>
                             <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                            Back to offer details
+                            {t('back_to_offer_details')}
                         </Link>
                     </Button>
 
-                    <h1 className="text-2xl font-bold mb-2">Apply for: {offer.name}</h1>
+                    <h1 className="text-2xl font-bold mb-2">{t('apply_for')}: {offer.name}</h1>
                     <div className="flex items-center mb-4">
                         <span className="text-lg font-medium text-muted-foreground">{company.name}</span>
                         <Badge className="ml-3">{offer.category}</Badge>
@@ -88,46 +90,46 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                     <div className="lg:col-span-2">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Application Form</CardTitle>
+                                <CardTitle>{t('application_form')}</CardTitle>
                                 <CardDescription>
-                                    Please complete all fields to apply for this position
+                                    {t('complete_all_fields')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="phone">Phone Number</Label>
+                                        <Label htmlFor="phone">{t('phone_number')}</Label>
                                         <Input
                                             id="phone"
                                             type="tel"
                                             value={data.phone}
                                             onChange={e => setData('phone', e.target.value)}
-                                            placeholder="Enter your phone number"
+                                            placeholder={t('enter_phone')}
                                             required
                                         />
                                         {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label htmlFor="email">{t('email')}</Label>
                                         <Input
                                             id="email"
                                             type="email"
                                             value={data.email}
                                             onChange={e => setData('email', e.target.value)}
-                                            placeholder="Enter your contact email"
+                                            placeholder={t('enter_email')}
                                             required
                                         />
                                         {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="cl">Cover letter</Label>
+                                        <Label htmlFor="cl">{t('cover_letter')}</Label>
                                         <Textarea
                                             id="cl"
                                             value={data.cl}
                                             onChange={e => setData('cl', e.target.value)}
-                                            placeholder="Why do you want to apply for this job?"
+                                            placeholder={t('why_apply')}
                                             rows={5}
                                             required
                                         />
@@ -142,7 +144,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             required
                                         />
                                         <Label htmlFor="terms" className="text-sm">
-                                            I agree to the terms and conditions
+                                            {t('agree_terms')}
                                         </Label>
                                     </div>
 
@@ -151,7 +153,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                         className="w-full mt-4"
                                         disabled={processing || !agreed}
                                     >
-                                        {processing ? 'Submitting...' : 'Submit Application'}
+                                        {processing ? t('submitting') : t('submit_application')}
                                     </Button>
                                 </form>
                             </CardContent>
@@ -162,7 +164,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                     <div>
                         <Card>
                             <CardHeader>
-                                <CardTitle>Job Summary</CardTitle>
+                                <CardTitle>{t('job_summary')}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="flex items-center">
@@ -188,7 +190,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     <div className="flex items-center">
                                         <BriefcaseIcon className="size-5 mr-2 text-muted-foreground" />
                                         <div>
-                                            <p className="text-sm text-muted-foreground">Contract Type</p>
+                                            <p className="text-sm text-muted-foreground">{t('contract_type')}</p>
                                             <p className="font-medium">{offer.contract_type}</p>
                                         </div>
                                     </div>
@@ -196,7 +198,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     <div className="flex items-center">
                                         <MapPinIcon className="size-5 mr-2 text-muted-foreground" />
                                         <div>
-                                            <p className="text-sm text-muted-foreground">Location</p>
+                                            <p className="text-sm text-muted-foreground">{t('location')}</p>
                                             <p className="font-medium">{offer.job_location}</p>
                                         </div>
                                     </div>
@@ -204,7 +206,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     <div className="flex items-center">
                                         <CalendarIcon className="size-5 mr-2 text-muted-foreground" />
                                         <div>
-                                            <p className="text-sm text-muted-foreground">Deadline</p>
+                                            <p className="text-sm text-muted-foreground">{t('deadline')}</p>
                                             <p className="font-medium">{new Date(offer.closing_date).toLocaleDateString()}</p>
                                         </div>
                                     </div>

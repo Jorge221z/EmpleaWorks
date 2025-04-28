@@ -177,19 +177,21 @@ class OfferController extends Controller
                 'cl' => 'required|string|max:255',
             ],
             [
-                'phone.required' => 'The phone field is required.',
-                'phone.regex' => 'The phone format is invalid.',
-                'email.required' => 'The email field is required.',
-                'email.email' => 'The email format is invalid.',
-                'email.max' => 'The email field cannot be more than 255 characters.',
-                'cl.required' => 'The cover letter field is required.',
-                'cl.max' => 'The cover letter field cannot be more than 255 characters.',
+                'phone.required' => __('messages.phone_required'),
+                'phone.regex' => __('messages.phone_invalid_format'),
+                'phone.min' => __('messages.phone_min_length', ['min' => 7]),
+                'phone.max' => __('messages.phone_max_length', ['max' => 20]),
+                'email.required' => __('messages.email_required'),
+                'email.email' => __('messages.email_invalid_format'),
+                'email.max' => __('messages.email_max_length', ['max' => 255]),
+                'cl.required' => __('messages.cover_letter_required'),
+                'cl.max' => __('messages.cover_letter_max_length', ['max' => 255]),
             ]
         );
 
         // Verificamos si el usuario está autenticado
         if (!Auth::check()) {
-            return redirect()->back()->with('error', 'You must be logged in to apply for offers');
+            return redirect()->back()->with('error', __('messages.login_required_for_apply'));
         }
 
         // Obtenemos el usuario autenticado
@@ -197,103 +199,103 @@ class OfferController extends Controller
 
         // Verificamos si el usuario es un candidato
         if (!($user->role->name === 'candidate')) {
-            return redirect()->back()->with('error', 'Only candidates can apply for offers');
+            return redirect()->back()->with('error', __('messages.only_candidates_can_apply'));
         }
 
         // Verificamos si la oferta existe
         $offer = Offer::where('id', $request->offer_id)->firstOrFail();
         if (!$offer) {
-            return redirect()->back()->with('error', 'Offer not found');
+            return redirect()->back()->with('error', __('messages.offer_not_found'));
         }
 
         // Verificamos si el candidato ya ha aplicado a esta oferta
-        // Corregido para usar la relación correcta
         $existingApplication = $offer->candidates()->where('users.id', $user->id)->first();
         if ($existingApplication) {
-            return redirect()->route('offer.show', $offer->id)->with('error', 'You have already applied to this offer');
+            return redirect()->route('offer.show', $offer->id)
+                ->with('error', __('messages.already_applied'));
         }
 
         $candidate = Candidate::where('user_id', $user->id)->first();
         if (!$candidate) {
-            return redirect()->back()->with('error', 'Candidate profile not found');
+            return redirect()->back()->with('error', __('messages.candidate_profile_not_found'));
         }
 
         $user->applyToOffer($offer);
 
-        return redirect()->route('candidate.dashboard')->with(
-            'success' , 'Application submitted successfully',);
-        // volvemos al dashboard tras aplicar con un mensaje de exito (reusamos la ruta del DasboardController) //
+        return redirect()->route('candidate.dashboard')
+            ->with('success', __('messages.application_submitted'));
     }
-/**
- * Update the specified offer in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @param  \App\Models\Offer  $offer
- * @return \Illuminate\Http\RedirectResponse
- */
-public function update(Request $request, Offer $offer)
-{
-    // Verificar que la oferta pertenece a la empresa actual
-    $user = Auth::user();
-    
-    if ($offer->user_id !== $user->id) {
-        return redirect()->back()->with('error', 'You can only edit your own job listings');
-    }
-    
-    // Validar los datos de la oferta
-    $validated = $request->validate([
-        'name' => 'required|string|max:255|unique:offers,name,' . $offer->id,
-        'description' => 'required|string',
-        'category' => 'required|string|max:255',
-        'degree' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'contract_type' => 'required|string|max:255',
-        'job_location' => 'required|string|max:255',
-        'closing_date' => 'required|date',
-    ]);
-    
-    try {
-        // Actualizar la oferta
-        $offer->update($validated);
-        
-        // Redireccionar con mensaje de éxito
-        return redirect()->route('company.dashboard')
-            ->with('success', 'Job listing updated successfully!');
-    } catch (\Exception $e) {
-        // Manejar cualquier error
-        return redirect()->back()
-            ->with('error', 'There was a problem updating your job listing: ' . $e->getMessage())
-            ->withInput();
-    }
-}
 
-/**
- * Remove the specified offer from storage.
- *
- * @param  \App\Models\Offer  $offer
- * @return \Illuminate\Http\RedirectResponse
- */
-public function destroy(Offer $offer)
-{
-    // Verificar que la oferta pertenece a la empresa actual
-    $user = Auth::user();
-    
-    if ($offer->user_id !== $user->id) {
-        return redirect()->route('company.dashboard')
-            ->with('error', 'You can only delete your own job listings');
-    }
-    
-    try {
-        // Eliminar la oferta
-        $offer->delete();
+    /**
+     * Update the specified offer in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Offer  $offer
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, Offer $offer)
+    {
+        // Verificar que la oferta pertenece a la empresa actual
+        $user = Auth::user();
         
-        // Redireccionar con mensaje de éxito
-        return redirect()->route('company.dashboard')
-            ->with('success', 'Job listing deleted successfully!');
-    } catch (\Exception $e) {
-        // Manejar cualquier error
-        return redirect()->back()
-            ->with('error', 'There was a problem deleting your job listing: ' . $e->getMessage());
+        if ($offer->user_id !== $user->id) {
+            return redirect()->back()->with('error', 'You can only edit your own job listings');
+        }
+        
+        // Validar los datos de la oferta
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:offers,name,' . $offer->id,
+            'description' => 'required|string',
+            'category' => 'required|string|max:255',
+            'degree' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'contract_type' => 'required|string|max:255',
+            'job_location' => 'required|string|max:255',
+            'closing_date' => 'required|date',
+        ]);
+        
+        try {
+            // Actualizar la oferta
+            $offer->update($validated);
+            
+            // Redireccionar con mensaje de éxito
+            return redirect()->route('company.dashboard')
+                ->with('success', 'Job listing updated successfully!');
+        } catch (\Exception $e) {
+            // Manejar cualquier error
+            return redirect()->back()
+                ->with('error', 'There was a problem updating your job listing: ' . $e->getMessage())
+                ->withInput();
+        }
     }
-}
+
+    /**
+     * Remove the specified offer from storage.
+     *
+     * @param  \App\Models\Offer  $offer
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Offer $offer)
+    {
+        // Verificar que la oferta pertenece a la empresa actual
+        $user = Auth::user();
+        
+        if ($offer->user_id !== $user->id) {
+            return redirect()->route('company.dashboard')
+                ->with('error', 'You can only delete your own job listings');
+        }
+        
+        try {
+            // Eliminar la oferta
+            $offer->delete();
+            
+            // Redireccionar con mensaje de éxito
+            return redirect()->route('company.dashboard')
+                ->with('success', 'Job listing deleted successfully!');
+        } catch (\Exception $e) {
+            // Manejar cualquier error
+            return redirect()->back()
+                ->with('error', 'There was a problem deleting your job listing: ' . $e->getMessage());
+        }
+    }
 }
