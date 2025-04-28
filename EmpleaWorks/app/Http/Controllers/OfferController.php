@@ -9,6 +9,7 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 class OfferController extends Controller
 {
@@ -235,8 +236,36 @@ class OfferController extends Controller
         if (!$candidate) {
             return redirect()->back()->with('error', __('messages.candidate_profile_not_found'));
         }
-
+        //guardamos los datos en la base de datos//
         $user->applyToOffer($offer);
+
+        $company = User::find($offer->user_id);
+
+        // Enviamos correo al candidato
+        Mail::send('emails.application_confirmation', [
+            'user' => $user,
+            'offer' => $offer,
+            'company' => $company,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'coverLetter' => $request->cl
+        ], function ($message) use ($user, $offer) {
+            $message->to($user->email, $user->name)
+                ->subject(__('messages.application_submitted_for', ['offer' => $offer->name]));
+        });
+
+        // Enviamos correo a la empresa
+        Mail::send('emails.new_application', [
+            'candidate' => $user,
+            'offer' => $offer,
+            'company' => $company,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'coverLetter' => $request->cl
+        ], function ($message) use ($company, $user, $offer) {
+            $message->to($company->email, $company->name)
+                ->subject(__('messages.new_application_from', ['name' => $user->name, 'offer' => $offer->name]));
+        });
 
         return redirect()->route('candidate.dashboard')
             ->with('success', __('messages.application_submitted'));
