@@ -125,6 +125,15 @@ const translations: Record<string, Record<string, string>> = {
         'application_deadline': 'Application Deadline',
         'pick_date': 'Pick a date',
         'creating': 'Creating...',
+
+        // Edit Job Offer Form
+        'edit_job_listing': 'Edit Job Listing',
+        'update_job_details': 'Update the details of your job opportunity',
+        'update_job_listing': 'Update Job Listing',
+        'updating': 'Updating...',
+        'job_updated_success': 'Job listing updated successfully!',
+        'job_updated_error': 'There was a problem updating your job listing',
+        'not_your_listing': 'You can only edit your own job listings',
     },
     es: {
         // Sidebar
@@ -248,6 +257,15 @@ const translations: Record<string, Record<string, string>> = {
         'application_deadline': 'Fecha Límite de Solicitud',
         'pick_date': 'Elegir fecha',
         'creating': 'Creando...',
+
+        // Edit Job Offer Form
+        'edit_job_listing': 'Editar Oferta de Empleo',
+        'update_job_details': 'Actualiza los detalles de tu oferta de empleo',
+        'update_job_listing': 'Actualizar Oferta de Empleo',
+        'updating': 'Actualizando...',
+        'job_updated_success': '¡Oferta de trabajo actualizada con éxito!',
+        'job_updated_error': 'Hubo un problema al actualizar la oferta de trabajo',
+        'not_your_listing': 'Solo puedes editar tus propias ofertas de empleo',
     }
 };
 

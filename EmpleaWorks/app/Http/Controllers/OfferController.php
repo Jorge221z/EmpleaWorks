@@ -255,10 +255,10 @@ class OfferController extends Controller
         $user = Auth::user();
         
         if ($offer->user_id !== $user->id) {
-            return redirect()->back()->with('error', 'You can only edit your own job listings');
+            return redirect()->back()->with('error', __('messages.not_your_listing'));
         }
         
-        // Validar los datos de la oferta
+        // Validar los datos de la oferta con mensajes traducidos
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:offers,name,' . $offer->id,
             'description' => 'required|string',
@@ -268,6 +268,18 @@ class OfferController extends Controller
             'contract_type' => 'required|string|max:255',
             'job_location' => 'required|string|max:255',
             'closing_date' => 'required|date',
+        ], [
+            'name.required' => __('messages.job_title_required'),
+            'name.unique' => __('messages.job_title_unique_edit', ['id' => $offer->id]),
+            'description.required' => __('messages.job_description_required'),
+            'category.required' => __('messages.category_required'),
+            'degree.required' => __('messages.degree_required'),
+            'email.required' => __('messages.email_required'),
+            'email.email' => __('messages.email_invalid_format'),
+            'contract_type.required' => __('messages.contract_type_required'),
+            'job_location.required' => __('messages.job_location_required'),
+            'closing_date.required' => __('messages.closing_date_required'),
+            'closing_date.date' => __('messages.closing_date_invalid'),
         ]);
         
         try {
@@ -276,11 +288,11 @@ class OfferController extends Controller
             
             // Redireccionar con mensaje de éxito
             return redirect()->route('company.dashboard')
-                ->with('success', 'Job listing updated successfully!');
+                ->with('success', __('messages.job_updated_success'));
         } catch (\Exception $e) {
             // Manejar cualquier error
             return redirect()->back()
-                ->with('error', 'There was a problem updating your job listing: ' . $e->getMessage())
+                ->with('error', __('messages.job_updated_error') . ': ' . $e->getMessage())
                 ->withInput();
         }
     }
