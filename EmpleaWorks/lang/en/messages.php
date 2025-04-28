@@ -34,6 +34,23 @@ return [
     'your_information' => 'Your candidate information',
     'complete_profile' => 'Complete profile',
     'edit_profile' => 'Edit Profile',
+
+    'candidate_dashboard_title' => 'Candidate Dashboard',
+    'candidate_dashboard_subtitle' => 'Track your applications and profile',
+    'your_applications' => 'Your Applications',
+    'jobs_applied_to' => 'Jobs you\'ve applied to',
+    'closed_in' => 'Closed in',
+    'closed' => 'Closed',
+    'days_remaining' => '{0} day|{1} days',
+    'company_info' => 'Company Info',
+    'company_information' => 'Company Information',
+    'company_details' => 'Details about the company offering this position',
+    'about_company' => 'About the company',
+    'contact_information' => 'Contact Information',
+    'visit_website' => 'Visit Website',
+    'no_applications_yet' => 'No Applications Yet',
+    'no_applications_message' => 'You haven\'t applied to any job offers yet. Browse available jobs to get started.',
+    'browse_available_jobs' => 'Browse Available Jobs',
     
     // Company dashboard
     'job_listings' => 'Job Listings',

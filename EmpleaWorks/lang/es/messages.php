@@ -34,6 +34,23 @@ return [
     'your_information' => 'Tu información de candidato',
     'complete_profile' => 'Completar perfil',
     'edit_profile' => 'Editar Perfil',
+
+    'candidate_dashboard_title' => 'Panel del Candidato',
+    'candidate_dashboard_subtitle' => 'Gestiona tus solicitudes y perfil',
+    'your_applications' => 'Tus Solicitudes',
+    'jobs_applied_to' => 'Empleos a los que has aplicado',
+    'closed_in' => 'Cierra en',
+    'closed' => 'Cerrado',
+    'days_remaining' => '{0} día|{1} días',
+    'company_info' => 'Info de Empresa',
+    'company_information' => 'Información de la Empresa',
+    'company_details' => 'Detalles sobre la empresa que ofrece este puesto',
+    'about_company' => 'Acerca de la empresa',
+    'contact_information' => 'Información de Contacto',
+    'visit_website' => 'Visitar Sitio Web',
+    'no_applications_yet' => 'Aún No Hay Solicitudes',
+    'no_applications_message' => 'Todavía no has aplicado a ninguna oferta de empleo. Explora los empleos disponibles para comenzar.',
+    'browse_available_jobs' => 'Explorar Empleos Disponibles',
     
     // Dashboard de empresa
     'job_listings' => 'Ofertas de Empleo',
