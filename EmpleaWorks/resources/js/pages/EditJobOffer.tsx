@@ -21,22 +21,12 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { useForm, Head } from '@inertiajs/react';
+import { useForm, Head, Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { FormEvent, useState, useEffect } from 'react';
 import { Offer } from '@/types/types';
 import toast, { Toaster } from 'react-hot-toast';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Company Dashboard',
-        href: '/company/dashboard',
-    },
-    {
-        title: 'Edit Job Listing',
-        href: '#',
-    },
-];
+import { useTranslation } from '@/utils/i18n';
 
 interface EditJobOfferProps {
     offer: Offer;
@@ -50,11 +40,24 @@ interface EditJobOfferProps {
 
 export default function EditJobOffer({ offer, categories = [], contractTypes = [], company }: EditJobOfferProps) {
     const { auth } = usePage<SharedData>().props;
+    const { t } = useTranslation();
     
     // Inicializar con la fecha de cierre existente
     const [date, setDate] = useState<Date | undefined>(
         offer.closing_date ? new Date(offer.closing_date) : undefined
     );
+
+    // Breadcrumbs con traducciones
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('company_dashboard'),
+            href: '/company/dashboard',
+        },
+        {
+            title: t('edit_job_listing'),
+            href: '#',
+        },
+    ];
 
     const { data, setData, errors, put, processing } = useForm({
         name: offer.name || '',
@@ -92,7 +95,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
         
         put(route('offers.update', offer.id), {
             onSuccess: () => {
-                toast.success('Job listing updated successfully!');
+                toast.success(t('job_updated_success'));
             },
         });
     };
@@ -112,21 +115,21 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                     },
                 }}
             />
-            <Head title="Edit Job Listing" />
+            <Head title={t('edit_job_listing')} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Edit Job Listing</CardTitle>
-                        <CardDescription>Update the details of your job opportunity</CardDescription>
+                        <CardTitle>{t('edit_job_listing')}</CardTitle>
+                        <CardDescription>{t('update_job_details')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {/* Job Title */}
                             <div className="space-y-2">
-                                <Label htmlFor="name">Job Title</Label>
+                                <Label htmlFor="name">{t('job_title')}</Label>
                                 <Input
                                     id="name"
-                                    placeholder="e.g. Senior Software Developer"
+                                    placeholder={t('job_title_placeholder')}
                                     value={data.name}
                                     onChange={(e) => setData('name', e.target.value)}
                                 />
@@ -135,10 +138,10 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
                             {/* Job Description */}
                             <div className="space-y-2">
-                                <Label htmlFor="description">Job Description</Label>
+                                <Label htmlFor="description">{t('job_description')}</Label>
                                 <Textarea
                                     id="description"
-                                    placeholder="Describe the role, responsibilities, and requirements"
+                                    placeholder={t('job_description_placeholder')}
                                     rows={5}
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
@@ -149,13 +152,13 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                             <div className="grid gap-4 md:grid-cols-3">
                                 {/* Category */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="category">Category</Label>
+                                    <Label htmlFor="category">{t('category')}</Label>
                                     <Select
                                         value={data.category}
                                         onValueChange={(value) => setData('category', value)}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a category" />
+                                            <SelectValue placeholder={t('select_category')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {categories.map((category) => (
@@ -170,10 +173,10 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
                                 {/* Education Level */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="degree">Education Level</Label>
+                                    <Label htmlFor="degree">{t('required_degree')}</Label>
                                     <Input
                                         id="degree"
-                                        placeholder="e.g. Bachelor's Degree, Master's, etc."
+                                        placeholder={t('degree_placeholder')}
                                         value={data.degree}
                                         onChange={(e) => setData('degree', e.target.value)}
                                     />
@@ -182,7 +185,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
                                 {/* Contact Email */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="email">Contact Email</Label>
+                                    <Label htmlFor="email">{t('contact_email')}</Label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -196,13 +199,13 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                             <div className="grid gap-4 md:grid-cols-3">
                                 {/* Contract Type */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="contract_type">Contract Type</Label>
+                                    <Label htmlFor="contract_type">{t('contract_type')}</Label>
                                     <Select
                                         value={data.contract_type}
                                         onValueChange={(value) => setData('contract_type', value)}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a contract type" />
+                                            <SelectValue placeholder={t('select_contract_type')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {contractTypes.map((type) => (
@@ -217,10 +220,10 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
                                 {/* Location */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="job_location">Location</Label>
+                                    <Label htmlFor="job_location">{t('job_location')}</Label>
                                     <Input
                                         id="job_location"
-                                        placeholder="e.g. Barcelona, Spain or Remote"
+                                        placeholder={t('location_placeholder')}
                                         value={data.job_location}
                                         onChange={(e) => setData('job_location', e.target.value)}
                                     />
@@ -229,7 +232,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
                                 {/* Closing Date */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="closing_date">Application Deadline</Label>
+                                    <Label htmlFor="closing_date">{t('application_deadline')}</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button
@@ -237,7 +240,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                                                 className="w-full justify-start text-left font-normal"
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                                                {date ? format(date, 'PPP') : <span>{t('pick_date')}</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -265,10 +268,10 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                                     variant="outline"
                                     onClick={() => window.history.back()}
                                 >
-                                    Cancel
+                                    {t('cancel')}
                                 </Button>
                                 <Button type="submit" disabled={processing}>
-                                    {processing ? 'Updating...' : 'Update Job Listing'}
+                                    {processing ? t('updating') : t('update_job_listing')}
                                 </Button>
                             </div>
                         </form>

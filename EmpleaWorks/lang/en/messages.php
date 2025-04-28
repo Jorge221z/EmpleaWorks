@@ -130,4 +130,14 @@ return [
     'only_companies_create' => 'Only companies can create job listings.',
     'job_created_success' => 'Job listing created successfully!',
     'job_created_error' => 'There was a problem creating your job listing',
+
+    // Job offer editing
+    'edit_job_listing' => 'Edit Job Listing',
+    'update_job_details' => 'Update the details of your job opportunity',
+    'update_job_listing' => 'Update Job Listing',
+    'updating' => 'Updating...',
+    'job_updated_success' => 'Job listing updated successfully!',
+    'job_updated_error' => 'There was a problem updating your job listing',
+    'not_your_listing' => 'You can only edit your own job listings',
+    'job_title_unique_edit' => 'This job title is already in use by another listing.',
 ];

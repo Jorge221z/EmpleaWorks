@@ -130,4 +130,14 @@ return [
     'only_companies_create' => 'Solo las empresas pueden crear ofertas de empleo.',
     'job_created_success' => '¡Oferta de trabajo creada con éxito!',
     'job_created_error' => 'Hubo un problema al crear la oferta de trabajo',
+
+    // Job offer editing
+    'edit_job_listing' => 'Editar Oferta de Empleo',
+    'update_job_details' => 'Actualiza los detalles de tu oferta de empleo',
+    'update_job_listing' => 'Actualizar Oferta de Empleo',
+    'updating' => 'Actualizando...',
+    'job_updated_success' => '¡Oferta de trabajo actualizada con éxito!',
+    'job_updated_error' => 'Hubo un problema al actualizar la oferta de trabajo',
+    'not_your_listing' => 'Solo puedes editar tus propias ofertas de empleo',
+    'job_title_unique_edit' => 'Este título de empleo ya está en uso por otra oferta.',
 ];
