@@ -85,6 +85,24 @@ const translations: Record<string, Record<string, string>> = {
         'no_job_listings_yet': 'No Job Listings Yet',
         'no_job_listings_message': 'You haven\'t created any job listings yet. Start attracting talent by posting your first job opportunity.',
         'create_first_job': 'Create Your First Job Listing',
+
+        // Aplication Form
+        'apply': 'Apply',
+        'apply_for': 'Apply for',
+        'back_to_offer_details': 'Back to offer details',
+        'application_form': 'Application Form',
+        'complete_all_fields': 'Please complete all fields to apply for this position',
+        'phone_number': 'Phone Number',
+        'enter_phone': 'Enter your phone number',
+        'email': 'Email',
+        'enter_email': 'Enter your contact email',
+        'cover_letter': 'Cover letter',
+        'why_apply': 'Why do you want to apply for this job?',
+        'agree_terms': 'I agree to the terms and conditions',
+        'submitting': 'Submitting...',
+        'submit_application': 'Submit Application',
+        'job_summary': 'Job Summary',
+        'deadline': 'Deadline',
     },
     es: {
         // Sidebar
@@ -168,6 +186,24 @@ const translations: Record<string, Record<string, string>> = {
         'no_job_listings_yet': 'Aún No Hay Ofertas de Empleo',
         'no_job_listings_message': 'Aún no has creado ninguna oferta de empleo. Comienza a atraer talento publicando tu primera oportunidad laboral.',
         'create_first_job': 'Crea Tu Primera Oferta de Empleo',
+
+        // Aplication Form
+        'apply': 'Aplicar',
+        'apply_for': 'Aplicar a',
+        'back_to_offer_details': 'Volver a detalles de la oferta',
+        'application_form': 'Formulario de Solicitud',
+        'complete_all_fields': 'Por favor completa todos los campos para solicitar este puesto',
+        'phone_number': 'Número de Teléfono',
+        'enter_phone': 'Introduce tu número de teléfono',
+        'email': 'Correo Electrónico',
+        'enter_email': 'Introduce tu correo electrónico de contacto',
+        'cover_letter': 'Carta de presentación',
+        'why_apply': '¿Por qué quieres solicitar este trabajo?',
+        'agree_terms': 'Estoy de acuerdo con los términos y condiciones',
+        'submitting': 'Enviando...',
+        'submit_application': 'Enviar Solicitud',
+        'job_summary': 'Resumen del Empleo',
+        'deadline': 'Fecha límite',
     }
 };
 
