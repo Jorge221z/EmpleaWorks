@@ -140,4 +140,12 @@ return [
     'job_updated_error' => 'Hubo un problema al actualizar la oferta de trabajo',
     'not_your_listing' => 'Solo puedes editar tus propias ofertas de empleo',
     'job_title_unique_edit' => 'Este título de empleo ya está en uso por otra oferta.',
+
+    // Show Offer form
+    'back_to_offers' => 'Volver a ofertas',
+    'job_details' => 'Detalles del empleo',
+    'not_specified' => 'No especificado',
+    'apply_to_this_offer' => 'Aplicar a esta oferta',
+    'description' => 'Descripción',
+    'contact' => 'Contacto',
 ];
