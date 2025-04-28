@@ -88,17 +88,29 @@ class ProfileController extends Controller
             }
             // Manejar imagen con nombre original (solo si no se está eliminando)
             else if ($request->hasFile('image')) {
-                // Si hay una imagen previa, eliminarla
-                if ($user->image && Storage::disk('public')->exists($user->image)) {
-                    Storage::disk('public')->delete($user->image);
-                }
-                
                 $imageFile = $request->file('image');
-                $uniqueFilename = $this->getUniqueFilename('images', $imageFile->getClientOriginalName());
-                
-                // Almacena el archivo con el nombre original o uno único si ya existe
-                $path = $imageFile->storeAs('images', $uniqueFilename, 'public');
+                \Log::info('Archivo recibido: ' . $imageFile->getClientOriginalName());
+                \Log::info('Path temporal: ' . $imageFile->getPathname());
+                \Log::info('Es válido: ' . ($imageFile->isValid() ? 'Sí' : 'No'));
+
+                try {
+                    $path = $imageFile->store('images', 'public');
+                    if ($path === false || $path === null) {
+                        \Log::error('El método store no generó un path');
+                    } else {
+                        \Log::info('Path generado: ' . $path);
+                    }
+                } catch (\Exception $e) {
+                    \Log::error('Error al almacenar la imagen: ' . $e->getMessage());
+                    $path = null;
+                }
+
                 $user->image = $path;
+                \Log::info('Imagen asignada: ' . ($user->image ?? 'Vacía'));
+                $user->save();
+                \Log::info('Imagen guardada en BD: ' . $user->image);
+            } else {
+                \Log::info('No se recibió ningún archivo de imagen');
             }
 
             // Guardar cambios del usuario

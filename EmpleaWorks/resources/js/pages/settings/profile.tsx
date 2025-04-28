@@ -60,7 +60,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     };
 
     const [imagePreview, setImagePreview] = useState<string | null>(
-        auth.user.image ? String(auth.user.image) : null
+        auth.user.image ? `/storage/${auth.user.image}` : null
     );
 
     const [cvName, setCvName] = useState<string | null>(
@@ -307,15 +307,17 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         >
                                             Eliminar imagen
                                         </button>
+
+                                        
                                     </div>
                                 ) : (
                                     <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-12 mb-2" fill="none" viewBox="0 0 21 21" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
-                                            <p className='font-medium'>Click here to select your image file</p>
-                                            <p className='text-sm'>or drag and drop here</p>
-                                            <p className='text-xs text-gray-400 mt-1'>Accepted files: JPG, PNG, GIF, WebP</p>
+                                        <p className='font-medium'>Click here to select your image file</p>
+                                        <p className='text-sm'>or drag and drop here</p>
+                                        <p className='text-xs text-gray-400 mt-1'>Accepted files: JPG, PNG, GIF, WebP</p>
                                     </div>
                                 )}
                             </div>
