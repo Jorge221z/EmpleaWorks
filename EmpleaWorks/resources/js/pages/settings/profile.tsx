@@ -49,7 +49,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         cv: undefined,
         delete_cv: false,
         address: role_id === 2 && auth.user.company?.address ? auth.user.company.address : undefined,
-        weblink: role_id === 2 && auth.user.company?.weblink ? auth.user.company.weblink : undefined,
+        weblink: role_id === 2 && auth.user.company?.web_link ? auth.user.company.web_link : undefined,
     });
 
     // Mostramos los mensajes flash del backend

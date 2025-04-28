@@ -21,7 +21,7 @@ export interface Company {
   name?: string;       // Añadido para acceder a company.name
   description?: string; // Añadido para acceder a company.description
   address?: string;
-  weblink?: string;    // Nota: en tu SearchBar usas web_link pero aquí está como weblink
+  web_link?: string;    // Nota: en tu SearchBar usas web_link pero aquí está como weblink
   email?: string;
   logo?: string | null;
 }
