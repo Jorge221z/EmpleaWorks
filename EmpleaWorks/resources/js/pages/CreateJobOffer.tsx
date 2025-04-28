@@ -13,17 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormEvent, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Company Dashboard',
-        href: '/company/dashboard',
-    },
-    {
-        title: 'Create New Job',
-        href: '/company/create-job',
-    },
-];
+import { useTranslation } from '@/utils/i18n';
 
 interface CreateJobOfferProps {
     categories: string[];
@@ -36,10 +26,22 @@ interface CreateJobOfferProps {
 
 export default function CreateJobOffer({ categories = [], contractTypes = [], company }: CreateJobOfferProps) {
     const { auth } = usePage<SharedData>().props;
+    const { t } = useTranslation();
     const [date, setDate] = useState<Date | undefined>(
         // Set default date to 30 days from now
         new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
     );
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('company_dashboard'),
+            href: '/company/dashboard',
+        },
+        {
+            title: t('create_new_job'),
+            href: '/company/create-job',
+        },
+    ];
 
     const { data, setData, post, processing, errors } = useForm({
         name: '',
@@ -60,12 +62,12 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
         
         post(route('offers.store'), {
             onSuccess: () => {
-                toast.success('Job listing created successfully!');
+                toast.success(t('job_created_success'));
                 // Redirect to company dashboard after success
                 window.location.href = route('company.dashboard');
             },
             onError: () => {
-                toast.error('There was a problem creating your job listing');
+                toast.error(t('job_created_error'));
             }
         });
     };
@@ -85,18 +87,18 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                     },
                 }}
             />
-            <Head title="Create Job Listing" />
+            <Head title={t('create_job_listing')} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="px-2">
-                    <h2 className="text-2xl font-semibold mb-2">Create New Job Listing</h2>
-                    <p className="text-muted-foreground">Fill in the details to post a new job opportunity</p>
+                    <h2 className="text-2xl font-semibold mb-2">{t('create_new_job')}</h2>
+                    <p className="text-muted-foreground">{t('fill_job_details')}</p>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Job Information</CardTitle>
+                        <CardTitle>{t('job_information')}</CardTitle>
                         <CardDescription>
-                            Provide details about the position you're offering
+                            {t('provide_position_details')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -104,10 +106,10 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                             <div className="grid gap-4 md:grid-cols-2">
                                 {/* Job Title */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="name">Job Title</Label>
+                                    <Label htmlFor="name">{t('job_title')}</Label>
                                     <Input
                                         id="name"
-                                        placeholder="e.g. Senior Web Developer"
+                                        placeholder={t('job_title_placeholder')}
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
                                     />
@@ -116,13 +118,13 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
                                 {/* Job Category */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="category">Category</Label>
+                                    <Label htmlFor="category">{t('category')}</Label>
                                     <Select 
                                         value={data.category} 
                                         onValueChange={(value) => setData('category', value)}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a category" />
+                                            <SelectValue placeholder={t('select_category')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {categories.map((category) => (
@@ -138,10 +140,10 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
                             {/* Job Description */}
                             <div className="space-y-2">
-                                <Label htmlFor="description">Job Description</Label>
+                                <Label htmlFor="description">{t('job_description')}</Label>
                                 <Textarea
                                     id="description"
-                                    placeholder="Describe the role, responsibilities, and requirements"
+                                    placeholder={t('job_description_placeholder')}
                                     rows={5}
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
@@ -152,10 +154,10 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                             <div className="grid gap-4 md:grid-cols-2">
                                 {/* Required Degree */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="degree">Required Degree/Education</Label>
+                                    <Label htmlFor="degree">{t('required_degree')}</Label>
                                     <Input
                                         id="degree"
-                                        placeholder="e.g. Bachelor's in Computer Science"
+                                        placeholder={t('degree_placeholder')}
                                         value={data.degree}
                                         onChange={(e) => setData('degree', e.target.value)}
                                     />
@@ -164,7 +166,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
                                 {/* Contact Email */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="email">Contact Email</Label>
+                                    <Label htmlFor="email">{t('contact_email')}</Label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -178,13 +180,13 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                             <div className="grid gap-4 md:grid-cols-3">
                                 {/* Contract Type */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="contract_type">Contract Type</Label>
+                                    <Label htmlFor="contract_type">{t('contract_type')}</Label>
                                     <Select 
                                         value={data.contract_type} 
                                         onValueChange={(value) => setData('contract_type', value)}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select contract type" />
+                                            <SelectValue placeholder={t('select_contract_type')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {contractTypes.map((type) => (
@@ -199,10 +201,10 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
                                 {/* Job Location */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="job_location">Job Location</Label>
+                                    <Label htmlFor="job_location">{t('job_location')}</Label>
                                     <Input
                                         id="job_location"
-                                        placeholder="e.g. Barcelona, Spain or Remote"
+                                        placeholder={t('location_placeholder')}
                                         value={data.job_location}
                                         onChange={(e) => setData('job_location', e.target.value)}
                                     />
@@ -211,7 +213,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
                                 {/* Closing Date */}
                                 <div className="space-y-2">
-                                    <Label htmlFor="closing_date">Application Deadline</Label>
+                                    <Label htmlFor="closing_date">{t('application_deadline')}</Label>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button
@@ -219,7 +221,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                                                 className="w-full justify-start text-left font-normal"
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                                                {date ? format(date, 'PPP') : <span>{t('pick_date')}</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -243,10 +245,10 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
                             <div className="flex justify-end gap-2 pt-4">
                                 <Button variant="outline" type="button" asChild>
-                                    <Link href={route('company.dashboard')}>Cancel</Link>
+                                    <Link href={route('company.dashboard')}>{t('cancel')}</Link>
                                 </Button>
                                 <Button type="submit" disabled={processing}>
-                                    {processing ? 'Creating...' : 'Create Job Listing'}
+                                    {processing ? t('creating') : t('create_job_listing')}
                                 </Button>
                             </div>
                         </form>

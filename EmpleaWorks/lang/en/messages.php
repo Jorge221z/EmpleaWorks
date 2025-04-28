@@ -115,4 +115,19 @@ return [
     'offer_not_found' => 'Offer not found.',
     'already_applied' => 'You have already applied to this offer.',
     'candidate_profile_not_found' => 'Candidate profile not found.',
+
+    // Create job offer form
+    'job_title_required' => 'The job title field is required.',
+    'job_title_unique' => 'This job title is already in use.',
+    'job_description_required' => 'The job description field is required.',
+    'category_required' => 'The category field is required.',
+    'degree_required' => 'The required degree field is required.',
+    'contract_type_required' => 'The contract type field is required.',
+    'job_location_required' => 'The job location field is required.',
+    'closing_date_required' => 'The application deadline field is required.',
+    'closing_date_invalid' => 'The application deadline must be a valid date.',
+    'closing_date_future' => 'The application deadline must be a date after today.',
+    'only_companies_create' => 'Only companies can create job listings.',
+    'job_created_success' => 'Job listing created successfully!',
+    'job_created_error' => 'There was a problem creating your job listing',
 ];
