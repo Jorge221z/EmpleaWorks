@@ -57,7 +57,7 @@ const translations: Record<string, Record<string, string>> = {
         'complete_profile': 'Complete profile',
         'edit_profile': 'Edit Profile',
         
-        // Tarjetas de empresa
+        // Company Dashboard
         'job_listings': 'Job Listings',
         'manage_jobs': 'Manage your active job listings',
         'active_positions': 'Active positions',
@@ -66,7 +66,25 @@ const translations: Record<string, Record<string, string>> = {
         'applications_to_jobs': 'Applications to your jobs',
         'total_candidates': 'Total candidates',
         'company_profile': 'Company Profile',
-        'update_profile': 'Update your profile information'
+        'update_profile': 'Update your profile information',
+        'your_job_listings': 'Your Job Listings',
+        'manage_company_listings': 'Manage your job listings and applicants',
+        'manage_current_postings': 'Manage your current job postings',
+        'posted': 'Posted',
+        'edit': 'Edit',
+        'delete': 'Delete',
+        'are_you_sure': 'Are you sure?',
+        'delete_confirmation': 'This action cannot be undone. This will permanently delete your job listing',
+        'and_remove_applications': 'and remove all associated applications.',
+        'cancel': 'Cancel',
+        'job_deleted_success': 'Job listing deleted successfully!',
+        'job_deleted_error': 'There was a problem deleting the job listing',
+        'create_new_job': 'Create New Job Posting',
+        'add_job_opportunity': 'Add a new job opportunity to your listings',
+        'create_job_listing': 'Create Job Listing',
+        'no_job_listings_yet': 'No Job Listings Yet',
+        'no_job_listings_message': 'You haven\'t created any job listings yet. Start attracting talent by posting your first job opportunity.',
+        'create_first_job': 'Create Your First Job Listing',
     },
     es: {
         // Sidebar
@@ -125,13 +143,31 @@ const translations: Record<string, Record<string, string>> = {
         // Tarjetas de empresa
         'job_listings': 'Ofertas de Empleo',
         'manage_jobs': 'Gestiona tus ofertas activas',
-        'active_positions': 'Posiciones activas',
+        'active_positions': 'Ofertas activas',
         'new_job': 'Nueva Oferta',
         'applicants': 'Candidatos',
         'applications_to_jobs': 'Solicitudes a tus empleos',
         'total_candidates': 'Total de candidatos',
         'company_profile': 'Perfil de Empresa',
-        'update_profile': 'Actualiza la información de tu empresa'
+        'update_profile': 'Actualiza la información de tu empresa',
+        'your_job_listings': 'Tus Ofertas de Empleo',
+        'manage_company_listings': 'Gestiona tus ofertas y candidatos',
+        'manage_current_postings': 'Administra tus publicaciones actuales',
+        'posted': 'Publicado',
+        'edit': 'Editar',
+        'delete': 'Eliminar',
+        'are_you_sure': '¿Estás seguro?',
+        'delete_confirmation': 'Esta acción no se puede deshacer. Eliminará permanentemente tu oferta de trabajo',
+        'and_remove_applications': 'y todas las solicitudes asociadas.',
+        'cancel': 'Cancelar',
+        'job_deleted_success': '¡Oferta de trabajo eliminada con éxito!',
+        'job_deleted_error': 'Hubo un problema al eliminar la oferta de trabajo',
+        'create_new_job': 'Crear Nueva Oferta de Empleo',
+        'add_job_opportunity': 'Añade una nueva oportunidad de empleo a tus publicaciones',
+        'create_job_listing': 'Crear Oferta de Empleo',
+        'no_job_listings_yet': 'Aún No Hay Ofertas de Empleo',
+        'no_job_listings_message': 'Aún no has creado ninguna oferta de empleo. Comienza a atraer talento publicando tu primera oportunidad laboral.',
+        'create_first_job': 'Crea Tu Primera Oferta de Empleo',
     }
 };
 
