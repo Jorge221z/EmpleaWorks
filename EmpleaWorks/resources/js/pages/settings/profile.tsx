@@ -12,13 +12,7 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Company, Candidate, User } from '@/types/types';
 import toast, { Toaster } from 'react-hot-toast';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: '/settings/profile',
-    },
-];
+import { useTranslation } from '@/utils/i18n';
 
 type ProfileForm = {
     name: string;
@@ -36,6 +30,14 @@ type ProfileForm = {
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+    const { t } = useTranslation();
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: t('profile_settings'),
+            href: '/settings/profile',
+        },
+    ];
 
     const role_id = auth.user.role_id;
 
@@ -64,7 +66,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log('Datos antes de enviar:', data);
         post(route('profile.update'), {
             preserveScroll: true,
         });
@@ -96,15 +97,15 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     id: 'unique-toast2',
                 }}
             />
-            <Head title="Profile settings" />
+            <Head title={t('profile_settings')} />
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your profile data" />
+                    <HeadingSmall title={t('profile_information')} description={t('update_profile_data')} />
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name">{t('name')}</Label>
 
                             <Input
                                 id="name"
@@ -112,7 +113,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 autoComplete="name"
-                                placeholder="Full name"
+                                placeholder={t('full_name')}
                             />
 
                             <InputError className="mt-2" message={errors.name} />
@@ -120,20 +121,20 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                         {role_id === 1 && (
                             <div className='grid gap-2'>
-                                <Label htmlFor='surname'>Surname</Label>
+                                <Label htmlFor='surname'>{t('surname')}</Label>
                                 <Input
                                     id='surname'
                                     className='mt-1 block w-full'
                                     value={data.surname}
                                     onChange={(e) => setData('surname', e.target.value)}
                                     autoComplete='surname'
-                                    placeholder='Surname'
+                                    placeholder={t('surname')}
                                 />
                             </div>
                         )}
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
+                            <Label htmlFor="email">{t('email_address')}</Label>
 
                             <Input
                                 id="email"
@@ -142,7 +143,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 autoComplete="username"
-                                placeholder="Email address"
+                                placeholder={t('email_address')}
                             />
 
                             <InputError className="mt-2" message={errors.email} />
@@ -151,21 +152,21 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         {role_id === 2 && (
                             <div>
                                 <div className='grid gap-2'>
-                                    <Label htmlFor='address'>Company address</Label>
+                                    <Label htmlFor='address'>{t('company_address')}</Label>
                                     <Input
                                         id='address'
                                         className='mt-1 block w-full'
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
                                         autoComplete='address'
-                                        placeholder='Company address'
+                                        placeholder={t('company_address')}
                                     />
 
                                     <InputError className='mt-2' message={errors.address} />
                                 </div>
 
                                 <div className='grid gap-2 mt-6'>
-                                    <Label htmlFor='weblink'>WebSite</Label>
+                                    <Label htmlFor='weblink'>{t('website')}</Label>
                                     <Input
                                         id='weblink'
                                         type='string'
@@ -179,7 +180,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                             }
                                         }}
                                         autoComplete='weblink'
-                                        placeholder='Company weblink'
+                                        placeholder={t('company_website')}
                                     />
                                     <InputError className='mt-2' message={errors.weblink} />
                                 </div>
@@ -188,7 +189,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                         {role_id === 1 && (
                             <div className='grid gap-2'>
-                                <Label htmlFor='cv'>Curriculum Vitae</Label>
+                                <Label htmlFor='cv'>{t('curriculum_vitae')}</Label>
                                 <div
                                     className='relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors'
                                     onClick={() => {
@@ -206,7 +207,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                             setData('delete_cv', false);
                                             setCvName(file.name);
                                         } else if (file) {
-                                            alert('Por favor, sube solo archivos PDF o Word (DOC, DOCX)');
+                                            alert(t('only_pdf_doc'));
                                         }
                                     }}
                                 >
@@ -223,7 +224,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                     setCvName(file.name);
                                                 } else {
                                                     e.target.value = '';
-                                                    alert('Por favor, sube solo archivos PDF o Word (DOC, DOCX)');
+                                                    alert(t('only_pdf_doc'));
                                                 }
                                             }
                                         }}
@@ -248,7 +249,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                                         </svg>
-                                                        Descargar
+                                                        {t('download')}
                                                     </a>
                                                 )}
                                                 <button
@@ -264,7 +265,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
-                                                    Eliminar CV
+                                                    {t('delete_cv')}
                                                 </button>
                                             </div>
                                         </div>
@@ -274,9 +275,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V7.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9h6M9 13h6M9 17h3" />
                                             </svg>
-                                            <p className='font-medium'>Click here to select your CV file</p>
-                                            <p className='text-sm'>or drag and drop here</p>
-                                            <p className='text-xs text-gray-400 mt-1'>Accepted files: PDF, DOC, DOCX</p>
+                                            <p className='font-medium'>{t('click_select_cv')}</p>
+                                            <p className='text-sm'>{t('drag_drop_here')}</p>
+                                            <p className='text-xs text-gray-400 mt-1'>{t('accepted_files_docs')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -285,7 +286,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         )}
 
                         <div className='grid gap-2'>
-                            <Label htmlFor='image'>Imagen</Label>
+                            <Label htmlFor='image'>{t('image')}</Label>
                             <div
                                 className='relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors'
                                 onClick={() => {
@@ -309,7 +310,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         };
                                         reader.readAsDataURL(file);
                                     } else if (file) {
-                                        alert('Please, just upload this type of files (JPG, PNG, GIF, etc.)');
+                                        alert(t('only_image_files'));
                                     }
                                 }}
                             >
@@ -330,19 +331,19 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 reader.readAsDataURL(file);
                                             } else {
                                                 e.target.value = '';
-                                                alert('Por favor, sube solo archivos de imagen (JPG, PNG, GIF, etc.)');
+                                                alert(t('only_image_files'));
                                             }
                                         }
                                     }}
                                     accept='image/jpeg,image/png,image/gif,image/webp'
-                                    placeholder='Image'
+                                    placeholder={t('image')}
                                 />
 
                                 {imagePreview ? (
                                     <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
                                         <img
                                             src={imagePreview}
-                                            alt="Vista previa"
+                                            alt={t('preview')}
                                             className="h-32 object-contain mb-2"
                                         />
                                         <p className='text-sm'>{data.image?.name}</p>
@@ -356,7 +357,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 setImagePreview(null);
                                             }}
                                         >
-                                            Eliminar imagen
+                                            {t('delete_image')}
                                         </button>
 
                                         
@@ -366,9 +367,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-12 mb-2" fill="none" viewBox="0 0 21 21" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
-                                        <p className='font-medium'>Click here to select your image file</p>
-                                        <p className='text-sm'>or drag and drop here</p>
-                                        <p className='text-xs text-gray-400 mt-1'>Accepted files: JPG, PNG, GIF, WebP</p>
+                                        <p className='font-medium'>{t('click_select_image')}</p>
+                                        <p className='text-sm'>{t('drag_drop_here')}</p>
+                                        <p className='text-xs text-gray-400 mt-1'>{t('accepted_files_images')}</p>
                                     </div>
                                 )}
                             </div>
@@ -376,13 +377,13 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
 
                         <div className='grid gap-2'>
-                            <Label htmlFor='description'>Description</Label>
+                            <Label htmlFor='description'>{t('description')}</Label>
                             <textarea
                                 id='description'
                                 className='mt-1 block w-full min-h-[80px] p-3 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-input'
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                placeholder='Description'
+                                placeholder={t('description')}
                                 rows={4}
                             />
                             <InputError className='mt-2' message={errors.description} />
@@ -390,37 +391,28 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
-                                <p className="text-muted-foreground -mt-4 text-sm"/>
-                                    Your email address is unverified.{' '}
+                                <p className="text-muted-foreground -mt-4 text-sm">
+                                    {t('email_unverified')}{' '}
                                     <Link
                                         href={route('verification.send')}
                                         method="post"
                                         as="button"
                                         className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                     >
-                                        Click here to resend the verification email.
+                                        {t('resend_verification_email')}
                                     </Link>
+                                </p>
 
                                 {status === 'verification-link-sent' && (
                                     <div className="mt-2 text-sm font-medium text-green-600">
-                                        A new verification link has been sent to your email address.
+                                        {t('verification_link_sent')}
                                     </div>
                                 )}
                             </div>
                         )}
 
                         <div className="flex items-center gap-4">
-                            <Button disabled={processing}>Save</Button>
-
-                            {/* <Transition
-                                show={recentlySuccessful}
-                                enter="transition ease-in-out"
-                                enterFrom="opacity-0"
-                                leave="transition ease-in-out"
-                                leaveTo="opacity-0"
-                            >
-                                <p className="text-md font-bold text-black dark:text-white">Saved</p>
-                            </Transition> */}
+                            <Button disabled={processing}>{t('save')}</Button>
                         </div>
                     </form>
                 </div>
