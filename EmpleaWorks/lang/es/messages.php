@@ -115,4 +115,19 @@ return [
     'offer_not_found' => 'Oferta no encontrada.',
     'already_applied' => 'Ya has aplicado a esta oferta.',
     'candidate_profile_not_found' => 'Perfil de candidato no encontrado.',
+
+    // Create job offer form
+    'job_title_required' => 'El campo título del empleo es obligatorio.',
+    'job_title_unique' => 'Este título de empleo ya está en uso.',
+    'job_description_required' => 'El campo descripción del empleo es obligatorio.',
+    'category_required' => 'El campo categoría es obligatorio.',
+    'degree_required' => 'El campo de titulación requerida es obligatorio.',
+    'contract_type_required' => 'El campo tipo de contrato es obligatorio.',
+    'job_location_required' => 'El campo ubicación del empleo es obligatorio.',
+    'closing_date_required' => 'El campo fecha límite de solicitud es obligatorio.',
+    'closing_date_invalid' => 'La fecha límite de solicitud debe ser una fecha válida.',
+    'closing_date_future' => 'La fecha límite de solicitud debe ser una fecha posterior a hoy.',
+    'only_companies_create' => 'Solo las empresas pueden crear ofertas de empleo.',
+    'job_created_success' => '¡Oferta de trabajo creada con éxito!',
+    'job_created_error' => 'Hubo un problema al crear la oferta de trabajo',
 ];

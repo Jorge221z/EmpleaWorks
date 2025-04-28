@@ -103,6 +103,28 @@ const translations: Record<string, Record<string, string>> = {
         'submit_application': 'Submit Application',
         'job_summary': 'Job Summary',
         'deadline': 'Deadline',
+
+        // Create Job Offer Form
+        'job_created_success': 'Job listing created successfully!',
+        'job_created_error': 'There was a problem creating your job listing',
+        'fill_job_details': 'Fill in the details to post a new job opportunity',
+        'job_information': 'Job Information',
+        'provide_position_details': 'Provide details about the position you\'re offering',
+        'job_title': 'Job Title',
+        'job_title_placeholder': 'e.g. Senior Web Developer',
+        'category': 'Category',
+        'select_category': 'Select a category',
+        'job_description': 'Job Description',
+        'job_description_placeholder': 'Describe the role, responsibilities, and requirements',
+        'required_degree': 'Required Degree/Education',
+        'degree_placeholder': 'e.g. Bachelor\'s in Computer Science',
+        'contact_email': 'Contact Email',
+        'select_contract_type': 'Select contract type',
+        'job_location': 'Job Location',
+        'location_placeholder': 'e.g. Barcelona, Spain or Remote',
+        'application_deadline': 'Application Deadline',
+        'pick_date': 'Pick a date',
+        'creating': 'Creating...',
     },
     es: {
         // Sidebar
@@ -204,6 +226,28 @@ const translations: Record<string, Record<string, string>> = {
         'submit_application': 'Enviar Solicitud',
         'job_summary': 'Resumen del Empleo',
         'deadline': 'Fecha límite',
+
+        // Create Job Offer Form
+        'job_created_success': '¡Oferta de trabajo creada con éxito!',
+        'job_created_error': 'Hubo un problema al crear la oferta de trabajo',
+        'fill_job_details': 'Completa los detalles para publicar una nueva oferta de empleo',
+        'job_information': 'Información del Empleo',
+        'provide_position_details': 'Proporciona detalles sobre el puesto que estás ofreciendo',
+        'job_title': 'Título del Empleo',
+        'job_title_placeholder': 'ej. Desarrollador Web Senior',
+        'category': 'Categoría',
+        'select_category': 'Selecciona una categoría',
+        'job_description': 'Descripción del Empleo',
+        'job_description_placeholder': 'Describe el rol, responsabilidades y requisitos',
+        'required_degree': 'Titulación/Educación Requerida',
+        'degree_placeholder': 'ej. Grado en Informática',
+        'contact_email': 'Correo de Contacto',
+        'select_contract_type': 'Selecciona tipo de contrato',
+        'job_location': 'Ubicación del Empleo',
+        'location_placeholder': 'ej. Barcelona, España o Remoto',
+        'application_deadline': 'Fecha Límite de Solicitud',
+        'pick_date': 'Elegir fecha',
+        'creating': 'Creando...',
     }
 };
 

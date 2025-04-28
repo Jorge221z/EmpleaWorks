@@ -20,24 +20,40 @@ class OfferController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar los datos de la oferta
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:offers,name',
-            'description' => 'required|string',
-            'category' => 'required|string|max:255',
-            'degree' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'contract_type' => 'required|string|max:255',
-            'job_location' => 'required|string|max:255',
-            'closing_date' => 'required|date|after:today',
-        ]);
+        // Validar los datos de la oferta con mensajes traducidos
+        $validated = $request->validate(
+            [
+                'name' => 'required|string|max:255|unique:offers,name',
+                'description' => 'required|string',
+                'category' => 'required|string|max:255',
+                'degree' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'contract_type' => 'required|string|max:255',
+                'job_location' => 'required|string|max:255',
+                'closing_date' => 'required|date|after:today',
+            ],
+            [
+                'name.required' => __('messages.job_title_required'),
+                'name.unique' => __('messages.job_title_unique'),
+                'description.required' => __('messages.job_description_required'),
+                'category.required' => __('messages.category_required'),
+                'degree.required' => __('messages.degree_required'),
+                'email.required' => __('messages.email_required'),
+                'email.email' => __('messages.email_invalid_format'),
+                'contract_type.required' => __('messages.contract_type_required'),
+                'job_location.required' => __('messages.job_location_required'),
+                'closing_date.required' => __('messages.closing_date_required'),
+                'closing_date.date' => __('messages.closing_date_invalid'),
+                'closing_date.after' => __('messages.closing_date_future'),
+            ]
+        );
 
         // Obtener el usuario autenticado
         $user = Auth::user();
 
         // Verificar que el usuario sea una empresa
         if (!$user || !$user->isCompany()) {
-            return redirect()->back()->with('error', 'Only companies can create job listings');
+            return redirect()->back()->with('error', __('messages.only_companies_create'));
         }
 
         try {
@@ -49,11 +65,11 @@ class OfferController extends Controller
 
             // Redireccionar con mensaje de éxito
             return redirect()->route('company.dashboard')
-                ->with('success', 'Job listing created successfully!');
+                ->with('success', __('messages.job_created_success'));
         } catch (\Exception $e) {
             // Manejar cualquier error
             return redirect()->back()
-                ->with('error', 'There was a problem creating your job listing: ' . $e->getMessage())
+                ->with('error', __('messages.job_created_error') . ': ' . $e->getMessage())
                 ->withInput();
         }
     }
