@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\OfferController;
+use App\Models\Offer;
 
 class CandidateController extends Controller
 {
+    protected $offerController;
+
+    public function __construct(OfferController $offerController)
+    {
+        $this->offerController = $offerController;
+    }
     /**
      * Display the candidate dashboard.
      *
@@ -67,5 +75,35 @@ class CandidateController extends Controller
         'candidateOffers' => $candidateOffers,
             'flash' => $flash //pasamos explicitamente los flash a la vista //
     ]);
+    }
+
+    /**
+     * Show the application form for a specific offer
+     *
+     * @param  \App\Models\Offer $offer
+     */
+    public function showForm(Offer $offer)
+    {
+        // If an offer was provided, get the full offer details
+        if ($offer->exists) {
+            $offerWithCompany = $this->offerController->getOffer($offer);
+
+            $user = Auth::user(); //obtenemos el usuario autenticado en ese momento//
+            
+            if (!$user->candidate) { //usamos la relacion del modelo para hacer mas fluida esta comprobacion//
+                return Inertia::render('dashboard', [
+                    'message' => 'Candidate profile not found'
+                ]);
+            }
+            
+            return Inertia::render('AplicationForm', [
+                'offer' => $offerWithCompany,
+            ]);
+        }
+        
+        // Salida por defecto para evitar warnings de return no esperado //
+         return Inertia::render('dashboard', [
+             'message' => 'Offer not found'
+         ]);
     }
 }
