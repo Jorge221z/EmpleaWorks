@@ -168,10 +168,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     <Label htmlFor='weblink'>WebSite</Label>
                                     <Input
                                         id='weblink'
-                                        type='url'
+                                        type='string'
                                         className='mt-1 block w-full'
                                         value={data.weblink}
                                         onChange={(e) => setData('weblink', e.target.value)}
+                                        onBlur={() => {
+                                            // Format URL by adding https:// if no protocol is present
+                                            if (data.weblink && !data.weblink.match(/^https?:\/\//)) {
+                                                setData('weblink', `https://${data.weblink}`);
+                                            }
+                                        }}
                                         autoComplete='weblink'
                                         placeholder='Company weblink'
                                     />
