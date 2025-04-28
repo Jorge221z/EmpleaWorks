@@ -59,8 +59,8 @@ class ProfileController extends Controller
             $validated = $formRequest->validated();
 
             // Depurar datos validados y archivos
-            Log::info('Datos validados:', $validated);
-            Log::info('Archivos recibidos:', $request->files->all());
+            // Log::info('Datos validados:', $validated);
+            // Log::info('Archivos recibidos:', $request->files->all());
 
             // Actualizar campos del usuario
             if (isset($validated['name'])) {
@@ -84,22 +84,22 @@ class ProfileController extends Controller
                 }
                 $user->image = null;
                 $user->save(); // Guardar inmediatamente para asegurar la actualización en la BD
-                Log::info('Imagen eliminada para el usuario: ' . $user->id);
+                // Log::info('Imagen eliminada para el usuario: ' . $user->id);
             }
             // Manejar imagen con nombre original (solo si no se está eliminando)
             else if ($request->hasFile('image')) {
                 $imageFile = $request->file('image');
-                \Log::info('Archivo recibido: ' . $imageFile->getClientOriginalName());
-                \Log::info('Path temporal: ' . $imageFile->getPathname());
-                \Log::info('Es válido: ' . ($imageFile->isValid() ? 'Sí' : 'No'));
+                // \Log::info('Archivo recibido: ' . $imageFile->getClientOriginalName());
+                // \Log::info('Path temporal: ' . $imageFile->getPathname());
+                // \Log::info('Es válido: ' . ($imageFile->isValid() ? 'Sí' : 'No'));
 
                 try {
                     $path = $imageFile->store('images', 'public');
-                    if ($path === false || $path === null) {
-                        \Log::error('El método store no generó un path');
-                    } else {
-                        \Log::info('Path generado: ' . $path);
-                    }
+                    // if ($path === false || $path === null) {
+                    //     \Log::error('El método store no generó un path');
+                    // } else {
+                    //     \Log::info('Path generado: ' . $path);
+                    // }
                 } catch (\Exception $e) {
                     \Log::error('Error al almacenar la imagen: ' . $e->getMessage());
                     $path = null;
@@ -126,6 +126,7 @@ class ProfileController extends Controller
                 if (isset($validated['surname'])) {
                     $user->candidate->surname = $validated['surname'];
                 }
+
                 
                 // Manejar eliminación de CV
                 if (isset($validated['delete_cv']) && $validated['delete_cv'] && $user->candidate->cv) {
@@ -171,10 +172,10 @@ class ProfileController extends Controller
                 }
             }
 
-            return redirect()->route('profile.edit')->with('status', '¡Perfil actualizado!');
+            
+            return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
         } catch (Exception $e) {
-            Log::error('Error al actualizar perfil: ' . $e->getMessage());
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            return redirect()->route('profile.edit')->with('error', 'Error updating profile. Please try again.');
         }
     }
 

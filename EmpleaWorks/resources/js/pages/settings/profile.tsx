@@ -1,8 +1,7 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler, useState } from 'react';
-
+import { FormEventHandler, useState, useEffect } from 'react';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -12,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Company, Candidate, User } from '@/types/types';
+import toast, { Toaster } from 'react-hot-toast';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,6 +35,7 @@ type ProfileForm = {
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
 
     const role_id = auth.user.role_id;
 
@@ -50,6 +51,16 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         address: role_id === 2 && auth.user.company?.address ? auth.user.company.address : undefined,
         weblink: role_id === 2 && auth.user.company?.weblink ? auth.user.company.weblink : undefined,
     });
+
+    // Mostramos los mensajes flash del backend
+    useEffect(() => {
+        if (flash && flash.success) {
+            toast.success(flash.success);
+        }
+        if (flash && flash.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -67,8 +78,24 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         auth.user.candidate?.cv ? String(auth.user.candidate.cv).split('/').pop() ?? null : null
     );
 
+    const cvUrl = auth.user.candidate?.cv ? `/storage/${auth.user.candidate.cv}` : null;
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    className: 'toast-offers',
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '20px 28px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    },
+                    id: 'unique-toast2',
+                }}
+            />
             <Head title="Profile settings" />
 
             <SettingsLayout>
@@ -204,18 +231,36 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 <path d="M9 9H15M9 13H15M9 17H13" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                             <p className='text-sm font-medium'>{cvName}</p>
-                                            <button
-                                                type="button"
-                                                className="mt-2 text-xs text-red-600 hover:text-red-700 bg-red-200 hover:bg-red-300 rounded-md px-2 py-1"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setData('cv', undefined);
-                                                    setData('delete_cv', true);
-                                                    setCvName(null);
-                                                }}
-                                            >
-                                                Eliminar CV
-                                            </button>
+                                            <div className="flex space-x-2 mt-2">
+                                                {(cvUrl || data.cv) && (
+                                                    <a
+                                                        href={data.cv ? URL.createObjectURL(data.cv) : cvUrl!}
+                                                        download={cvName}
+                                                        className="text-xs text-blue-600 hover:text-blue-700 bg-blue-200 hover:bg-blue-300 rounded-md px-2 py-1 flex items-center"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                        </svg>
+                                                        Descargar
+                                                    </a>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    className="text-xs text-red-600 hover:text-red-700 bg-red-200 hover:bg-red-300 rounded-md px-2 py-1 flex items-center"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setData('cv', undefined);
+                                                        setData('delete_cv', true);
+                                                        setCvName(null);
+                                                    }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                    Eliminar CV
+                                                </button>
+                                            </div>
                                         </div>
                                     ) : (
                                         <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
@@ -361,7 +406,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         <div className="flex items-center gap-4">
                             <Button disabled={processing}>Save</Button>
 
-                            <Transition
+                            {/* <Transition
                                 show={recentlySuccessful}
                                 enter="transition ease-in-out"
                                 enterFrom="opacity-0"
@@ -369,7 +414,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 leaveTo="opacity-0"
                             >
                                 <p className="text-md font-bold text-black dark:text-white">Saved</p>
-                            </Transition>
+                            </Transition> */}
                         </div>
                     </form>
                 </div>

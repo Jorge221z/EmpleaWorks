@@ -52,8 +52,9 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
             'flash' => [
-                'message' => session('message'),
-                'error' => session('error'),
+                'message' => $request->session()->get('message'),
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
             ],
             'currentRoute' => $request->route() ? $request->route()->getName() : null,
             
