@@ -274,4 +274,33 @@ return [
     'template_subject' => 'en',
     'for_the_offer' => 'Para la oferta:',
     'view_candidate_profile' => 'Ver Perfil del Candidato',
+
+    // Company controller messages
+    'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',
+    
+    // Job categories
+    'job_categories' => [
+        'informatics' => 'Informática',
+        'administration' => 'Administración',
+        'physical_activities' => 'Actividades físicas y deportivas',
+        'graphic_arts' => 'Artes gráficas',
+        'commerce_marketing' => 'Comercio y Marketing',
+        'electricity_electronics' => 'Electricidad y Electrónica',
+        'aesthetics' => 'Estética',
+        'image_sound' => 'Imagen y Sonido',
+        'wood' => 'Madera',
+        'maritime_fishing' => 'Marítimo-pesquera',
+        'healthcare' => 'Sanidad',
+        'security_environment' => 'Seguridad y Medio ambiente',
+        'other' => 'Otro'
+    ],
+    
+    // Contract types
+    'contract_types' => [
+        'permanent' => 'Indefinido',
+        'temporary' => 'Temporal',
+        'alternating_training' => 'Formación en Alternancia',
+        'professional_practice' => 'Práctica Profesional',
+        'remote' => 'Remoto'
+    ],
 ];

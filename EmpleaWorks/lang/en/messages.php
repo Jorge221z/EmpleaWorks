@@ -275,4 +275,33 @@ return [
     'template_subject' => 'to',
     'for_the_offer' => 'For the offer:',
     'view_candidate_profile' => 'View Candidate Profile',
+
+    // Company controller messages
+    'edit_only_own_listings' => 'You can only edit your own job listings',
+    
+    // Job categories
+    'job_categories' => [
+        'informatics' => 'Informatics',
+        'administration' => 'Administration',
+        'physical_activities' => 'Physical Activities and Sports',
+        'graphic_arts' => 'Graphic Arts',
+        'commerce_marketing' => 'Commerce and Marketing',
+        'electricity_electronics' => 'Electricity and Electronics',
+        'aesthetics' => 'Aesthetics',
+        'image_sound' => 'Image and Sound',
+        'wood' => 'Wood',
+        'maritime_fishing' => 'Maritime-Fishing',
+        'healthcare' => 'Healthcare',
+        'security_environment' => 'Security and Environment',
+        'other' => 'Other'
+    ],
+    
+    // Contract types
+    'contract_types' => [
+        'permanent' => 'Permanent',
+        'temporary' => 'Temporary',
+        'alternating_training' => 'Alternating Training',
+        'professional_practice' => 'Professional Practice',
+        'remote' => 'Remote'
+    ],
 ];
