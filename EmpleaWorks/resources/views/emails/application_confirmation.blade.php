@@ -44,7 +44,7 @@
             <h1>Solicitud Enviada</h1>
         </div>
         <div class="content">
-            <p>Hola {{ $user->name }},</p>
+            <p>Hola {{ $candidate->name }},</p>
 
             <p>Tu solicitud para el puesto <strong>{{ $offer->name }}</strong> en <strong>{{ $company->name }}</strong>
                 ha sido enviada correctamente.</p>
