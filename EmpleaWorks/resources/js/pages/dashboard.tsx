@@ -6,17 +6,35 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { CalendarIcon, MapPinIcon, BriefcaseIcon } from 'lucide-react';
 import { Offer, Company } from '@/types/types';
 import SearchBar from '@/SearchBar/SearchBar';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useTranslation } from '@/utils/i18n';
 
-export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
+interface DashboardProps {
+    offers?: Offer[];
+    categories?: string[];
+    contractTypes?: string[];
+}
+
+export default function Dashboard({ offers = [], categories = [], contractTypes = [] }: DashboardProps) {
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
     const { auth } = usePage<SharedData>().props;
     const { t } = useTranslation();
     const isAuthenticated = !!auth.user;
 
     const [filteredOffers, setFilteredOffers] = useState<Offer[]>(offers);
+    
+    // Si no se proporcionan categorías y tipos de contrato desde el backend,
+    // extraemos los valores únicos de las ofertas
+    const availableCategories = useMemo(() => {
+        if (categories.length > 0) return categories;
+        return [...new Set(offers.map(offer => offer.category).filter(Boolean))];
+    }, [categories, offers]);
+    
+    const availableContractTypes = useMemo(() => {
+        if (contractTypes.length > 0) return contractTypes;
+        return [...new Set(offers.map(offer => offer.contract_type).filter(Boolean))];
+    }, [contractTypes, offers]);
 
     // Function to handle direct navigation without Inertia
     const navigateToLogin = () => {
@@ -97,12 +115,19 @@ export default function Dashboard({ offers = [] }: { offers?: Offer[] }) {
                     <p className="text-muted-foreground">{t('explore_opportunities')}</p>
                 </div>
 
-                {/* Barra de búsqueda */}
-                <div className="px-4 py-3 mb-6 bg-white shadow-lg rounded-lg max-w-lg mx-auto">
-                    <SearchBar
-                        data={offers}
-                        onFilteredResults={handleFilteredResults}
-                    />
+                {/* Barra de búsqueda con selectores */}
+                <div className="mb-6 relative">
+                    {/* Acento de color más fino */}
+                    <div className="absolute -left-1 top-6 bottom-6 w-0.5 bg-primary rounded-full" />
+
+                    <div className="pb-5 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg ml-1.5 border border-gray-100 dark:border-gray-700 transform hover:translate-y-[-2px] transition-transform duration-300">
+                        <SearchBar
+                            data={offers}
+                            onFilteredResults={handleFilteredResults}
+                            categories={availableCategories}
+                            contractTypes={availableContractTypes}
+                        />
+                    </div>
                 </div>
 
                 {/* Mostrar ofertas en el grid */}

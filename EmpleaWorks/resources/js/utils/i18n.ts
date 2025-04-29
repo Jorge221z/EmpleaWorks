@@ -251,6 +251,21 @@ const translations: Record<string, Record<string, string>> = {
         'verify_email': 'Verify email',
         'email_verification': 'Email verification',
         'verify_email_description': 'Please verify your email address by clicking on the link we just emailed to you.',
+
+        // Searchbar
+        'search_placeholder': 'Search by title, company, location, etc...',
+        'clear_search': 'Clear search',
+        'all_categories': 'All categories',
+        'all_contract_types': 'All contract types',
+        'no_results_found': 'No results found for "{query}"',
+        'results_found': '{count} result(s) found for "{query}"',
+        'selected_filters': 'selected filters',
+        'filter_by': 'Filter by',
+        'filters': 'Filters',
+        'clear_filters': 'Clear filters',
+        'clear_all': 'Clear all',
+        'contract': 'Contract',
+        "filter_description": "Filter job offers by category and contract type."
     },
     es: {
         // Sidebar
@@ -500,6 +515,22 @@ const translations: Record<string, Record<string, string>> = {
         'verify_email': 'Verificar correo electrónico',
         'email_verification': 'Verificación de correo electrónico',
         'verify_email_description': 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
+
+        // Searchbar
+        'search_placeholder': 'Buscar por título, empresa, ubicación, etc...',
+        'clear_search': 'Limpiar búsqueda',
+        'all_categories': 'Todas las categorías',
+        'all_contract_types': 'Todos los tipos de contrato',
+        'no_results_found': 'No se encontraron resultados para "{query}"',
+        'results_found': 'Se encontraron {count} resultado(s) para "{query}"',
+        'selected_filters': 'filtros seleccionados',
+        'filter_by': 'Filtrar por',
+        'filters': 'Filtros',
+        'clear_filters': 'Limpiar filtros',
+        'clear_all': 'Limpiar todo',
+        'apply_filters': 'Aplicar filtros',
+        'contract': 'Contrato',
+        "filter_description": "Filtra ofertas de trabajo por categoría y tipo de contrato."
     }
 };
 
