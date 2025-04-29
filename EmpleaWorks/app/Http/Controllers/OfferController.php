@@ -244,6 +244,8 @@ class OfferController extends Controller
         //guardamos los datos en la base de datos//
         $user->applyToOffer($offer);
 
+
+        // Enviamos un correo al candidato y a la empresa
         $company = User::find($offer->user_id);
 
         // Instantiate the client.
@@ -256,7 +258,7 @@ class OfferController extends Controller
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
             $fromAddress = 'Emplea Works <notificaciones@mg.emplea.works>';
             $toAddress = "{$candidate->name} <{$request->email}>";
-            $subject = __("messages.new_application_from", [
+            $subject = __("messages.application_confirm", [
                 'name' => $user->name,
                 'offer' => $offer->name,
             ]);

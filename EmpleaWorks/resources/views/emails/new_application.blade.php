@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Nueva Solicitud</title>
+    <title>{{ __('messages.new_application_received') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,29 +48,29 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Nueva Solicitud Recibida</h1>
+            <h1>{{ __('messages.new_application_received') }}</h1>
         </div>
         <div class="content">
-            <p>Hola {{ $company->name }},</p>
+            <p>{{ __('messages.hello_company', ['name_app' => $company->name]) }}</p>
 
-            <p>Has recibido una nueva solicitud para el puesto <strong>{{ $offer->name }}</strong>.</p>
+            <p>{{ __('messages.new_application_message') }} <strong>{{ $offer->name }}</strong>.</p>
 
             <div class="candidate-info">
-                <h3>Información del candidato:</h3>
-                <p><strong>Nombre:</strong> {{ $candidate->name }}</p>
-                <p><strong>Teléfono:</strong> {{ $phone }}</p>
-                <p><strong>Email:</strong> {{ $email }}</p>
-                <p><strong>Carta de presentación:</strong></p>
+                <h3>{{ __('messages.candidate_information') }}</h3>
+                <p><strong>{{ __('messages.name') }}:</strong> {{ $candidate->name }}</p>
+                <p><strong>{{ __('messages.phone') }}:</strong> {{ $phone }}</p>
+                <p><strong>{{ __('messages.email') }}:</strong> {{ $email }}</p>
+                <p><strong>{{ __('messages.cover_letter') }}:</strong></p>
                 <p>{{ $coverLetter }}</p>
             </div>
 
-            <p>Puedes revisar el perfil completo del candidato en tu panel de control de EmpleaWorks.</p>
+            <p>{{ __('messages.review_candidate_profile') }}</p>
 
-            <p>Saludos,<br>
-                El equipo de EmpleaWorks</p>
+            <p>{{ __('messages.regards') }},<br>
+                {{ __('messages.emplea_works_team') }}</p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} EmpleaWorks. Todos los derechos reservados.
+            &copy; {{ date('Y') }} EmpleaWorks. {{ __('messages.all_rights_reserved') }}
         </div>
     </div>
 </body>

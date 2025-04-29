@@ -250,4 +250,25 @@ return [
     'verify_email' => 'Verificar correo electrónico',
     'email_verification' => 'Verificación de correo electrónico',
     'verify_email_description' => 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
+
+    //Traduccion de mensajes de mailgun
+    'new_application_from' => 'Nueva solicitud de EmpleaWorks',
+    'application_confirm' => 'Solicitud confirmada',
+    
+    // Nuevas traducciones para plantillas de email
+    'new_application_received' => 'Nueva Solicitud Recibida',
+    'hello_company' => 'Hola :name',
+    'hello_candidate' => 'Hola :name',
+    'new_application_message' => 'Has recibido una nueva solicitud para el puesto',
+    'candidate_information' => 'Información del candidato',
+    'name_app' => 'Nombre',
+    'phone' => 'Teléfono',
+    'review_candidate_profile' => 'Puedes revisar el perfil completo del candidato en tu panel de control de EmpleaWorks.',
+    'regards' => 'Saludos',
+    'emplea_works_team' => 'El equipo de EmpleaWorks',
+    'all_rights_reserved' => 'Todos los derechos reservados',
+    'application_sent' => 'Solicitud Enviada',
+    'application_confirmation_message' => 'Tu solicitud para el puesto <strong>:offer</strong> en <strong>:company</strong> ha sido enviada correctamente.',
+    'application_details' => 'Detalles de tu solicitud',
+    'company_review_message' => 'La empresa revisará tu perfil y se pondrá en contacto contigo si estiman que tu perfil es adecuado para el puesto.',
 ];
