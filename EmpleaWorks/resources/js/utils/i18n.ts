@@ -142,6 +142,115 @@ const translations: Record<string, Record<string, string>> = {
         'apply_to_this_offer': 'Apply to this job offer',
         'description': 'Description',
         'contact': 'Contact',
+
+        // Profile settings form
+        'profile_settings': 'Profile Settings',
+        'profile_information': 'Profile Information',
+        'update_profile_data': 'Update your profile data',
+        'name': 'Name',
+        'full_name': 'Full name',
+        'surname': 'Surname',
+        'email_address': 'Email address',
+        'company_address': 'Company address',
+        'website': 'Website',
+        'company_website': 'Company website',
+        'curriculum_vitae': 'Curriculum Vitae',
+        'only_pdf_doc': 'Please, upload only PDF or Word (DOC, DOCX) files',
+        'download': 'Download',
+        'delete_cv': 'Delete CV',
+        'click_select_cv': 'Click here to select your CV file',
+        'drag_drop_here': 'or drag and drop here',
+        'accepted_files_docs': 'Accepted files: PDF, DOC, DOCX',
+        'image': 'Image',
+        'preview': 'Preview',
+        'delete_image': 'Delete image',
+        'click_select_image': 'Click here to select your image file',
+        'accepted_files_images': 'Accepted files: JPG, PNG, GIF, WebP',
+        'email_unverified': 'Your email address is unverified.',
+        'resend_verification_email': 'Click here to resend the verification email.',
+        'verification_link_sent': 'A new verification link has been sent to your email address.',
+        'save': 'Save',
+        'only_image_files': 'Please, upload only image files (JPG, PNG, GIF, etc.)',
+        'profile_updated_success': 'Profile updated successfully',
+        'profile_updated_error': 'Error updating profile. Please try again.',
+
+        // Password form
+        'password_settings': 'Password Settings',
+        'update_password': 'Update Password',
+        'ensure_account_security': 'Ensure your account is using a long, random password to stay secure',
+        'current_password': 'Current Password',
+        'new_password': 'New Password',
+        'confirm_password': 'Confirm Password',
+        'save_password': 'Save Password',
+        'saved': 'Saved',
+        'password_updated_success': 'Password updated successfully',
+        'password_updated_error': 'There was a problem updating your password',
+
+        // Appearance form
+        'appearance_settings': 'Appearance Settings',
+        'update_appearance_settings': 'Update your account\'s appearance settings',
+        'theme': 'Theme',
+        'light': 'Light',
+        'dark': 'Dark',
+        'system': 'System',
+
+        // Dropdown menu footer sidebar
+        'guest_user': 'Guest User',
+        'account': 'Account',
+        'log_in': 'Log in',
+        'register': 'Register',
+        'my_account': 'My Account',
+        'password': 'Password',
+        'appearance': 'Appearance',
+        'log_out': 'Log out',
+        'settings': 'Settings',
+        'manage_account_settings': 'Manage your profile and account settings',
+
+        // Confirm password form
+        'confirm_your_password': 'Confirm your password',
+        'secure_area_confirmation': 'This is a secure area of the application. Please confirm your password before continuing.',
+
+        // Forgot password form
+        'forgot_password': 'Forgot password',
+        'enter_email_reset_link': 'Enter your email to receive a password reset link',
+        'email_placeholder': 'email@example.com',
+        'send_password_reset_link': 'Email password reset link',
+        'or_return_to': 'Or, return to',
+        'reset_link_sent': 'A reset link will be sent if the account exists.',
+        'email_required': 'The email field is required.',
+        'email_valid': 'Please enter a valid email address.',
+
+        // Login form
+        'welcome_back': 'Welcome back',
+        'enter_email_to_sign_in': 'Enter your email to sign in to your account',
+        'password_placeholder': '••••••••',
+        'forgot_your_password': 'Forgot your password?',
+        'remember_me': 'Remember me',
+        'signing_in': 'Signing in...',
+        'dont_have_account': 'Don\'t have an account?',
+        'sign_up': 'Sign up',
+
+        // Register form
+        'create_an_account': 'Create an account',
+        'enter_details_create_account': 'Enter your details below to create your account',
+        'name_placeholder': 'Full name',
+        'role': 'Role',
+        'select_role': 'Select a role',
+        'candidate': 'Candidate',
+        'company': 'Company',
+        'registering': 'Registering...',
+        'already_have_account': 'Already have an account?',
+
+        // Reset password form
+        'reset_password': 'Reset password',
+        'enter_new_password_below': 'Please enter your new password below',
+        'confirm_password_placeholder': 'Confirm password',
+        'reset_password_button': 'Reset password',
+
+        // Verify email form
+        'verify_email': 'Verify email',
+        'email_verification': 'Email verification',
+        'verify_email_description': 'Please verify your email address by clicking on the link we just emailed to you.',
     },
     es: {
         // Sidebar
@@ -282,6 +391,115 @@ const translations: Record<string, Record<string, string>> = {
         'apply_to_this_offer': 'Aplicar a esta oferta',
         'description': 'Descripción',
         'contact': 'Contacto',
+
+        // Profile settings form
+        'profile_settings': 'Ajustes de Perfil',
+        'profile_information': 'Información del Perfil',
+        'update_profile_data': 'Actualiza tus datos de perfil',
+        'name': 'Nombre',
+        'full_name': 'Nombre completo',
+        'surname': 'Apellidos',
+        'email_address': 'Dirección de correo electrónico',
+        'company_address': 'Dirección de la empresa',
+        'website': 'Sitio web',
+        'company_website': 'Sitio web de la empresa',
+        'curriculum_vitae': 'Currículum Vitae',
+        'only_pdf_doc': 'Por favor, sube solo archivos PDF o Word (DOC, DOCX)',
+        'download': 'Descargar',
+        'delete_cv': 'Eliminar CV',
+        'click_select_cv': 'Haz clic aquí para seleccionar tu archivo CV',
+        'drag_drop_here': 'o arrastra y suelta aquí',
+        'accepted_files_docs': 'Archivos aceptados: PDF, DOC, DOCX',
+        'image': 'Imagen',
+        'preview': 'Vista previa',
+        'delete_image': 'Eliminar imagen',
+        'click_select_image': 'Haz clic aquí para seleccionar tu imagen',
+        'accepted_files_images': 'Archivos aceptados: JPG, PNG, GIF, WebP',
+        'email_unverified': 'Tu dirección de correo electrónico no está verificada.',
+        'resend_verification_email': 'Haz clic aquí para reenviar el correo de verificación.',
+        'verification_link_sent': 'Se ha enviado un nuevo enlace de verificación a tu dirección de correo electrónico.',
+        'save': 'Guardar',
+        'only_image_files': 'Por favor, sube solo archivos de imagen (JPG, PNG, GIF, etc.)',
+        'profile_updated_success': 'Perfil actualizado correctamente',
+        'profile_updated_error': 'Error al actualizar el perfil. Por favor, inténtalo de nuevo.',
+
+        // Password form
+        'password_settings': 'Configuración de Contraseña',
+        'update_password': 'Actualizar Contraseña',
+        'ensure_account_security': 'Asegúrate de que tu cuenta utilice una contraseña larga y aleatoria para mantenerla segura',
+        'current_password': 'Contraseña Actual',
+        'new_password': 'Nueva Contraseña',
+        'confirm_password': 'Confirmar Contraseña',
+        'save_password': 'Guardar Contraseña',
+        'saved': 'Guardado',
+        'password_updated_success': 'Contraseña actualizada correctamente',
+        'password_updated_error': 'Hubo un problema al actualizar tu contraseña',
+
+        // Appaerance form
+        'appearance_settings': 'Configuración de Apariencia',
+        'update_appearance_settings': 'Actualiza la configuración de apariencia de tu cuenta',
+        'theme': 'Tema',
+        'light': 'Claro',
+        'dark': 'Oscuro',
+        'system': 'Sistema',
+
+        // Dropdown menu footer sidebar
+        'guest_user': 'Usuario Invitado',
+        'account': 'Cuenta',
+        'log_in': 'Iniciar sesión',
+        'register': 'Registrarse',
+        'my_account': 'Mi Cuenta',
+        'password': 'Contraseña',
+        'appearance': 'Apariencia',
+        'log_out': 'Cerrar sesión',
+        'settings': 'Configuración',
+        'manage_account_settings': 'Administra la configuración de tu perfil y cuenta',
+
+        // Confirm password form
+        'confirm_your_password': 'Confirma tu contraseña',
+        'secure_area_confirmation': 'Esta es un área segura de la aplicación. Por favor, confirma tu contraseña antes de continuar.',
+
+        // Forgot password form
+        'forgot_password': 'Olvidé mi contraseña',
+        'enter_email_reset_link': 'Ingresa tu correo electrónico para recibir un enlace de restablecimiento',
+        'email_placeholder': 'correo@ejemplo.com',
+        'send_password_reset_link': 'Enviar enlace de restablecimiento',
+        'or_return_to': 'Volver a',
+        'reset_link_sent': 'Se enviará un enlace de restablecimiento si la cuenta existe.',
+        'email_required': 'El campo correo electrónico es obligatorio.',
+        'email_valid': 'Por favor ingresa una dirección de correo electrónico válida.',
+
+        // Login form
+        'welcome_back': 'Bienvenido de nuevo',
+        'enter_email_to_sign_in': 'Ingresa tu correo para acceder a tu cuenta',
+        'password_placeholder': '••••••••',
+        'forgot_your_password': '¿Olvidaste tu contraseña?',
+        'remember_me': 'Recordarme',
+        'signing_in': 'Iniciando sesión...',
+        'dont_have_account': '¿No tienes cuenta?',
+        'sign_up': 'Regístrate',
+
+        // Register form
+        'create_an_account': 'Crear una cuenta',
+        'enter_details_create_account': 'Introduce tus datos para crear una cuenta',
+        'name_placeholder': 'Nombre completo',
+        'role': 'Rol',
+        'select_role': 'Selecciona un rol',
+        'candidate': 'Candidato',
+        'company': 'Empresa',
+        'registering': 'Registrando...',
+        'already_have_account': '¿Ya tienes cuenta?',
+
+        // Reset password form
+        'reset_password': 'Restablecer contraseña',
+        'enter_new_password_below': 'Por favor, introduce tu nueva contraseña a continuación',
+        'confirm_password_placeholder': 'Confirmar contraseña',
+        'reset_password_button': 'Restablecer contraseña',
+
+        // Verify email form
+        'verify_email': 'Verificar correo electrónico',
+        'email_verification': 'Verificación de correo electrónico',
+        'verify_email_description': 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
     }
 };
 

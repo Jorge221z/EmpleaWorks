@@ -148,4 +148,107 @@ return [
     'apply_to_this_offer' => 'Apply to this job offer',
     'description' => 'Description',
     'contact' => 'Contact',
+
+    // Profile settings form
+    'profile_settings' => 'Profile Settings',
+    'profile_information' => 'Profile Information',
+    'update_profile_data' => 'Update your profile data',
+    'name' => 'Name',
+    'full_name' => 'Full name',
+    'surname' => 'Surname',
+    'email_address' => 'Email address',
+    'company_address' => 'Company address',
+    'website' => 'Website',
+    'company_website' => 'Company website',
+    'curriculum_vitae' => 'Curriculum Vitae',
+    'only_pdf_doc' => 'Please, upload only PDF or Word (DOC, DOCX) files',
+    'download' => 'Download',
+    'delete_cv' => 'Delete CV',
+    'image' => 'Image',
+    'preview' => 'Preview',
+    'delete_image' => 'Delete image',
+    'email_unverified' => 'Your email address is unverified.',
+    'resend_verification_email' => 'Click here to resend the verification email.',
+    'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    'save' => 'Save',
+    'profile_updated_success' => 'Profile updated successfully',
+    'profile_updated_error' => 'Error updating profile. Please try again.',
+
+    // Password settings form
+    'password_settings' => 'Password Settings',
+    'update_password' => 'Update Password',
+    'ensure_account_security' => 'Ensure your account is using a long, random password to stay secure',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm Password',
+    'save_password' => 'Save Password',
+    'saved' => 'Saved',
+    'current_password_required' => 'The current password field is required.',
+    'current_password_incorrect' => 'The provided password does not match your current password.',
+    'new_password_required' => 'The new password field is required.',
+    'password_confirmation_mismatch' => 'The password confirmation does not match.',
+    'password_updated_success' => 'Password updated successfully',
+    'password_updated_error' => 'There was a problem updating your password',
+
+    // Appearance settings form
+    'appearance_settings' => 'Appearance Settings',
+    'update_appearance_settings' => 'Update your account\'s appearance settings',
+    'theme' => 'Theme',
+    'light' => 'Light',
+    'dark' => 'Dark',
+    'system' => 'System',
+
+    // Dropdown menu footer sidebar
+    'guest_user' => 'Guest User',
+    'account' => 'Account',
+    'log_in' => 'Log in',
+    'register' => 'Register',
+    'my_account' => 'My Account',
+    'password' => 'Password',
+    'appearance' => 'Appearance',
+    'log_out' => 'Log out',
+    'settings' => 'Settings',
+    'manage_account_settings' => 'Manage your profile and account settings',
+
+    // Confirm password form
+    'confirm_your_password' => 'Confirm your password',
+    'secure_area_confirmation' => 'This is a secure area of the application. Please confirm your password before continuing.',
+
+    // Forgot password form
+    'forgot_password' => 'Forgot password',
+    'enter_email_reset_link' => 'Enter your email to receive a password reset link',
+    'send_password_reset_link' => 'Email password reset link',
+    'or_return_to' => 'Or, return to',
+    'reset_link_sent' => 'A reset link will be sent if the account exists.',
+    'email_valid' => 'Please enter a valid email address.',
+
+    // Login form
+    'welcome_back' => 'Welcome back',
+    'enter_email_to_sign_in' => 'Enter your email to sign in to your account',
+    'forgot_your_password' => 'Forgot your password?',
+    'remember_me' => 'Remember me',
+    'signing_in' => 'Signing in...',
+    'dont_have_account' => 'Don\'t have an account?',
+    'sign_up' => 'Sign up',
+
+    // Registration form
+    'create_an_account' => 'Create an account',
+    'enter_details_create_account' => 'Enter your details below to create your account',
+    'role' => 'Role',
+    'select_role' => 'Select a role',
+    'candidate' => 'Candidate',
+    'company' => 'Company',
+    'registering' => 'Registering...',
+    'already_have_account' => 'Already have an account?',
+
+    // Reset password form
+    'reset_password' => 'Reset password',
+    'enter_new_password_below' => 'Please enter your new password below',
+    'confirm_password_placeholder' => 'Confirm password',
+    'reset_password_button' => 'Reset password',
+
+    // Email verification
+    'verify_email' => 'Verify email',
+    'email_verification' => 'Email verification',
+    'verify_email_description' => 'Please verify your email address by clicking on the link we just emailed to you.',
 ];

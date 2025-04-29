@@ -148,4 +148,106 @@ return [
     'apply_to_this_offer' => 'Aplicar a esta oferta',
     'description' => 'Descripción',
     'contact' => 'Contacto',
+
+    // Profile settings form
+    'profile_settings' => 'Ajustes de Perfil',
+    'profile_information' => 'Información del Perfil',
+    'update_profile_data' => 'Actualiza tus datos de perfil',
+    'name' => 'Nombre',
+    'full_name' => 'Nombre completo',
+    'surname' => 'Apellidos',
+    'email_address' => 'Dirección de correo electrónico',
+    'company_address' => 'Dirección de la empresa',
+    'website' => 'Sitio web',
+    'company_website' => 'Sitio web de la empresa',
+    'curriculum_vitae' => 'Currículum Vitae',
+    'only_pdf_doc' => 'Por favor, sube solo archivos PDF o Word (DOC, DOCX)',
+    'download' => 'Descargar',
+    'delete_cv' => 'Eliminar CV',
+    'image' => 'Imagen',
+    'preview' => 'Vista previa',
+    'delete_image' => 'Eliminar imagen',
+    'email_unverified' => 'Tu dirección de correo electrónico no está verificada.',
+    'resend_verification_email' => 'Haz clic aquí para reenviar el correo de verificación.',
+    'verification_link_sent' => 'Se ha enviado un nuevo enlace de verificación a tu dirección de correo electrónico.',
+    'save' => 'Guardar',
+    'profile_updated_success' => 'Perfil actualizado correctamente',
+    'profile_updated_error' => 'Error al actualizar el perfil. Por favor, inténtalo de nuevo.',
+
+    // Password settings form
+    'password_settings' => 'Configuración de Contraseña',
+    'update_password' => 'Actualizar Contraseña',
+    'ensure_account_security' => 'Asegúrate de que tu cuenta utilice una contraseña larga y aleatoria para mantenerla segura',
+    'current_password' => 'Contraseña Actual',
+    'new_password' => 'Nueva Contraseña',
+    'confirm_password' => 'Confirmar Contraseña',
+    'save_password' => 'Guardar Contraseña',
+    'saved' => 'Guardado',
+    'current_password_required' => 'El campo contraseña actual es obligatorio.',
+    'current_password_incorrect' => 'La contraseña proporcionada no coincide con tu contraseña actual.',
+    'new_password_required' => 'El campo nueva contraseña es obligatorio.',
+    'password_confirmation_mismatch' => 'La confirmación de la contraseña no coincide.',
+    'password_updated_success' => 'Contraseña actualizada correctamente',
+    'password_updated_error' => 'Hubo un problema al actualizar tu contraseña',
+
+    // Appearance settings form
+    'appearance_settings' => 'Configuración de Apariencia',
+    'update_appearance_settings' => 'Actualiza la configuración de apariencia de tu cuenta',
+    'theme' => 'Tema',
+    'light' => 'Claro',
+    'dark' => 'Oscuro',
+    'system' => 'System',
+
+    // Dropdown menu footer sidebar
+    'guest_user' => 'Usuario Invitado',
+    'account' => 'Cuenta',
+    'log_in' => 'Iniciar sesión',
+    'register' => 'Registrarse',
+    'my_account' => 'Mi Cuenta',
+    'password' => 'Contraseña',
+    'appearance' => 'Apariencia',
+    'log_out' => 'Cerrar sesión','settings' => 'Configuración',
+    'manage_account_settings' => 'Administra la configuración de tu perfil y cuenta',
+
+    // Confirm password form
+    'confirm_your_password' => 'Confirma tu contraseña',
+    'secure_area_confirmation' => 'Esta es un área segura de la aplicación. Por favor, confirma tu contraseña antes de continuar.',
+
+    // Forgot password form
+    'forgot_password' => 'Olvidé mi contraseña',
+    'enter_email_reset_link' => 'Ingresa tu correo electrónico para recibir un enlace de restablecimiento',
+    'send_password_reset_link' => 'Enviar enlace de restablecimiento',
+    'or_return_to' => 'Volver a',
+    'reset_link_sent' => 'Se enviará un enlace de restablecimiento si la cuenta existe.',
+    'email_valid' => 'Por favor ingresa una dirección de correo electrónico válida.',
+
+    // Login form
+    'welcome_back' => 'Bienvenido de nuevo',
+    'enter_email_to_sign_in' => 'Ingresa tu correo para acceder a tu cuenta',
+    'forgot_your_password' => '¿Olvidaste tu contraseña?',
+    'remember_me' => 'Recordarme',
+    'signing_in' => 'Iniciando sesión...',
+    'dont_have_account' => '¿No tienes cuenta?',
+    'sign_up' => 'Regístrate',
+
+    // Register form
+    'create_an_account' => 'Crear una cuenta',
+    'enter_details_create_account' => 'Introduce tus datos para crear una cuenta',
+    'role' => 'Rol',
+    'select_role' => 'Selecciona un rol',
+    'candidate' => 'Candidato',
+    'company' => 'Empresa',
+    'registering' => 'Registrando...',
+    'already_have_account' => '¿Ya tienes cuenta?',
+
+    // Reset password form
+    'reset_password' => 'Restablecer contraseña',
+    'enter_new_password_below' => 'Por favor, introduce tu nueva contraseña a continuación',
+    'confirm_password_placeholder' => 'Confirmar contraseña',
+    'reset_password_button' => 'Restablecer contraseña',
+
+    // Email verification
+    'verify_email' => 'Verificar correo electrónico',
+    'email_verification' => 'Verificación de correo electrónico',
+    'verify_email_description' => 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
 ];

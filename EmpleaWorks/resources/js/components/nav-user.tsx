@@ -6,10 +6,12 @@ import { useInitials } from '@/hooks/use-initials';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { User } from 'lucide-react';
+import { useTranslation } from '@/utils/i18n';
 
 export function NavUser() {
     const { auth } = usePage<SharedData>().props;
     const getInitials = useInitials();
+    const { t } = useTranslation();
 
     return (
         <SidebarFooter className="p-0 border-t border-t-border overflow-visible">
@@ -31,7 +33,7 @@ export function NavUser() {
                         )}
                         <div className="flex start-2 justify-items-start gap-2 overflow-hidden text-ellipsis">
                             <span className="truncate text-sm font-medium leading-none text-foreground">
-                                {auth.user ? auth.user.name : 'Guest User'}
+                                {auth.user ? auth.user.name : t('guest_user')}
                             </span>
                         </div>
                     </button>
