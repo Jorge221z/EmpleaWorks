@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use Inertia\Response;
 use Mailgun\Mailgun;
@@ -72,6 +73,10 @@ class PasswordResetLinkController extends Controller
             $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
             $toAddress = "{$user->name} <{$user->email}>";
             $subject = __('messages.reset_password_subject');
+
+            // Establecer el idioma del usuario para renderizar la plantilla
+            $userLocale = $request->getPreferredLanguage(['es', 'en']) ?? config('app.locale');
+            App::setLocale($userLocale);
 
             // Renderizamos la vista Blade para el email
             $htmlBody = view('emails.password_reset', [

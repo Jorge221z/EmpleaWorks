@@ -280,6 +280,7 @@ return [
     'your_cv' => 'Tu CV',
     'no_cv_uploaded' => 'No has subido ningún CV a EmpleaWorks.',
     'cv_empty' => 'No has subido ningún CV a EmpleaWorks. Por favor, añade un CV a tu perfil para que las empresas puedan revisarlo.',
+    'reset_password_subject'=> 'Restablecer contraseña - EmpleaWorks',
 
     // Company controller messages
     'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',
@@ -309,4 +310,15 @@ return [
         'professional_practice' => 'Práctica Profesional',
         'remote' => 'Remoto'
     ],
+
+    // Reset password email
+    'reset_password_email_title' => 'Restablece tu contraseña',
+    'hello' => 'Hola :name,',
+    'reset_password_request' => 'Hemos recibido una solicitud para restablecer tu contraseña. Haz clic en el siguiente enlace para establecer una nueva:',
+    // Removed duplicate entry for 'reset_password_button'
+    'reset_link_expire' => 'Este enlace expirará en <strong>:minutes minutos</strong>.',
+    'reset_not_requested' => 'Si no has solicitado este cambio, simplemente ignora este correo.',
+    'email_greeting' => 'Saludos,',
+    'email_team' => 'El equipo de EmpleaWorks',
+    'email_rights' => '© :year EmpleaWorks. Todos los derechos reservados.',
 ];

@@ -281,7 +281,8 @@ return [
     'your_cv' => 'Your CV',
     'no_cv_uploaded' => 'No CV uploaded on EmpleaWorks',
     'cv_empty' => 'You haven\'t uploaded a CV yet. You can do it in your profile settings.',
-
+    'reset_password_subject' => 'Reset your password - EmpleaWorks',
+    
     // Company controller messages
     'edit_only_own_listings' => 'You can only edit your own job listings',
     
@@ -310,4 +311,15 @@ return [
         'professional_practice' => 'Professional Practice',
         'remote' => 'Remote'
     ],
+
+    // Reset password email
+    'reset_password_email_title' => 'Reset your password',
+    'hello' => 'Hello :name,',
+    'reset_password_request' => 'We received a request to reset your password. Click on the following link to set a new one:',
+    
+    'reset_link_expire' => 'This link will expire in <strong>:minutes minutes</strong>.',
+    'reset_not_requested' => 'If you didn\'t request this change, please ignore this email.',
+    'email_greeting' => 'Regards,',
+    'email_team' => 'The EmpleaWorks Team',
+    'email_rights' => '© :year EmpleaWorks. All rights reserved.',
 ];
