@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Mailgun\Mailgun;
+use Mailgun\Exception\HttpClientException;
+
+
 
 class OfferController extends Controller
 {
@@ -239,37 +244,95 @@ class OfferController extends Controller
         //guardamos los datos en la base de datos//
         $user->applyToOffer($offer);
 
+
+        // Enviamos un correo al candidato y a la empresa
         $company = User::find($offer->user_id);
 
-        // Enviamos correo al candidato
-        Mail::send('emails.application_confirmation', [
-            'user' => $user,
-            'offer' => $offer,
-            'company' => $company,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'coverLetter' => $request->cl
-        ], function ($message) use ($user, $offer) {
-            $message->to($user->email, $user->name)
-                ->subject(__('messages.application_submitted_for', ['offer' => $offer->name]));
-        });
+        // Instantiate the client.
+    	// $mg = Mailgun::create(getenv('API_KEY') ?: 'API_KEY');
+        // When you have an EU-domain, you must specify the endpoint:
+        try {
+            $mg = Mailgun::create(env('API_KEY'), env('MAILGUN_ENDPOINT', 'https://api.eu.mailgun.net'));
 
-        // Enviamos correo a la empresa
-        Mail::send('emails.new_application', [
-            'candidate' => $user,
-            'offer' => $offer,
-            'company' => $company,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'coverLetter' => $request->cl
-        ], function ($message) use ($company, $user, $offer) {
-            $message->to($company->email, $company->name)
-                ->subject(__('messages.new_application_from', ['name' => $user->name, 'offer' => $offer->name]));
-        });
+            // Preparamos los datos del mensaje para el candidato(confirmando su aplicación) //
+            $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
+            $fromAddress = 'Emplea Works <notificaciones@mg.emplea.works>';
+            $toAddress = "{$candidate->name} <{$request->email}>";
+            $subject = __("messages.application_confirm", [
+                'name' => $user->name,
+                'offer' => $offer->name,
+            ]);
+            $htmlBody = view('emails.application_confirmation', [
+                'candidate' => $user,
+                'offer' => $offer,
+                'company' => $company,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'coverLetter' => $request->cl,
+            ])->render();
+
+            // Enviamos el mensaje
+            $mg->messages()->send($domain, [
+                'from' => $fromAddress,
+                'to' => $toAddress,
+                'subject' => $subject,
+                'html' => $htmlBody,
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error al enviar correo de nueva aplicación al candidato', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->back()
+                ->with('error', __('messages.email_send_error') . ': ' . $e->getMessage());
+        }
+
+        try {
+            $mg = Mailgun::create(env('API_KEY'), env('MAILGUN_ENDPOINT', 'https://api.eu.mailgun.net'));
+
+            // Preparamos los datos del mensaje
+            $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
+            $fromAddress = 'Emplea Works <notificaciones@mg.emplea.works>';
+            $toAddress = "{$company->name} <{$company->email}>";
+            $subject = __("messages.new_application_from", [
+                'name' => $user->name,
+                'offer' => $offer->name,
+            ]);
+            $htmlBody = view('emails.new_application', [
+                'candidate' => $user,
+                'offer' => $offer,
+                'company' => $company,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'coverLetter' => $request->cl,
+            ])->render();
+
+            // Enviamos el mensaje
+            $result = $mg->messages()->send($domain, [
+                'from' => $fromAddress,
+                'to' => $toAddress,
+                'subject' => $subject,
+                'html' => $htmlBody,
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error al enviar correo de nueva aplicación a la empresa', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->back()
+                ->with('error', __('messages.email_send_error') . ': ' . $e->getMessage());
+        }
+
+
 
         return redirect()->route('candidate.dashboard')
             ->with('success', __('messages.application_submitted'));
     }
+
+
+
 
     /**
      * Update the specified offer in storage.

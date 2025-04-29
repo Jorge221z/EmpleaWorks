@@ -252,6 +252,27 @@ return [
     'email_verification' => 'Email verification',
     'verify_email_description' => 'Please verify your email address by clicking on the link we just emailed to you.',
 
+    //Traduccion de mensajes de mailgun
+    'new_application_from'=> 'New application from EmpleaWorks',
+    'application_confirm' => 'Application confirmed',
+    
+    // New translations for email templates
+    'new_application_received' => 'New Application Received',
+    'hello_company' => 'Hello :name_app',
+    'hello_candidate' => 'Hello :name_app',
+    'new_application_message' => 'You have received a new application for the position',
+    'candidate_information' => 'Candidate Information',
+    'name_app' => 'Name',
+    'phone' => 'Phone',
+    'review_candidate_profile' => 'You can review the full candidate profile in your EmpleaWorks dashboard.',
+    'regards' => 'Regards',
+    'emplea_works_team' => 'The EmpleaWorks Team',
+    'all_rights_reserved' => 'All rights reserved',
+    'application_sent' => 'Application Sent',
+    'application_confirmation_message' => 'Your application for the position <strong>:offer</strong> at <strong>:company</strong> has been successfully submitted.',
+    'application_details' => 'Application details',
+    'company_review_message' => 'The company will review your profile and contact you if they consider your profile suitable for the position.',
+
     // Company controller messages
     'edit_only_own_listings' => 'You can only edit your own job listings',
     

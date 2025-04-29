@@ -36,7 +36,6 @@ return [
     */
 
     'mailers' => [
-
         'smtp' => [
             'transport' => 'smtp',
             'scheme' => env('MAIL_SCHEME'),
@@ -48,37 +47,29 @@ return [
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
-
         'ses' => [
             'transport' => 'ses',
         ],
-
         'postmark' => [
             'transport' => 'postmark',
-            // 'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
         ],
-
         'resend' => [
             'transport' => 'resend',
         ],
-
+        'mailgun' => [  // Nueva configuración añadida
+            'transport' => 'mailgun',
+        ],
         'sendmail' => [
             'transport' => 'sendmail',
             'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
         ],
-
         'log' => [
             'transport' => 'log',
             'channel' => env('MAIL_LOG_CHANNEL'),
         ],
-
         'array' => [
             'transport' => 'array',
         ],
-
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
@@ -86,15 +77,16 @@ return [
                 'log',
             ],
         ],
-
         'roundrobin' => [
             'transport' => 'roundrobin',
             'mailers' => [
                 'ses',
                 'postmark',
+                'mailgun' => [
+                    'transport' => 'mailgun',
+                ],
             ],
         ],
-
     ],
 
     /*
@@ -109,8 +101,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'notificaciones@mg.emplea.works'),
+        'name' => env('MAIL_FROM_NAME', 'Emplea Works'),
     ],
 
 ];
