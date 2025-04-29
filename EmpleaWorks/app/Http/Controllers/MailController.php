@@ -14,7 +14,7 @@ class MailController extends Controller
      * Envía correo de confirmación al candidato tras aplicar a una oferta.
      *
      * @param array $data Datos necesarios para el correo
-     * @return bool Éxito del envío
+     * @return array|bool Array con status y mensaje de error, o true en caso de éxito
      */
     public function sendApplicationConfirmation($data)
     {
@@ -23,7 +23,7 @@ class MailController extends Controller
             
             // Preparamos los datos del mensaje para el candidato
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
-            $fromAddress = 'Emplea Works <notificaciones@mg.emplea.works>';
+            $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
             $toAddress = "{$data['candidate']->name} <{$data['email']}>";
             $subject = __("messages.application_confirm", [
                 'name' => $data['candidate']->name,
@@ -75,6 +75,13 @@ class MailController extends Controller
             // Si hay un CV para adjuntar, lo añadimos como adjunto
             if (!empty($attachmentParams)) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
+            } else { 
+                // En caso de faltar el CV, devolver error en lugar de intentar redireccionar
+                return [
+                    'success' => false,
+                    'error' => 'cv_missing',
+                    'message' => __('messages.cv_empty')
+                ];
             }
 
             // Enviamos el mensaje

@@ -279,6 +279,7 @@ return [
     'no_cv_available' => 'No hay CV disponible',
     'your_cv' => 'Tu CV',
     'no_cv_uploaded' => 'No has subido ningún CV a EmpleaWorks.',
+    'cv_empty' => 'No has subido ningún CV a EmpleaWorks. Por favor, añade un CV a tu perfil para que las empresas puedan revisarlo.',
 
     // Company controller messages
     'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',

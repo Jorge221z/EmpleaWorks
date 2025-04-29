@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Mailgun\Mailgun;
 use Mailgun\Exception\HttpClientException;
 
@@ -240,7 +241,13 @@ class OfferController extends Controller
             return redirect()->back()->with('error', __('messages.candidate_profile_not_found'));
         }
         
-        // Guardamos los datos en la base de datos(tabla pivote)
+        // Check if the candidate has a CV before attempting to save application
+        if (!$candidate->cv || !Storage::disk('public')->exists($candidate->cv)) {
+            return redirect()->route('profile.update')
+                ->with('error', __('messages.cv_empty'));
+        }
+        
+        // Solo lo guardamos si el CV existe para ese candidato//
         $user->applyToOffer($offer);
 
         // Preparamos los datos para los correos
@@ -259,8 +266,18 @@ class OfferController extends Controller
         $mailController = new \App\Http\Controllers\MailController();
         
         // Enviamos correo al candidato
-        $candidateEmailSent = $mailController->sendApplicationConfirmation($emailData);
-        if (!$candidateEmailSent) {
+        $candidateEmailResult = $mailController->sendApplicationConfirmation($emailData);
+        
+        // Verificamos si hay un error específico por CV faltante
+        if (is_array($candidateEmailResult) && isset($candidateEmailResult['success']) && $candidateEmailResult['success'] === false) {
+            if ($candidateEmailResult['error'] === 'cv_missing') {
+                // Si falta el CV, redirigir al usuario a la página de actualización de perfil
+                return redirect()->route('profile.update')
+                    ->with('error', $candidateEmailResult['message']);
+            }
+        }
+        
+        if (!$candidateEmailResult) {
             // Log del error ya se maneja en el MailController
             return redirect()->back()
                 ->with('error', __('messages.email_send_error'));

@@ -280,6 +280,7 @@ return [
     'no_cv_available' => 'No CV available',
     'your_cv' => 'Your CV',
     'no_cv_uploaded' => 'No CV uploaded on EmpleaWorks',
+    'cv_empty' => 'You haven\'t uploaded a CV yet. You can do it in your profile settings.',
 
     // Company controller messages
     'edit_only_own_listings' => 'You can only edit your own job listings',
