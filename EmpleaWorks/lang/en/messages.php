@@ -272,6 +272,15 @@ return [
     'application_confirmation_message' => 'Your application for the position <strong>:offer</strong> at <strong>:company</strong> has been successfully submitted.',
     'application_details' => 'Application details',
     'company_review_message' => 'The company will review your profile and contact you if they consider your profile suitable for the position.',
+    'template_subject' => 'to',
+    'for_the_offer' => 'For the offer:',
+    'view_candidate_profile' => 'View Candidate Profile',
+    'cv' => 'CV',
+    'download_cv' => 'Download CV',
+    'no_cv_available' => 'No CV available',
+    'your_cv' => 'Your CV',
+    'no_cv_uploaded' => 'No CV uploaded on EmpleaWorks',
+    'cv_empty' => 'You haven\'t uploaded a CV yet. You can do it in your profile settings.',
 
     // Company controller messages
     'edit_only_own_listings' => 'You can only edit your own job listings',

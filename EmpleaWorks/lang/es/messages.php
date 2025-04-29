@@ -257,8 +257,8 @@ return [
     
     // Nuevas traducciones para plantillas de email
     'new_application_received' => 'Nueva Solicitud Recibida',
-    'hello_company' => 'Hola :name',
-    'hello_candidate' => 'Hola :name',
+    'hello_company' => 'Hola :name_app',
+    'hello_candidate' => 'Hola :name_app',
     'new_application_message' => 'Has recibido una nueva solicitud para el puesto',
     'candidate_information' => 'Información del candidato',
     'name_app' => 'Nombre',
@@ -271,6 +271,15 @@ return [
     'application_confirmation_message' => 'Tu solicitud para el puesto <strong>:offer</strong> en <strong>:company</strong> ha sido enviada correctamente.',
     'application_details' => 'Detalles de tu solicitud',
     'company_review_message' => 'La empresa revisará tu perfil y se pondrá en contacto contigo si estiman que tu perfil es adecuado para el puesto.',
+    'template_subject' => 'en',
+    'for_the_offer' => 'Para la oferta:',
+    'view_candidate_profile' => 'Ver Perfil del Candidato',
+    'cv' => 'CV',
+    'download_cv'=> 'Descargar CV',
+    'no_cv_available' => 'No hay CV disponible',
+    'your_cv' => 'Tu CV',
+    'no_cv_uploaded' => 'No has subido ningún CV a EmpleaWorks.',
+    'cv_empty' => 'No has subido ningún CV a EmpleaWorks. Por favor, añade un CV a tu perfil para que las empresas puedan revisarlo.',
 
     // Company controller messages
     'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',

@@ -26,6 +26,10 @@ Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
 
+// Ruta para descargar CV de candidato (protegida con firma temporal)
+Route::get('/cv/download/{candidate}', [\App\Http\Controllers\CvController::class, 'download'])
+    ->name('cv.download')
+    ->middleware('signed');
 
 // Test de API para obtener ofertas (solo datos)
 Route::get('/offers', [OfferController::class, 'list'])->name('offers.list');
