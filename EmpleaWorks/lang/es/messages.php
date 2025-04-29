@@ -173,4 +173,28 @@ return [
     'save' => 'Guardar',
     'profile_updated_success' => 'Perfil actualizado correctamente',
     'profile_updated_error' => 'Error al actualizar el perfil. Por favor, inténtalo de nuevo.',
+
+    // Password settings form
+    'password_settings' => 'Configuración de Contraseña',
+    'update_password' => 'Actualizar Contraseña',
+    'ensure_account_security' => 'Asegúrate de que tu cuenta utilice una contraseña larga y aleatoria para mantenerla segura',
+    'current_password' => 'Contraseña Actual',
+    'new_password' => 'Nueva Contraseña',
+    'confirm_password' => 'Confirmar Contraseña',
+    'save_password' => 'Guardar Contraseña',
+    'saved' => 'Guardado',
+    'current_password_required' => 'El campo contraseña actual es obligatorio.',
+    'current_password_incorrect' => 'La contraseña proporcionada no coincide con tu contraseña actual.',
+    'new_password_required' => 'El campo nueva contraseña es obligatorio.',
+    'password_confirmation_mismatch' => 'La confirmación de la contraseña no coincide.',
+    'password_updated_success' => 'Contraseña actualizada correctamente',
+    'password_updated_error' => 'Hubo un problema al actualizar tu contraseña',
+
+    // Appearance settings form
+    'appearance_settings' => 'Configuración de Apariencia',
+    'update_appearance_settings' => 'Actualiza la configuración de apariencia de tu cuenta',
+    'theme' => 'Tema',
+    'light' => 'Claro',
+    'dark' => 'Oscuro',
+    'system' => 'System',
 ];

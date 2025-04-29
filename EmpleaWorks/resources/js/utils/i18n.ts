@@ -173,6 +173,26 @@ const translations: Record<string, Record<string, string>> = {
         'only_image_files': 'Please, upload only image files (JPG, PNG, GIF, etc.)',
         'profile_updated_success': 'Profile updated successfully',
         'profile_updated_error': 'Error updating profile. Please try again.',
+
+        // Password form
+        'password_settings': 'Password Settings',
+        'update_password': 'Update Password',
+        'ensure_account_security': 'Ensure your account is using a long, random password to stay secure',
+        'current_password': 'Current Password',
+        'new_password': 'New Password',
+        'confirm_password': 'Confirm Password',
+        'save_password': 'Save Password',
+        'saved': 'Saved',
+        'password_updated_success': 'Password updated successfully',
+        'password_updated_error': 'There was a problem updating your password',
+
+        // Appearance form
+        'appearance_settings': 'Appearance Settings',
+        'update_appearance_settings': 'Update your account\'s appearance settings',
+        'theme': 'Theme',
+        'light': 'Light',
+        'dark': 'Dark',
+        'system': 'System',
     },
     es: {
         // Sidebar
@@ -344,6 +364,26 @@ const translations: Record<string, Record<string, string>> = {
         'only_image_files': 'Por favor, sube solo archivos de imagen (JPG, PNG, GIF, etc.)',
         'profile_updated_success': 'Perfil actualizado correctamente',
         'profile_updated_error': 'Error al actualizar el perfil. Por favor, inténtalo de nuevo.',
+
+        // Password form
+        'password_settings': 'Configuración de Contraseña',
+        'update_password': 'Actualizar Contraseña',
+        'ensure_account_security': 'Asegúrate de que tu cuenta utilice una contraseña larga y aleatoria para mantenerla segura',
+        'current_password': 'Contraseña Actual',
+        'new_password': 'Nueva Contraseña',
+        'confirm_password': 'Confirmar Contraseña',
+        'save_password': 'Guardar Contraseña',
+        'saved': 'Guardado',
+        'password_updated_success': 'Contraseña actualizada correctamente',
+        'password_updated_error': 'Hubo un problema al actualizar tu contraseña',
+
+        // Appaerance form
+        'appearance_settings': 'Configuración de Apariencia',
+        'update_appearance_settings': 'Actualiza la configuración de apariencia de tu cuenta',
+        'theme': 'Tema',
+        'light': 'Claro',
+        'dark': 'Oscuro',
+        'system': 'Sistema',
     }
 };
 

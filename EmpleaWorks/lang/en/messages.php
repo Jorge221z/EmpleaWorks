@@ -173,4 +173,28 @@ return [
     'save' => 'Save',
     'profile_updated_success' => 'Profile updated successfully',
     'profile_updated_error' => 'Error updating profile. Please try again.',
+
+    // Password settings form
+    'password_settings' => 'Password Settings',
+    'update_password' => 'Update Password',
+    'ensure_account_security' => 'Ensure your account is using a long, random password to stay secure',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm Password',
+    'save_password' => 'Save Password',
+    'saved' => 'Saved',
+    'current_password_required' => 'The current password field is required.',
+    'current_password_incorrect' => 'The provided password does not match your current password.',
+    'new_password_required' => 'The new password field is required.',
+    'password_confirmation_mismatch' => 'The password confirmation does not match.',
+    'password_updated_success' => 'Password updated successfully',
+    'password_updated_error' => 'There was a problem updating your password',
+
+    // Appearance settings form
+    'appearance_settings' => 'Appearance Settings',
+    'update_appearance_settings' => 'Update your account\'s appearance settings',
+    'theme' => 'Theme',
+    'light' => 'Light',
+    'dark' => 'Dark',
+    'system' => 'System',
 ];
