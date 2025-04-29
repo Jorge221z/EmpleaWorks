@@ -205,6 +205,52 @@ const translations: Record<string, Record<string, string>> = {
         'log_out': 'Log out',
         'settings': 'Settings',
         'manage_account_settings': 'Manage your profile and account settings',
+
+        // Confirm password form
+        'confirm_your_password': 'Confirm your password',
+        'secure_area_confirmation': 'This is a secure area of the application. Please confirm your password before continuing.',
+
+        // Forgot password form
+        'forgot_password': 'Forgot password',
+        'enter_email_reset_link': 'Enter your email to receive a password reset link',
+        'email_placeholder': 'email@example.com',
+        'send_password_reset_link': 'Email password reset link',
+        'or_return_to': 'Or, return to',
+        'reset_link_sent': 'A reset link will be sent if the account exists.',
+        'email_required': 'The email field is required.',
+        'email_valid': 'Please enter a valid email address.',
+
+        // Login form
+        'welcome_back': 'Welcome back',
+        'enter_email_to_sign_in': 'Enter your email to sign in to your account',
+        'password_placeholder': '••••••••',
+        'forgot_your_password': 'Forgot your password?',
+        'remember_me': 'Remember me',
+        'signing_in': 'Signing in...',
+        'dont_have_account': 'Don\'t have an account?',
+        'sign_up': 'Sign up',
+
+        // Register form
+        'create_an_account': 'Create an account',
+        'enter_details_create_account': 'Enter your details below to create your account',
+        'name_placeholder': 'Full name',
+        'role': 'Role',
+        'select_role': 'Select a role',
+        'candidate': 'Candidate',
+        'company': 'Company',
+        'registering': 'Registering...',
+        'already_have_account': 'Already have an account?',
+
+        // Reset password form
+        'reset_password': 'Reset password',
+        'enter_new_password_below': 'Please enter your new password below',
+        'confirm_password_placeholder': 'Confirm password',
+        'reset_password_button': 'Reset password',
+
+        // Verify email form
+        'verify_email': 'Verify email',
+        'email_verification': 'Email verification',
+        'verify_email_description': 'Please verify your email address by clicking on the link we just emailed to you.',
     },
     es: {
         // Sidebar
@@ -408,6 +454,52 @@ const translations: Record<string, Record<string, string>> = {
         'log_out': 'Cerrar sesión',
         'settings': 'Configuración',
         'manage_account_settings': 'Administra la configuración de tu perfil y cuenta',
+
+        // Confirm password form
+        'confirm_your_password': 'Confirma tu contraseña',
+        'secure_area_confirmation': 'Esta es un área segura de la aplicación. Por favor, confirma tu contraseña antes de continuar.',
+
+        // Forgot password form
+        'forgot_password': 'Olvidé mi contraseña',
+        'enter_email_reset_link': 'Ingresa tu correo electrónico para recibir un enlace de restablecimiento',
+        'email_placeholder': 'correo@ejemplo.com',
+        'send_password_reset_link': 'Enviar enlace de restablecimiento',
+        'or_return_to': 'Volver a',
+        'reset_link_sent': 'Se enviará un enlace de restablecimiento si la cuenta existe.',
+        'email_required': 'El campo correo electrónico es obligatorio.',
+        'email_valid': 'Por favor ingresa una dirección de correo electrónico válida.',
+
+        // Login form
+        'welcome_back': 'Bienvenido de nuevo',
+        'enter_email_to_sign_in': 'Ingresa tu correo para acceder a tu cuenta',
+        'password_placeholder': '••••••••',
+        'forgot_your_password': '¿Olvidaste tu contraseña?',
+        'remember_me': 'Recordarme',
+        'signing_in': 'Iniciando sesión...',
+        'dont_have_account': '¿No tienes cuenta?',
+        'sign_up': 'Regístrate',
+
+        // Register form
+        'create_an_account': 'Crear una cuenta',
+        'enter_details_create_account': 'Introduce tus datos para crear una cuenta',
+        'name_placeholder': 'Nombre completo',
+        'role': 'Rol',
+        'select_role': 'Selecciona un rol',
+        'candidate': 'Candidato',
+        'company': 'Empresa',
+        'registering': 'Registrando...',
+        'already_have_account': '¿Ya tienes cuenta?',
+
+        // Reset password form
+        'reset_password': 'Restablecer contraseña',
+        'enter_new_password_below': 'Por favor, introduce tu nueva contraseña a continuación',
+        'confirm_password_placeholder': 'Confirmar contraseña',
+        'reset_password_button': 'Restablecer contraseña',
+
+        // Verify email form
+        'verify_email': 'Verificar correo electrónico',
+        'email_verification': 'Verificación de correo electrónico',
+        'verify_email_description': 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
     }
 };
 

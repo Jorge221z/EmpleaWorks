@@ -5,8 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import AppLogo from '@/components/app-logo';
+import { useTranslation } from '@/utils/i18n';
 
 export default function Login({ status, canResetPassword }: { status?: string, canResetPassword: boolean }) {
+    const { t } = useTranslation();
+    
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -26,16 +29,16 @@ export default function Login({ status, canResetPassword }: { status?: string, c
 
     return (
         <>
-            <Head title="Log in" />
+            <Head title={t('log_in')} />
             <div className="flex min-h-screen items-center justify-center bg-background p-4">
                 <div className="w-full max-w-md space-y-6">
                     <div className="flex flex-col items-center space-y-2 text-center">
                         <Link href="/">
                             <AppLogo />
                         </Link>
-                        <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">{t('welcome_back')}</h1>
                         <p className="text-sm text-muted-foreground">
-                            Enter your email to sign in to your account
+                            {t('enter_email_to_sign_in')}
                         </p>
                     </div>
 
@@ -48,13 +51,14 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                     <form onSubmit={submit} className="space-y-6">
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
+                                <Label htmlFor="email">{t('email')}</Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     value={data.email}
                                     className="w-full"
                                     autoComplete="username"
+                                    placeholder={t('email_placeholder')}
                                     onChange={(e) => setData('email', e.target.value)}
                                     required
                                 />
@@ -63,13 +67,13 @@ export default function Login({ status, canResetPassword }: { status?: string, c
 
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">{t('password')}</Label>
                                     {canResetPassword && (
                                         <Link
                                             href={route('password.request')}
                                             className="text-xs text-muted-foreground underline-offset-4 hover:underline"
                                         >
-                                            Forgot your password?
+                                            {t('forgot_your_password')}
                                         </Link>
                                     )}
                                 </div>
@@ -79,6 +83,7 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                                     value={data.password}
                                     className="w-full"
                                     autoComplete="current-password"
+                                    placeholder={t('password_placeholder')}
                                     onChange={(e) => setData('password', e.target.value)}
                                     required
                                 />
@@ -92,20 +97,20 @@ export default function Login({ status, canResetPassword }: { status?: string, c
                                     onCheckedChange={(checked) => setData('remember', checked as boolean)}
                                 />
                                 <Label htmlFor="remember" className="text-sm font-normal">
-                                    Remember me
+                                    {t('remember_me')}
                                 </Label>
                             </div>
                         </div>
 
                         <Button type="submit" className="w-full" disabled={processing}>
-                            {processing ? 'Signing in...' : 'Sign In'}
+                            {processing ? t('signing_in') : t('sign_in')}
                         </Button>
                     </form>
 
                     <div className="text-center text-sm">
-                        Don't have an account?{' '}
+                        {t('dont_have_account')}{' '}
                         <Link href={route('register')} className="underline underline-offset-4 hover:text-primary">
-                            Sign up
+                            {t('sign_up')}
                         </Link>
                     </div>
                 </div>

@@ -209,4 +209,46 @@ return [
     'log_out' => 'Log out',
     'settings' => 'Settings',
     'manage_account_settings' => 'Manage your profile and account settings',
+
+    // Confirm password form
+    'confirm_your_password' => 'Confirm your password',
+    'secure_area_confirmation' => 'This is a secure area of the application. Please confirm your password before continuing.',
+
+    // Forgot password form
+    'forgot_password' => 'Forgot password',
+    'enter_email_reset_link' => 'Enter your email to receive a password reset link',
+    'send_password_reset_link' => 'Email password reset link',
+    'or_return_to' => 'Or, return to',
+    'reset_link_sent' => 'A reset link will be sent if the account exists.',
+    'email_valid' => 'Please enter a valid email address.',
+
+    // Login form
+    'welcome_back' => 'Welcome back',
+    'enter_email_to_sign_in' => 'Enter your email to sign in to your account',
+    'forgot_your_password' => 'Forgot your password?',
+    'remember_me' => 'Remember me',
+    'signing_in' => 'Signing in...',
+    'dont_have_account' => 'Don\'t have an account?',
+    'sign_up' => 'Sign up',
+
+    // Registration form
+    'create_an_account' => 'Create an account',
+    'enter_details_create_account' => 'Enter your details below to create your account',
+    'role' => 'Role',
+    'select_role' => 'Select a role',
+    'candidate' => 'Candidate',
+    'company' => 'Company',
+    'registering' => 'Registering...',
+    'already_have_account' => 'Already have an account?',
+
+    // Reset password form
+    'reset_password' => 'Reset password',
+    'enter_new_password_below' => 'Please enter your new password below',
+    'confirm_password_placeholder' => 'Confirm password',
+    'reset_password_button' => 'Reset password',
+
+    // Email verification
+    'verify_email' => 'Verify email',
+    'email_verification' => 'Email verification',
+    'verify_email_description' => 'Please verify your email address by clicking on the link we just emailed to you.',
 ];

@@ -208,4 +208,46 @@ return [
     'appearance' => 'Apariencia',
     'log_out' => 'Cerrar sesión','settings' => 'Configuración',
     'manage_account_settings' => 'Administra la configuración de tu perfil y cuenta',
+
+    // Confirm password form
+    'confirm_your_password' => 'Confirma tu contraseña',
+    'secure_area_confirmation' => 'Esta es un área segura de la aplicación. Por favor, confirma tu contraseña antes de continuar.',
+
+    // Forgot password form
+    'forgot_password' => 'Olvidé mi contraseña',
+    'enter_email_reset_link' => 'Ingresa tu correo electrónico para recibir un enlace de restablecimiento',
+    'send_password_reset_link' => 'Enviar enlace de restablecimiento',
+    'or_return_to' => 'Volver a',
+    'reset_link_sent' => 'Se enviará un enlace de restablecimiento si la cuenta existe.',
+    'email_valid' => 'Por favor ingresa una dirección de correo electrónico válida.',
+
+    // Login form
+    'welcome_back' => 'Bienvenido de nuevo',
+    'enter_email_to_sign_in' => 'Ingresa tu correo para acceder a tu cuenta',
+    'forgot_your_password' => '¿Olvidaste tu contraseña?',
+    'remember_me' => 'Recordarme',
+    'signing_in' => 'Iniciando sesión...',
+    'dont_have_account' => '¿No tienes cuenta?',
+    'sign_up' => 'Regístrate',
+
+    // Register form
+    'create_an_account' => 'Crear una cuenta',
+    'enter_details_create_account' => 'Introduce tus datos para crear una cuenta',
+    'role' => 'Rol',
+    'select_role' => 'Selecciona un rol',
+    'candidate' => 'Candidato',
+    'company' => 'Empresa',
+    'registering' => 'Registrando...',
+    'already_have_account' => '¿Ya tienes cuenta?',
+
+    // Reset password form
+    'reset_password' => 'Restablecer contraseña',
+    'enter_new_password_below' => 'Por favor, introduce tu nueva contraseña a continuación',
+    'confirm_password_placeholder' => 'Confirmar contraseña',
+    'reset_password_button' => 'Restablecer contraseña',
+
+    // Email verification
+    'verify_email' => 'Verificar correo electrónico',
+    'email_verification' => 'Verificación de correo electrónico',
+    'verify_email_description' => 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
 ];
