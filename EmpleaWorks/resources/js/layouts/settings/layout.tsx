@@ -6,30 +6,33 @@ import { type NavItem } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 import { LogOut } from "lucide-react";
-
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: '/settings/profile',
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: '/settings/password',
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: '/settings/appearance',
-        icon: null,
-    },
-];
+import { useTranslation } from '@/utils/i18n';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const { t } = useTranslation();
+    
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
     }
+
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: t('profile'),
+            href: '/settings/profile',
+            icon: null,
+        },
+        {
+            title: t('password'),
+            href: '/settings/password',
+            icon: null,
+        },
+        {
+            title: t('appearance'),
+            href: '/settings/appearance',
+            icon: null,
+        },
+    ];
 
     const currentPath = window.location.pathname;
     const { post } = useForm({});
@@ -40,7 +43,10 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="px-4 py-6">
-            <Heading title="Settings" description="Manage your profile and account settings" />
+            <Heading 
+                title={t('settings')} 
+                description={t('manage_account_settings')} 
+            />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
@@ -73,7 +79,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                             className="w-full justify-start text-left cursor-pointer hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-400/20"
                             onClick={handleLogout}
                         >
-                            Logout
+                            {t('log_out')}
                             <LogOut className="ml-26 size-4" />
                         </Button>
                     </nav>

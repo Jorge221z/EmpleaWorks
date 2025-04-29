@@ -193,6 +193,18 @@ const translations: Record<string, Record<string, string>> = {
         'light': 'Light',
         'dark': 'Dark',
         'system': 'System',
+
+        // Dropdown menu footer sidebar
+        'guest_user': 'Guest User',
+        'account': 'Account',
+        'log_in': 'Log in',
+        'register': 'Register',
+        'my_account': 'My Account',
+        'password': 'Password',
+        'appearance': 'Appearance',
+        'log_out': 'Log out',
+        'settings': 'Settings',
+        'manage_account_settings': 'Manage your profile and account settings',
     },
     es: {
         // Sidebar
@@ -384,6 +396,18 @@ const translations: Record<string, Record<string, string>> = {
         'light': 'Claro',
         'dark': 'Oscuro',
         'system': 'Sistema',
+
+        // Dropdown menu footer sidebar
+        'guest_user': 'Usuario Invitado',
+        'account': 'Cuenta',
+        'log_in': 'Iniciar sesión',
+        'register': 'Registrarse',
+        'my_account': 'Mi Cuenta',
+        'password': 'Contraseña',
+        'appearance': 'Apariencia',
+        'log_out': 'Cerrar sesión',
+        'settings': 'Configuración',
+        'manage_account_settings': 'Administra la configuración de tu perfil y cuenta',
     }
 };
 

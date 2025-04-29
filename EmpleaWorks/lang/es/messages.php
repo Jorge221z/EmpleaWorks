@@ -197,4 +197,15 @@ return [
     'light' => 'Claro',
     'dark' => 'Oscuro',
     'system' => 'System',
+
+    // Dropdown menu footer sidebar
+    'guest_user' => 'Usuario Invitado',
+    'account' => 'Cuenta',
+    'log_in' => 'Iniciar sesión',
+    'register' => 'Registrarse',
+    'my_account' => 'Mi Cuenta',
+    'password' => 'Contraseña',
+    'appearance' => 'Apariencia',
+    'log_out' => 'Cerrar sesión','settings' => 'Configuración',
+    'manage_account_settings' => 'Administra la configuración de tu perfil y cuenta',
 ];

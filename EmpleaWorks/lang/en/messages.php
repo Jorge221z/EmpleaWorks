@@ -197,4 +197,16 @@ return [
     'light' => 'Light',
     'dark' => 'Dark',
     'system' => 'System',
+
+    // Dropdown menu footer sidebar
+    'guest_user' => 'Guest User',
+    'account' => 'Account',
+    'log_in' => 'Log in',
+    'register' => 'Register',
+    'my_account' => 'My Account',
+    'password' => 'Password',
+    'appearance' => 'Appearance',
+    'log_out' => 'Log out',
+    'settings' => 'Settings',
+    'manage_account_settings' => 'Manage your profile and account settings',
 ];
