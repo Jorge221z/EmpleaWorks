@@ -274,6 +274,11 @@ return [
     'template_subject' => 'en',
     'for_the_offer' => 'Para la oferta:',
     'view_candidate_profile' => 'Ver Perfil del Candidato',
+    'cv' => 'CV',
+    'download_cv'=> 'Descargar CV',
+    'no_cv_available' => 'No hay CV disponible',
+    'your_cv' => 'Tu CV',
+    'no_cv_uploaded' => 'No has subido ningún CV a EmpleaWorks.',
 
     // Company controller messages
     'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',

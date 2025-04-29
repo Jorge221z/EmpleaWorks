@@ -275,6 +275,11 @@ return [
     'template_subject' => 'to',
     'for_the_offer' => 'For the offer:',
     'view_candidate_profile' => 'View Candidate Profile',
+    'cv' => 'CV',
+    'download_cv' => 'Download CV',
+    'no_cv_available' => 'No CV available',
+    'your_cv' => 'Your CV',
+    'no_cv_uploaded' => 'No CV uploaded on EmpleaWorks',
 
     // Company controller messages
     'edit_only_own_listings' => 'You can only edit your own job listings',

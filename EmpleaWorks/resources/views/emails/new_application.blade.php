@@ -51,6 +51,19 @@
                                             style="color: #4F46E5;">{{ __('messages.cover_letter') }}:</strong></td>
                                     <td style="padding: 8px; vertical-align: top;">{{ $coverLetter }}</td>
                                 </tr>
+                                <tr>
+                                    <td style="padding: 8px; vertical-align: top;"><strong
+                                            style="color: #4F46E5;">{{ __('messages.cv') }}:</strong></td>
+                                    <td style="padding: 8px; vertical-align: top;">
+                                        @if(isset($cvPath) && $cvPath)
+                                            <a href="{{ $cvUrl }}" style="color: #4F46E5; text-decoration: underline;" target="_blank">
+                                                {{ __('messages.download_cv') }}
+                                            </a>
+                                        @else
+                                            {{ __('messages.no_cv_available') }}
+                                        @endif
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <p>{{ __('messages.review_candidate_profile') }}</p>

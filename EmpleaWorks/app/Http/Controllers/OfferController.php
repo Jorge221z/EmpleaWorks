@@ -243,8 +243,6 @@ class OfferController extends Controller
         // Guardamos los datos en la base de datos(tabla pivote)
         $user->applyToOffer($offer);
 
-
-
         // Preparamos los datos para los correos
         $company = User::find($offer->user_id);
         
@@ -275,7 +273,6 @@ class OfferController extends Controller
             return redirect()->back()
                 ->with('error', __('messages.email_send_error'));
         }
-
 
         //caso en el que salga todo bien y no haya ningun fallo//
         return redirect()->route('candidate.dashboard')

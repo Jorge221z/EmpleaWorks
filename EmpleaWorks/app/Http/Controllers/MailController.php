@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Mailgun\Mailgun;
 
 class MailController extends Controller
@@ -27,27 +29,62 @@ class MailController extends Controller
                 'name' => $data['candidate']->name,
                 'offer' => $data['offer']->name,
             ]);
-            $htmlBody = view('emails.application_confirmation', [
-                'candidate' => $data['candidate'],
-                'offer' => $data['offer'],
-                'company' => $data['company'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'coverLetter' => $data['coverLetter'],
-            ])->render();
 
-            // Enviamos el mensaje
-            $mg->messages()->send($domain, [
+            // Obtenemos la información del CV desde la tabla candidates
+            $candidate = \App\Models\Candidate::where('user_id', $data['candidate']->id)->first();
+            $cvPath = null;
+            $cvUrl = null;
+            $attachmentParams = [];
+
+            // Si el candidato tiene un CV, preparamos los datos para incluirlo en el correo
+            if ($candidate && $candidate->cv) {
+                $cvPath = $candidate->cv;
+                
+                // Generamos una URL firmada (temporal) para el CV
+                $cvUrl = URL::temporarySignedRoute(
+                    'cv.download',
+                    now()->addDays(7),
+                    ['candidate' => $candidate->id]
+                );
+
+                // Si el archivo existe, lo adjuntamos al correo
+                if (Storage::disk('public')->exists($cvPath)) {
+                    $cvFullPath = Storage::disk('public')->path($cvPath);
+                    $attachmentParams['attachment'] = [
+                        ['filePath' => $cvFullPath, 'filename' => basename($cvPath)]
+                    ];
+                }
+            }
+
+            // Añadimos los datos del CV a la vista
+            $viewData = array_merge($data, [
+                'cvPath' => $cvPath,
+                'cvUrl' => $cvUrl,
+            ]);
+
+            $htmlBody = view('emails.application_confirmation', $viewData)->render();
+
+            // Preparamos los parámetros del mensaje
+            $messageParams = [
                 'from' => $fromAddress,
                 'to' => $toAddress,
                 'subject' => $subject,
                 'html' => $htmlBody,
-            ]);
+            ];
+
+            // Si hay un CV para adjuntar, lo añadimos como adjunto
+            if (!empty($attachmentParams)) {
+                $messageParams['attachment'] = $attachmentParams['attachment'];
+            }
+
+            // Enviamos el mensaje
+            $mg->messages()->send($domain, $messageParams);
             
             return true;
         } catch (\Exception $e) {
             Log::error('Error al enviar correo de nueva aplicación al candidato', [
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
             
             return false;
@@ -73,27 +110,62 @@ class MailController extends Controller
                 'name' => $data['candidate']->name,
                 'offer' => $data['offer']->name,
             ]);
-            $htmlBody = view('emails.new_application', [
-                'candidate' => $data['candidate'],
-                'offer' => $data['offer'],
-                'company' => $data['company'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'coverLetter' => $data['coverLetter'],
-            ])->render();
 
-            // Enviamos el mensaje
-            $mg->messages()->send($domain, [
+            // Obtenemos la información del CV desde la tabla candidates
+            $candidate = \App\Models\Candidate::where('user_id', $data['candidate']->id)->first();
+            $cvPath = null;
+            $cvUrl = null;
+            $attachmentParams = [];
+
+            // Si el candidato tiene un CV, preparamos los datos para incluirlo en el correo
+            if ($candidate && $candidate->cv) {
+                $cvPath = $candidate->cv;
+                
+                // Generamos una URL firmada (temporal) para el CV
+                $cvUrl = URL::temporarySignedRoute(
+                    'cv.download',
+                    now()->addDays(7),
+                    ['candidate' => $candidate->id]
+                );
+
+                // Si el archivo existe, lo adjuntamos al correo
+                if (Storage::disk('public')->exists($cvPath)) {
+                    $cvFullPath = Storage::disk('public')->path($cvPath);
+                    $attachmentParams['attachment'] = [
+                        ['filePath' => $cvFullPath, 'filename' => basename($cvPath)]
+                    ];
+                }
+            }
+
+            // Añadimos los datos del CV a la vista
+            $viewData = array_merge($data, [
+                'cvPath' => $cvPath,
+                'cvUrl' => $cvUrl,
+            ]);
+
+            $htmlBody = view('emails.new_application', $viewData)->render();
+
+            // Preparamos los parámetros del mensaje
+            $messageParams = [
                 'from' => $fromAddress,
                 'to' => $toAddress,
                 'subject' => $subject,
                 'html' => $htmlBody,
-            ]);
+            ];
+
+            // Si hay un CV para adjuntar, lo añadimos como adjunto
+            if (!empty($attachmentParams)) {
+                $messageParams['attachment'] = $attachmentParams['attachment'];
+            }
+
+            // Enviamos el mensaje
+            $mg->messages()->send($domain, $messageParams);
             
             return true;
         } catch (\Exception $e) {
             Log::error('Error al enviar correo de nueva aplicación a la empresa', [
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
             
             return false;
