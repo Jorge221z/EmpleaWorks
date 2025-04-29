@@ -272,4 +272,7 @@ return [
     'application_confirmation_message' => 'Your application for the position <strong>:offer</strong> at <strong>:company</strong> has been successfully submitted.',
     'application_details' => 'Application details',
     'company_review_message' => 'The company will review your profile and contact you if they consider your profile suitable for the position.',
+    'template_subject' => 'to',
+    'for_the_offer' => 'For the offer:',
+    'view_candidate_profile' => 'View Candidate Profile',
 ];

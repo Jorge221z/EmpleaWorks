@@ -257,8 +257,8 @@ return [
     
     // Nuevas traducciones para plantillas de email
     'new_application_received' => 'Nueva Solicitud Recibida',
-    'hello_company' => 'Hola :name',
-    'hello_candidate' => 'Hola :name',
+    'hello_company' => 'Hola :name_app',
+    'hello_candidate' => 'Hola :name_app',
     'new_application_message' => 'Has recibido una nueva solicitud para el puesto',
     'candidate_information' => 'Información del candidato',
     'name_app' => 'Nombre',
@@ -271,4 +271,7 @@ return [
     'application_confirmation_message' => 'Tu solicitud para el puesto <strong>:offer</strong> en <strong>:company</strong> ha sido enviada correctamente.',
     'application_details' => 'Detalles de tu solicitud',
     'company_review_message' => 'La empresa revisará tu perfil y se pondrá en contacto contigo si estiman que tu perfil es adecuado para el puesto.',
+    'template_subject' => 'en',
+    'for_the_offer' => 'Para la oferta:',
+    'view_candidate_profile' => 'Ver Perfil del Candidato',
 ];
