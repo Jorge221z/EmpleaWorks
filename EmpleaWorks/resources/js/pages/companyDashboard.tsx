@@ -58,9 +58,9 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                 </div>
                 
                 {/* Acciones rápidas */}
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     {/* Tarjeta de Job Listings */}
-                    <Card className="overflow-hidden border-t-4 border-t-primary">
+                    <Card className="overflow-hidden border-t-4 border-t-primary flex flex-col">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80">
@@ -71,12 +71,14 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                             </CardTitle>
                             <CardDescription>{t('manage_jobs')}</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex justify-between items-center">
+                        
+                        <CardContent className="flex-grow flex flex-col justify-between">
                             <div>
                                 <div className="text-3xl font-bold">{companyOffers.length}</div>
                                 <div className="text-sm text-muted-foreground">{t('active_positions')}</div>
                             </div>
-                            <Button size="sm" className="gap-1">
+                            
+                            <Button size="sm" className="gap-1 w-full mt-4">
                                 <PlusCircleIcon className="h-4 w-4" />
                                 <Link href={route('company.create-job')}>                                  
                                     {t('new_job')}
@@ -86,7 +88,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     </Card>
 
                     {/* Tarjeta de Aplicantes */}
-                    <Card className="overflow-hidden border-t-4 border-t-blue-500">
+                    <Card className="overflow-hidden border-t-4 border-t-blue-500 flex flex-col">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <UsersIcon className="h-5 w-5 text-blue-500/80" />
@@ -94,14 +96,21 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                             </CardTitle>
                             <CardDescription>{t('applications_to_jobs')}</CardDescription>
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold">{totalApplicants}</div>
-                            <div className="text-sm text-muted-foreground">{t('total_candidates')}</div>
+                        <CardContent className="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div className="text-3xl font-bold">{totalApplicants}</div>
+                                <div className="text-sm text-muted-foreground">{t('total_candidates')}</div>
+                            </div>
+                            
+                            {/* Espaciador invisible que ocupa espacio */}
+                            <div className="mt-4">
+                                <div className="h-9 invisible"></div> {/* Aproximadamente la altura del botón */}
+                            </div>
                         </CardContent>
                     </Card>
 
-                    {/* Tarjeta de Perfil de Empresa */}
-                    <Card className="overflow-hidden border-t-4 border-t-green-500">
+                    {/* Tarjeta de Perfil de Empresa - No necesita cambios */}
+                    <Card className="overflow-hidden border-t-4 border-t-green-500 flex flex-col">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <BuildingIcon className="h-5 w-5 text-green-500/80" />
@@ -109,17 +118,40 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                             </CardTitle>
                             <CardDescription>{t('update_profile')}</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex justify-between items-center">
-                            <div>
-                                <div className="text-lg font-medium truncate max-w-[150px]">{auth.user.name}</div>
-                                <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
+                        <CardContent className="flex-grow">
+                            <div className="flex flex-col h-full justify-between">
+                                {/* Bloque de perfil */}
+                                <div className="flex items-center gap-3">
+                                    {/* Logo de la empresa */}
+                                    {auth.user.image ? (
+                                        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0 border border-gray-200 dark:border-gray-700">
+                                            <img
+                                                src={`/storage/${auth.user.image}`}
+                                                alt={auth.user.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 border border-gray-200 dark:border-gray-700">
+                                            <BuildingIcon className="h-6 w-6 text-green-500/80" />
+                                        </div>
+                                    )}
+                                    <div>
+                                        <div className="text-lg font-medium truncate max-w-[200px]">{auth.user.name}</div>
+                                        <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
+                                    </div>
+                                </div>
+                                
+                                {/* Botón de editar - al final del espacio disponible */}
+                                <div className="mt-4">
+                                    <Button size="sm" variant="outline" className="gap-1 w-full">
+                                        <BuildingIcon className="h-4 w-4" />
+                                        <Link href={'/settings/profile'}>                                  
+                                            {t('edit_profile')}
+                                        </Link>
+                                    </Button>
+                                </div>
                             </div>
-                            <Button size="sm" variant="outline" className="gap-1">
-                                <BuildingIcon className="h-4 w-4" />
-                                <Link href={'/settings/profile'}>                                  
-                                    {t('edit_profile')}
-                                </Link>
-                            </Button>
                         </CardContent>
                     </Card>
                 </div>
@@ -132,7 +164,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
 
                 {/* Mostrar ofertas en el grid */}
                 {companyOffers && companyOffers.length > 0 ? (
-                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                    <div className="grid auto-rows-min gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                         {companyOffers.map((offer) => (
                             <div
                                 key={offer.id}
@@ -181,13 +213,13 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                         </svg>
                                     </Link>
                                     
-                                    {/* Segunda fila: Edit y Delete */}
-                                    <div className="flex gap-2 w-full">
+                                    {/* Segunda fila: Edit y Delete con un wrap flexible */}
+                                    <div className="flex flex-wrap gap-2 w-full">
                                         {/* Edit Button */}
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="flex-1 text-sm rounded-full border-primary/30 dark:border-primary/40 hover:bg-primary/10 hover:border-primary dark:hover:bg-primary/20 hover:text-primary transition-colors"
+                                            className="flex-1 min-w-[80px] text-sm rounded-full border-primary/30 dark:border-primary/40 hover:bg-primary/10 hover:border-primary dark:hover:bg-primary/20 hover:text-primary transition-colors"
                                             asChild
                                         >
                                             <Link href={route('company.edit-job', offer.id)} className="flex items-center justify-center gap-1.5">
@@ -199,13 +231,13 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                             </Link>
                                         </Button>
                                         
-                                        {/* Delete Button with Confirmation Dialog */}
+                                        {/* Delete Button con ancho mínimo */}
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    className="flex-1 text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
+                                                    className="flex-1 min-w-[80px] text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
                                                 >
                                                     <span className="flex items-center justify-center gap-1.5">
                                                         <TrashIcon className="size-3.5" />
