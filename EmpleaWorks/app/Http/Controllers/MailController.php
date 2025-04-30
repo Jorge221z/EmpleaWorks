@@ -19,7 +19,7 @@ class MailController extends Controller
     public function sendApplicationConfirmation($data)
     {
         try {
-            $mg = Mailgun::create(env('API_KEY'), env('MAILGUN_ENDPOINT', 'https://api.eu.mailgun.net'));
+            $mg = Mailgun::create(env('API_KEY'), env('MG_ENDPOINT', 'https://api.eu.mailgun.net'));
             
             // Preparamos los datos del mensaje para el candidato
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
@@ -107,7 +107,7 @@ class MailController extends Controller
     public function sendApplicationNotification($data)
     {
         try {
-            $mg = Mailgun::create(env('API_KEY'), env('MAILGUN_ENDPOINT', 'https://api.eu.mailgun.net'));
+            $mg = Mailgun::create(env('API_KEY'), env('MG_ENDPOINT', 'https://api.eu.mailgun.net'));
 
             // Preparamos los datos del mensaje
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
