@@ -389,8 +389,25 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className='mt-2' message={errors.description} />
                         </div>
 
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
+                        {mustVerifyEmail && (
                             <div>
+                                {/* Mostrar estado de verificación del email */}
+                                {auth.user.email_verified_at === null ? (
+                                    <div className="flex items-center gap-2 mb-2 text-sm text-red-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-1.414-1.414A9 9 0 105.636 18.364l1.414 1.414A9 9 0 1018.364 5.636z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 9l-6 6M9 9l6 6" />
+                                        </svg>
+                                        {t('email_not_verified')}
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center gap-2 mb-2 text-sm text-green-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {t('email_verified')}
+                                    </div>
+                                )}
                                 <p className="text-muted-foreground -mt-4 text-sm">
                                     {t('email_unverified')}{' '}
                                     <Link
@@ -402,7 +419,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         {t('resend_verification_email')}
                                     </Link>
                                 </p>
-
                                 {status === 'verification-link-sent' && (
                                     <div className="mt-2 text-sm font-medium text-green-600">
                                         {t('verification_link_sent')}
