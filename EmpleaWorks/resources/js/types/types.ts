@@ -39,7 +39,8 @@ export interface User {
     description: string | null;
     candidate?: Candidate;
     company?: Company;
-    // Otros campos del usuario si los hay
+    email_verified_at: string | null; // campo para comprobar si el email ha sido verificado //
+    // Otros campos del usuario si los hubiese
 }
 
 export interface ShowOfferProps {
