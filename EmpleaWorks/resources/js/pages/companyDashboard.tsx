@@ -102,10 +102,12 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 <div className="text-sm text-muted-foreground">{t('total_candidates')}</div>
                             </div>
                             
-                            {/* Espaciador invisible que ocupa espacio */}
-                            <div className="mt-4">
-                                <div className="h-9 invisible"></div> {/* Aproximadamente la altura del botón */}
-                            </div>
+                            <Button size="sm" className="gap-1 w-full mt-4">
+                                <UsersIcon className="h-4 w-4" />
+                                <Link href={route('company.applicants')}>
+                                    {t('view_applicants')}
+                                </Link>
+                            </Button>
                         </CardContent>
                     </Card>
 
