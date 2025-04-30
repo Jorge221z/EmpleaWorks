@@ -212,7 +212,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                         <div className="flex justify-center mb-4">
                                                             <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
                                                                 <img
-                                                                    src={(offer.company as any).logo}
+                                                                    src={`/storage/${(offer.company as any).logo}`}
                                                                     alt={(offer.company as any).name}
                                                                     className="w-full h-full object-cover"
                                                                 />

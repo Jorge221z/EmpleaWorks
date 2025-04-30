@@ -111,7 +111,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
           />
         </div>
         
-        {/* Botón de filtros para móvil y tablet - Visible en sm y md, oculto en lg */}
+        {/* Botón de filtros para móvil y tablet - Visible en sm y md */}
         <Dialog open={isFiltersDialogOpen} onOpenChange={setIsFiltersDialogOpen}>
           <DialogTrigger asChild>
             <button className="lg:hidden col-span-4 sm:col-span-3 md:col-span-3 flex items-center justify-center gap-2 border-l border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -234,7 +234,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
           </Select>
         </div>
         
-        {/* Botón de búsqueda/limpiar - Ajustado para diferentes tamaños */}
+        {/* Botón de búsqueda/limpiar */}
         <div className="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-2 border-l border-gray-100 dark:border-gray-700">
           {(query || selectedCategory !== "all" || selectedContractType !== "all") ? (
             <button
@@ -258,7 +258,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
         </div>
       </div>
       
-      {/* Resultados - Aumentado el margen superior */}
+      {/* Resultados */}
       <div className="flex justify-between items-center mt-4 px-1 text-xs text-gray-500 dark:text-gray-400">
         <div>
           {resultsCount === 0

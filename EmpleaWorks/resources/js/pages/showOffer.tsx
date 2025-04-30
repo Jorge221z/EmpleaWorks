@@ -148,7 +148,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                 <div className="flex items-center">
                   {company.logo ? (
                     <img 
-                      src={company.logo} 
+                      src={`/storage/${company.logo}`} 
                       alt={company.name} 
                       className="size-16 rounded-md object-cover mr-4"
                     />
