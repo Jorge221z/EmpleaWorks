@@ -87,7 +87,7 @@ class ProfileController extends Controller
 
                 try {
                     $path = $imageFile->store('images', 'public');
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     \Log::error('Error al almacenar la imagen: ' . $e->getMessage());
                     $path = null;
                 }
@@ -150,7 +150,7 @@ class ProfileController extends Controller
             
             return redirect()->route('profile.edit')
                 ->with('success', __('messages.profile_updated_success'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             \Log::error('Error actualizando perfil: ' . $e->getMessage());
             return redirect()->route('profile.edit')
                 ->with('error', __('messages.profile_updated_error'));
@@ -167,6 +167,18 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // Eliminar imagen de usuario si existe
+        if ($user->image && \Storage::disk('public')->exists($user->image)) {
+            \Storage::disk('public')->delete($user->image);
+        }
+
+        // Eliminar CV si es candidato y existe
+        if ($user->role_id === 1 && $user->candidate && $user->candidate->cv) {
+            if (\Storage::disk('public')->exists($user->candidate->cv)) {
+                \Storage::disk('public')->delete($user->candidate->cv);
+            }
+        }
 
         Auth::logout();
 
