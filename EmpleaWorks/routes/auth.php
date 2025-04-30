@@ -69,25 +69,25 @@ Route::middleware('auth')->group(function () {
         ->name('company.dashboard');
     // Ruta para el formulario de creación de ofertas - protegida por el middleware de rol de empresa
     Route::get('/company/create-job', [CompanyController::class, 'createJobForm'])
-        ->middleware('company.role')
+        ->middleware(['company.role', 'verified'])
         ->name('company.create-job');
     // Ruta para crear una nueva oferta
     Route::post('/offers', [OfferController::class, 'store'])
-        ->middleware('company.role')
+        ->middleware(['company.role', 'verified'])
         ->name('offers.store');
     Route::get('/company/edit-job/{offer}', [CompanyController::class, 'editJobForm'])
         ->middleware('company.role')
         ->name('company.edit-job');
     Route::put('/offers/{offer}', [OfferController::class, 'update'])
-        ->middleware('company.role')
+        ->middleware(['company.role', 'verified'])
         ->name('offers.update');
     // Ruta para eliminar una oferta
     Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])
-        ->middleware('company.role')
+        ->middleware(['company.role', 'verified'])
         ->name('offers.destroy');
     // Ruta para ver los candidatos que han aplicado a las ofertas de una empresa
     Route::get('/company/applicants', [CompanyController::class, 'applicants'])
-        ->middleware('company.role')
+        ->middleware(['company.role', 'verified'])
         ->name('company.applicants');
     // Ruta del dashboard para candidatos - protegida por el middleware de rol de candidato
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
         ->name('candidate.dashboard');
     // Ruta para mostrar el formulario de aplicación a una oferta
     Route::get('/apply-form/{offer}', [CandidateController::class, 'showForm'])
-        ->middleware('candidate.role')
+        ->middleware(['candidate.role', 'verified'])
         ->name('apply.form');
     // Ruta para aplicar a una oferta
     Route::post('/apply', [OfferController::class, 'apply'])
