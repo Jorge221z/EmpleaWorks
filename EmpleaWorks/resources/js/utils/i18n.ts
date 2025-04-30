@@ -266,7 +266,14 @@ const translations: Record<string, Record<string, string>> = {
         'clear_filters': 'Clear filters',
         'clear_all': 'Clear all',
         'contract': 'Contract',
-        "filter_description": "Filter job offers by category and contract type."
+        "filter_description": "Filter job offers by category and contract type.",
+
+        // Applicants view for companies
+        'view_applicants': 'View Applicants',
+        'applicants_by_job': 'Applicants by Job',
+        'cv_download': 'Download CV',
+        'no_applicants_yet': 'No applicants yet',
+        'no_applicants_message': 'This job offer hasn\'t received any applications yet.',
     },
     es: {
         // Sidebar
@@ -532,7 +539,14 @@ const translations: Record<string, Record<string, string>> = {
         'clear_all': 'Limpiar todo',
         'apply_filters': 'Aplicar filtros',
         'contract': 'Contrato',
-        "filter_description": "Filtra ofertas de trabajo por categoría y tipo de contrato."
+        "filter_description": "Filtra ofertas de trabajo por categoría y tipo de contrato.",
+
+        // Applicants view for companies
+        'view_applicants': 'Ver Candidatos',
+        'applicants_by_job': 'Candidatos por Oferta',
+        'cv_download': 'Descargar CV',
+        'no_applicants_yet': 'Aún no hay candidatos',
+        'no_applicants_message': 'Esta oferta de trabajo aún no ha recibido solicitudes.',
     }
 };
 

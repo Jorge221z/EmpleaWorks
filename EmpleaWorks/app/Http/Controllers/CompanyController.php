@@ -161,4 +161,61 @@ class CompanyController extends Controller
             'company' => $user->company
         ]);
     }
+
+    /**
+    * Display the applicants for company's job offers.
+    *
+    * @return \Inertia\Response
+    */
+    public function applicants()
+    {
+        $user = Auth::user();
+    
+        // Estructura para almacenar ofertas con sus candidatos
+        $jobsWithApplicants = [];
+    
+        if ($user && $user->isCompany()) {
+            // Obtener las ofertas creadas por la empresa
+            $offers = $user->offers()->with(['candidates' => function($query) {
+                // Cargar candidatos con sus datos de usuario y CV
+                $query->with(['candidate' => function($q) {
+                    $q->select('user_id', 'cv');
+                }]);
+            }])->get();
+        
+            foreach ($offers as $offer) {
+                $applicants = [];
+            
+                // Formatear los datos de candidatos
+                foreach ($offer->candidates as $candidateUser) {
+                    $cv = null;
+                    if ($candidateUser->candidate) {
+                        $cv = $candidateUser->candidate->cv;
+                    }
+                
+                    $applicants[] = [
+                        'id' => $candidateUser->id,
+                        'name' => $candidateUser->name,
+                        'email' => $candidateUser->email,
+                        'image' => $candidateUser->image,
+                        'cv' => $cv,
+                    ];
+                }
+            
+                // Agregar oferta con sus candidatos al array
+                $jobsWithApplicants[] = [
+                    'id' => $offer->id,
+                    'name' => $offer->name,
+                    'category' => $offer->category,
+                    'closing_date' => $offer->closing_date,
+                    'applicants' => $applicants,
+                    'applicants_count' => count($applicants)
+                ];
+            }
+        }
+    
+        return Inertia::render('CompanyApplicants', [
+            'jobsWithApplicants' => $jobsWithApplicants
+        ]);
+    }
 }

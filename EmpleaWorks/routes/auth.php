@@ -85,6 +85,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/offers/{offer}', [OfferController::class, 'destroy'])
         ->middleware('company.role')
         ->name('offers.destroy');
+    // Ruta para ver los candidatos que han aplicado a las ofertas de una empresa
+    Route::get('/company/applicants', [CompanyController::class, 'applicants'])
+        ->middleware('company.role')
+        ->name('company.applicants');
     // Ruta del dashboard para candidatos - protegida por el middleware de rol de candidato
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')
