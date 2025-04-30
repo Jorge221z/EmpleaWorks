@@ -55,11 +55,11 @@ class PasswordResetLinkController extends Controller
         // 4) Construir URL de reseteo (válida X minutos)
         $expires = config('auth.passwords.users.expire');
         $resetUrl = URL::temporarySignedRoute(
-            'password.reset',          // —> el name que ya tienes
+            'password.reset',
             now()->addMinutes($expires),
             [
                 'token' => $token,
-                'email' => $user->email,  // irá en query string
+                'email' => $user->email,
             ]
         );
 
@@ -73,10 +73,6 @@ class PasswordResetLinkController extends Controller
             $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
             $toAddress = "{$user->name} <{$user->email}>";
             $subject = __('messages.reset_password_subject');
-
-            // Establecer el idioma del usuario para renderizar la plantilla
-            $userLocale = $request->getPreferredLanguage(['es', 'en']) ?? config('app.locale');
-            App::setLocale($userLocale);
 
             // Renderizamos la vista Blade para el email
             $htmlBody = view('emails.password_reset', [

@@ -115,6 +115,8 @@ return [
     'offer_not_found' => 'Offer not found.',
     'already_applied' => 'You have already applied to this offer.',
     'candidate_profile_not_found' => 'Candidate profile not found.',
+    'user_not_found' => 'No user found with that email address.',
+    'mail_send_failed' => 'Could not send the email. Please try again later.',
 
     // Create job offer form
     'job_title_required' => 'The job title field is required.',
