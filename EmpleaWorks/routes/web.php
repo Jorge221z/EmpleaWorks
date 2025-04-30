@@ -23,6 +23,10 @@ Route::get('/register-direct', [RegisteredUserController::class, 'create'])
 Route::get('/locale/{locale}', [LocaleController::class, 'changeLocale'])
     ->name('locale.change');
 
+// Ruta terminos y condiciones
+Route::get('/terms', function () { return Inertia::render('Terms');
+    })->name('terms');
+
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
 

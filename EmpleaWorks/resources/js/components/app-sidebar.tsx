@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe } from 'lucide-react';
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe } from 'lucide-react';
 import { 
     DropdownMenu, 
     DropdownMenuContent, 
@@ -35,14 +35,9 @@ export function AppSidebar() {
 
     const footerNavItems: NavItem[] = [
         {
-            title: t('repository'),
-            href: 'https://github.com/Jorge221z/EmpleaWorks',
-            icon: Folder,
-        },
-        {
-            title: t('documentation'),
-            href: 'https://laravel.com/docs/starter-kits',
-            icon: BookOpen,
+            title: t('terms_and_conditions'),
+            href: route('terms'),
+            icon: FileText,
         },
     ];
     

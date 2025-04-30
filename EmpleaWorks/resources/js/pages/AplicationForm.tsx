@@ -6,11 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { type BreadcrumbItem } from '@/types';
-import { ShowOfferProps } from '@/types/types';
 import { useState } from 'react';
 import { Offer, Company } from "@/types/types";
 import { useTranslation } from '@/utils/i18n';
@@ -25,6 +24,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
 
     // Form state
     const [agreed, setAgreed] = useState(false);
+    const [acceptTerms, setAcceptTerms] = useState(false);
 
     // aqui definimos como trabajará inertiajs con el formulario //
     const { data, setData, post, processing, errors } = useForm({
@@ -136,22 +136,32 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                         {errors.cl && <p className="text-sm text-red-500">{errors.cl}</p>}
                                     </div>
 
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox
-                                            id="terms"
-                                            checked={agreed}
-                                            onCheckedChange={(checked) => setAgreed(checked === true)}
+                                    {/* Checkbox de términos y condiciones actualizado */}
+                                    <div className="flex items-start gap-2 mt-4">
+                                        <Checkbox 
+                                            id="terms" 
+                                            name="terms" 
+                                            checked={acceptTerms} 
+                                            onCheckedChange={(checked) => setAcceptTerms(checked === true)}
                                             required
                                         />
-                                        <Label htmlFor="terms" className="text-sm">
-                                            {t('agree_terms')}
-                                        </Label>
+                                        <div className="grid gap-1.5 leading-none">
+                                            <label 
+                                                htmlFor="terms" 
+                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            >
+                                                {t('agree_terms_extended')}
+                                            </label>
+                                            <p className="text-xs text-muted-foreground">
+                                                {t('data_processing_notice')} <Link href={route('terms')} className="text-primary hover:underline">{t('terms_and_conditions')}</Link>
+                                            </p>
+                                        </div>
                                     </div>
 
                                     <Button
                                         type="submit"
                                         className="w-full mt-4"
-                                        disabled={processing || !agreed}
+                                        disabled={processing || !acceptTerms}
                                     >
                                         {processing ? t('submitting') : t('submit_application')}
                                     </Button>
@@ -170,7 +180,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                 <div className="flex items-center">
                                     {company.logo ? (
                                         <img
-                                            src={company.logo}
+                                            src={`/storage/${company.logo}`}
                                             alt={company.name}
                                             className="size-16 rounded-md object-cover mr-4"
                                         />
