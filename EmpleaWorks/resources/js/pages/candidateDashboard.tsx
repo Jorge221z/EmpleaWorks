@@ -65,10 +65,10 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     <p className="text-muted-foreground">{t('candidate_dashboard_subtitle')}</p>
                 </div>
                 
-                {/* Quick Actions */}
-                <div className="grid gap-4 md:grid-cols-2">
+                {/* Quick Actions - Mejorado para responsividad */}
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                     {/* Tarjeta de Applications */}
-                    <Card className="overflow-hidden border-t-4 border-t-primary">
+                    <Card className="overflow-hidden border-t-4 border-t-primary flex flex-col">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <FileIcon className="h-5 w-5 text-primary/80" />
@@ -76,23 +76,24 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                             </CardTitle>
                             <CardDescription>{t('track_applications')}</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex justify-between items-center">
+                        <CardContent className="flex-grow flex flex-col justify-between">
                             <div>
                                 <div className="text-3xl font-bold">{candidateOffers.length}</div>
                                 <div className="text-sm text-muted-foreground">
                                     {candidateOffers.length !== 1 ? t('active_applications_plural') : t('active_applications')}
                                 </div>
                             </div>
-                            <Button size="sm" className="gap-1">
-                                <Link href={route('dashboard')}>                                  
+                            
+                            <Button size="sm" className="gap-1 w-full mt-4">
+                                <Link href={route('dashboard')} className="w-full flex items-center justify-center gap-1">                                  
                                     {t('find_jobs')}
                                 </Link>
                             </Button>
                         </CardContent>
                     </Card>
 
-                    {/* Tarjeta de Profile */}
-                    <Card className="overflow-hidden border-t-4 border-t-blue-500">
+                    {/* Tarjeta de Profile - Con imagen de usuario */}
+                    <Card className="overflow-hidden border-t-4 border-t-blue-500 flex flex-col">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <UserIcon className="h-5 w-5 text-blue-500/80" />
@@ -100,17 +101,40 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                             </CardTitle>
                             <CardDescription>{t('your_information')}</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex justify-between items-center">
-                            <div>
-                                <div className="text-lg font-medium truncate max-w-[150px]">{user?.name}</div>
-                                <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
+                        <CardContent className="flex-grow">
+                            <div className="flex flex-col h-full justify-between">
+                                {/* Bloque de perfil con imagen */}
+                                <div className="flex items-center gap-3">
+                                    {/* Avatar del usuario */}
+                                    {user?.image ? (
+                                        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0 border border-gray-200 dark:border-gray-700">
+                                            <img
+                                                src={`/storage/${user.image}`}
+                                                alt={user.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 border border-gray-200 dark:border-gray-700">
+                                            <UserIcon className="h-6 w-6 text-blue-500/80" />
+                                        </div>
+                                    )}
+                                    <div>
+                                        <div className="text-lg font-medium truncate max-w-[200px]">{user?.name}</div>
+                                        <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
+                                    </div>
+                                </div>
+                                
+                                {/* Botón de editar perfil */}
+                                <div className="mt-4">
+                                    <Button size="sm" variant="outline" className="w-full" asChild>
+                                        <Link href={'/settings/profile'} className="w-full flex items-center justify-center gap-1.5">
+                                            <UserIcon className="h-4 w-4" />
+                                            {t('edit_profile')}
+                                        </Link>
+                                    </Button>
+                                </div>
                             </div>
-                            <Button size="sm" variant="outline" className="gap-1">
-                                <UserIcon className="h-4 w-4" />
-                                <Link href={'/settings/profile'}>                                  
-                                    {t('edit_profile')}
-                                </Link>
-                            </Button>
                         </CardContent>
                     </Card>
                 </div>
@@ -121,7 +145,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     <p className="text-muted-foreground">{t('jobs_applied_to')}</p>
                 </div>
 
-                {/* Applied Offers Grid */}
+                {/* Applied Offers Grid - Mejorado para responsividad */}
                 {candidateOffers && candidateOffers.length > 0 ? (
                     <div className="flex flex-col gap-4">
                         {candidateOffers.map((offer) => (
@@ -130,9 +154,9 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                 className="border-sidebar-border/70 dark:border-sidebar-border bg-card relative overflow-hidden rounded-xl border p-4 flex flex-col md:flex-row md:items-center md:gap-4"
                             >
                                 <div className="flex-1">
-                                    <div className="flex justify-between items-start mb-2">
+                                    <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
                                         <h3 className="font-semibold text-lg">{offer.name}</h3>
-                                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full whitespace-nowrap">
                                             {offer.category}
                                         </span>
                                     </div>
@@ -148,13 +172,13 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                         </span>
                                     </p>
 
-                                    <p className="text-sm mb-4">
+                                    <p className="text-sm mb-4 line-clamp-2">
                                         {offer.description}
                                     </p>
                                 </div>
 
                                 <div className="flex flex-col md:flex-row gap-4 md:items-center">
-                                    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                                    <div className="flex flex-wrap md:flex-col gap-3 md:gap-1 text-xs text-muted-foreground">
                                         <div className="flex items-center gap-1">
                                             <BriefcaseIcon className="size-3.5" />
                                             <span>{offer.contract_type}</span>
@@ -170,7 +194,6 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                 const currentDate = new Date();
                                                 const daysLeft = Math.ceil((closingDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
 
-                                                // Apply red text if less than 3 days left
                                                 return (
                                                     <span className={daysLeft < 3 ? "text-red-500 font-medium" : ""}>
                                                         {t('closed_in')}: {daysLeft <= 0 
@@ -185,101 +208,104 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                         </div>
                                     </div>
 
-                                    <div className="flex flex-col gap-2 self-end md:self-center">
-                                        {/* Company Info Dialog */}
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="gap-1.5 text-sm"
-                                                >
-                                                    <BuildingIcon className="size-3.5" />
-                                                    {t('company_info')}
-                                                </Button>
-                                            </DialogTrigger>
-                                            <DialogContent className="sm:max-w-md">
-                                                <DialogHeader>
-                                                    <DialogTitle>
-                                                        {offer.company ? (offer.company as any).name : t('company_information')}
-                                                    </DialogTitle>
-                                                    <DialogDescription>{t('company_details')}</DialogDescription>
-                                                </DialogHeader>
+                                    <div className="flex flex-col gap-2 self-end md:self-center mt-4 md:mt-0">
+                                        {/* Contenedor para botones */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-2 w-full">
+                                            {/* Company Info Dialog */}
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="gap-1.5 text-sm w-full"
+                                                    >
+                                                        <BuildingIcon className="size-3.5" />
+                                                        {t('company_info')}
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className="sm:max-w-md">
+                                                    <DialogHeader>
+                                                        <DialogTitle>
+                                                            {offer.company ? (offer.company as any).name : t('company_information')}
+                                                        </DialogTitle>
+                                                        <DialogDescription>{t('company_details')}</DialogDescription>
+                                                    </DialogHeader>
 
-                                                <div className="py-4 space-y-4">
-                                                    {/* Company Logo (if available) */}
-                                                    {offer.company && (offer.company as any).logo && (
-                                                        <div className="flex justify-center mb-4">
-                                                            <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
-                                                                <img
-                                                                    src={`/storage/${(offer.company as any).logo}`}
-                                                                    alt={(offer.company as any).name}
-                                                                    className="w-full h-full object-cover"
-                                                                />
+                                                    <div className="py-4 space-y-4">
+                                                        {/* Company Logo (if available) */}
+                                                        {offer.company && (offer.company as any).logo && (
+                                                            <div className="flex justify-center mb-4">
+                                                                <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+                                                                    <img
+                                                                        src={`/storage/${(offer.company as any).logo}`}
+                                                                        alt={(offer.company as any).name}
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
                                                             </div>
+                                                        )}
+
+                                                        {/* Company Description */}
+                                                        {offer.company && (offer.company as any).description && (
+                                                            <div className="space-y-1">
+                                                                <h4 className="text-sm font-semibold">{t('about_company')}</h4>
+                                                                <p className="text-sm">{(offer.company as any).description}</p>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Company Contact Info */}
+                                                        <div className="space-y-2">
+                                                            <h4 className="text-sm font-semibold">{t('contact_information')}</h4>
+
+                                                            {offer.company && (offer.company as any).address && (
+                                                                <div className="flex items-start gap-2 text-sm">
+                                                                    <MapPinIcon className="size-4 mt-0.5 flex-shrink-0" />
+                                                                    <span>{(offer.company as any).address}</span>
+                                                                </div>
+                                                            )}
+
+                                                            {offer.company && (offer.company as any).email && (
+                                                                <div className="flex items-center gap-2 text-sm">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 flex-shrink-0">
+                                                                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                                                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                                                    </svg>
+                                                                    <a href={`mailto:${(offer.company as any).email}`} className="hover:underline text-primary">
+                                                                        {(offer.company as any).email}
+                                                                    </a>
+                                                                </div>
+                                                            )}
+
+                                                            {offer.company && (offer.company as any).web_link && (
+                                                                <div className="flex items-center gap-2 text-sm">
+                                                                    <ExternalLinkIcon className="size-4 flex-shrink-0" />
+                                                                    <a
+                                                                        href={(offer.company as any).web_link}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="hover:underline text-primary"
+                                                                    >
+                                                                        {t('visit_website')}
+                                                                    </a>
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    )}
-
-                                                    {/* Company Description */}
-                                                    {offer.company && (offer.company as any).description && (
-                                                        <div className="space-y-1">
-                                                            <h4 className="text-sm font-semibold">{t('about_company')}</h4>
-                                                            <p className="text-sm">{(offer.company as any).description}</p>
-                                                        </div>
-                                                    )}
-
-                                                    {/* Company Contact Info */}
-                                                    <div className="space-y-2">
-                                                        <h4 className="text-sm font-semibold">{t('contact_information')}</h4>
-
-                                                        {offer.company && (offer.company as any).address && (
-                                                            <div className="flex items-start gap-2 text-sm">
-                                                                <MapPinIcon className="size-4 mt-0.5 flex-shrink-0" />
-                                                                <span>{(offer.company as any).address}</span>
-                                                            </div>
-                                                        )}
-
-                                                        {offer.company && (offer.company as any).email && (
-                                                            <div className="flex items-center gap-2 text-sm">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 flex-shrink-0">
-                                                                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                                                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                                                                </svg>
-                                                                <a href={`mailto:${(offer.company as any).email}`} className="hover:underline text-primary">
-                                                                    {(offer.company as any).email}
-                                                                </a>
-                                                            </div>
-                                                        )}
-
-                                                        {offer.company && (offer.company as any).web_link && (
-                                                            <div className="flex items-center gap-2 text-sm">
-                                                                <ExternalLinkIcon className="size-4 flex-shrink-0" />
-                                                                <a
-                                                                    href={(offer.company as any).web_link}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="hover:underline text-primary"
-                                                                >
-                                                                    {t('visit_website')}
-                                                                </a>
-                                                            </div>
-                                                        )}
                                                     </div>
-                                                </div>
-                                            </DialogContent>
-                                        </Dialog>
+                                                </DialogContent>
+                                            </Dialog>
 
-                                        {/* View Details Link (existing) */}
-                                        <Link
-                                            href={route('offer.show', offer.id)}
-                                            className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center gap-1.5 whitespace-nowrap"
-                                        >
-                                            {t('view_details')}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
-                                                <path d="M5 12h14"></path>
-                                                <path d="m12 5 7 7-7 7"></path>
-                                            </svg>
-                                        </Link>
+                                            {/* View Details Link */}
+                                            <Link
+                                                href={route('offer.show', offer.id)}
+                                                className="px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center justify-center gap-1.5 w-full"
+                                            >
+                                                {t('view_details')}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="m12 5 7 7-7 7"></path>
+                                                </svg>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
