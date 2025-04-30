@@ -251,6 +251,7 @@ const translations: Record<string, Record<string, string>> = {
         'verify_email': 'Verify email',
         'email_verification': 'Email verification',
         'verify_email_description': 'Please verify your email address by clicking on the link we just emailed to you.',
+        'email_verified': 'Email verified successfully',
 
         // Searchbar
         'search_placeholder': 'Search by title, company, location, etc...',
@@ -515,6 +516,7 @@ const translations: Record<string, Record<string, string>> = {
         'verify_email': 'Verificar correo electrónico',
         'email_verification': 'Verificación de correo electrónico',
         'verify_email_description': 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
+        'email_verified': 'Correo electrónico verificado con éxito',
 
         // Searchbar
         'search_placeholder': 'Buscar por título, empresa, ubicación, etc...',
