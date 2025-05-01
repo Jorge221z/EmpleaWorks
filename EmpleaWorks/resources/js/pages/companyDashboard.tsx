@@ -78,9 +78,10 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 <div className="text-sm text-muted-foreground">{t('active_positions')}</div>
                             </div>
                             
-                            <Button size="sm" className="gap-1 w-full mt-4">
-                                <PlusCircleIcon className="h-4 w-4" />
-                                <Link href={route('company.create-job')}>                                  
+                            {/* Botón corregido */}
+                            <Button size="sm" className="gap-1 w-full mt-4" asChild>
+                                <Link href={route('company.create-job')} className="flex items-center justify-center">                                  
+                                    <PlusCircleIcon className="h-4 w-4 mr-1" />
                                     {t('new_job')}
                                 </Link>
                             </Button>
@@ -102,16 +103,17 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 <div className="text-sm text-muted-foreground">{t('total_candidates')}</div>
                             </div>
                             
-                            <Button size="sm" className="gap-1 w-full mt-4">
-                                <UsersIcon className="h-4 w-4" />
-                                <Link href={route('company.applicants')}>
+                            {/* Botón corregido */}
+                            <Button size="sm" className="gap-1 w-full mt-4" asChild>
+                                <Link href={route('company.applicants')} className="flex items-center justify-center">
+                                    <UsersIcon className="h-4 w-4 mr-1" />
                                     {t('view_applicants')}
                                 </Link>
                             </Button>
                         </CardContent>
                     </Card>
 
-                    {/* Tarjeta de Perfil de Empresa - No necesita cambios */}
+                    {/* Tarjeta de Perfil de Empresa */}
                     <Card className="overflow-hidden border-t-4 border-t-green-500 flex flex-col">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
@@ -144,11 +146,11 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                     </div>
                                 </div>
                                 
-                                {/* Botón de editar - al final del espacio disponible */}
+                                {/* Botón de editar - corregido */}
                                 <div className="mt-4">
-                                    <Button size="sm" variant="outline" className="gap-1 w-full">
-                                        <BuildingIcon className="h-4 w-4" />
-                                        <Link href={'/settings/profile'}>                                  
+                                    <Button size="sm" variant="outline" className="gap-1 w-full" asChild>
+                                        <Link href={'/settings/profile'} className="flex items-center justify-center">                                  
+                                            <BuildingIcon className="h-4 w-4 mr-1" />
                                             {t('edit_profile')}
                                         </Link>
                                     </Button>
@@ -203,21 +205,23 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                 </div>
 
                                 <div className="flex flex-col gap-2 w-full">
-                                    {/* Primera fila: View Details */}
-                                    <Link
-                                        href={route('offer.show', offer.id)}
-                                        className="w-full px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium flex items-center justify-center gap-1.5"
-                                    >
-                                        {t('view_details')}
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
-                                            <path d="M5 12h14"></path>
-                                            <path d="m12 5 7 7-7 7"></path>
-                                        </svg>
-                                    </Link>
+                                    {/* Primera fila: View Details - Corregido */}
+                                    <Button className="w-full" asChild>
+                                        <Link
+                                            href={route('offer.show', offer.id)}
+                                            className="flex items-center justify-center gap-1.5"
+                                        >
+                                            {t('view_details')}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                                <path d="M5 12h14"></path>
+                                                <path d="m12 5 7 7-7 7"></path>
+                                            </svg>
+                                        </Link>
+                                    </Button>
                                     
                                     {/* Segunda fila: Edit y Delete con un wrap flexible */}
                                     <div className="flex flex-wrap gap-2 w-full">
-                                        {/* Edit Button */}
+                                        {/* Edit Button - Ya está correcto */}
                                         <Button
                                             variant="outline"
                                             size="sm"
@@ -233,13 +237,13 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                             </Link>
                                         </Button>
                                         
-                                        {/* Delete Button con ancho mínimo */}
+                                        {/* Delete Button con cursor pointer */}
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    className="flex-1 min-w-[80px] text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
+                                                    className="flex-1 min-w-[80px] text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer"
                                                 >
                                                     <span className="flex items-center justify-center gap-1.5">
                                                         <TrashIcon className="size-3.5" />
@@ -258,7 +262,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                                                     <AlertDialogAction 
-                                                        className="bg-red-500 hover:bg-red-600 text-white"
+                                                        className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
                                                         onClick={() => {
                                                             router.delete(route('offers.destroy', offer.id), {
                                                                 onSuccess: () => {
@@ -280,7 +284,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                             </div>
                         ))}
                         
-                        {/* Card para añadir nueva oferta */}
+                        {/* Card para añadir nueva oferta - Ya está correcto */}
                         <div className="border-sidebar-border/70 dark:border-sidebar-border bg-card/50 relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px]">
                             <PlusCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
                             <h3 className="font-medium text-lg mb-1">{t('create_new_job')}</h3>
@@ -295,7 +299,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         </div>
                     </div>
                 ) : (
-                    // Si no hay ofertas publicadas por la empresa
+                    // Si no hay ofertas publicadas por la empresa - Corregido
                     <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card/50 p-8 overflow-hidden rounded-xl border text-center my-6">
                         <div className="flex flex-col items-center gap-2 relative z-10">
                             <BuildingIcon className="h-12 w-12 mb-2 text-muted-foreground" />
@@ -303,9 +307,9 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                             <p className="text-muted-foreground max-w-md mx-auto mb-4">
                                 {t('no_job_listings_message')}
                             </p>
-                            <Button className="gap-1">
-                                <PlusCircleIcon className="h-4 w-4" />
-                                <Link href={route('company.create-job')}>                                
+                            <Button className="gap-1" asChild>
+                                <Link href={route('company.create-job')} className="flex items-center justify-center">                                
+                                    <PlusCircleIcon className="h-4 w-4 mr-1" />
                                     {t('create_first_job')}
                                 </Link>
                             </Button>
