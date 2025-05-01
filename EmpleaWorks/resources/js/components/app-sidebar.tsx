@@ -32,14 +32,6 @@ export function AppSidebar() {
             icon: LayoutGrid,
         }       
     ];
-
-    const footerNavItems: NavItem[] = [
-        {
-            title: t('terms_and_conditions'),
-            href: route('terms'),
-            icon: FileText,
-        },
-    ];
     
     // Mostrar diferentes opciones según el rol del usuario
     if (isCompany) {
@@ -95,6 +87,26 @@ export function AppSidebar() {
         );
     };
 
+    // Componente de Términos y Condiciones
+    const TermsAndConditions = () => {
+        return (
+            <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                    <Link 
+                        href={route('terms')} 
+                        className="flex items-center w-full"
+                        preserveState
+                    >
+                        <FileText className="h-4 w-4" />
+                        <span className="sidebar-menu-button-text">
+                            {t('terms_and_conditions')}
+                        </span>
+                    </Link>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+        );
+    };
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -114,9 +126,8 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                {/* Añadir selector de idioma */}
-                <SidebarMenu>
+                <SidebarMenu className="mt-auto">
+                    <TermsAndConditions />
                     <LanguageSelector />
                 </SidebarMenu>
                 <NavUser />
