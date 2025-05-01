@@ -303,6 +303,11 @@ const translations: Record<string, Record<string, string>> = {
         'cookie_management': 'Cookie Management',
         'privacy_impact': 'Privacy Impact',
         'updates': 'Updates',
+
+        // Page 404
+        'page_not_found_title': 'Looks like you\'re lost',
+        'page_not_found_message': 'The page you are looking for is not available!',
+        'back_to_dashboard': 'Back to Dashboard',
     },
     es: {
         // Sidebar
@@ -605,6 +610,11 @@ const translations: Record<string, Record<string, string>> = {
         'cookie_management': 'Gestión de Cookies',
         'privacy_impact': 'Impacto en la Privacidad',
         'updates': 'Actualizaciones',
+
+        // Page 404
+        'page_not_found_title': 'Parece que te has perdido',
+        'page_not_found_message': '¡La página que estás buscando no está disponible!',
+        'back_to_dashboard': 'Volver al Inicio',
     }
 };
 

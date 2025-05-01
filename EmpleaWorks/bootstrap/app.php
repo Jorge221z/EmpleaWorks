@@ -9,6 +9,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use App\Http\Middleware\EnsureCompanyRole;
 use App\Http\Middleware\EnsureCandidateRole;
+use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -34,5 +36,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Configuración de página 404 personalizada
+        $exceptions->renderable(function (NotFoundHttpException $e) {
+            return Inertia::render('Error404');
+        });
     })->create();
