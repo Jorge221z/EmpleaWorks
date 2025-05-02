@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} - {{ $level === 'error' ? __('messages.error') : __('messages.notification') }}</title>
+    <title>{{ config('app.name') }} - {{ $level === 'error' ? __('messages.error') : __('messages.notification') }}
+    </title>
 </head>
 
 <body
@@ -25,27 +26,27 @@
                     <div style="padding: 30px; font-size: 16px;">
                         <!-- Intro Lines -->
                         @foreach ($introLines as $line)
-                            <p>{{ $line }}</p>
+                            <p>{{ __('messages.verify_p') }}</p>
                         @endforeach
                         <!-- Action Button -->
                         @isset($actionText)
                                                 <?php
-                            $color = match ($level) {
-                                'success' => '#10B981',
-                                'error' => '#EF4444',
-                                default => '#4F46E5',
-                            };
-                                                    ?>
+    $color = match ($level) {
+        'success' => '#10B981',
+        'error' => '#EF4444',
+        default => '#4F46E5',
+    };
+                                                                            ?>
                                                 <p style="text-align: center; margin: 30px 0;">
                                                     <a href="{{ $actionUrl }}"
                                                         style="background-color: {{ $color }}; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
-                                                        {{ $actionText }}
+                                                        {{ __('messages.verify_button') }}
                                                     </a>
                                                 </p>
                         @endisset
                         <!-- Outro Lines -->
                         @foreach ($outroLines as $line)
-                            <p>{{ $line }}</p>
+                            <p>{{ __('messages.verify_e') }}</p>
                         @endforeach
                         <!-- Salutation -->
                         <p style="margin-top: 30px;">
@@ -57,7 +58,7 @@
                     @isset($actionText)
                         <div
                             style="text-align: center; margin-top: 20px; font-size: 14px; color: #666; border-top: 1px solid #ddd; padding-top: 20px;">
-                            {{ __('messages.button_trouble', ['actionText' => $actionText]) }}<br>
+                            {{ __('messages.button_trouble', ['actionText' => __('messages.verify_button')]) }}<br>
                             <a href="{{ $actionUrl }}"
                                 style="color: #4F46E5; text-decoration: none;">{{ $displayableActionUrl }}</a>
                         </div>

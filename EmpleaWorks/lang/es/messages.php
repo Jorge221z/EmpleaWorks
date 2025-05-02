@@ -331,4 +331,8 @@ return [
     'hello_check_email' => '¡Hola, verifica tu correo!',
     'regards_mail' => 'Saludos,',
     'button_trouble' => 'Si tienes problemas para hacer clic en el botón ":actionText", copia y pega la siguiente URL en tu navegador:',
+    'verify_button' => 'Verificar correo',
+    'verify_p' => 'Por favor verifica tu correo electrónico haciendo click en el botón inferior:',
+    'verify_e' => 'Si no has creado una cuenta, puedes ignorar este correo.',
+    'verify_email_subject' => 'Verifica tu correo electrónico - EmpleaWorks',
 ];

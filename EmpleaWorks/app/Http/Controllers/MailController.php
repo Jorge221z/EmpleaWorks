@@ -111,7 +111,7 @@ class MailController extends Controller
 
             // Preparamos los datos del mensaje
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
-            $fromAddress = 'Emplea Works <notificaciones@mg.emplea.works>';
+            $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
             $toAddress = "{$data['company']->name} <{$data['company']->email}>";
             $subject = __("messages.new_application_from", [
                 'name' => $data['candidate']->name,
