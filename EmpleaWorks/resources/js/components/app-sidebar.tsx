@@ -1,7 +1,7 @@
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe } from 'lucide-react';
@@ -24,7 +24,8 @@ export function AppSidebar() {
     const { t } = useTranslation();
     const isAuthenticated = !!auth.user;
     const isCompany = isAuthenticated && auth.user.role_id === 2;
-    
+    const { state } = useSidebar();
+
     const mainNavItems: ExtendedNavItem[] = [
         {
             title: t('dashboard'),
@@ -113,11 +114,13 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch className="flex items-center gap-2 group">
+                            <Link href="/dashboard" prefetch className="flex items-center gap-2 group justify-center">
                                 <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
-                                <span className="text-xl font-bold tracking-tight  -ml-1">
-                                    EmpleaWorks
-                                </span>
+                                {state !== 'collapsed' && (
+                                    <span className="text-xl font-bold tracking-tight hover:text-purple-600 transition-colors -ml-1">
+                                        EmpleaWorks
+                                    </span>
+                                )}
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
