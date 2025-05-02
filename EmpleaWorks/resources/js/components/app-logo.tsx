@@ -1,14 +1,16 @@
-import AppLogoIcon from './app-logo-icon';
-
-export default function AppLogo({ className = "" }: { className?: string }) {
+export default function AppLogo(props: React.ComponentProps<'span'>) {
     return (
-        <div className={`flex items-center ${className}`}>
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">EmpleaWorks</span>
-            </div>
-        </div>
+        <span {...props} className={`flex items-center ${props.className ?? ''}`}>
+            <img
+                src="/images/logo.png"
+                alt="Logo"
+                className="h-16 w-12 rounded-lg object-cover
+                transition-all duration-200 ease-in-out hover:scale-105"
+                onError={(e) => {
+                    console.error('Error al cargar el logo');
+                    e.currentTarget.style.display = 'none';
+                }}
+            />
+        </span>
     );
 }

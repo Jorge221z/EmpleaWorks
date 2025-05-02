@@ -113,8 +113,11 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
-                                <AppLogo />
+                            <Link href="/dashboard" prefetch className="flex items-center gap-2 group">
+                                <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
+                                <span className="text-xl font-bold tracking-tight  -ml-1">
+                                    EmpleaWorks
+                                </span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
