@@ -229,6 +229,7 @@ const translations: Record<string, Record<string, string>> = {
         'signing_in': 'Signing in...',
         'dont_have_account': 'Don\'t have an account?',
         'sign_up': 'Sign up',
+        'terms_text': 'By continuing, you agree to our',
 
         // Register form
         'create_an_account': 'Create an account',
@@ -240,6 +241,17 @@ const translations: Record<string, Record<string, string>> = {
         'company': 'Company',
         'registering': 'Registering...',
         'already_have_account': 'Already have an account?',
+        'password_req_length': 'At least 8 characters',
+        'password_req_uppercase': 'At least 1 uppercase letter',
+        'password_req_lowercase': 'At least 1 lowercase letter',
+        'password_req_number': 'At least 1 number',
+        'password_enter': 'Enter a password',
+        'password_very_weak': 'Very weak password',
+        'password_weak': 'Weak password',
+        'password_medium': 'Medium password',
+        'password_strong': 'Strong password',
+        'password_hide': 'Hide password',
+        'password_show': 'Show password',
 
         // Reset password form
         'reset_password': 'Reset password',
@@ -535,6 +547,7 @@ const translations: Record<string, Record<string, string>> = {
         'signing_in': 'Iniciando sesión...',
         'dont_have_account': '¿No tienes cuenta?',
         'sign_up': 'Regístrate',
+        'terms_text': 'Al continuar, aceptas nuestros',
 
         // Register form
         'create_an_account': 'Crear una cuenta',
@@ -546,6 +559,17 @@ const translations: Record<string, Record<string, string>> = {
         'company': 'Empresa',
         'registering': 'Registrando...',
         'already_have_account': '¿Ya tienes cuenta?',
+        'password_req_length': 'Al menos 8 caracteres',
+        'password_req_uppercase': 'Al menos 1 letra mayúscula',
+        'password_req_lowercase': 'Al menos 1 letra minúscula',
+        'password_req_number': 'Al menos 1 número',
+        'password_enter': 'Ingresa una contraseña',
+        'password_very_weak': 'Contraseña muy débil',
+        'password_weak': 'Contraseña débil',
+        'password_medium': 'Contraseña media',
+        'password_strong': 'Contraseña fuerte',
+        'password_hide': 'Ocultar contraseña',
+        'password_show': 'Mostrar contraseña',
 
         // Reset password form
         'reset_password': 'Restablecer contraseña',
