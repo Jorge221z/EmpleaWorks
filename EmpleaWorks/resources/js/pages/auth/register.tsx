@@ -3,9 +3,17 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue 
+} from '@/components/ui/select';
 import AppLogo from '@/components/app-logo';
 import InputError from '@/components/input-error';
 import { useTranslation } from '@/utils/i18n';
+import { InputPassword } from '@/components/ui/input-password';
 
 export default function Register() {
     const { t } = useTranslation();
@@ -80,37 +88,40 @@ export default function Register() {
                                 <InputError message={errors.email} />
                             </div>
 
-                            {/* Role Selection */}
+                            {/* Role Selection - MEJORADO */}
                             <div className="space-y-2">
                                 <Label htmlFor="role">{t('role')}</Label>
-                                <select
-                                    id="role"
+                                <Select
                                     name="role"
-                                    required
                                     value={data.role}
-                                    onChange={(e) => setData('role', e.target.value)}
+                                    onValueChange={(value) => setData('role', value)}
                                     disabled={processing}
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    required
                                 >
-                                    <option value="">{t('select_role')}</option>
-                                    <option value="candidate">{t('candidate')}</option>
-                                    <option value="company">{t('company')}</option>
-                                </select>
+                                    <SelectTrigger id="role" className="w-full">
+                                        <SelectValue placeholder={t('select_role')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="candidate" className="cursor-pointer">
+                                            {t('candidate')}
+                                        </SelectItem>
+                                        <SelectItem value="company" className="cursor-pointer">
+                                            {t('company')}
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
                                 <InputError message={errors.role} />
                             </div>
 
-                            {/* Password Field */}
+                            {/* Password Field - Con verificador de seguridad */}
                             <div className="space-y-2">
-                                <Label htmlFor="password">{t('password')}</Label>
-                                <Input
+                                <InputPassword
                                     id="password"
-                                    type="password"
                                     name="password"
                                     value={data.password}
-                                    className="w-full"
-                                    autoComplete="new-password"
+                                    onChange={(value) => setData('password', value)}
+                                    label={t('password')}
                                     placeholder={t('password_placeholder')}
-                                    onChange={(e) => setData('password', e.target.value)}
                                     required
                                 />
                                 <InputError message={errors.password} />
