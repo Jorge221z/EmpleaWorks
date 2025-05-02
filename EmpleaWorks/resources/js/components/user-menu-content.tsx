@@ -1,6 +1,6 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Link } from "@inertiajs/react";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, User, KeyRound, SunMoon } from "lucide-react";
 import { useTranslation } from "@/utils/i18n";
 
 interface UserMenuContentProps {
@@ -54,13 +54,13 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href={route('password.edit')}>
-                        <Settings className="mr-2 size-4" />
+                        <KeyRound className="mr-2 size-4" />
                         <span>{t('password')}</span>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href={route('appearance')}>
-                        <Settings className="mr-2 size-4" />
+                        <SunMoon className="mr-2 size-4" />
                         <span>{t('appearance')}</span>
                     </Link>
                 </DropdownMenuItem>
