@@ -323,4 +323,12 @@ return [
     'email_greeting' => 'Saludos,',
     'email_team' => 'El equipo de EmpleaWorks',
     'email_rights' => '© :year EmpleaWorks. Todos los derechos reservados.',
+
+    // Email template keys
+    'error' => 'Error',
+    'notification' => 'Notificación',
+    'ups' => '¡Ups!',
+    'hello_check_email' => '¡Hola, verifica tu correo!',
+    'regards_mail' => 'Saludos,',
+    'button_trouble' => 'Si tienes problemas para hacer clic en el botón ":actionText", copia y pega la siguiente URL en tu navegador:',
 ];
