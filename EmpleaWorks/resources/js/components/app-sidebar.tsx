@@ -127,7 +127,7 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="mt-6">
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
