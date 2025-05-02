@@ -67,7 +67,7 @@ class PasswordResetLinkController extends Controller
         try {
             $mg = Mailgun::create(
                 env('API_KEY'),
-                env('MAILGUN_ENDPOINT', 'https://api.eu.mailgun.net')
+                env('MG_ENDPOINT', 'https://api.eu.mailgun.net')
             );
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
             $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
