@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { CalendarIcon, MapPinIcon, BriefcaseIcon } from 'lucide-react';
+import { CalendarIcon, MapPinIcon, BriefcaseIcon, EyeIcon, ArrowRightIcon } from 'lucide-react';
 import { Offer, Company } from '@/types/types';
 import SearchBar from '@/SearchBar/SearchBar';
 import { useState, useCallback, useEffect, useMemo } from 'react';
@@ -180,12 +180,17 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                     </div>
                                 </div>
 
-                                <Link
-                                    href={route('offer.show', offer.id)}
-                                    className="text-primary hover:text-primary/80 text-sm font-medium"
-                                >
-                                    {t('view_details')} →
-                                </Link>
+                                <div className="flex justify-end mt-auto">
+                                    <Link
+                                        href={route('offer.show', offer.id)}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary/90 text-sm font-medium transition-colors"
+                                        title={t('view_details')}
+                                    >
+                                        {t('view_details')}
+                                        <ArrowRightIcon className="size-4" />
+                                    </Link>
+                                </div>
+                                
                             </div>
                         ))}
                     </div>
