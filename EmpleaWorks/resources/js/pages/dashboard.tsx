@@ -139,7 +139,12 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                 className="border-sidebar-border/70 dark:border-sidebar-border bg-card relative overflow-hidden rounded-xl border p-4 flex flex-col"
                             >
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-lg line-clamp-2">{offer.name}</h3>
+                                    <Link
+                                        href={route('offer.show', offer.id)}
+                                        className="font-semibold text-lg line-clamp-2"
+                                    >
+                                        {offer.name}
+                                    </Link>
                                     <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                                         {offer.category}
                                     </span>
