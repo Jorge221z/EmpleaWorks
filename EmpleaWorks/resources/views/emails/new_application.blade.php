@@ -18,6 +18,9 @@
                     <!-- Header -->
                     <div
                         style="background-color: #4F46E5; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+                        <div style="background: #fff; border-radius: 6px; padding: 10px 0; margin-bottom: 10px; text-align: center;">
+                            <img src="{{ $logo }}" alt="EmpleaWorks Logo" style="height: 100px; display: inline-block;">
+                        </div>
                         <h1 style="font-size: 28px; margin: 0;">{{ __('messages.new_application_received') }}</h1>
                         <p style="font-size: 16px; margin: 10px 0 0;">{{ __('messages.for_the_offer') }} {{ $offer->name }}</p>
                     </div>

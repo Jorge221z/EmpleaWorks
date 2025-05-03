@@ -56,10 +56,22 @@ class MailController extends Controller
                 }
             }
 
-            // Añadimos los datos del CV a la vista
+            // Embebemos el logo para el correo
+            $logoPath = public_path('images/logo.png');
+            if (file_exists($logoPath)) {
+                $attachmentParams['inline'] = [
+                    ['filePath' => $logoPath, 'filename' => 'logo.png', 'cid' => 'logo.png']
+                ];
+                $logoSrc = 'cid:logo.png';
+            } else {
+                $logoSrc = null;
+            }
+
+            // Añadimos los datos del CV y el logo a la vista
             $viewData = array_merge($data, [
                 'cvPath' => $cvPath,
                 'cvUrl' => $cvUrl,
+                'logo' => $logoSrc,
             ]);
 
             $htmlBody = view('emails.application_confirmation', $viewData)->render();
@@ -73,8 +85,12 @@ class MailController extends Controller
             ];
 
             // Si hay un CV para adjuntar, lo añadimos como adjunto
-            if (!empty($attachmentParams)) {
+            if (!empty($attachmentParams['attachment'])) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
+            }
+            // Adjuntamos el logo embebido si existe
+            if (!empty($attachmentParams['inline'])) {
+                $messageParams['inline'] = $attachmentParams['inline'];
             } else { 
                 // En caso de faltar el CV, devolver error en lugar de intentar redireccionar
                 return [
@@ -144,10 +160,22 @@ class MailController extends Controller
                 }
             }
 
-            // Añadimos los datos del CV a la vista
+            // Embebemos el logo para el correo
+            $logoPath = public_path('images/logo.png');
+            if (file_exists($logoPath)) {
+                $attachmentParams['inline'] = [
+                    ['filePath' => $logoPath, 'filename' => 'logo.png', 'cid' => 'logo.png']
+                ];
+                $logoSrc = 'cid:logo.png';
+            } else {
+                $logoSrc = null;
+            }
+
+            // Añadimos los datos del CV y el logo a la vista
             $viewData = array_merge($data, [
                 'cvPath' => $cvPath,
                 'cvUrl' => $cvUrl,
+                'logo' => $logoSrc,
             ]);
 
             $htmlBody = view('emails.new_application', $viewData)->render();
@@ -161,8 +189,12 @@ class MailController extends Controller
             ];
 
             // Si hay un CV para adjuntar, lo añadimos como adjunto
-            if (!empty($attachmentParams)) {
+            if (!empty($attachmentParams['attachment'])) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
+            }
+            // Adjuntamos el logo embebido si existe
+            if (!empty($attachmentParams['inline'])) {
+                $messageParams['inline'] = $attachmentParams['inline'];
             }
 
             // Enviamos el mensaje
