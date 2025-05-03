@@ -1,7 +1,7 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler, useState, useEffect } from 'react';
+import { FormEventHandler, useState, useEffect, useRef } from 'react';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -54,6 +54,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         weblink: role_id === 2 && auth.user.company?.web_link ? auth.user.company.web_link : undefined,
     });
 
+    // Estado para animación drag over global
+    const [isDragging, setIsDragging] = useState(false);
+    const dragCounter = useRef(0);
+
     // Mostramos los mensajes flash del backend
     useEffect(() => {
         if (flash && flash.success) {
@@ -64,15 +68,33 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         }
     }, [flash]);
 
-    // Prevenir el comportamiento por defecto de drag & drop globalmente
+    // Prevenir el comportamiento por defecto de drag & drop globalmente y animar cuadros
     useEffect(() => {
+        const handleDragEnter = (e: DragEvent) => {
+            e.preventDefault();
+            dragCounter.current++;
+            setIsDragging(true);
+        };
+        const handleDragLeave = (e: DragEvent) => {
+            e.preventDefault();
+            dragCounter.current--;
+            if (dragCounter.current <= 0) {
+                setIsDragging(false);
+            }
+        };
         const preventDefault = (e: DragEvent) => {
             e.preventDefault();
         };
-        window.addEventListener('dragover', preventDefault);
-        window.addEventListener('drop', preventDefault);
+        window.addEventListener('dragover', handleDragEnter);
+        window.addEventListener('dragleave', handleDragLeave);
+        window.addEventListener('drop', (e) => {
+            dragCounter.current = 0;
+            setIsDragging(false);
+            preventDefault(e);
+        });
         return () => {
-            window.removeEventListener('dragover', preventDefault);
+            window.removeEventListener('dragover', handleDragEnter);
+            window.removeEventListener('dragleave', handleDragLeave);
             window.removeEventListener('drop', preventDefault);
         };
     }, []);
@@ -204,7 +226,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <div className='grid gap-2'>
                                 <Label htmlFor='cv'>{t('curriculum_vitae')}</Label>
                                 <div
-                                    className='relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors'
+                                    className={`relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors
+                                        ${isDragging ? 'border-blue-500 animate-pulse shadow-lg' : ''}
+                                    `}
                                     onClick={() => {
                                         const cvInput = document.getElementById('cv');
                                         if (cvInput) {
@@ -301,7 +325,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         <div className='grid gap-2'>
                             <Label htmlFor='image'>{t('image')}</Label>
                             <div
-                                className='relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors'
+                                className={`relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors
+                                    ${isDragging ? 'border-blue-500 animate-pulse shadow-lg' : ''}
+                                `}
                                 onClick={() => {
                                     if (!data.image) {
                                         const imageInput = document.getElementById('image');
