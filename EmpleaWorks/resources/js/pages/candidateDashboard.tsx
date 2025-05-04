@@ -122,6 +122,43 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                     <div>
                                         <div className="text-lg font-medium truncate max-w-[200px]">{user?.name}</div>
                                         <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
+                                        {/* Estado de verificación de correo */}
+                                        {user?.email_verified_at === null ? (
+                                            <div className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-1.414-1.414A9 9 0 105.636 18.364l1.414 1.414A9 9 0 1018.364 5.636z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 9l-6 6M9 9l6 6" />
+                                                </svg>
+                                                {t('email_not_verified')}
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-1 text-xs text-green-600 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                {t('email_verified')}
+                                            </div>
+                                        )}
+                                        {/* Estado de CV */}
+                                        {user?.candidate ? (
+                                            user.candidate.cv ? (
+                                                <div className="flex items-center gap-1 text-xs text-green-600 mt-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V7.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9h6M9 13h6M9 17h3" />
+                                                    </svg>
+                                                    {t('cv_uploaded')}
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V7.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9h6M9 13h6M9 17h3" />
+                                                    </svg>
+                                                    {t('cv_not_uploaded')}
+                                                </div>
+                                            )
+                                        ) : null}
                                     </div>
                                 </div>
                                 

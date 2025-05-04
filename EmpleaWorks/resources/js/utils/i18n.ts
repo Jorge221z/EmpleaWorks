@@ -173,6 +173,8 @@ const translations: Record<string, Record<string, string>> = {
         'only_image_files': 'Please, upload only image files (JPG, PNG, GIF, etc.)',
         'profile_updated_success': 'Profile updated successfully',
         'profile_updated_error': 'Error updating profile. Please try again.',
+        'cv_uploaded': 'CV uploaded',
+        'cv_not_uploaded': 'CV not uploaded',
 
         // Password form
         'password_settings': 'Password Settings',
@@ -264,6 +266,7 @@ const translations: Record<string, Record<string, string>> = {
         'email_verification': 'Email verification',
         'verify_email_description': 'Please verify your email address by clicking on the link we just emailed to you.',
         'email_verified': 'Email verified successfully',
+        'email_not_verified': 'Email has not been verified yet.',
 
         // Searchbar
         'search_placeholder': 'Search by title, company, location, etc...',
@@ -519,6 +522,8 @@ const translations: Record<string, Record<string, string>> = {
         'only_image_files': 'Por favor, sube solo archivos de imagen (JPG, PNG, GIF, etc.)',
         'profile_updated_success': 'Perfil actualizado correctamente',
         'profile_updated_error': 'Error al actualizar el perfil. Por favor, inténtalo de nuevo.',
+        'cv_uploaded': 'CV subido',
+        'cv_not_uploaded': 'CV no subido',
 
         // Password form
         'password_settings': 'Configuración de Contraseña',
@@ -610,6 +615,7 @@ const translations: Record<string, Record<string, string>> = {
         'email_verification': 'Verificación de correo electrónico',
         'verify_email_description': 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
         'email_verified': 'Correo electrónico verificado con éxito',
+        'email_not_verified': 'El correo electrónico no ha sido verificado todavía.',
 
         // Searchbar
         'search_placeholder': 'Buscar por título, empresa, ubicación, etc...',
