@@ -32,7 +32,7 @@ export function NavUser() {
                             </Avatar>
                         )}
                         <div className="flex start-2 justify-items-start gap-2 overflow-hidden text-ellipsis">
-                            <span className="truncate text-sm font-medium leading-none text-foreground">
+                            <span className="truncate text-sm font-medium leading-tight text-foreground">
                                 {auth.user ? auth.user.name : t('guest_user')}
                             </span>
                         </div>
