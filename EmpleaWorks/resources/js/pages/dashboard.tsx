@@ -118,9 +118,9 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                 {/* Barra de búsqueda con selectores */}
                 <div className="mb-6 relative">
                     {/* Acento de color más fino */}
-                    <div className="absolute -left-1 top-6 bottom-6 w-0.5 bg-primary rounded-full" />
+                    <div className="absolute -left-1 top-6 bottom-6 w-0.5 bg-[#7d28ec] rounded-full" />
 
-                    <div className="pb-5 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg ml-1.5 border border-gray-100 dark:border-gray-700 transform hover:translate-y-[-2px] transition-transform duration-300">
+                    <div className="pb-5 bg-white dark:bg-[#171717] rounded-xl p-4 shadow-lg ml-1.5 border border-gray-100 dark:border-gray-700 transform hover:translate-y-[-2px] transition-transform duration-300">
                         <SearchBar
                             data={offers}
                             onFilteredResults={handleFilteredResults}

@@ -86,7 +86,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-12 bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+      <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-2xl shadow-md overflow-hidden">
         {/* Ícono de búsqueda */}
         <div className="col-span-1 flex items-center justify-center border-r border-gray-100 dark:border-gray-700">
           <svg
@@ -248,7 +248,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
           ) : (
             <button
               type="button"
-              className="w-full h-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full h-full flex items-center justify-center bg-[#7c28eb] hover:bg-[#7d28ebb4] text-white"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
