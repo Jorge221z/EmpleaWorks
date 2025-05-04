@@ -13,6 +13,7 @@ import { type BreadcrumbItem } from '@/types';
 import { useState } from 'react';
 import { Offer, Company } from "@/types/types";
 import { useTranslation } from '@/utils/i18n';
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface ApplyFormProps {
     offer: Offer;  // Recibimos la oferta como prop
@@ -25,6 +26,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
     // Form state
     const [agreed, setAgreed] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
 
     // aqui definimos como trabajará inertiajs con el formulario //
     const { data, setData, post, processing, errors } = useForm({
@@ -37,12 +39,16 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
     // Handle form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/apply', { //peticion a la ruta de guardado del backend //
-            onSuccess: () => {
-                //el controlador manejará la redirección//
-                console.log("Application submitted successfully");
-            }
-        });
+        setShowSpinner(true);
+        setTimeout(() => {
+            post('/apply', { //peticion a la ruta de guardado del backend //
+                onSuccess: () => {
+                    setShowSpinner(false);
+                    //el controlador manejará la redirección//
+                    console.log("Application submitted successfully");
+                }
+            });
+        }, 600); // Muestra el spinner al menos 1 segundo
     };
 
     // Breadcrumbs for navigation
@@ -64,6 +70,25 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${t('apply_for')} ${offer.name} - EmpleaWorks`} />
+            {/* Spinner Overlay */}
+            {showSpinner && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        background: 'rgba(255,255,255,0.1)', // más translúcido
+                        zIndex: 9999,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <ClipLoader size={80} color="#7d28ec" />
+                </div>
+            )}
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="mb-6">
                     <Button
