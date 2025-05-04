@@ -85,57 +85,64 @@ export default function Terms() {
                                             {/* Secciones de términos y condiciones */}
                                             <section id="terminos-de-uso">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">1. {t('terms_of_use')}</h3>
-                                                <p>Al registrarte y utilizar la plataforma EmpleaWorks, aceptas estos términos y condiciones en su totalidad. Estos términos constituyen un acuerdo legal entre tú y EmpleaWorks. Si no estás de acuerdo con estos términos, no debes registrarte ni utilizar la plataforma.</p>
+                                                <p>{t('terms_of_use_text')}</p>
                                             </section>
 
                                             <section id="proteccion-de-datos" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">2. {t('data_protection')}</h3>
-                                                <p>Al solicitar un empleo a través de EmpleaWorks, consientes que tus datos personales, incluido tu currículum vitae, sean procesados y compartidos con la empresa ofertante para fines exclusivamente relacionados con el proceso de selección. Este procesamiento se basa en tu consentimiento explícito y en la necesidad para la ejecución de la solicitud de empleo, de acuerdo con el Artículo 6(1)(a) y (b) del RGPD.</p>
+                                                <p>{t('data_protection_text')}</p>
                                             </section>
                                             
-                                            {/* Resto de secciones de términos (sin cambios) */}
                                             <section id="uso-de-la-informacion" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">3. {t('use_of_information')}</h3>
-                                                <p>Las empresas que reciben tus datos personales a través de EmpleaWorks actúan como responsables del tratamiento y se comprometen a utilizarlos únicamente con fines de selección y contratación, de acuerdo con la legislación aplicable. No podrán ceder tus datos a terceros sin tu consentimiento explícito.</p>
+                                                <p>{t('use_of_information_text')}</p>
                                             </section>
 
                                             <section id="derechos-rgpd" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">4. {t('gdpr_rights')}</h3>
-                                                <p>De acuerdo con el Reglamento General de Protección de Datos (RGPD), tienes derecho a acceder, rectificar, limitar, eliminar, oponerte al procesamiento y solicitar la portabilidad de tus datos personales. Para ejercer estos derechos, puedes contactar con nosotros a través de <a href="mailto:empleaworks@gmail.com" className="text-primary hover:underline">empleaworks@gmail.com</a>.</p>
+                                                <p>{t('gdpr_rights_text')}</p>
                                             </section>
 
                                             <section id="retencion-de-datos" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">5. {t('data_retention')}</h3>
-                                                <p>Los datos proporcionados durante el proceso de solicitud se almacenarán por un período máximo de 2 años desde la última actividad del usuario en la plataforma, tras el cual serán eliminados de forma segura. Los usuarios pueden solicitar la eliminación de sus datos en cualquier momento antes de este plazo.</p>
+                                                <p>{t('data_retention_text')}</p>
                                             </section>
 
                                             <section id="seguridad" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">6. {t('security')}</h3>
-                                                <p>EmpleaWorks se compromete a implementar medidas técnicas y organizativas adecuadas para garantizar la seguridad de tus datos personales, incluyendo el uso de cifrado, controles de acceso y auditorías regulares.</p>
+                                                <p>{t('security_text')}</p>
                                             </section>
 
                                             <section id="cookies" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">7. {t('cookies_tracking')}</h3>
-                                                <p>Este sitio utiliza cookies y tecnologías similares para mejorar la experiencia del usuario y analizar el uso de la plataforma. Para más información, consulta nuestra <button onClick={() => setActiveTab("cookies")} className="text-primary hover:underline font-medium border-0 bg-transparent p-0 cursor-pointer">Política de Cookies</button>.</p>
+                                                <p>
+                                                    {t('cookies_tracking_text', {
+                                                        cookies_policy: (
+                                                            <button onClick={() => setActiveTab("cookies")} className="text-primary hover:underline font-medium border-0 bg-transparent p-0 cursor-pointer">
+                                                                {t('cookies_policy')}
+                                                            </button>
+                                                        )
+                                                    })}
+                                                </p>
                                             </section>
 
                                             <section id="limitacion-de-responsabilidad" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">8. {t('liability_limitation')}</h3>
-                                                <p>EmpleaWorks actúa como intermediario entre candidatos y empresas, y no asume responsabilidad por el contenido de las ofertas publicadas, la veracidad de la información proporcionada por las empresas, o por los procesos de selección realizados por las mismas. Sin embargo, EmpleaWorks se compromete a tomar medidas razonables para verificar la legitimidad de las empresas y las ofertas publicadas.</p>
+                                                <p>{t('liability_limitation_text')}</p>
                                             </section>
 
                                             <section id="modificaciones" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">9. {t('modifications')}</h3>
-                                                <p>Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en el sitio. Te notificaremos de cualquier cambio significativo a través de correo electrónico o mediante un aviso en la plataforma.</p>
+                                                <p>{t('modifications_text')}</p>
                                             </section>
 
                                             <section id="ley-aplicable" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">10. {t('applicable_law')}</h3>
-                                                <p>Estos términos y condiciones se rigen por la legislación española y cualquier disputa relacionada con estos términos estará sujeta a la jurisdicción exclusiva de los tribunales españoles.</p>
+                                                <p>{t('applicable_law_text')}</p>
                                             </section>
 
                                             <div className="mt-10 pt-6 border-t border-border">
-                                                <p className="text-sm text-muted-foreground">Última actualización: 30 de abril de 2025</p>
+                                                <p className="text-sm text-muted-foreground">{t('last_update', { date: '30 de abril de 2025' })}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -169,47 +176,46 @@ export default function Terms() {
                                             {/* Secciones de la política de cookies */}
                                             <section id="introduccion">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">1. {t('introduction')}</h3>
-                                                <p>En EmpleaWorks, utilizamos cookies y tecnologías similares para mejorar tu experiencia en nuestro sitio web, analizar el uso de la plataforma y personalizar el contenido. Esta política explica qué son las cookies, cómo las utilizamos y cómo puedes gestionarlas.</p>
+                                                <p>{t('introduction_text')}</p>
                                             </section>
                                             
-                                            {/* Resto de secciones de cookies (sin cambios) */}
                                             <section id="tipos-de-cookies" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">2. {t('cookie_types')}</h3>
-                                                <p>Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas nuestro sitio. A continuación, se describen los tipos de cookies que utilizamos:</p>
+                                                <p>{t('cookie_types_text')}</p>
                                                 
                                                 <div className="mt-4 grid md:grid-cols-2 gap-4">
                                                     <div className="p-4 rounded-lg border border-border bg-card/60">
-                                                        <h4 className="font-medium mb-2">Cookies Esenciales</h4>
-                                                        <p className="text-sm text-muted-foreground">Son necesarias para el funcionamiento básico del sitio, como la navegación y el acceso a áreas seguras.</p>
+                                                        <h4 className="font-medium mb-2">{t('essential_cookies')}</h4>
+                                                        <p className="text-sm text-muted-foreground">{t('essential_cookies_text')}</p>
                                                     </div>
                                                     
                                                     <div className="p-4 rounded-lg border border-border bg-card/60">
-                                                        <h4 className="font-medium mb-2">Cookies de Rendimiento</h4>
-                                                        <p className="text-sm text-muted-foreground">Nos ayudan a entender cómo los usuarios interactúan con el sitio, proporcionando información sobre las páginas visitadas y los errores encontrados.</p>
+                                                        <h4 className="font-medium mb-2">{t('performance_cookies')}</h4>
+                                                        <p className="text-sm text-muted-foreground">{t('performance_cookies_text')}</p>
                                                     </div>
                                                     
                                                     <div className="p-4 rounded-lg border border-border bg-card/60">
-                                                        <h4 className="font-medium mb-2">Cookies de Funcionalidad</h4>
-                                                        <p className="text-sm text-muted-foreground">Permiten recordar tus preferencias (como el idioma) y personalizar tu experiencia.</p>
+                                                        <h4 className="font-medium mb-2">{t('functionality_cookies')}</h4>
+                                                        <p className="text-sm text-muted-foreground">{t('functionality_cookies_text')}</p>
                                                     </div>
                                                     
                                                     <div className="p-4 rounded-lg border border-border bg-card/60">
-                                                        <h4 className="font-medium mb-2">Cookies de Marketing</h4>
-                                                        <p className="text-sm text-muted-foreground">Se utilizan para mostrarte anuncios relevantes y medir la efectividad de nuestras campañas publicitarias.</p>
+                                                        <h4 className="font-medium mb-2">{t('marketing_cookies')}</h4>
+                                                        <p className="text-sm text-muted-foreground">{t('marketing_cookies_text')}</p>
                                                     </div>
                                                 </div>
                                             </section>
 
                                             <section id="cookies-de-terceros" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">3. {t('third_party_cookies')}</h3>
-                                                <p>EmpleaWorks utiliza servicios de terceros que también pueden establecer cookies en tu dispositivo. Estos incluyen:</p>
+                                                <p>{t('third_party_cookies_text')}</p>
                                                 <ul className="mt-4 space-y-2">
                                                     <li className="flex items-start gap-2">
                                                         <div className="rounded-full bg-primary/10 p-1 mt-0.5">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                                         </div>
                                                         <div>
-                                                            <span className="font-medium">Google Analytics</span>: Para analizar el tráfico del sitio y el comportamiento de los usuarios.
+                                                            <span className="font-medium">Google Analytics</span>: {t('third_party_cookies_ga')}
                                                         </div>
                                                     </li>
                                                     <li className="flex items-start gap-2">
@@ -217,16 +223,16 @@ export default function Terms() {
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                                         </div>
                                                         <div>
-                                                            <span className="font-medium">Redes Sociales</span>: Para permitir la integración con plataformas como LinkedIn o Facebook.
+                                                            <span className="font-medium">{t('third_party_cookies_social')}</span>: {t('third_party_cookies_social_text')}
                                                         </div>
                                                     </li>
                                                 </ul>
-                                                <p className="mt-4">Estos terceros tienen sus propias políticas de privacidad y cookies, que puedes consultar en sus respectivos sitios web.</p>
+                                                <p className="mt-4">{t('third_party_cookies_note')}</p>
                                             </section>
 
                                             <section id="gestion-de-cookies" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">4. {t('cookie_management')}</h3>
-                                                <p>Puedes aceptar, rechazar o eliminar cookies en cualquier momento a través de la configuración de tu navegador. A continuación, se proporcionan enlaces a las instrucciones para los navegadores más comunes:</p>
+                                                <p>{t('cookie_management_text')}</p>
                                                 
                                                 <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
                                                     <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center p-3 rounded-lg border border-border hover:bg-muted transition-colors text-center">
@@ -242,26 +248,41 @@ export default function Terms() {
                                                         <span className="text-sm">Safari</span>
                                                     </a>
                                                     <a href="https://support.microsoft.com/es-es/microsoft-edge/eliminar-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center p-3 rounded-lg border border-border hover:bg-muted transition-colors text-center">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2"><path d="M2 22l.64-3.2a9 9 0 1 1 8.14 0L12 22"></path><path d="M17 22l-5-1-5 1"></path></svg>
+                                                        {/* Nuevo icono Edge */}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <g>
+                                                                <path d="M12 2C6.477 2 2 6.477 2 12c0 5.523 4.477 10 10 10 4.97 0 9.09-3.657 9.876-8.438.09-.553-.37-1.062-.93-1.062h-7.946c-.552 0-.998-.447-.998-1 0-.553.446-1 .998-1h9.002c.553 0 .998-.447.998-1C22 6.477 17.523 2 12 2z" fill="#0078D7"/>
+                                                                <path d="M12 22c-5.523 0-10-4.477-10-10 0-2.21.895-4.21 2.343-5.657C5.79 4.895 7.79 4 10 4c5.523 0 10 4.477 10 10 0 2.21-.895 4.21-2.343 5.657C18.21 19.105 16.21 20 14 20c-1.657 0-3-1.343-3-3 0-.553.447-1 1-1s1 .447 1 1c0 .553.447 1 1 1 1.657 0 3-1.343 3-3 0-1.657-1.343-3-3-3H4c-.553 0-1 .447-1 1 0 5.523 4.477 10 10 10z" fill="#41CD52"/>
+                                                                <path d="M12 22c-4.97 0-9.09-3.657-9.876-8.438-.09-.553.37-1.062.93-1.062h7.946c.552 0 .998.447.998 1 0 .553-.446 1-.998 1H2.998c-.553 0-.998.447-.998 1C2 17.523 6.477 22 12 22z" fill="#2D7DDF"/>
+                                                            </g>
+                                                        </svg>
                                                         <span className="text-sm">Edge</span>
                                                     </a>
                                                 </div>
-                                                <p className="mt-4">Ten en cuenta que deshabilitar ciertas cookies puede afectar la funcionalidad del sitio.</p>
+                                                <p className="mt-4">{t('cookie_management_note')}</p>
                                             </section>
 
                                             <section id="privacidad" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">5. {t('privacy_impact')}</h3>
-                                                <p>Las cookies pueden recopilar información sobre tu comportamiento de navegación, pero en EmpleaWorks nos comprometemos a proteger tu privacidad. No compartimos datos personales con terceros sin tu consentimiento, salvo lo necesario para proporcionar nuestros servicios o cumplir con la ley.</p>
-                                                <p className="mt-4">Para más información sobre cómo protegemos tus datos, consulta nuestros <button onClick={() => setActiveTab("terms")} className="text-primary hover:underline font-medium border-0 bg-transparent p-0 cursor-pointer">Términos y Condiciones</button>.</p>
+                                                <p>{t('privacy_impact_text')}</p>
+                                                <p className="mt-4">
+                                                    {t('privacy_impact_more', {
+                                                        terms_and_conditions: (
+                                                            <button onClick={() => setActiveTab("terms")} className="text-primary hover:underline font-medium border-0 bg-transparent p-0 cursor-pointer">
+                                                                {t('terms_and_conditions')}
+                                                            </button>
+                                                        )
+                                                    })}
+                                                </p>
                                             </section>
 
                                             <section id="actualizaciones" className="mt-8">
                                                 <h3 className="text-xl font-semibold mb-3 text-primary/90">6. {t('updates')}</h3>
-                                                <p>Nos reservamos el derecho de modificar esta política de cookies en cualquier momento. Te notificaremos de cualquier cambio significativo a través de un aviso en el sitio o por correo electrónico.</p>
+                                                <p>{t('updates_text')}</p>
                                             </section>
 
                                             <div className="mt-10 pt-6 border-t border-border">
-                                                <p className="text-sm text-muted-foreground">Última actualización: 30 de abril de 2025</p>
+                                                <p className="text-sm text-muted-foreground">{t('last_update', { date: '30 de abril de 2025' })}</p>
                                             </div>
                                         </div>
                                     </div>
