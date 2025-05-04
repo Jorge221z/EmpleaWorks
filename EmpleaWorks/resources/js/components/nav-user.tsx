@@ -21,7 +21,11 @@ export function NavUser() {
                     <button className="flex h-10 w-full items-center gap-2 rounded-md outline-none ring-offset-5 ring-gray-950 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-offset-2">
                         {auth.user ? (
                             <Avatar className="">
-                                <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
+                                <AvatarImage
+                                    src={auth.user.image ? `/storage/${auth.user.image}` : undefined}
+                                    alt={auth.user.name}
+                                    className="object-cover aspect-square"
+                                />
                                 <AvatarFallback className="text-xs font-semibold">{getInitials(auth.user.name)}</AvatarFallback>
                             </Avatar>
                         ) : (

@@ -105,7 +105,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             preserveScroll: true,
         });
     };
-
+//la imagen y el cv se manejan de distnta forma porque se guardan como strings con su ruta en la bd y luego se recuperan desde esa referencia//
     const [imagePreview, setImagePreview] = useState<string | null>(
         auth.user.image ? `/storage/${auth.user.image}` : null
     );
