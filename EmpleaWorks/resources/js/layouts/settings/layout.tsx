@@ -76,11 +76,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="w-full justify-start text-left cursor-pointer hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-400/20"
+                            className="w-full text-left cursor-pointer hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-400/20 flex justify-between items-center"
                             onClick={handleLogout}
                         >
                             {t('log_out')}
-                            <LogOut className="ml-26 size-4" />
+                            <LogOut className="size-4" />
                         </Button>
                     </nav>
                 </aside>
