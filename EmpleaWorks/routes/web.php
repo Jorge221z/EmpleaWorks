@@ -34,7 +34,3 @@ require __DIR__ . '/auth.php';
 Route::get('/cv/download/{candidate}', [\App\Http\Controllers\CvController::class, 'download'])
     ->name('cv.download')
     ->middleware('signed');
-
-// Test de API para obtener ofertas (solo datos)
-Route::get('/offers', [OfferController::class, 'list'])->name('offers.list');
-
