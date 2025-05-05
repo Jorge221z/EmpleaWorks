@@ -143,6 +143,23 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                     <div>
                                         <div className="text-lg font-medium truncate max-w-[200px]">{auth.user.name}</div>
                                         <div className="text-sm text-muted-foreground">{t('complete_profile')}</div>
+                                        {/* Estado de verificación de correo */}
+                                        {auth.user?.email_verified_at === null ? (
+                                            <div className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-1.414-1.414A9 9 0 105.636 18.364l1.414 1.414A9 9 0 1018.364 5.636z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 9l-6 6M9 9l6 6" />
+                                                </svg>
+                                                {t('email_not_verified')}
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-1 text-xs text-green-600 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                {t('email_verified')}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 

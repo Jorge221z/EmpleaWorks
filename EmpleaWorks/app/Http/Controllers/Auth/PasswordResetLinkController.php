@@ -74,24 +74,12 @@ class PasswordResetLinkController extends Controller
             $toAddress = "{$user->name} <{$user->email}>";
             $subject = __('messages.reset_password_subject');
 
-            // Embebemos el logo para el correo
-            $logoPath = public_path('images/logo.png');
-            if (file_exists($logoPath)) {
-                $inline = [
-                    ['filePath' => $logoPath, 'filename' => 'logo.png', 'cid' => 'logo.png']
-                ];
-                $logoSrc = 'cid:logo.png';
-            } else {
-                $inline = [];
-                $logoSrc = null;
-            }
 
             // Renderizamos la vista Blade para el email
             $htmlBody = view('emails.password_reset', [
                 'name' => $user->name,
                 'resetUrl' => $resetUrl,
                 'expires' => $expires,
-                'logo' => $logoSrc,
             ])->render();
 
             $mailParams = [

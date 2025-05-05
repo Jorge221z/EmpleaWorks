@@ -56,22 +56,10 @@ class MailController extends Controller
                 }
             }
 
-            // Embebemos el logo para el correo
-            $logoPath = public_path('images/logo.png');
-            if (file_exists($logoPath)) {
-                $attachmentParams['inline'] = [
-                    ['filePath' => $logoPath, 'filename' => 'logo.png', 'cid' => 'logo.png']
-                ];
-                $logoSrc = 'cid:logo.png';
-            } else {
-                $logoSrc = null;
-            }
-
             // Añadimos los datos del CV y el logo a la vista
             $viewData = array_merge($data, [
                 'cvPath' => $cvPath,
                 'cvUrl' => $cvUrl,
-                'logo' => $logoSrc,
             ]);
 
             $htmlBody = view('emails.application_confirmation', $viewData)->render();
@@ -160,22 +148,10 @@ class MailController extends Controller
                 }
             }
 
-            // Embebemos el logo para el correo
-            $logoPath = public_path('images/logo.png');
-            if (file_exists($logoPath)) {
-                $attachmentParams['inline'] = [
-                    ['filePath' => $logoPath, 'filename' => 'logo.png', 'cid' => 'logo.png']
-                ];
-                $logoSrc = 'cid:logo.png';
-            } else {
-                $logoSrc = null;
-            }
-
-            // Añadimos los datos del CV y el logo a la vista
+            // Añadimos los datos del CV 
             $viewData = array_merge($data, [
                 'cvPath' => $cvPath,
                 'cvUrl' => $cvUrl,
-                'logo' => $logoSrc,
             ]);
 
             $htmlBody = view('emails.new_application', $viewData)->render();

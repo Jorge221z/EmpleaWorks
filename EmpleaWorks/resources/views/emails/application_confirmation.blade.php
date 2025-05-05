@@ -19,7 +19,7 @@
                     <div
                         style="background-color: #3730A3; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
                         <div style="background: #fff; border-radius: 6px; padding: 10px 0; margin-bottom: 10px; text-align: center;">
-                            <img src="{{ $logo }}" alt="EmpleaWorks Logo" style="height: 100px; display: inline-block;">
+                            <img src="https://emplea.works/images/logo.png" alt="EmpleaWorks Logo" style="height: 100px; display: inline-block;">
                         </div>
                         <h1 style="color: #fffff font-size: 28px; margin: 0;">{{ __('messages.application_sent') }}</h1>
                         <p style="font-size: 16px; margin: 10px 0 0;">{{ $offer->name }} {{ __('messages.template_subject') }} {{ $company->name }}</p>
