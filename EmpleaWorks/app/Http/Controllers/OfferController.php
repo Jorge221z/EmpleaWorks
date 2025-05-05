@@ -73,9 +73,10 @@ class OfferController extends Controller
                 ->with('success', __('messages.job_created_success'));
         } catch (\Exception $e) {
             // Manejar cualquier error
+            Log::error('Offer creation error: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', __('messages.job_created_error') . ': ' . $e->getMessage())
-                ->withInput();
+->withInput();
         }
     }
     
@@ -149,7 +150,7 @@ class OfferController extends Controller
      */
     public function getOffer(Offer $offer)
     {
-        // Cargamos el usuario y su empresa relacionada
+                // Cargamos el usuario y su empresa relacionada
         $offer->load('user.company');
 
         // Formateamos los datos para mantener la estructura esperada
@@ -307,7 +308,9 @@ class OfferController extends Controller
     {
         // Verificar que la oferta pertenece a la empresa actual
         $user = Auth::user();
-        
+        if (!$user) {
+            return redirect()->back()->with('error', __('messages.login_required'));
+        }
         if ($offer->user_id !== $user->id) {
             return redirect()->back()->with('error', __('messages.not_your_listing'));
         }
@@ -344,9 +347,10 @@ class OfferController extends Controller
             return redirect()->route('company.dashboard')
                 ->with('success', __('messages.job_updated_success'));
         } catch (\Exception $e) {
-            // Manejar cualquier error
+            // Loggear el error pero no mostrar detalles al usuario
+            Log::error('Offer update error: ' . $e->getMessage());
             return redirect()->back()
-                ->with('error', __('messages.job_updated_error') . ': ' . $e->getMessage())
+                ->with('error', __('messages.job_updated_error'))
                 ->withInput();
         }
     }
@@ -359,9 +363,12 @@ class OfferController extends Controller
      */
     public function destroy(Offer $offer)
     {
-        // Verificar que la oferta pertenece a la empresa actual
+        // Verificar que el usuario esté autenticado
         $user = Auth::user();
-        
+        if (!$user) {
+            return redirect()->route('company.dashboard')
+                ->with('error', __('messages.login_required'));
+        }
         if ($offer->user_id !== $user->id) {
             return redirect()->route('company.dashboard')
                 ->with('error', 'You can only delete your own job listings');
@@ -375,7 +382,7 @@ class OfferController extends Controller
             return redirect()->route('company.dashboard')
                 ->with('success', 'Job listing deleted successfully!');
         } catch (\Exception $e) {
-            // Manejar cualquier error
+            Log::error('Offer delete error: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', 'There was a problem deleting your job listing: ' . $e->getMessage());
         }
