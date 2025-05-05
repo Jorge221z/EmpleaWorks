@@ -196,7 +196,8 @@ class OfferController extends Controller
             [
                 'phone' => ['required', 'string', 'min:7', 'max:20', 'regex:/^\+?[0-9\s\-()]+$/',],
                 'email' => 'required|email|max:255',
-                'cl' => 'required|string|max:255',
+                'cl' => 'required|string|max:1000',
+                'offer_id' => 'required|integer|exists:offers,id',
             ],
             [
                 'phone.required' => __('messages.phone_required'),
@@ -207,9 +208,17 @@ class OfferController extends Controller
                 'email.email' => __('messages.email_invalid_format'),
                 'email.max' => __('messages.email_max_length', ['max' => 255]),
                 'cl.required' => __('messages.cover_letter_required'),
-                'cl.max' => __('messages.cover_letter_max_length', ['max' => 255]),
+                'cl.max' => __('messages.cover_letter_max_length', ['max' => 1000]),
+                'offer_id.required' => __('messages.offer_id_required'),
             ]
         );
+
+        //sanitizamos los datos para evitar inyecciones//
+        $sanitized = [
+            'phone' => preg_replace('/[^\d\+]/', '', trim($validated['phone'])),
+            'email' => filter_var($validated['email'], FILTER_SANITIZE_EMAIL),
+            'cl' => strip_tags($validated['cl']),
+        ];
 
         // Verificamos si el usuario está autenticado
         if (!Auth::check()) {
@@ -258,9 +267,9 @@ class OfferController extends Controller
             'candidate' => $user,
             'offer' => $offer,
             'company' => $company,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'coverLetter' => $request->cl,
+            'phone' => $sanitized['phone'],
+            'email' => $sanitized['email'],
+            'coverLetter' => $sanitized['cl'],
         ];
         
         // Instanciamos el MailController
