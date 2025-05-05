@@ -63,11 +63,11 @@ Route::middleware('auth')->group(function () {
     // Ruta para aplicar a una oferta
     Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->name('offers.apply');
 
-    // Ruta del dashboard para empresas - protegida por el middleware de rol de empresa
+    // Rutas para EMPRESAS - protegida por el middleware de rol de empresa
     Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])
         ->middleware('company.role')
         ->name('company.dashboard');
-    // Ruta para el formulario de creación de ofertas - protegida por el middleware de rol de empresa
+    // Ruta para el formulario de creación de ofertas
     Route::get('/company/create-job', [CompanyController::class, 'createJobForm'])
         ->middleware(['company.role', 'verified'])
         ->name('company.create-job');
@@ -75,9 +75,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/offers', [OfferController::class, 'store'])
         ->middleware(['company.role', 'verified'])
         ->name('offers.store');
+    // Ruta para mostrar el formulario de edición de una oferta
     Route::get('/company/edit-job/{offer}', [CompanyController::class, 'editJobForm'])
         ->middleware('company.role')
         ->name('company.edit-job');
+    // Ruta para editar una oferta
     Route::put('/offers/{offer}', [OfferController::class, 'update'])
         ->middleware(['company.role', 'verified'])
         ->name('offers.update');
@@ -89,7 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/company/applicants', [CompanyController::class, 'applicants'])
         ->middleware(['company.role', 'verified'])
         ->name('company.applicants');
-    // Ruta del dashboard para candidatos - protegida por el middleware de rol de candidato
+    // Rutas para CANDIDATOS - protegida por el middleware de rol de candidato
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')
         ->name('candidate.dashboard');
