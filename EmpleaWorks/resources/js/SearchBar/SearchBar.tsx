@@ -9,9 +9,11 @@ interface SearchBarProps {
   onFilteredResults: (results: Offer[]) => void;
   categories: string[];
   contractTypes: string[];
+  primaryColor?: string;
+  accentColor?: string;
 }
 
-function SearchBar({ data, onFilteredResults, categories, contractTypes }: SearchBarProps) {
+function SearchBar({ data, onFilteredResults, categories, contractTypes, primaryColor, accentColor }: SearchBarProps) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -84,6 +86,42 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
     (selectedCategory !== "all" ? 1 : 0) + 
     (selectedContractType !== "all" ? 1 : 0);
 
+  // Determinar colores para elementos de la UI
+  const buttonBgColor = primaryColor 
+    ? { backgroundColor: primaryColor, color: 'white' }
+    : {};
+
+  const buttonHoverBgColor = primaryColor
+    ? { backgroundColor: `${primaryColor}cc` }  // cc = 80% opacity
+    : {};
+
+  // Determinar colores para badges
+  const categoryBadgeStyle = primaryColor 
+    ? { backgroundColor: `${primaryColor}15`, color: primaryColor } 
+    : {};
+    
+  const contractBadgeStyle = accentColor
+    ? { backgroundColor: `${accentColor}20`, color: accentColor }
+    : {};
+
+  // Determinar colores para counter badge
+  const counterBadgeStyle = primaryColor
+    ? { backgroundColor: primaryColor }
+    : {};
+
+  // Función para manejar hover en el botón de búsqueda
+  const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (primaryColor) {
+      e.currentTarget.style.backgroundColor = `${primaryColor}cc`;
+    }
+  };
+
+  const handleMouseOut = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (primaryColor) {
+      e.currentTarget.style.backgroundColor = primaryColor;
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-2xl shadow-md overflow-hidden">
@@ -120,7 +158,10 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
               </svg>
               <span className="text-sm">{t('filters')}</span>
               {activeFiltersCount > 0 && (
-                <span className="flex items-center justify-center w-5 h-5 text-xs rounded-full bg-blue-500 text-white">
+                <span 
+                  className="flex items-center justify-center w-5 h-5 text-xs rounded-full text-white"
+                  style={counterBadgeStyle || { backgroundColor: "#3b82f6" }}
+                >
                   {activeFiltersCount}
                 </span>
               )}
@@ -175,7 +216,10 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
                 </button>
                 <button 
                   onClick={() => setIsFiltersDialogOpen(false)}
-                  className="px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="px-3 py-2 text-sm text-white rounded-md"
+                  style={buttonBgColor || { backgroundColor: "#2563eb", color: "white" }}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
                 >
                   {t('apply_filters')}
                 </button>
@@ -248,7 +292,10 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
           ) : (
             <button
               type="button"
-                className="w-full h-full flex items-center justify-center bg-[#7c28eb] hover:bg-[#7d28ebb4] text-white"
+              className="w-full h-full flex items-center justify-center text-white"
+              style={buttonBgColor || { backgroundColor: "#7c28eb" }}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -269,12 +316,18 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes }: Searc
         {/* Filtros activos como badges pequeños */}
         <div className="flex items-center gap-1">
           {selectedCategory !== "all" && (
-            <span className="px-2 py-0.5 bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200 rounded text-xs">
+            <span 
+              className="px-2 py-0.5 rounded text-xs"
+              style={categoryBadgeStyle || { backgroundColor: "rgb(239 246 255)", color: "rgb(29 78 216)" }}
+            >
               {selectedCategory}
             </span>
           )}
           {selectedContractType !== "all" && (
-            <span className="px-2 py-0.5 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-200 rounded text-xs">
+            <span 
+              className="px-2 py-0.5 rounded text-xs"
+              style={contractBadgeStyle || { backgroundColor: "rgb(240 253 244)", color: "rgb(21 128 61)" }}
+            >
               {selectedContractType}
             </span>
           )}
