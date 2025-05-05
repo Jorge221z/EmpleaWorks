@@ -138,7 +138,7 @@ export function LoginForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src={`/storage/images/login-background.jpg`}
+              src="/images/login-background.png"
               alt="Login background"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.3] dark:grayscale"
             />
