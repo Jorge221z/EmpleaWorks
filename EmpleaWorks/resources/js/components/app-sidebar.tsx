@@ -58,14 +58,14 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton>
-                            <Globe className="h-4 w-4" />
-                            <span className="sidebar-menu-button-text">
+                        <SidebarMenuButton className="hover:bg-purple-50 dark:hover:bg-purple-800/40 group">
+                            <Globe className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb] dark:group-hover:text-purple-200" />
+                            <span className="sidebar-menu-button-text text-[#9645f4] dark:text-[#c79dff] font-medium group-hover:text-[#7c28eb] dark:group-hover:text-purple-200">
                                 {locale?.available[locale?.current] || 'Idioma'}
                             </span>
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-40">
+                    <DropdownMenuContent align="start" className="w-40 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900">
                         {locale?.available && Object.entries(locale.available).map(([code, name]) => (
                             <DropdownMenuItem key={code} asChild>
                                 <Link 
@@ -75,7 +75,11 @@ export function AppSidebar() {
                                     type="button"
                                     preserveState={false}
                                     preserveScroll={false}
-                                    className={`flex items-center w-full px-2 py-1 ${locale.current === code ? 'font-medium text-primary' : ''}`}
+                                    className={`flex items-center w-full px-2 py-1 ${
+                                        locale.current === code 
+                                            ? 'font-semibold text-[#7c28eb] dark:text-purple-300' 
+                                            : 'text-[#9645f4] dark:text-[#c79dff] hover:text-[#7c28eb] dark:hover:text-purple-300 font-medium'
+                                    }`}
                                 >
                                     {name}
                                 </Link>
@@ -91,14 +95,17 @@ export function AppSidebar() {
     const TermsAndConditions = () => {
         return (
             <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton 
+                    asChild
+                    className="hover:bg-purple-50 dark:hover:bg-purple-800/40 group"
+                >
                     <Link 
                         href={route('terms')} 
                         className="flex items-center w-full"
                         preserveState
                     >
-                        <FileText className="h-4 w-4" />
-                        <span className="sidebar-menu-button-text">
+                        <FileText className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb] dark:group-hover:text-purple-200" />
+                        <span className="sidebar-menu-button-text text-[#9645f4] dark:text-[#c79dff] font-medium group-hover:text-[#7c28eb] dark:group-hover:text-purple-200">
                             {t('terms_and_conditions')}
                         </span>
                     </Link>
@@ -108,15 +115,19 @@ export function AppSidebar() {
     };
 
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+        <Sidebar 
+            collapsible="icon" 
+            variant="inset"
+            className="border-r border-purple-100 dark:border-purple-600/30 bg-gradient-to-b from-white to-purple-50/50 dark:from-gray-900 dark:to-purple-950/40"
+        >
+            <SidebarHeader className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="lg" asChild className="hover:bg-purple-50 dark:hover:bg-purple-800/40">
                             <Link href="/dashboard" prefetch className="flex items-center gap-2 group justify-center">
                                 <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
                                 {state !== 'collapsed' && (
-                                    <span className="text-xl font-bold tracking-tight hover:text-purple-600 transition-colors -ml-1">
+                                    <span className="text-xl font-bold tracking-tight hover:text-purple-600 dark:hover:text-purple-300 transition-colors -ml-1">
                                         EmpleaWorks
                                     </span>
                                 )}
@@ -130,7 +141,7 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter>
+            <SidebarFooter className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm">
                 <SidebarMenu className="mt-auto">
                     <TermsAndConditions />
                     <LanguageSelector />
