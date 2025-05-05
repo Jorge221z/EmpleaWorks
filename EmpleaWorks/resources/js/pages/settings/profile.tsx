@@ -244,7 +244,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                             setData('delete_cv', false);
                                             setCvName(file.name);
                                         } else if (file) {
-                                            alert(t('only_pdf_doc'));
+                                            toast.error(t('only_pdf_doc'));
                                         }
                                     }}
                                 >
@@ -261,7 +261,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                     setCvName(file.name);
                                                 } else {
                                                     e.target.value = '';
-                                                    alert(t('only_pdf_doc'));
+                                                    toast.error(t('only_pdf_doc'));
                                                 }
                                             }
                                         }}
@@ -349,7 +349,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         };
                                         reader.readAsDataURL(file);
                                     } else if (file) {
-                                        alert(t('only_image_files'));
+                                        toast.error(t('only_image_files'));
                                     }
                                 }}
                             >
@@ -370,7 +370,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 reader.readAsDataURL(file);
                                             } else {
                                                 e.target.value = '';
-                                                alert(t('only_image_files'));
+                                                toast.error(t('only_image_files'));
                                             }
                                         }
                                     }}
