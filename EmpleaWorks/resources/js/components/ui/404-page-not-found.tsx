@@ -120,7 +120,7 @@ export function NotFoundPage() {
         <div className="flex justify-center">
           <div className="w-full sm:w-10/12 md:w-8/12 text-center">
             <div
-              className="bg-[url(/storage/images/404_not_found.gif)] h-[250px] sm:h-[350px] md:h-[400px] bg-center bg-no-repeat bg-contain"
+              className="bg-[url(/images/404_not_found.gif)] h-[250px] sm:h-[350px] md:h-[400px] bg-center bg-no-repeat bg-contain"
               aria-hidden="true"
             >
               <h1 className="text-center text-gray-900 text-6xl sm:text-7xl md:text-8xl pt-6 sm:pt-8">

@@ -351,6 +351,11 @@ const translations: Record<string, Record<string, string>> = {
         'privacy_impact_text': 'Cookies may collect information about your browsing behavior, but at EmpleaWorks we are committed to protecting your privacy. We do not share personal data with third parties without your consent, except as necessary to provide our services or comply with the law.',
         'privacy_impact_more': 'For more information on how we protect your data, see our {terms_and_conditions}.',
         'updates_text': 'We reserve the right to modify this cookie policy at any time. We will notify you of any significant changes via a notice on the site or by email.',
+
+        // Page 404
+        'page_not_found_title': 'Looks like you\'re lost',
+        'page_not_found_message': 'The page you are looking for is not available!',
+        'back_to_dashboard': 'Back to Dashboard',
     },
     es: {
         // Sidebar
@@ -701,6 +706,11 @@ const translations: Record<string, Record<string, string>> = {
         'privacy_impact_text': 'Las cookies pueden recopilar información sobre tu comportamiento de navegación, pero en EmpleaWorks nos comprometemos a proteger tu privacidad. No compartimos datos personales con terceros sin tu consentimiento, salvo lo necesario para proporcionar nuestros servicios o cumplir con la ley.',
         'privacy_impact_more': 'Para más información sobre cómo protegemos tus datos, consulta nuestros {terms_and_conditions}.',
         'updates_text': 'Nos reservamos el derecho de modificar esta política de cookies en cualquier momento. Te notificaremos de cualquier cambio significativo a través de un aviso en el sitio o por correo electrónico.',
+
+        // Page 404
+        'page_not_found_title': 'Parece que te has perdido',
+        'page_not_found_message': '¡La página que estás buscando no está disponible!',
+        'back_to_dashboard': 'Volver al Inicio',
     }
 };
 
