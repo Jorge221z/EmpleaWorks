@@ -32,8 +32,11 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 <Head title={t('forgot_password')} />
 
                 <div className="flex flex-col items-center space-y-2 text-center">
-                    <Link href="/">
-                        <AppLogo className="h-16 w-16" />
+                    <Link href="/" className="flex items-center gap-2 group justify-center">
+                        <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
+                        <span className="text-xl font-bold tracking-tight hover:text-purple-600 dark:hover:text-purple-300 transition-colors -ml-1">
+                            EmpleaWorks
+                        </span>
                     </Link>
                     <h1 className="text-2xl font-semibold tracking-tight text-[#7c28eb]">{t('forgot_password')}</h1>
                     <p className="text-sm text-muted-foreground">

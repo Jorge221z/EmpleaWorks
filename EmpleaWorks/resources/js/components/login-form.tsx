@@ -45,8 +45,11 @@ export function LoginForm({
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <div className="mb-4">
-                  <Link href="/">
-                    <AppLogo className="h-12 w-12" />
+                  <Link href="/" className="flex items-center gap-2 group justify-center">
+                    <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
+                    <span className="text-xl font-bold tracking-tight hover:text-purple-600 dark:hover:text-purple-300 transition-colors -ml-1">
+                      EmpleaWorks
+                    </span>
                   </Link>
                 </div>
                 <h1 className="text-2xl font-bold text-[#7c28eb]">{t('welcome_back')}</h1>
