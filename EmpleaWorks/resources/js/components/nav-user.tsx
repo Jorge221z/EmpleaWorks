@@ -48,7 +48,10 @@ export function NavUser() {
                         </div>
                     </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900">
+                <DropdownMenuContent 
+                    align="end" 
+                    className="w-56 border-purple-100 dark:border-purple-600/30 dark:bg-gray-900 p-1 shadow-lg"
+                >
                     <UserMenuContent user={auth.user} />
                 </DropdownMenuContent>
                 </DropdownMenu>

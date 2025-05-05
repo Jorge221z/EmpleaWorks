@@ -25,15 +25,23 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
     if (!user) {
         return (
             <>
-                <DropdownMenuLabel>{t('account')}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuLabel className="font-medium text-[#7c28eb] dark:text-purple-300">
+                    {t('account')}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-purple-100 dark:bg-purple-600/30" />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={navigateToLogin}>
-                        <User className="mr-2 size-4" />
+                    <DropdownMenuItem 
+                        onClick={navigateToLogin}
+                        className="cursor-pointer focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
+                    >
+                        <User className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                         <span>{t('log_in')}</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={navigateToRegister}>
-                        <User className="mr-2 size-4" />
+                    <DropdownMenuItem 
+                        onClick={navigateToRegister}
+                        className="cursor-pointer focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
+                    >
+                        <User className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                         <span>{t('register')}</span>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -43,32 +51,46 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
 
     return (
         <>
-            <DropdownMenuLabel>{t('my_account')}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuLabel className="font-medium text-[#7c28eb] dark:text-purple-300">
+                {t('my_account')}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-purple-100 dark:bg-purple-600/30" />
             <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                    <Link href={route('profile.edit')}>
-                        <User className="mr-2 size-4" />
+                <DropdownMenuItem 
+                    asChild
+                    className="focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
+                >
+                    <Link href={route('profile.edit')} className="flex items-center w-full focus:outline-none">
+                        <User className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                         <span>{t('profile')}</span>
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href={route('password.edit')}>
-                        <KeyRound className="mr-2 size-4" />
+                <DropdownMenuItem 
+                    asChild
+                    className="focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
+                >
+                    <Link href={route('password.edit')} className="flex items-center w-full focus:outline-none">
+                        <KeyRound className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                         <span>{t('password')}</span>
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href={route('appearance')}>
-                        <SunMoon className="mr-2 size-4" />
+                <DropdownMenuItem 
+                    asChild
+                    className="focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
+                >
+                    <Link href={route('appearance')} className="flex items-center w-full focus:outline-none">
+                        <SunMoon className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                         <span>{t('appearance')}</span>
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-                <Link href={route('logout')} method="post" as="button" className="w-full">
-                    <LogOut className="mr-2 size-4" />
+            <DropdownMenuSeparator className="bg-purple-100 dark:bg-purple-600/30" />
+            <DropdownMenuItem 
+                asChild
+                className="focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
+            >
+                <Link href={route('logout')} method="post" as="button" className="flex items-center w-full focus:outline-none">
+                    <LogOut className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                     <span>{t('log_out')}</span>
                 </Link>
             </DropdownMenuItem>
