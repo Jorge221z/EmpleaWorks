@@ -28,17 +28,22 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
     const user = auth.user;
 
     // ----- COLOR THEMING SYSTEM -----
-    // Constantes de color para el tema de Candidato
-    const primaryColor = '#EB7C28';  // Naranja para candidatos
-    const accentColor = '#F5A46A';   // Naranja más claro
-    const hoverColor = '#C26725';    // Naranja más oscuro
+    // Colores principales (púrpura)
+    const primaryColor = '#7c28eb';
+    const primaryHoverColor = '#6620c5';
+    const primaryLightColor = '#9645f4';
+    
+    // Colores de acento (ámbar)
+    const accentColor = '#FDC231';
+    const accentDarkColor = '#E3B100';
+    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
-    // Clases CSS para aplicar el tema de Candidato
-    const borderColor = 'border-orange-100 dark:border-orange-600/30';
-    const bgAccentColor = 'bg-orange-50/50 dark:bg-orange-950/20';
-    const cardBgColor = 'bg-orange-50/70 dark:bg-orange-900/10';
-    const cardHoverBgColor = 'hover:bg-orange-100/80 dark:hover:bg-orange-900/15';
+    // Clases CSS para aplicar el tema púrpura con acentos ámbar
+    const borderColor = 'border-purple-100 dark:border-purple-600/30';
+    const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
+    const cardBgColor = 'bg-white dark:bg-gray-900';
+    const cardHoverBgColor = 'hover:bg-purple-50/70 dark:hover:bg-purple-900/15';
 
     // ----- SIDE EFFECTS -----
     useEffect(() => {
@@ -80,8 +85,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                 {/* Título del Dashboard */}
                 <div className="px-2">
                     <h2 
-                        className="text-2xl font-semibold mb-2"
-                        style={{ color: primaryColor }}
+                        className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300"
                     >
                         {t('candidate_dashboard_title')}
                     </h2>
@@ -99,10 +103,10 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     style={{ borderTop: `4px solid ${primaryColor}` }}
                     >
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
+                            <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
                                 <FileIcon 
                                     className="h-5 w-5" 
-                                    style={{ color: `${primaryColor}cc` }}
+                                    style={{ color: primaryLightColor }}
                                 />
                                 {t('applications')}
                             </CardTitle>
@@ -111,8 +115,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                         <CardContent className="flex-grow flex flex-col justify-between">
                             <div>
                                 <div 
-                                    className="text-3xl font-bold"
-                                    style={{ color: primaryColor }}
+                                    className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300"
                                 >
                                     {candidateOffers.length}
                                 </div>
@@ -125,6 +128,12 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                 size="sm" 
                                 className="gap-1 w-full mt-4"
                                 style={{ backgroundColor: primaryColor, color: 'white' }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryHoverColor;
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryColor;
+                                }}
                             >
                                 <Link href={route('dashboard')} className="w-full flex items-center justify-center gap-1">                                  
                                     {t('find_jobs')}
@@ -142,10 +151,10 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     style={{ borderTop: `4px solid ${accentColor}` }}
                     >
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
+                            <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
                                 <UserIcon 
-                                    className="h-5 w-5"
-                                    style={{ color: `${accentColor}` }}
+                                    className="h-5 w-5" 
+                                    style={{ color: primaryLightColor }}
                                 />
                                 {t('profile')}
                             </CardTitle>
@@ -225,10 +234,12 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                         variant="outline" 
                                         className={cn(
                                             "w-full",
-                                            "border-orange-200 dark:border-orange-800/30",
-                                            "hover:bg-orange-50 dark:hover:bg-orange-950/20"
+                                            "border-purple-200 dark:border-purple-700",
+                                            "text-[#7c28eb] dark:text-white",
+                                            "hover:bg-purple-50 dark:hover:bg-purple-900/30",
+                                            "hover:border-[#7c28eb] dark:hover:border-purple-500",
+                                            "hover:text-[#6620c5] dark:hover:text-white"
                                         )}
-                                        style={{ color: primaryColor }}
                                         asChild
                                     >
                                         <Link href={'/settings/profile'} className="w-full flex items-center justify-center gap-1.5">
@@ -245,8 +256,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                 {/* Título de Aplicaciones */}
                 <div className="px-2 mt-4">
                     <h2 
-                        className="text-2xl font-semibold mb-2"
-                        style={{ color: primaryColor }}
+                        className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300"
                     >
                         {t('your_applications')}
                     </h2>
@@ -267,19 +277,25 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                     cardHoverBgColor
                                 )}
                             >
+                                {/* Elemento decorativo ámbar */}
+                                <div 
+                                    className="absolute top-0 right-0 w-12 h-1 rounded-bl" 
+                                    style={{ backgroundColor: accentColor }}
+                                />
+                                
                                 <div className="flex-1">
                                     <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
-                                        <h3 
-                                            className="font-semibold text-lg"
-                                            style={{ color: primaryColor }}
+                                        <Link
+                                            href={route('offer.show', offer.id)}
+                                            className="font-semibold text-lg text-[#7c28eb] dark:text-purple-300 hover:text-[#6620c5] dark:hover:text-purple-200 transition-colors"
                                         >
                                             {offer.name}
-                                        </h3>
+                                        </Link>
                                         <span 
                                             className="text-xs px-2 py-1 rounded-full whitespace-nowrap"
                                             style={{ 
-                                                backgroundColor: `${primaryColor}15`, 
-                                                color: primaryColor 
+                                                backgroundColor: `${accentColor}20`, 
+                                                color: accentDarkColor 
                                             }}
                                         >
                                             {offer.category}
@@ -287,7 +303,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                     </div>
 
                                     <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5" style={{ color: accentColor }}>
                                             <path d="M3 9v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9"></path>
                                             <path d="M18 5V3a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"></path>
                                             <path d="M21 5H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
@@ -305,15 +321,15 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                 <div className="flex flex-col md:flex-row gap-4 md:items-center">
                                     <div className="flex flex-wrap md:flex-col gap-3 md:gap-1 text-xs text-muted-foreground">
                                         <div className="flex items-center gap-1">
-                                            <BriefcaseIcon className="size-3.5" style={{ color: primaryColor }} />
+                                            <BriefcaseIcon className="size-3.5" style={{ color: primaryLightColor }} />
                                             <span>{offer.contract_type}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <MapPinIcon className="size-3.5" style={{ color: primaryColor }} />
+                                            <MapPinIcon className="size-3.5" style={{ color: primaryLightColor }} />
                                             <span>{offer.job_location}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <CalendarIcon className="size-3.5" style={{ color: primaryColor }} />
+                                            <CalendarIcon className="size-3.5" style={{ color: primaryLightColor }} />
                                             {(() => {
                                                 const closingDate = new Date(offer.closing_date);
                                                 const currentDate = new Date();
@@ -344,28 +360,30 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                         size="sm"
                                                         className={cn(
                                                             "gap-1.5 text-sm w-full",
-                                                            "border-orange-200 dark:border-orange-800/30",
-                                                            "hover:bg-orange-50 dark:hover:bg-orange-950/20"
+                                                            "border-purple-200 dark:border-purple-700",
+                                                            "text-[#7c28eb] dark:text-white",
+                                                            "hover:bg-purple-50 dark:hover:bg-purple-900/30",
+                                                            "hover:border-[#7c28eb] dark:hover:border-purple-500",
+                                                            "hover:text-[#6620c5] dark:hover:text-white"
                                                         )}
-                                                        style={{ color: primaryColor }}
                                                     >
                                                         <BuildingIcon className="size-3.5" />
                                                         {t('company_info')}
                                                     </Button>
                                                 </DialogTrigger>
-                                                <DialogContent className={cn("sm:max-w-md", borderColor)}>
-                                                    <DialogHeader className={cn(bgAccentColor, "rounded-t-lg")}>
-                                                        <DialogTitle style={{ color: primaryColor }}>
+                                                <DialogContent className={cn("sm:max-w-md border-purple-100 dark:border-purple-500/50 dark:bg-gray-800")}>
+                                                    <DialogHeader className={cn("bg-purple-50/80 dark:bg-purple-900/30 rounded-t-lg p-4")}>
+                                                        <DialogTitle className="text-[#7c28eb] dark:text-purple-300">
                                                             {offer.company ? (offer.company as any).name : t('company_information')}
                                                         </DialogTitle>
-                                                        <DialogDescription>{t('company_details')}</DialogDescription>
+                                                        <DialogDescription className="dark:text-gray-300">{t('company_details')}</DialogDescription>
                                                     </DialogHeader>
 
-                                                    <div className="py-4 space-y-4">
+                                                    <div className="py-4 px-4 space-y-4">
                                                         {/* Company Logo (if available) */}
                                                         {offer.company && (offer.company as any).logo && (
                                                             <div className="flex justify-center mb-4">
-                                                                <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border"
+                                                                <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700 border"
                                                                      style={{ borderColor: `${primaryColor}30` }}>
                                                                     <img
                                                                         src={`/storage/${(offer.company as any).logo}`}
@@ -379,10 +397,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                         {/* Company Description */}
                                                         {offer.company && (offer.company as any).description && (
                                                             <div className="space-y-1">
-                                                                <h4 
-                                                                    className="text-sm font-semibold"
-                                                                    style={{ color: primaryColor }}
-                                                                >
+                                                                <h4 className="text-sm font-semibold text-[#7c28eb] dark:text-purple-300">
                                                                     {t('about_company')}
                                                                 </h4>
                                                                 <p className="text-sm">{(offer.company as any).description}</p>
@@ -391,10 +406,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
 
                                                         {/* Company Contact Info */}
                                                         <div className="space-y-2">
-                                                            <h4 
-                                                                className="text-sm font-semibold"
-                                                                style={{ color: primaryColor }}
-                                                            >
+                                                            <h4 className="text-sm font-semibold text-[#7c28eb] dark:text-purple-300">
                                                                 {t('contact_information')}
                                                             </h4>
 
@@ -402,7 +414,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                                 <div className="flex items-start gap-2 text-sm">
                                                                     <MapPinIcon 
                                                                         className="size-4 mt-0.5 flex-shrink-0"
-                                                                        style={{ color: primaryColor }}
+                                                                        style={{ color: primaryLightColor }}
                                                                     />
                                                                     <span>{(offer.company as any).address}</span>
                                                                 </div>
@@ -410,14 +422,13 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
 
                                                             {offer.company && (offer.company as any).email && (
                                                                 <div className="flex items-center gap-2 text-sm">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 flex-shrink-0" style={{ color: primaryColor }}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 flex-shrink-0" style={{ color: accentColor }}>
                                                                         <rect width="20" height="16" x="2" y="4" rx="2" />
                                                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                                                     </svg>
                                                                     <a 
                                                                         href={`mailto:${(offer.company as any).email}`} 
-                                                                        className="hover:underline"
-                                                                        style={{ color: primaryColor }}
+                                                                        className="hover:underline text-[#7c28eb] dark:text-purple-300"
                                                                     >
                                                                         {(offer.company as any).email}
                                                                     </a>
@@ -428,14 +439,13 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                                 <div className="flex items-center gap-2 text-sm">
                                                                     <ExternalLinkIcon 
                                                                         className="size-4 flex-shrink-0"
-                                                                        style={{ color: primaryColor }}
+                                                                        style={{ color: accentColor }}
                                                                     />
                                                                     <a
                                                                         href={(offer.company as any).web_link}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
-                                                                        className="hover:underline"
-                                                                        style={{ color: primaryColor }}
+                                                                        className="hover:underline text-[#7c28eb] dark:text-purple-300"
                                                                     >
                                                                         {t('visit_website')}
                                                                     </a>
@@ -449,17 +459,15 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                             {/* Link para ver detalles */}
                                             <Link
                                                 href={route('offer.show', offer.id)}
-                                                className="px-3 py-1.5 rounded-md text-sm font-medium flex items-center justify-center gap-1.5 w-full transition-colors"
-                                                style={{ 
-                                                    backgroundColor: primaryColor,
-                                                    color: 'white'
-                                                }}
-                                                onMouseOver={(e) => {
-                                                    e.currentTarget.style.backgroundColor = hoverColor;
-                                                }}
-                                                onMouseOut={(e) => {
-                                                    e.currentTarget.style.backgroundColor = primaryColor;
-                                                }}
+                                                className={cn(
+                                                    "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                                                    "border border-purple-200 dark:border-purple-700",
+                                                    "text-[#7c28eb] dark:text-white",
+                                                    "hover:bg-purple-50 dark:hover:bg-purple-900/30",
+                                                    "hover:border-[#7c28eb] dark:hover:border-purple-500",
+                                                    "hover:text-[#6620c5] dark:hover:text-white"
+                                                )}
+                                                title={t('view_details')}
                                             >
                                                 {t('view_details')}
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
@@ -485,20 +493,23 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                 className="h-12 w-12 mb-2 text-muted-foreground"
                                 style={{ color: `${primaryColor}60` }}
                             />
-                            <h2 
-                                className="text-xl font-semibold"
-                                style={{ color: primaryColor }}
-                            >
+                            <h2 className="text-xl font-semibold text-[#7c28eb] dark:text-purple-300">
                                 {t('no_applications_yet')}
                             </h2>
                             <p className="text-muted-foreground max-w-md mx-auto mb-4">
                                 {t('no_applications_message')}
                             </p>
                             <Button 
-                                className="gap-1"
-                                style={{ 
-                                    backgroundColor: primaryColor,
-                                    color: 'white'
+                                className={cn(
+                                    "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                                    "text-white"
+                                )}
+                                style={{ backgroundColor: primaryColor }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryHoverColor;
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryColor;
                                 }}
                                 asChild
                             >
