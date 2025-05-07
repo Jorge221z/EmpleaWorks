@@ -3,6 +3,7 @@ import { Offer } from "@/types/types";
 import { useTranslation } from "@/utils/i18n";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 interface SearchBarProps {
   data: Offer[];
@@ -14,6 +15,7 @@ interface SearchBarProps {
 }
 
 function SearchBar({ data, onFilteredResults, categories, contractTypes, primaryColor, accentColor }: SearchBarProps) {
+  // ----- HOOKS & STATE -----
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -21,9 +23,11 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
   const [resultsCount, setResultsCount] = useState(data.length);
   const [isFiltersDialogOpen, setIsFiltersDialogOpen] = useState(false);
 
+  // ----- DATA PREPARATION -----
   const availableCategories = categories || [...new Set(data.map(offer => offer.category).filter(Boolean))];
   const availableContractTypes = contractTypes || [...new Set(data.map(offer => offer.contract_type).filter(Boolean))];
 
+  // ----- SEARCH & FILTER LOGIC -----
   const filterData = useCallback(() => {
     if ((!query.trim() && (!selectedCategory || selectedCategory === "all") && (!selectedContractType || selectedContractType === "all"))) {
       return data;
@@ -69,12 +73,14 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
     });
   }, [query, selectedCategory, selectedContractType, data]);
 
+  // ----- SIDE EFFECTS -----
   useEffect(() => {
     const filteredData = filterData();
     setResultsCount(filteredData.length);
     onFilteredResults(filteredData);
   }, [filterData, onFilteredResults]);
 
+  // ----- EVENT HANDLERS -----
   const clearSearch = () => {
     setQuery("");
     setSelectedCategory("all");
@@ -86,42 +92,48 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
     (selectedCategory !== "all" ? 1 : 0) + 
     (selectedContractType !== "all" ? 1 : 0);
 
+  // ----- THEMING & STYLES -----
   // Determinar colores para elementos de la UI
   const buttonBgColor = primaryColor 
     ? { backgroundColor: primaryColor, color: 'white' }
-    : {};
+    : { backgroundColor: "#7c28eb", color: 'white' }; // Color púrpura por defecto para usuarios no autenticados
 
   const buttonHoverBgColor = primaryColor
     ? { backgroundColor: `${primaryColor}cc` }  // cc = 80% opacity
-    : {};
+    : { backgroundColor: "#6620c5" }; // Color púrpura más oscuro para hover
 
   // Determinar colores para badges
   const categoryBadgeStyle = primaryColor 
     ? { backgroundColor: `${primaryColor}15`, color: primaryColor } 
-    : {};
+    : { backgroundColor: "rgb(239 246 255)", color: "rgb(29 78 216)" };
     
   const contractBadgeStyle = accentColor
     ? { backgroundColor: `${accentColor}20`, color: accentColor }
-    : {};
+    : { backgroundColor: "rgb(240 253 244)", color: "rgb(21 128 61)" };
 
   // Determinar colores para counter badge
   const counterBadgeStyle = primaryColor
     ? { backgroundColor: primaryColor }
-    : {};
+    : { backgroundColor: "#7c28eb" };
 
-  // Función para manejar hover en el botón de búsqueda
+  // ----- HOVER HANDLERS -----
   const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (primaryColor) {
       e.currentTarget.style.backgroundColor = `${primaryColor}cc`;
+    } else {
+      e.currentTarget.style.backgroundColor = "#6620c5"; // Color púrpura oscuro para hover
     }
   };
 
   const handleMouseOut = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (primaryColor) {
       e.currentTarget.style.backgroundColor = primaryColor;
+    } else {
+      e.currentTarget.style.backgroundColor = "#7c28eb"; // Restaurar color púrpura original
     }
   };
 
+  // ----- RENDER COMPONENT -----
   return (
     <div className="w-full">
       <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-2xl shadow-md overflow-hidden">
@@ -160,7 +172,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
               {activeFiltersCount > 0 && (
                 <span 
                   className="flex items-center justify-center w-5 h-5 text-xs rounded-full text-white"
-                  style={counterBadgeStyle || { backgroundColor: "#3b82f6" }}
+                  style={counterBadgeStyle}
                 >
                   {activeFiltersCount}
                 </span>
@@ -217,7 +229,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
                 <button 
                   onClick={() => setIsFiltersDialogOpen(false)}
                   className="px-3 py-2 text-sm text-white rounded-md"
-                  style={buttonBgColor || { backgroundColor: "#2563eb", color: "white" }}
+                  style={buttonBgColor}
                   onMouseOver={handleMouseOver}
                   onMouseOut={handleMouseOut}
                 >
@@ -233,7 +245,13 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger className="w-full h-full border-none shadow-none focus:ring-0 pl-3">
               <div className="flex items-center text-sm">
-                <svg className="w-4 h-4 mr-1 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg 
+                  className="w-4 h-4 mr-1" 
+                  fill="none" 
+                  stroke={primaryColor || "#7c28eb"}
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
                 <SelectValue 
@@ -258,7 +276,13 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
           <Select value={selectedContractType} onValueChange={setSelectedContractType}>
             <SelectTrigger className="w-full h-full border-none shadow-none focus:ring-0 pl-3">
               <div className="flex items-center text-sm">
-                <svg className="w-4 h-4 mr-1 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg 
+                  className="w-4 h-4 mr-1" 
+                  fill="none" 
+                  stroke={primaryColor || "#7c28eb"}
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <SelectValue 
@@ -293,7 +317,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
             <button
               type="button"
               className="w-full h-full flex items-center justify-center text-white"
-              style={buttonBgColor || { backgroundColor: "#7c28eb" }}
+              style={buttonBgColor}
               onMouseOver={handleMouseOver}
               onMouseOut={handleMouseOut}
             >
@@ -318,7 +342,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
           {selectedCategory !== "all" && (
             <span 
               className="px-2 py-0.5 rounded text-xs"
-              style={categoryBadgeStyle || { backgroundColor: "rgb(239 246 255)", color: "rgb(29 78 216)" }}
+              style={categoryBadgeStyle}
             >
               {selectedCategory}
             </span>
@@ -326,7 +350,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
           {selectedContractType !== "all" && (
             <span 
               className="px-2 py-0.5 rounded text-xs"
-              style={contractBadgeStyle || { backgroundColor: "rgb(240 253 244)", color: "rgb(21 128 61)" }}
+              style={contractBadgeStyle}
             >
               {selectedContractType}
             </span>
