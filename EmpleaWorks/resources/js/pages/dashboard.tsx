@@ -25,59 +25,23 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
     const isAuthenticated = !!auth.user;
 
     // ----- COLOR THEMING SYSTEM -----
-    // Sistema de colores personalizado según el rol del usuario
-    const userRole = auth.user?.role_id;
-    const primaryColor = useMemo(() => {
-        if (!isAuthenticated) return undefined;
-        if (userRole === 1) return '#EB7C28';   // Naranja para candidatos
-        if (userRole === 2) return '#28EB7C';   // Verde para empresas
-        return undefined;
-    }, [isAuthenticated, userRole]);
-
-    const accentColor = useMemo(() => {
-        if (!primaryColor) return undefined;
-        if (primaryColor === '#EB7C28') return '#F5A46A';
-        if (primaryColor === '#28EB7C') return '#71F1A9';
-        return undefined;
-    }, [primaryColor]);
-
-    const hoverColor = useMemo(() => {
-        if (!primaryColor) return undefined;
-        if (primaryColor === '#EB7C28') return '#C26725';
-        if (primaryColor === '#28EB7C') return '#22C569';
-        return undefined;
-    }, [primaryColor]);
+    // Colores principales (púrpura)
+    const primaryColor = '#7c28eb';
+    const primaryHoverColor = '#6620c5';
+    const primaryLightColor = '#9645f4';
+    
+    // Colores de acento (ámbar)
+    const accentColor = '#FDC231';
+    const accentDarkColor = '#E3B100';
+    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
-    // Clases CSS condicionales para aplicar los temas de color
-    const bgAccentColor = useMemo(() => {
-        if (!primaryColor) return '';            // Sin clase adicional para estilo original
-        if (primaryColor === '#EB7C28') return 'bg-orange-50/50 dark:bg-orange-950/20';
-        if (primaryColor === '#28EB7C') return 'bg-green-50/50 dark:bg-green-950/20';
-        return '';                               // Sin clase adicional para estilo original
-    }, [primaryColor]);
-
-    const borderColor = useMemo(() => {
-        if (!primaryColor) return '';
-        if (primaryColor === '#EB7C28') return 'border-orange-100 dark:border-orange-600/30';
-        if (primaryColor === '#28EB7C') return 'border-green-100 dark:border-green-600/30';
-        return '';
-    }, [primaryColor]);
-
-    const cardBgColor = useMemo(() => {
-        if (!primaryColor) return '';
-        if (primaryColor === '#EB7C28') return 'bg-orange-50/70 dark:bg-orange-900/10';
-        if (primaryColor === '#28EB7C') return 'bg-green-50/70 dark:bg-green-900/10';
-        return '';
-    }, [primaryColor]);
-
-    const cardHoverBgColor = useMemo(() => {
-        if (!primaryColor) return '';
-        if (primaryColor === '#EB7C28') return 'hover:bg-orange-100/80 dark:hover:bg-orange-900/15';
-        if (primaryColor === '#28EB7C') return 'hover:bg-green-100/80 dark:hover:bg-green-900/15';
-        return '';
-    }, [primaryColor]);
-
+    // Clases CSS para el tema púrpura con acentos ámbar
+    const borderColor = 'border-purple-100 dark:border-purple-600/30';
+    const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
+    const cardBgColor = 'bg-white dark:bg-gray-900';
+    const cardHoverBgColor = 'hover:bg-purple-50/70 dark:hover:bg-purple-900/15';
+    
     // ----- DATA MANAGEMENT -----
     // Estado y procesamiento de datos para las ofertas
     const [filteredOffers, setFilteredOffers] = useState<Offer[]>(offers);
@@ -175,8 +139,9 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
 
                 {/* Cabecera de la sección de ofertas */}
                 <div className="px-2">
-                    <h2 className={cn("text-2xl font-semibold mb-2", primaryColor ? "" : "text-foreground")} 
-                        style={primaryColor ? { color: primaryColor } : undefined}>
+                    <h2 
+                        className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300"
+                    >
                         {t('recent_jobs')}
                     </h2>
                     <p className="text-muted-foreground">{t('explore_opportunities')}</p>
@@ -184,17 +149,15 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
 
                 {/* Barra de búsqueda y filtros */}
                 <div className="mb-6 relative">
-                    {/* Indicador visual del tema de usuario */}
-                    {primaryColor && (
-                        <div 
-                            className="absolute -left-1 top-6 bottom-6 w-0.5 rounded-full" 
-                            style={{ backgroundColor: primaryColor }}
-                        />
-                    )}
+                    {/* Indicador visual - Borde ámbar a la izquierda */}
+                    <div 
+                        className="absolute -left-1 top-6 bottom-6 w-1 rounded-full" 
+                        style={{ backgroundColor: accentColor }}
+                    />
 
                     <div className={cn(
                         "pb-5 bg-white dark:bg-[#171717] rounded-xl p-4 shadow-lg ml-1.5 border transform hover:translate-y-[-2px] transition-transform duration-300",
-                        borderColor || "border-border"
+                        borderColor
                     )}>
                         <SearchBar
                             data={offers}
@@ -209,32 +172,37 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
 
                 {/* Listado de ofertas de empleo */}
                 {filteredOffers && filteredOffers.length > 0 ? (
-                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                    <div className="grid auto-rows-min gap-4 sm:grid-cols-2 md:grid-cols-3">
                         {filteredOffers.map((offer) => (
                             <div
                                 key={offer.id}
                                 className={cn(
                                     "relative overflow-hidden rounded-xl border p-4 flex flex-col transition-colors duration-200",
-                                    borderColor || "border-border",
-                                    cardBgColor || "bg-card",
+                                    borderColor,
+                                    cardBgColor,
                                     cardHoverBgColor
                                 )}
                             >
+                                {/* Elemento decorativo ámbar */}
+                                <div 
+                                    className="absolute top-0 right-0 w-12 h-1 rounded-bl" 
+                                    style={{ backgroundColor: accentColor }}
+                                />
+                                
                                 {/* Encabezado de la tarjeta */}
                                 <div className="flex justify-between items-start mb-2">
                                     <Link
                                         href={route('offer.show', offer.id)}
-                                        className="font-semibold text-lg line-clamp-2"
-                                        style={primaryColor ? { color: primaryColor } : undefined}
+                                        className="font-semibold text-lg line-clamp-2 text-[#7c28eb] dark:text-purple-300 hover:text-[#6620c5] dark:hover:text-purple-200 transition-colors"
                                     >
                                         {offer.name}
                                     </Link>
                                     <span 
-                                        className="text-xs px-2 py-1 rounded-full" 
-                                        style={primaryColor ? { 
-                                            backgroundColor: `${primaryColor}20`, 
-                                            color: primaryColor 
-                                        } : undefined}
+                                        className="text-xs px-2 py-1 rounded-full"
+                                        style={{ 
+                                            backgroundColor: `${accentColor}20`, 
+                                            color: accentDarkColor 
+                                        }}
                                     >
                                         {offer.category}
                                     </span>
@@ -242,7 +210,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
 
                                 {/* Información de la empresa */}
                                 <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5" style={{ color: accentColor }}>
                                         <path d="M3 9v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9"></path>
                                         <path d="M18 5V3a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"></path>
                                         <path d="M21 5H3a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
@@ -260,15 +228,15 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                 {/* Detalles adicionales de la oferta */}
                                 <div className="flex flex-col gap-1 text-xs text-muted-foreground mb-4">
                                     <div className="flex items-center gap-1">
-                                        <BriefcaseIcon className="size-3.5" />
+                                        <BriefcaseIcon className="size-3.5" style={{ color: primaryLightColor }} />
                                         <span>{offer.contract_type}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <MapPinIcon className="size-3.5" />
+                                        <MapPinIcon className="size-3.5" style={{ color: primaryLightColor }} />
                                         <span>{offer.job_location}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <CalendarIcon className="size-3.5" />
+                                        <CalendarIcon className="size-3.5" style={{ color: primaryLightColor }} />
                                         <span>{t('until')}: {new Date(offer.closing_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
@@ -279,22 +247,12 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                         href={route('offer.show', offer.id)}
                                         className={cn(
                                             "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
-                                            !primaryColor && "bg-secondary hover:bg-secondary/80 text-secondary-foreground"
+                                            "border border-purple-200 dark:border-purple-700",
+                                            "text-[#7c28eb] dark:text-white",
+                                            "hover:bg-purple-50 dark:hover:bg-purple-900/30",
+                                            "hover:border-[#7c28eb] dark:hover:border-purple-500",
+                                            "hover:text-[#6620c5] dark:hover:text-white"
                                         )}
-                                        style={primaryColor ? { 
-                                            backgroundColor: `${primaryColor}20`, 
-                                            color: primaryColor 
-                                        } : undefined}
-                                        onMouseOver={(e) => {
-                                            if (primaryColor) {
-                                                e.currentTarget.style.backgroundColor = `${primaryColor}30`;
-                                            }
-                                        }}
-                                        onMouseOut={(e) => {
-                                            if (primaryColor) {
-                                                e.currentTarget.style.backgroundColor = `${primaryColor}20`;
-                                            }
-                                        }}
                                         title={t('view_details')}
                                     >
                                         {t('view_details')}
@@ -309,7 +267,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                     filteredOffers.length === 0 ? (
                         // Estado de "No se encontraron resultados" cuando la búsqueda no arroja coincidencias
                         <div className="text-center p-8">
-                            <div className="text-xl font-medium mb-2" style={primaryColor ? { color: primaryColor } : undefined}>
+                            <div className="text-xl font-medium mb-2 text-[#7c28eb] dark:text-purple-300">
                                 {t('no_offers_found')}
                             </div>
                             <p className="text-muted-foreground">{t('try_other_terms')}</p>
@@ -319,8 +277,8 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                             <div className={cn(
                                 "relative aspect-video overflow-hidden rounded-xl border",
-                                borderColor || "border-border",
-                                cardBgColor
+                                borderColor,
+                                "bg-purple-50/30 dark:bg-purple-900/10"
                             )}>
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                                 <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
@@ -329,15 +287,15 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                             </div>
                             <div className={cn(
                                 "relative aspect-video overflow-hidden rounded-xl border",
-                                borderColor || "border-border",
-                                cardBgColor
+                                borderColor,
+                                "bg-purple-50/30 dark:bg-purple-900/10"
                             )}>
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                             </div>
                             <div className={cn(
                                 "relative aspect-video overflow-hidden rounded-xl border",
-                                borderColor || "border-border",
-                                cardBgColor
+                                borderColor,
+                                "bg-purple-50/30 dark:bg-purple-900/10"
                             )}>
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                             </div>

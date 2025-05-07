@@ -14,7 +14,7 @@ interface SearchBarProps {
   accentColor?: string;
 }
 
-function SearchBar({ data, onFilteredResults, categories, contractTypes, primaryColor, accentColor }: SearchBarProps) {
+function SearchBar({ data, onFilteredResults, categories, contractTypes, primaryColor = '#7c28eb', accentColor = '#FDC231' }: SearchBarProps) {
   // ----- HOOKS & STATE -----
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
@@ -22,6 +22,16 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
   const [selectedContractType, setSelectedContractType] = useState("all");
   const [resultsCount, setResultsCount] = useState(data.length);
   const [isFiltersDialogOpen, setIsFiltersDialogOpen] = useState(false);
+
+  // ----- COLOR THEMING SYSTEM -----
+  // Colores principales (púrpura)
+  const purpleColor = '#7c28eb';
+  const purpleHoverColor = '#6620c5';
+  
+  // Colores de acento (ámbar)
+  const amberColor = '#FDC231';
+  const amberDarkColor = '#E3B100';
+  const amberLightColor = '#FFDE7A';
 
   // ----- DATA PREPARATION -----
   const availableCategories = categories || [...new Set(data.map(offer => offer.category).filter(Boolean))];
@@ -94,43 +104,33 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
 
   // ----- THEMING & STYLES -----
   // Determinar colores para elementos de la UI
-  const buttonBgColor = primaryColor 
-    ? { backgroundColor: primaryColor, color: 'white' }
-    : { backgroundColor: "#7c28eb", color: 'white' }; // Color púrpura por defecto para usuarios no autenticados
-
-  const buttonHoverBgColor = primaryColor
-    ? { backgroundColor: `${primaryColor}cc` }  // cc = 80% opacity
-    : { backgroundColor: "#6620c5" }; // Color púrpura más oscuro para hover
+  const buttonBgColor = { backgroundColor: purpleColor, color: 'white' };
+  const buttonHoverBgColor = { backgroundColor: purpleHoverColor }; 
 
   // Determinar colores para badges
-  const categoryBadgeStyle = primaryColor 
-    ? { backgroundColor: `${primaryColor}15`, color: primaryColor } 
-    : { backgroundColor: "rgb(239 246 255)", color: "rgb(29 78 216)" };
+  const categoryBadgeStyle = { 
+    backgroundColor: `${amberColor}20`, 
+    color: amberDarkColor 
+  };
     
-  const contractBadgeStyle = accentColor
-    ? { backgroundColor: `${accentColor}20`, color: accentColor }
-    : { backgroundColor: "rgb(240 253 244)", color: "rgb(21 128 61)" };
+  const contractBadgeStyle = { 
+    backgroundColor: `${purpleColor}15`, 
+    color: purpleColor 
+  };
 
   // Determinar colores para counter badge
-  const counterBadgeStyle = primaryColor
-    ? { backgroundColor: primaryColor }
-    : { backgroundColor: "#7c28eb" };
+  const counterBadgeStyle = { 
+    backgroundColor: amberColor,
+    color: "#333"
+  };
 
   // ----- HOVER HANDLERS -----
   const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (primaryColor) {
-      e.currentTarget.style.backgroundColor = `${primaryColor}cc`;
-    } else {
-      e.currentTarget.style.backgroundColor = "#6620c5"; // Color púrpura oscuro para hover
-    }
+    e.currentTarget.style.backgroundColor = purpleHoverColor;
   };
 
   const handleMouseOut = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (primaryColor) {
-      e.currentTarget.style.backgroundColor = primaryColor;
-    } else {
-      e.currentTarget.style.backgroundColor = "#7c28eb"; // Restaurar color púrpura original
-    }
+    e.currentTarget.style.backgroundColor = purpleColor;
   };
 
   // ----- RENDER COMPONENT -----
@@ -165,13 +165,13 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
         <Dialog open={isFiltersDialogOpen} onOpenChange={setIsFiltersDialogOpen}>
           <DialogTrigger asChild>
             <button className="lg:hidden col-span-4 sm:col-span-3 md:col-span-3 flex items-center justify-center gap-2 border-l border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-4 h-4" fill="none" stroke={purpleColor} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
               </svg>
               <span className="text-sm">{t('filters')}</span>
               {activeFiltersCount > 0 && (
                 <span 
-                  className="flex items-center justify-center w-5 h-5 text-xs rounded-full text-white"
+                  className="flex items-center justify-center w-5 h-5 text-xs rounded-full"
                   style={counterBadgeStyle}
                 >
                   {activeFiltersCount}
@@ -179,18 +179,18 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
               )}
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-md dark:bg-gray-900 border-purple-100 dark:border-purple-600/30">
             <DialogHeader>
-              <DialogTitle>{t('filters')}</DialogTitle>
+              <DialogTitle className="text-[#7c28eb] dark:text-purple-300">{t('filters')}</DialogTitle>
               <DialogDescription>
                 {t('filter_description')}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <label className="text-sm font-medium">{t('category')}</label>
+                <label className="text-sm font-medium text-[#7c28eb] dark:text-purple-300">{t('category')}</label>
                 <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
-                  <SelectTrigger>
+                  <SelectTrigger className="focus-visible:ring-purple-500 border-purple-100 dark:border-purple-600/30">
                     <SelectValue placeholder={t('select_category')} />
                   </SelectTrigger>
                   <SelectContent>
@@ -204,9 +204,9 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
                 </Select>
               </div>
               <div className="grid gap-2">
-                <label className="text-sm font-medium">{t('contract_type')}</label>
+                <label className="text-sm font-medium text-[#7c28eb] dark:text-purple-300">{t('contract_type')}</label>
                 <Select value={selectedContractType} onValueChange={(value) => setSelectedContractType(value)}>
-                  <SelectTrigger>
+                  <SelectTrigger className="focus-visible:ring-purple-500 border-purple-100 dark:border-purple-600/30">
                     <SelectValue placeholder={t('select_contract_type')} />
                   </SelectTrigger>
                   <SelectContent>
@@ -248,7 +248,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
                 <svg 
                   className="w-4 h-4 mr-1" 
                   fill="none" 
-                  stroke={primaryColor || "#7c28eb"}
+                  stroke={amberColor}
                   viewBox="0 0 24 24" 
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -260,7 +260,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
                 />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="border-purple-100 dark:border-purple-600/30">
               <SelectItem value="all">{t('all_categories')}</SelectItem>
               {availableCategories.map((category) => (
                 <SelectItem key={category} value={category}>
@@ -279,7 +279,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
                 <svg 
                   className="w-4 h-4 mr-1" 
                   fill="none" 
-                  stroke={primaryColor || "#7c28eb"}
+                  stroke={purpleColor}
                   viewBox="0 0 24 24" 
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -291,7 +291,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
                 />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="border-purple-100 dark:border-purple-600/30">
               <SelectItem value="all">{t('all_contract_types')}</SelectItem>
               {availableContractTypes.map((type) => (
                 <SelectItem key={type} value={type}>

@@ -10,6 +10,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { TrashIcon } from "lucide-react";
 import { router } from "@inertiajs/react";
 import { useTranslation } from '@/utils/i18n';
+import { cn } from '@/lib/utils';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -23,9 +24,24 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function CompanyDashboard({ companyOffers = [], totalApplicants = 0 }: { companyOffers?: Offer[], totalApplicants?: number }) {
+    // ----- HOOKS & STATE -----
     const { auth } = usePage<SharedData>().props;
     const { t } = useTranslation();
     
+    // ----- COLOR THEMING SYSTEM -----
+    // Constantes de color para el tema de Empresa
+    const primaryColor = '#28EB7C';   // Verde para empresas
+    const accentColor = '#71F1A9';    // Verde más claro
+    const hoverColor = '#22C569';     // Verde más oscuro
+
+    // ----- TAILWIND CLASS MODIFIERS -----
+    // Clases CSS para aplicar el tema de Empresa
+    const borderColor = 'border-green-100 dark:border-green-600/30';
+    const bgAccentColor = 'bg-green-50/50 dark:bg-green-950/20';
+    const cardBgColor = 'bg-green-50/70 dark:bg-green-900/10';
+    const cardHoverBgColor = 'hover:bg-green-100/80 dark:hover:bg-green-900/15';
+
+    // ----- CONFIGURATION -----
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('company_dashboard'),
@@ -33,6 +49,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
         },
     ];
     
+    // ----- RENDER COMPONENT -----
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Toaster
@@ -53,17 +70,39 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Título del Dashboard */}
                 <div className="px-2">
-                    <h2 className="text-2xl font-semibold mb-2">{t('company_dashboard')}</h2>
+                    <h2 
+                        className="text-2xl font-semibold mb-2"
+                        style={{ color: primaryColor }}
+                    >
+                        {t('company_dashboard')}
+                    </h2>
                     <p className="text-muted-foreground">{t('manage_company_listings')}</p>
                 </div>
                 
                 {/* Acciones rápidas */}
                 <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     {/* Tarjeta de Job Listings */}
-                    <Card className="overflow-hidden border-t-4 border-t-primary flex flex-col">
+                    <Card className={cn(
+                        "overflow-hidden flex flex-col",
+                        borderColor
+                    )}
+                    style={{ borderTop: `4px solid ${primaryColor}` }}
+                    >
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary/80">
+                                <svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    width="20" 
+                                    height="20" 
+                                    viewBox="0 0 24 24" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    strokeWidth="2" 
+                                    strokeLinecap="round" 
+                                    strokeLinejoin="round" 
+                                    className="text-primary/80"
+                                    style={{ color: primaryColor }}
+                                >
                                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
                                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                                 </svg>
@@ -74,12 +113,21 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         
                         <CardContent className="flex-grow flex flex-col justify-between">
                             <div>
-                                <div className="text-3xl font-bold">{companyOffers.length}</div>
+                                <div 
+                                    className="text-3xl font-bold"
+                                    style={{ color: primaryColor }}
+                                >
+                                    {companyOffers.length}
+                                </div>
                                 <div className="text-sm text-muted-foreground">{t('active_positions')}</div>
                             </div>
                             
-                            {/* Botón corregido */}
-                            <Button size="sm" className="gap-1 w-full mt-4" asChild>
+                            <Button 
+                                size="sm" 
+                                className="gap-1 w-full mt-4"
+                                style={{ backgroundColor: primaryColor, color: 'white' }}
+                                asChild
+                            >
                                 <Link href={route('company.create-job')} className="flex items-center justify-center">                                  
                                     <PlusCircleIcon className="h-4 w-4 mr-1" />
                                     {t('new_job')}
@@ -89,22 +137,42 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     </Card>
 
                     {/* Tarjeta de Aplicantes */}
-                    <Card className="overflow-hidden border-t-4 border-t-blue-500 flex flex-col">
+                    <Card className={cn(
+                        "overflow-hidden flex flex-col",
+                        borderColor
+                    )}
+                    style={{ borderTop: `4px solid ${accentColor}` }}
+                    >
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <UsersIcon className="h-5 w-5 text-blue-500/80" />
+                                <UsersIcon 
+                                    className="h-5 w-5" 
+                                    style={{ color: accentColor }}
+                                />
                                 {t('applicants')}
                             </CardTitle>
                             <CardDescription>{t('applications_to_jobs')}</CardDescription>
                         </CardHeader>
                         <CardContent className="flex-grow flex flex-col justify-between">
                             <div>
-                                <div className="text-3xl font-bold">{totalApplicants}</div>
+                                <div 
+                                    className="text-3xl font-bold"
+                                    style={{ color: accentColor }}
+                                >
+                                    {totalApplicants}
+                                </div>
                                 <div className="text-sm text-muted-foreground">{t('total_candidates')}</div>
                             </div>
                             
-                            {/* Botón corregido */}
-                            <Button size="sm" className="gap-1 w-full mt-4" asChild>
+                            <Button 
+                                size="sm" 
+                                className="gap-1 w-full mt-4"
+                                style={{ 
+                                    backgroundColor: `${accentColor}`, 
+                                    color: '#065f46' 
+                                }}
+                                asChild
+                            >
                                 <Link href={route('company.applicants')} className="flex items-center justify-center">
                                     <UsersIcon className="h-4 w-4 mr-1" />
                                     {t('view_applicants')}
@@ -114,10 +182,18 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                     </Card>
 
                     {/* Tarjeta de Perfil de Empresa */}
-                    <Card className="overflow-hidden border-t-4 border-t-green-500 flex flex-col">
+                    <Card className={cn(
+                        "overflow-hidden flex flex-col",
+                        borderColor
+                    )} 
+                    style={{ borderTop: `4px solid ${primaryColor}95` }}
+                    >
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <BuildingIcon className="h-5 w-5 text-green-500/80" />
+                                <BuildingIcon 
+                                    className="h-5 w-5" 
+                                    style={{ color: `${primaryColor}95` }}
+                                />
                                 {t('company_profile')}
                             </CardTitle>
                             <CardDescription>{t('update_profile')}</CardDescription>
@@ -136,8 +212,14 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                             />
                                         </div>
                                     ) : (
-                                        <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0 border border-gray-200 dark:border-gray-700">
-                                            <BuildingIcon className="h-6 w-6 text-green-500/80" />
+                                        <div 
+                                            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border border-gray-200 dark:border-gray-700"
+                                            style={{ backgroundColor: `${primaryColor}30` }}
+                                        >
+                                            <BuildingIcon 
+                                                className="h-6 w-6" 
+                                                style={{ color: primaryColor }}
+                                            />
                                         </div>
                                     )}
                                     <div>
@@ -163,9 +245,19 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                     </div>
                                 </div>
                                 
-                                {/* Botón de editar - corregido */}
+                                {/* Botón de editar */}
                                 <div className="mt-4">
-                                    <Button size="sm" variant="outline" className="gap-1 w-full" asChild>
+                                    <Button 
+                                        size="sm" 
+                                        variant="outline" 
+                                        className={cn(
+                                            "gap-1 w-full",
+                                            "border-green-200 dark:border-green-800/30",
+                                            "hover:bg-green-50 dark:hover:bg-green-950/20"
+                                        )}
+                                        style={{ color: primaryColor }}
+                                        asChild
+                                    >
                                         <Link href={'/settings/profile'} className="flex items-center justify-center">                                  
                                             <BuildingIcon className="h-4 w-4 mr-1" />
                                             {t('edit_profile')}
@@ -179,7 +271,12 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
 
                 {/* Título de las ofertas */}
                 <div className="px-2 mt-4">
-                    <h2 className="text-2xl font-semibold mb-2">{t('your_job_listings')}</h2>
+                    <h2 
+                        className="text-2xl font-semibold mb-2"
+                        style={{ color: primaryColor }}
+                    >
+                        {t('your_job_listings')}
+                    </h2>
                     <p className="text-muted-foreground">{t('manage_current_postings')}</p>
                 </div>
 
@@ -189,11 +286,27 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                         {companyOffers.map((offer) => (
                             <div
                                 key={offer.id}
-                                className="border-sidebar-border/70 dark:border-sidebar-border bg-card relative overflow-hidden rounded-xl border p-4 flex flex-col"
+                                className={cn(
+                                    "relative overflow-hidden rounded-xl border p-4 flex flex-col",
+                                    borderColor,
+                                    cardBgColor,
+                                    cardHoverBgColor
+                                )}
                             >
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-semibold text-lg line-clamp-2">{offer.name}</h3>
-                                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                                    <h3 
+                                        className="font-semibold text-lg line-clamp-2"
+                                        style={{ color: primaryColor }}
+                                    >
+                                        {offer.name}
+                                    </h3>
+                                    <span 
+                                        className="text-xs px-2 py-1 rounded-full"
+                                        style={{ 
+                                            backgroundColor: `${primaryColor}20`, 
+                                            color: primaryColor 
+                                        }}
+                                    >
                                         {offer.category}
                                     </span>
                                 </div>
@@ -208,22 +321,35 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
 
                                 <div className="flex flex-col gap-1 text-xs text-muted-foreground mb-4">
                                     <div className="flex items-center gap-1">
-                                        <BriefcaseIcon className="size-3.5" />
+                                        <BriefcaseIcon 
+                                            className="size-3.5" 
+                                            style={{ color: primaryColor }}
+                                        />
                                         <span>{offer.contract_type}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <MapPinIcon className="size-3.5" />
+                                        <MapPinIcon 
+                                            className="size-3.5" 
+                                            style={{ color: primaryColor }}
+                                        />
                                         <span>{offer.job_location}</span>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <CalendarIcon className="size-3.5" />
+                                        <CalendarIcon 
+                                            className="size-3.5" 
+                                            style={{ color: primaryColor }}
+                                        />
                                         <span>{t('until')}: {new Date(offer.closing_date).toLocaleDateString()}</span>
                                     </div>
                                 </div>
 
                                 <div className="flex flex-col gap-2 w-full">
-                                    {/* Primera fila: View Details - Corregido */}
-                                    <Button className="w-full" asChild>
+                                    {/* Botón View Details */}
+                                    <Button 
+                                        className="w-full"
+                                        style={{ backgroundColor: primaryColor, color: 'white' }}
+                                        asChild
+                                    >
                                         <Link
                                             href={route('offer.show', offer.id)}
                                             className="flex items-center justify-center gap-1.5"
@@ -236,13 +362,19 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                         </Link>
                                     </Button>
                                     
-                                    {/* Segunda fila: Edit y Delete con un wrap flexible */}
+                                    {/* Segunda fila: Edit y Delete */}
                                     <div className="flex flex-wrap gap-2 w-full">
-                                        {/* Edit Button - Ya está correcto */}
+                                        {/* Edit Button */}
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="flex-1 min-w-[80px] text-sm rounded-full border-primary/30 dark:border-primary/40 hover:bg-primary/10 hover:border-primary dark:hover:bg-primary/20 hover:text-primary transition-colors"
+                                            className={cn(
+                                                "flex-1 min-w-[80px] text-sm rounded-full",
+                                                "border-green-300/30 dark:border-green-400/20",
+                                                "hover:bg-green-500/10 hover:border-green-500/50",
+                                                "dark:hover:bg-green-500/10 hover:text-green-600"
+                                            )}
+                                            style={{ color: primaryColor }}
                                             asChild
                                         >
                                             <Link href={route('company.edit-job', offer.id)} className="flex items-center justify-center gap-1.5">
@@ -254,7 +386,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                             </Link>
                                         </Button>
                                         
-                                        {/* Delete Button con cursor pointer */}
+                                        {/* Delete Button */}
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
                                                 <Button
@@ -268,7 +400,7 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                                                     </span>
                                                 </Button>
                                             </AlertDialogTrigger>
-                                            <AlertDialogContent>
+                                            <AlertDialogContent className={borderColor}>
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle>{t('are_you_sure')}</AlertDialogTitle>
                                                     <AlertDialogDescription>
@@ -301,30 +433,65 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                             </div>
                         ))}
                         
-                        {/* Card para añadir nueva oferta - Ya está correcto */}
-                        <div className="border-sidebar-border/70 dark:border-sidebar-border bg-card/50 relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px]">
-                            <PlusCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
-                            <h3 className="font-medium text-lg mb-1">{t('create_new_job')}</h3>
+                        {/* Card para añadir nueva oferta */}
+                        <div 
+                            className={cn(
+                                "relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px]",
+                                borderColor,
+                                cardBgColor
+                            )}
+                        >
+                            <PlusCircleIcon 
+                                className="h-10 w-10 mb-2" 
+                                style={{ color: `${primaryColor}80` }}
+                            />
+                            <h3 
+                                className="font-medium text-lg mb-1"
+                                style={{ color: primaryColor }}
+                            >
+                                {t('create_new_job')}
+                            </h3>
                             <p className="text-sm text-muted-foreground text-center mb-4">
                                 {t('add_job_opportunity')}
                             </p>
-                            <Button asChild>
+                            <Button 
+                                style={{ backgroundColor: primaryColor, color: 'white' }}
+                                asChild
+                            >
                                 <Link href={route('company.create-job')}>
-                                {t('create_job_listing')}
+                                    {t('create_job_listing')}
                                 </Link>
                             </Button>
                         </div>
                     </div>
                 ) : (
-                    // Si no hay ofertas publicadas por la empresa - Corregido
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card/50 p-8 overflow-hidden rounded-xl border text-center my-6">
+                    // Si no hay ofertas publicadas por la empresa
+                    <div 
+                        className={cn(
+                            "relative p-8 overflow-hidden rounded-xl border text-center my-6",
+                            borderColor,
+                            cardBgColor
+                        )}
+                    >
                         <div className="flex flex-col items-center gap-2 relative z-10">
-                            <BuildingIcon className="h-12 w-12 mb-2 text-muted-foreground" />
-                            <h2 className="text-xl font-semibold">{t('no_job_listings_yet')}</h2>
+                            <BuildingIcon 
+                                className="h-12 w-12 mb-2" 
+                                style={{ color: `${primaryColor}60` }}
+                            />
+                            <h2 
+                                className="text-xl font-semibold"
+                                style={{ color: primaryColor }}
+                            >
+                                {t('no_job_listings_yet')}
+                            </h2>
                             <p className="text-muted-foreground max-w-md mx-auto mb-4">
                                 {t('no_job_listings_message')}
                             </p>
-                            <Button className="gap-1" asChild>
+                            <Button 
+                                className="gap-1"
+                                style={{ backgroundColor: primaryColor, color: 'white' }}
+                                asChild
+                            >
                                 <Link href={route('company.create-job')} className="flex items-center justify-center">                                
                                     <PlusCircleIcon className="h-4 w-4 mr-1" />
                                     {t('create_first_job')}

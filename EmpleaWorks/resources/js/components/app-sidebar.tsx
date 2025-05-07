@@ -58,9 +58,9 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton className="hover:bg-purple-50 dark:hover:bg-purple-800/40 group">
-                            <Globe className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb] dark:group-hover:text-purple-200" />
-                            <span className="sidebar-menu-button-text text-[#9645f4] dark:text-[#c79dff] font-medium group-hover:text-[#7c28eb] dark:group-hover:text-purple-200">
+                        <SidebarMenuButton className="group/lang">
+                            <Globe className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200" />
+                            <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200">
                                 {locale?.available[locale?.current] || 'Idioma'}
                             </span>
                         </SidebarMenuButton>
@@ -78,7 +78,7 @@ export function AppSidebar() {
                                     className={`flex items-center w-full px-2 py-1 ${
                                         locale.current === code 
                                             ? 'font-semibold text-[#7c28eb] dark:text-purple-300' 
-                                            : 'text-[#9645f4] dark:text-[#c79dff] hover:text-[#7c28eb] dark:hover:text-purple-300 font-medium'
+                                            : 'text-gray-700 dark:text-gray-300 hover:text-[#7c28eb] dark:hover:text-purple-300 font-medium'
                                     }`}
                                 >
                                     {name}
@@ -97,15 +97,15 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <SidebarMenuButton 
                     asChild
-                    className="hover:bg-purple-50 dark:hover:bg-purple-800/40 group"
+                    className="group/terms"
                 >
                     <Link 
                         href={route('terms')} 
                         className="flex items-center w-full"
                         preserveState
                     >
-                        <FileText className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb] dark:group-hover:text-purple-200" />
-                        <span className="sidebar-menu-button-text text-[#9645f4] dark:text-[#c79dff] font-medium group-hover:text-[#7c28eb] dark:group-hover:text-purple-200">
+                        <FileText className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200" />
+                        <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200">
                             {t('terms_and_conditions')}
                         </span>
                     </Link>
@@ -123,11 +123,11 @@ export function AppSidebar() {
             <SidebarHeader className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild className="hover:bg-purple-50 dark:hover:bg-purple-800/40">
-                            <Link href="/dashboard" prefetch className="flex items-center gap-2 group justify-center">
+                        <SidebarMenuButton size="lg" asChild className="group/logo">
+                            <Link href="/dashboard" prefetch className="flex items-center gap-2 justify-center">
                                 <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
                                 {state !== 'collapsed' && (
-                                    <span className="text-xl font-bold tracking-tight hover:text-purple-600 dark:hover:text-purple-300 transition-colors -ml-1">
+                                    <span className="text-xl font-bold tracking-tight group-hover/logo:text-purple-600 dark:group-hover/logo:text-purple-300 transition-colors -ml-1">
                                         EmpleaWorks
                                     </span>
                                 )}
