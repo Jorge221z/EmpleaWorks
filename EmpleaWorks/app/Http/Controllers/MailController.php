@@ -75,10 +75,7 @@ class MailController extends Controller
             // Si hay un CV para adjuntar, lo añadimos como adjunto
             if (!empty($attachmentParams['attachment'])) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
-            }
-            // Adjuntamos el logo embebido si existe
-            if (!empty($attachmentParams['inline'])) {
-                $messageParams['inline'] = $attachmentParams['inline'];
+            
             } else { 
                 // En caso de faltar el CV, devolver error en lugar de intentar redireccionar
                 return [
@@ -167,10 +164,7 @@ class MailController extends Controller
             // Si hay un CV para adjuntar, lo añadimos como adjunto
             if (!empty($attachmentParams['attachment'])) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
-            }
-            // Adjuntamos el logo embebido si existe
-            if (!empty($attachmentParams['inline'])) {
-                $messageParams['inline'] = $attachmentParams['inline'];
+            
             }
 
             // Enviamos el mensaje

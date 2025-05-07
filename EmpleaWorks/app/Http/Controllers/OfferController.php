@@ -250,7 +250,11 @@ class OfferController extends Controller
         if (!$candidate) {
             return redirect()->back()->with('error', __('messages.candidate_profile_not_found'));
         }
-        
+
+        $candidate->refresh();
+
+
+
         // Check if the candidate has a CV before attempting to save application
         if (!$candidate->cv || !Storage::disk('public')->exists($candidate->cv)) {
             return redirect()->route('profile.update')
