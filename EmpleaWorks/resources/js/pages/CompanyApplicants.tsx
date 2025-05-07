@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { useTranslation } from '@/utils/i18n';
 import { type BreadcrumbItem } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface Applicant {
     id: number;
@@ -34,6 +35,23 @@ interface CompanyApplicantsProps {
 export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyApplicantsProps) {
     const { t } = useTranslation();
     
+    // ----- COLOR THEMING SYSTEM -----
+    // Colores principales (púrpura)
+    const primaryColor = '#7c28eb';
+    const primaryHoverColor = '#6620c5';
+    const primaryLightColor = '#9645f4';
+    
+    // Colores de acento (ámbar)
+    const accentColor = '#FDC231';
+    const accentDarkColor = '#E3B100';
+    const accentLightColor = '#FFDE7A';
+
+    // ----- TAILWIND CLASS MODIFIERS -----
+    // Clases CSS para aplicar el tema púrpura con acentos ámbar
+    const borderColor = 'border-purple-100 dark:border-purple-600/30';
+    const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
+    const cardBgColor = 'bg-white dark:bg-gray-900';
+    
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t('company_dashboard'),
@@ -51,32 +69,50 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {/* Título de la página */}
                 <div className="px-2">
-                    <h2 className="text-2xl font-semibold mb-2">{t('applicants_by_job')}</h2>
+                    <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">{t('applicants_by_job')}</h2>
                     <p className="text-muted-foreground">{t('applications_to_jobs')}</p>
                 </div>
                 
                 {jobsWithApplicants.length > 0 ? (
                     <div className="grid gap-8">
                         {jobsWithApplicants.map((job) => (
-                            <Card key={job.id} className="overflow-hidden">
-                                <CardHeader className="bg-muted/50">
+                            <Card key={job.id} className={cn("overflow-hidden", borderColor)}>
+                                <CardHeader className={cn(bgAccentColor)}>
                                     <div className="flex flex-wrap items-start justify-between gap-2">
                                         <div>
-                                            <CardTitle className="text-xl flex items-center gap-2">
-                                                <BriefcaseIcon className="h-5 w-5 text-primary/80" />
+                                            <CardTitle className="text-xl flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
+                                                <BriefcaseIcon 
+                                                    className="h-5 w-5" 
+                                                    style={{ color: primaryLightColor }}
+                                                />
                                                 {job.name}
                                             </CardTitle>
-                                            <CardDescription className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-2">
-                                                <Badge variant="secondary" className="mt-1">
+                                            <CardDescription className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-2 dark:text-gray-300">
+                                                <Badge 
+                                                    className={cn(
+                                                        "mt-1",
+                                                        "bg-amber-100 text-amber-800 hover:bg-amber-200", 
+                                                        "dark:bg-amber-900/30 dark:text-amber-300 dark:hover:bg-amber-900/40"
+                                                    )}
+                                                >
                                                     {job.category}
                                                 </Badge>
                                                 <span className="flex items-center gap-1 text-xs">
-                                                    <CalendarIcon className="h-3.5 w-3.5" />
+                                                    <CalendarIcon 
+                                                        className="h-3.5 w-3.5" 
+                                                        style={{ color: accentColor }}
+                                                    />
                                                     {new Date(job.closing_date).toLocaleDateString()}
                                                 </span>
                                             </CardDescription>
                                         </div>
-                                        <Badge variant="default" className="text-sm">
+                                        <Badge 
+                                            className={cn(
+                                                "text-sm",
+                                                "bg-purple-100 text-purple-800 hover:bg-purple-200", 
+                                                "dark:bg-purple-900/30 dark:text-purple-300 dark:hover:bg-purple-900/40"
+                                            )}
+                                        >
                                             {job.applicants_count} {job.applicants_count === 1 ? t('candidate') : t('candidates')}
                                         </Badge>
                                     </div>
@@ -86,11 +122,11 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                                     {job.applicants.length > 0 ? (
                                         <div className="space-y-4">
                                             {job.applicants.map((applicant) => (
-                                                <div key={applicant.id} className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b last:border-0">
+                                                <div key={applicant.id} className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-purple-100 dark:border-purple-800/20 last:border-0">
                                                     <div className="flex items-center gap-3">
                                                         {/* Avatar del candidato */}
                                                         {applicant.image ? (
-                                                            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                                                            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0 border border-purple-100 dark:border-purple-800/20">
                                                                 <img
                                                                     src={`/storage/${applicant.image}`}
                                                                     alt={applicant.name}
@@ -98,8 +134,14 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                                                                 />
                                                             </div>
                                                         ) : (
-                                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                                                <UsersIcon className="h-5 w-5 text-primary/70" />
+                                                            <div 
+                                                                className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                                                                style={{ backgroundColor: `${primaryColor}15` }}
+                                                            >
+                                                                <UsersIcon 
+                                                                    className="h-5 w-5" 
+                                                                    style={{ color: primaryLightColor }}
+                                                                />
                                                             </div>
                                                         )}
                                                         
@@ -115,7 +157,14 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                                                         <Button
                                                             variant="outline" 
                                                             size="sm" 
-                                                            className="gap-1"
+                                                            className={cn(
+                                                                "gap-1",
+                                                                "border-purple-200 dark:border-purple-700",
+                                                                "text-[#7c28eb] dark:text-white",
+                                                                "hover:bg-purple-50 dark:hover:bg-purple-900/30",
+                                                                "hover:border-[#7c28eb] dark:hover:border-purple-500",
+                                                                "hover:text-[#6620c5] dark:hover:text-white"
+                                                            )}
                                                             asChild
                                                         >
                                                             <a 
@@ -124,12 +173,18 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                                                                 rel="noopener noreferrer"
                                                                 download
                                                             >
-                                                                <FileIcon className="h-3.5 w-3.5" />
+                                                                <FileIcon 
+                                                                    className="h-3.5 w-3.5" 
+                                                                    style={{ color: accentColor }}
+                                                                />
                                                                 {t('cv_download')}
                                                             </a>
                                                         </Button>
                                                     ) : (
-                                                        <Badge variant="outline" className="text-muted-foreground text-xs">
+                                                        <Badge 
+                                                            variant="outline" 
+                                                            className="text-xs border-purple-200 dark:border-purple-700 text-muted-foreground"
+                                                        >
                                                             {t('no_cv_provided')}
                                                         </Badge>
                                                     )}
@@ -138,8 +193,13 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                                         </div>
                                     ) : (
                                         <div className="flex flex-col items-center justify-center py-8 text-center">
-                                            <UsersIcon className="h-10 w-10 text-muted-foreground mb-2" />
-                                            <h3 className="font-medium text-lg">{t('no_applicants_yet')}</h3>
+                                            <UsersIcon 
+                                                className="h-10 w-10 mb-2" 
+                                                style={{ color: `${primaryColor}60` }}
+                                            />
+                                            <h3 className="font-medium text-lg text-[#7c28eb] dark:text-purple-300">
+                                                {t('no_applicants_yet')}
+                                            </h3>
                                             <p className="text-sm text-muted-foreground max-w-md">
                                                 {t('no_applicants_message')}
                                             </p>
@@ -151,14 +211,33 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                     </div>
                 ) : (
                     // Mensaje si no hay ofertas con candidatos
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card/50 p-8 overflow-hidden rounded-xl border text-center my-6">
+                    <div className={cn(
+                        "relative p-8 overflow-hidden rounded-xl border text-center my-6",
+                        borderColor,
+                        cardBgColor
+                    )}>
                         <div className="flex flex-col items-center gap-2 relative z-10">
-                            <UsersIcon className="h-12 w-12 mb-2 text-muted-foreground" />
-                            <h2 className="text-xl font-semibold">{t('no_applications_yet')}</h2>
+                            <UsersIcon 
+                                className="h-12 w-12 mb-2" 
+                                style={{ color: `${primaryColor}60` }}
+                            />
+                            <h2 className="text-xl font-semibold text-[#7c28eb] dark:text-purple-300">
+                                {t('no_applications_yet')}
+                            </h2>
                             <p className="text-muted-foreground max-w-md mx-auto mb-4">
                                 {t('no_applications_message')}
                             </p>
-                            <Button asChild>
+                            <Button 
+                                className="text-white"
+                                style={{ backgroundColor: primaryColor }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryHoverColor;
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryColor;
+                                }}
+                                asChild
+                            >
                                 <Link href={route('company.dashboard')}>                                
                                     {t('back_to_dashboard')}
                                 </Link>
