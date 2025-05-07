@@ -1,4 +1,3 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +20,7 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { useForm, Head, Link } from '@inertiajs/react';
+import { useForm, Head } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { FormEvent, useState, useEffect } from 'react';
 import { Offer } from '@/types/types';
@@ -312,7 +311,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                                         <PopoverTrigger asChild>
                                             <Button
                                                 id="closing_date"
-                                                variant="outline"
+                                                variant={"outline"}
                                                 className={cn(
                                                     "w-full justify-start text-left font-normal",
                                                     "border-purple-200 dark:border-purple-700",

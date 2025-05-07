@@ -2,6 +2,7 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState, useEffect, useRef } from 'react';
+import { LoaderCircle } from 'lucide-react';
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -13,6 +14,7 @@ import SettingsLayout from '@/layouts/settings/layout';
 import { Company, Candidate, User } from '@/types/types';
 import toast, { Toaster } from 'react-hot-toast';
 import { useTranslation } from '@/utils/i18n';
+import { cn } from '@/lib/utils';
 
 type ProfileForm = {
     name: string;
@@ -31,6 +33,14 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
     const { t } = useTranslation();
+
+    // ----- COLOR THEMING SYSTEM -----
+    // Colores principales (púrpura)
+    const primaryColor = '#7c28eb';
+    const primaryHoverColor = '#6620c5';
+    
+    // Colores de acento (ámbar)
+    const accentColor = '#FDC231';
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -105,7 +115,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             preserveScroll: true,
         });
     };
-//la imagen y el cv se manejan de distnta forma porque se guardan como strings con su ruta en la bd y luego se recuperan desde esa referencia//
+    
+    // La imagen y el cv se manejan de distnta forma porque se guardan como strings con su ruta en la bd y luego se recuperan desde esa referencia
     const [imagePreview, setImagePreview] = useState<string | null>(
         auth.user.image ? `/storage/${auth.user.image}` : null
     );
@@ -136,76 +147,127 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title={t('profile_information')} description={t('update_profile_data')} />
+                    <div className="text-[#7c28eb] dark:text-purple-300">
+                        <HeadingSmall 
+                            title={t('profile_information')} 
+                            description={t('update_profile_data')} 
+                        />
+                    </div>
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">{t('name')}</Label>
-
+                            <Label 
+                                htmlFor="name" 
+                                className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                            >
+                                {t('name')}
+                            </Label>
                             <Input
                                 id="name"
-                                className="mt-1 block w-full"
+                                className={cn(
+                                    "mt-1 block w-full",
+                                    "border-gray-200 dark:border-gray-700",
+                                    "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500",
+                                    "focus-visible:border-[#7c28eb] dark:focus-visible:border-purple-500"
+                                )}
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 autoComplete="name"
                                 placeholder={t('full_name')}
                             />
-
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError className="text-red-500 text-sm" message={errors.name} />
                         </div>
 
                         {role_id === 1 && (
                             <div className='grid gap-2'>
-                                <Label htmlFor='surname'>{t('surname')}</Label>
+                                <Label 
+                                    htmlFor='surname'
+                                    className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                                >
+                                    {t('surname')}
+                                </Label>
                                 <Input
                                     id='surname'
-                                    className='mt-1 block w-full'
+                                    className={cn(
+                                        "mt-1 block w-full",
+                                        "border-gray-200 dark:border-gray-700",
+                                        "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500",
+                                        "focus-visible:border-[#7c28eb] dark:focus-visible:border-purple-500"
+                                    )}
                                     value={data.surname}
                                     onChange={(e) => setData('surname', e.target.value)}
                                     autoComplete='surname'
                                     placeholder={t('surname')}
                                 />
+                                <InputError className="text-red-500 text-sm" message={errors.surname} />
                             </div>
                         )}
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">{t('email_address')}</Label>
-
+                            <Label 
+                                htmlFor="email"
+                                className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                            >
+                                {t('email_address')}
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
-                                className="mt-1 block w-full"
+                                className={cn(
+                                    "mt-1 block w-full",
+                                    "border-gray-200 dark:border-gray-700",
+                                    "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500",
+                                    "focus-visible:border-[#7c28eb] dark:focus-visible:border-purple-500"
+                                )}
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 autoComplete="username"
                                 placeholder={t('email_address')}
                             />
-
-                            <InputError className="mt-2" message={errors.email} />
+                            <InputError className="text-red-500 text-sm" message={errors.email} />
                         </div>
 
                         {role_id === 2 && (
                             <div>
                                 <div className='grid gap-2'>
-                                    <Label htmlFor='address'>{t('company_address')}</Label>
+                                    <Label 
+                                        htmlFor='address'
+                                        className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                                    >
+                                        {t('company_address')}
+                                    </Label>
                                     <Input
                                         id='address'
-                                        className='mt-1 block w-full'
+                                        className={cn(
+                                            "mt-1 block w-full",
+                                            "border-gray-200 dark:border-gray-700",
+                                            "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500",
+                                            "focus-visible:border-[#7c28eb] dark:focus-visible:border-purple-500"
+                                        )}
                                         value={data.address}
                                         onChange={(e) => setData('address', e.target.value)}
                                         autoComplete='address'
                                         placeholder={t('company_address')}
                                     />
-
-                                    <InputError className='mt-2' message={errors.address} />
+                                    <InputError className="text-red-500 text-sm" message={errors.address} />
                                 </div>
 
                                 <div className='grid gap-2 mt-6'>
-                                    <Label htmlFor='weblink'>{t('website')}</Label>
+                                    <Label 
+                                        htmlFor='weblink'
+                                        className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                                    >
+                                        {t('website')}
+                                    </Label>
                                     <Input
                                         id='weblink'
                                         type='string'
-                                        className='mt-1 block w-full'
+                                        className={cn(
+                                            "mt-1 block w-full",
+                                            "border-gray-200 dark:border-gray-700",
+                                            "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500",
+                                            "focus-visible:border-[#7c28eb] dark:focus-visible:border-purple-500"
+                                        )}
                                         value={data.weblink}
                                         onChange={(e) => setData('weblink', e.target.value)}
                                         onBlur={() => {
@@ -217,17 +279,24 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         autoComplete='weblink'
                                         placeholder={t('company_website')}
                                     />
-                                    <InputError className='mt-2' message={errors.weblink} />
+                                    <InputError className="text-red-500 text-sm" message={errors.weblink} />
                                 </div>
                             </div>
                         )}
 
                         {role_id === 1 && (
                             <div className='grid gap-2'>
-                                <Label htmlFor='cv'>{t('curriculum_vitae')}</Label>
+                                <Label 
+                                    htmlFor='cv'
+                                    className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                                >
+                                    {t('curriculum_vitae')}
+                                </Label>
                                 <div
-                                    className={`relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors
-                                        ${isDragging ? 'border-blue-500 animate-pulse shadow-lg' : ''}
+                                    className={`relative border-2 border-dashed rounded-lg transition-colors
+                                        ${isDragging 
+                                            ? 'border-[#7c28eb] animate-pulse shadow-lg' 
+                                            : 'border-gray-300 dark:border-gray-700 hover:border-[#7c28eb] dark:hover:border-purple-500'}
                                     `}
                                     onClick={() => {
                                         const cvInput = document.getElementById('cv');
@@ -270,7 +339,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                                     {cvName ? (
                                         <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-11 w-11 mb-2" viewBox="0 0 24 24" fill="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-11 w-11 mb-2 text-[#7c28eb] dark:text-purple-300" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M7 5C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H7Z" />
                                                 <path d="M9 9H15M9 13H15M9 17H13" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
@@ -280,7 +349,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                     <a
                                                         href={data.cv ? URL.createObjectURL(data.cv) : cvUrl!}
                                                         download={cvName}
-                                                        className="text-xs text-blue-600 hover:text-blue-700 bg-blue-200 hover:bg-blue-300 rounded-md px-2 py-1 flex items-center"
+                                                        className="text-xs text-[#7c28eb] hover:text-[#6620c5] bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 rounded-md px-2 py-1 flex items-center"
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -291,7 +360,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 )}
                                                 <button
                                                     type="button"
-                                                    className="text-xs text-red-600 hover:text-red-700 bg-red-200 hover:bg-red-300 rounded-md px-2 py-1 flex items-center"
+                                                    className="text-xs text-red-600 hover:text-red-700 bg-red-100 hover:bg-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/30 rounded-md px-2 py-1 flex items-center"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         setData('cv', undefined);
@@ -308,7 +377,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         </div>
                                     ) : (
                                         <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-2 text-[#7c28eb] dark:text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V7.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 1H7a2 2 0 00-2 2v16a2 2 0 002 2z" />
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9h6M9 13h6M9 17h3" />
                                             </svg>
@@ -318,15 +387,22 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         </div>
                                     )}
                                 </div>
-                                <InputError className='mt-2' message={errors.cv} />
+                                <InputError className="text-red-500 text-sm" message={errors.cv} />
                             </div>
                         )}
 
                         <div className='grid gap-2'>
-                            <Label htmlFor='image'>{t('image')}</Label>
+                            <Label 
+                                htmlFor='image'
+                                className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                            >
+                                {t('image')}
+                            </Label>
                             <div
-                                className={`relative border-2 border-dashed rounded-lg hover:border-blue-500 transition-colors
-                                    ${isDragging ? 'border-blue-500 animate-pulse shadow-lg' : ''}
+                                className={`relative border-2 border-dashed rounded-lg transition-colors
+                                    ${isDragging 
+                                        ? 'border-[#7c28eb] animate-pulse shadow-lg' 
+                                        : 'border-gray-300 dark:border-gray-700 hover:border-[#7c28eb] dark:hover:border-purple-500'}
                                 `}
                                 onClick={() => {
                                     if (!data.image) {
@@ -383,12 +459,12 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         <img
                                             src={imagePreview}
                                             alt={t('preview')}
-                                            className="h-32 object-contain mb-2"
+                                            className="h-32 object-contain mb-2 rounded-md border border-gray-200 dark:border-gray-700"
                                         />
                                         <p className='text-sm'>{data.image?.name}</p>
                                         <button
                                             type="button"
-                                            className="mt-2 text-xs text-red-600 hover:text-red-700 bg-red-200 hover:bg-red-300 rounded-md px-2 py-1"
+                                            className="mt-2 text-xs text-red-600 hover:text-red-700 bg-red-100 hover:bg-red-200 dark:bg-red-900/20 dark:hover:bg-red-900/30 rounded-md px-2 py-1"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setData('image', undefined);
@@ -398,12 +474,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         >
                                             {t('delete_image')}
                                         </button>
-
-                                        
                                     </div>
                                 ) : (
                                     <div className='flex flex-col items-center justify-center text-gray-500 py-4'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-12 mb-2" fill="none" viewBox="0 0 21 21" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-12 mb-2 text-[#7c28eb] dark:text-purple-300" fill="none" viewBox="0 0 21 21" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                         <p className='font-medium'>{t('click_select_image')}</p>
@@ -412,27 +486,34 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     </div>
                                 )}
                             </div>
-                            <InputError className='mt-2' message={errors.image} />
+                            <InputError className="text-red-500 text-sm" message={errors.image} />
                         </div>
 
                         <div className='grid gap-2'>
-                            <Label htmlFor='description'>{t('description')}</Label>
+                            <Label 
+                                htmlFor='description'
+                                className="text-[#7c28eb] dark:text-purple-300 font-medium"
+                            >
+                                {t('description')}
+                            </Label>
                             <textarea
                                 id='description'
-                                className='mt-1 block w-full min-h-[80px] p-3 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:border-input'
+                                className='mt-1 block w-full min-h-[80px] p-3 border border-gray-200 dark:border-gray-700 rounded-md 
+                                    focus:outline-none focus:ring-2 focus:ring-[#7c28eb] dark:focus:ring-purple-500 
+                                    focus:border-[#7c28eb] dark:focus:border-purple-500'
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder={t('description')}
                                 rows={4}
                             />
-                            <InputError className='mt-2' message={errors.description} />
+                            <InputError className="text-red-500 text-sm" message={errors.description} />
                         </div>
 
                         {mustVerifyEmail && (
                             <div>
                                 {/* Mostrar estado de verificación del email */}
                                 {auth.user.email_verified_at === null ? (
-                                    <div className="flex items-center gap-2 mb-2 text-sm text-red-600">
+                                    <div className="flex items-center gap-2 mb-2 text-sm text-red-600 dark:text-red-400 p-2 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-800 rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-1.414-1.414A9 9 0 105.636 18.364l1.414 1.414A9 9 0 1018.364 5.636z" />
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 9l-6 6M9 9l6 6" />
@@ -440,7 +521,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         {t('email_not_verified')}
                                     </div>
                                 ) : (
-                                    <div className="flex items-center gap-2 mb-2 text-sm text-green-600">
+                                    <div className="flex items-center gap-2 mb-2 text-sm text-green-600 dark:text-green-400 p-2 bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-800 rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
@@ -451,9 +532,45 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         )}
 
                         <div className="flex items-center gap-4">
-                            <Button disabled={processing}>{t('save')}</Button>
+                            <Button 
+                                disabled={processing}
+                                className="text-white"
+                                style={{ 
+                                    backgroundColor: primaryColor,
+                                    transition: 'background-color 0.2s ease'
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryHoverColor;
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor = primaryColor;
+                                }}
+                            >
+                                {processing && <LoaderCircle className="h-4 w-4 mr-2 animate-spin" />}
+                                {t('save')}
+                            </Button>
+                            
+                            <Transition
+                                show={recentlySuccessful}
+                                enter="transition ease-in-out duration-300"
+                                enterFrom="opacity-0"
+                                enterTo="opacity-100"
+                                leave="transition ease-in-out duration-300"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                            >
+                                <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                                    {t('saved')}
+                                </p>
+                            </Transition>
                         </div>
                     </form>
+                    
+                    {/* Decorative element */}
+                    <div 
+                        className="h-1 w-full rounded-full opacity-80 mt-8"
+                        style={{ background: `linear-gradient(to right, ${primaryColor}, ${accentColor})` }}
+                    />
                 </div>
 
                 <DeleteUser />

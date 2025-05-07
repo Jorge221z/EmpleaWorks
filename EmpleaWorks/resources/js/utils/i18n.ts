@@ -356,6 +356,15 @@ const translations: Record<string, Record<string, string>> = {
         'page_not_found_title': 'Looks like you\'re lost',
         'page_not_found_message': 'The page you are looking for is not available!',
         'back_to_dashboard': 'Back to Dashboard',
+
+        // Delete User
+        'delete_account': 'Delete account',
+        'delete_account_resources': 'Delete your account and all of its resources',
+        'warning': 'Warning',
+        'caution_cannot_undo': 'Please proceed with caution, this cannot be undone.',
+        'confirm_delete_account': 'Are you sure you want to delete your account?',
+        'delete_account_confirmation': 'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+        'enter_password': 'Enter your password',
     },
     es: {
         // Sidebar
@@ -711,6 +720,15 @@ const translations: Record<string, Record<string, string>> = {
         'page_not_found_title': 'Parece que te has perdido',
         'page_not_found_message': '¡La página que estás buscando no está disponible!',
         'back_to_dashboard': 'Volver al Inicio',
+
+        // Delete User
+        'delete_account': 'Eliminar cuenta',
+        'delete_account_resources': 'Eliminar tu cuenta y todos sus datos',
+        'warning': 'Advertencia',
+        'caution_cannot_undo': 'Por favor, procede con precaución, esto no se puede deshacer.',
+        'confirm_delete_account': '¿Estás seguro de que deseas eliminar tu cuenta?',
+        'delete_account_confirmation': 'Una vez que se elimine tu cuenta, todos sus recursos y datos también se eliminarán permanentemente. Por favor, introduce tu contraseña para confirmar que deseas eliminar permanentemente tu cuenta.',
+        'enter_password': 'Introduce tu contraseña',
     }
 };
 
