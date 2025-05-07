@@ -10,8 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { useState, useMemo } from 'react';
-import { Offer, Company } from "@/types/types";
+import { useState } from 'react';
+import { Offer } from "@/types/types";
 import { useTranslation } from '@/utils/i18n';
 import ClipLoader from "react-spinners/ClipLoader";
 import { cn } from '@/lib/utils';
@@ -27,17 +27,21 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
     const { auth } = usePage<SharedData>().props;
 
     // ----- COLOR THEMING SYSTEM -----
-    // Constantes de color para el tema de Candidato
-    const primaryColor = '#EB7C28';   // Naranja para candidatos
-    const accentColor = '#F5A46A';    // Naranja más claro
+    // Colores principales (púrpura)
+    const primaryColor = '#7c28eb';
+    const primaryHoverColor = '#6620c5';
+    const primaryLightColor = '#9645f4';
+    
+    // Colores de acento (ámbar)
+    const accentColor = '#FDC231';
+    const accentDarkColor = '#E3B100';
+    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
-    // Clases CSS para aplicar el tema de Candidato
-    const borderColor = 'border-orange-100 dark:border-orange-600/30';
-    const bgAccentColor = 'bg-orange-50/50 dark:bg-orange-950/20';
-    const cardBgColor = 'bg-orange-50/70 dark:bg-orange-900/10';
-    const badgeBgClass = 'bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/30 dark:hover:bg-orange-900/40';
-    const badgeTextClass = 'text-orange-800 dark:text-orange-300';
+    // Clases CSS para aplicar el tema púrpura
+    const borderColor = 'border-purple-100 dark:border-purple-600/30';
+    const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
+    const cardBgColor = 'bg-white dark:bg-gray-900';
 
     // ----- FORM STATE -----
     const [agreed, setAgreed] = useState(false);
@@ -113,7 +117,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                         variant="ghost"
                         size="sm"
                         asChild
-                        className="mb-4"
+                        className="mb-4 hover:text-foreground/80"
                         style={{ color: primaryColor }}
                     >
                         <Link href={`/offers/${offer.id}`}>
@@ -122,20 +126,17 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                         </Link>
                     </Button>
 
-                    <h1 
-                        className="text-2xl font-bold mb-2"
-                        style={{ color: primaryColor }}
-                    >
+                    <h1 className="text-2xl font-bold mb-2 text-[#7c28eb] dark:text-purple-300">
                         {t('apply_for')}: {offer.name}
                     </h1>
                     <div className="flex items-center mb-4">
                         <span className="text-lg font-medium text-muted-foreground">{company.name}</span>
                         <Badge 
-                            className={cn("ml-3", badgeBgClass, badgeTextClass)}
-                            style={{
-                                backgroundColor: !badgeBgClass ? `${primaryColor}20` : undefined,
-                                color: !badgeTextClass ? primaryColor : undefined
-                            }}
+                            className={cn(
+                                "ml-3",
+                                "bg-amber-100 text-amber-800 hover:bg-amber-200", 
+                                "dark:bg-amber-900/30 dark:text-amber-300 dark:hover:bg-amber-900/40"
+                            )}
                         >
                             {offer.category}
                         </Badge>
@@ -147,17 +148,17 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                     <div className="lg:col-span-2">
                         <Card className={cn(borderColor)}>
                             <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
-                                <CardTitle style={{ color: primaryColor }}>{t('application_form')}</CardTitle>
-                                <CardDescription>
+                                <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('application_form')}</CardTitle>
+                                <CardDescription className="dark:text-gray-300">
                                     {t('complete_all_fields')}
                                 </CardDescription>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="pt-6">
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="space-y-2">
                                         <Label 
                                             htmlFor="phone" 
-                                            style={{ color: primaryColor }}
+                                            className="text-[#7c28eb] dark:text-purple-300"
                                         >
                                             {t('phone_number')}
                                         </Label>
@@ -168,7 +169,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             onChange={e => setData('phone', e.target.value)}
                                             placeholder={t('enter_phone')}
                                             required
-                                            className={cn("focus-visible:ring-[#EB7C28]")}
+                                            className="focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500"
                                         />
                                         {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                                     </div>
@@ -176,7 +177,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     <div className="space-y-2">
                                         <Label 
                                             htmlFor="email"
-                                            style={{ color: primaryColor }}
+                                            className="text-[#7c28eb] dark:text-purple-300"
                                         >
                                             {t('email')}
                                         </Label>
@@ -187,7 +188,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             onChange={e => setData('email', e.target.value)}
                                             placeholder={t('enter_email')}
                                             required
-                                            className={cn("focus-visible:ring-[#EB7C28]")}
+                                            className="focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500"
                                         />
                                         {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                                     </div>
@@ -195,7 +196,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     <div className="space-y-2">
                                         <Label 
                                             htmlFor="cl"
-                                            style={{ color: primaryColor }}
+                                            className="text-[#7c28eb] dark:text-purple-300"
                                         >
                                             {t('cover_letter')}
                                         </Label>
@@ -206,7 +207,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             placeholder={t('why_apply')}
                                             rows={5}
                                             required
-                                            className={cn("focus-visible:ring-[#EB7C28]")}
+                                            className="focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500"
                                         />
                                         {errors.cl && <p className="text-sm text-red-500">{errors.cl}</p>}
                                     </div>
@@ -219,7 +220,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             checked={acceptTerms} 
                                             onCheckedChange={(checked) => setAcceptTerms(checked === true)}
                                             required
-                                            className="data-[state=checked]:bg-[#EB7C28] data-[state=checked]:border-[#EB7C28]"
+                                            className="data-[state=checked]:bg-[#7c28eb] data-[state=checked]:border-[#7c28eb]"
                                         />
                                         <div className="grid gap-1.5 leading-none">
                                             <label 
@@ -232,8 +233,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                                 {t('data_processing_notice')} 
                                                 <Link 
                                                     href={route('terms')} 
-                                                    className="hover:underline"
-                                                    style={{ color: primaryColor }}
+                                                    className="hover:underline text-[#7c28eb] dark:text-purple-300"
                                                 >
                                                     {t('terms_and_conditions')}
                                                 </Link>
@@ -243,11 +243,14 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
 
                                     <Button
                                         type="submit"
-                                        className="w-full mt-4"
+                                        className="w-full mt-4 text-white"
                                         disabled={processing || !acceptTerms}
-                                        style={{ 
-                                            backgroundColor: primaryColor,
-                                            color: 'white'
+                                        style={{ backgroundColor: primaryColor }}
+                                        onMouseOver={(e) => {
+                                            e.currentTarget.style.backgroundColor = primaryHoverColor;
+                                        }}
+                                        onMouseOut={(e) => {
+                                            e.currentTarget.style.backgroundColor = primaryColor;
                                         }}
                                     >
                                         {processing ? t('submitting') : t('submit_application')}
@@ -261,9 +264,9 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                     <div>
                         <Card className={cn(borderColor)}>
                             <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
-                                <CardTitle style={{ color: primaryColor }}>{t('job_summary')}</CardTitle>
+                                <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('job_summary')}</CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-4">
+                            <CardContent className="space-y-4 pt-6">
                                 <div className="flex items-center">
                                     {company.logo ? (
                                         <img
@@ -274,12 +277,9 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     ) : (
                                         <div 
                                             className="size-16 rounded-md flex items-center justify-center mr-4"
-                                            style={{ backgroundColor: `${primaryColor}15` }}
+                                            style={{ backgroundColor: `${accentColor}20` }}
                                         >
-                                            <BuildingIcon 
-                                                className="size-8"
-                                                style={{ color: primaryColor }}
-                                            />
+                                            <BuildingIcon className="size-8 text-[#FDC231] dark:text-[#FFDE7A]" />
                                         </div>
                                     )}
                                     <div>
@@ -287,7 +287,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                     </div>
                                 </div>
 
-                                <Separator style={{ backgroundColor: `${primaryColor}20` }} />
+                                <Separator className="bg-purple-100 dark:bg-purple-600/30" />
 
                                 <div className="space-y-3">
                                     <div className="flex items-center">
@@ -296,8 +296,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             style={{ backgroundColor: `${primaryColor}15` }}
                                         >
                                             <BriefcaseIcon 
-                                                className="size-5" 
-                                                style={{ color: primaryColor }}
+                                                className="size-5 text-[#9645f4] dark:text-[#c79dff]"
                                             />
                                         </div>
                                         <div>
@@ -312,8 +311,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             style={{ backgroundColor: `${primaryColor}15` }}
                                         >
                                             <MapPinIcon 
-                                                className="size-5" 
-                                                style={{ color: primaryColor }}
+                                                className="size-5 text-[#9645f4] dark:text-[#c79dff]"
                                             />
                                         </div>
                                         <div>
@@ -328,8 +326,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                                             style={{ backgroundColor: `${primaryColor}15` }}
                                         >
                                             <CalendarIcon 
-                                                className="size-5" 
-                                                style={{ color: primaryColor }}
+                                                className="size-5 text-[#9645f4] dark:text-[#c79dff]"
                                             />
                                         </div>
                                         <div>

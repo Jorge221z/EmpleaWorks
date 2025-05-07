@@ -414,7 +414,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                                                                 <div className="flex items-start gap-2 text-sm">
                                                                     <MapPinIcon 
                                                                         className="size-4 mt-0.5 flex-shrink-0"
-                                                                        style={{ color: primaryLightColor }}
+                                                                        style={{ color: accentColor }}
                                                                     />
                                                                     <span>{(offer.company as any).address}</span>
                                                                 </div>
