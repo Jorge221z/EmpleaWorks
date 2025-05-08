@@ -39,27 +39,26 @@ export default function Terms() {
                                 <TabsList className="grid w-full max-w-md grid-cols-2 bg-transparent">
                                     <TabsTrigger 
                                         value="terms"
-                                        className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-[#7c28eb] data-[state=active]:shadow-sm"
+                                        className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-[#7c28eb] data-[state=active]:shadow-sm px-2 sm:px-4 text-xs sm:text-sm"
                                     >
-                                        {t('terms_and_conditions')}
+                                        <span className="hidden sm:inline">{t('terms_and_conditions')}</span>
+                                        <span className="sm:hidden">Términos</span>
                                     </TabsTrigger>
                                     <TabsTrigger 
                                         value="cookies"
-                                        className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-[#7c28eb] data-[state=active]:shadow-sm"
+                                        className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-[#7c28eb] data-[state=active]:shadow-sm px-2 sm:px-4 text-xs sm:text-sm"
                                     >
-                                        {t('cookies_policy')}
+                                        <span className="hidden sm:inline">{t('cookies_policy')}</span>
+                                        <span className="sm:hidden">Cookies</span>
                                     </TabsTrigger>
                                 </TabsList>
                             </Tabs>
                         </div>
 
-                        {/* Contenido de las pestañas */}
                         <Tabs defaultValue="terms" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                            {/* Términos y Condiciones */}
                             <TabsContent value="terms" className="p-6 md:p-8 relative">
                                 <div className="prose dark:prose-invert max-w-none relative z-10">
                                     <div className="flex flex-col md:flex-row gap-8">
-                                        {/* Tabla de contenidos - Barra lateral */}
                                         <div className="md:w-64 lg:w-72 shrink-0">
                                             <div className="md:sticky md:top-4">
                                                 <div className="p-4 rounded-lg bg-purple-50/50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-600/30 mb-6">
@@ -80,9 +79,7 @@ export default function Terms() {
                                             </div>
                                         </div>
 
-                                        {/* Contenido principal */}
                                         <div className="flex-1">
-                                            {/* Secciones de términos y condiciones */}
                                             <section id="terminos-de-uso">
                                                 <h3 className="text-xl font-semibold mb-3 text-[#7c28eb]">1. {t('terms_of_use')}</h3>
                                                 <p>{t('terms_of_use_text')}</p>
@@ -150,11 +147,9 @@ export default function Terms() {
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-purple-900/5 dark:stroke-purple-100/5 z-0" />
                             </TabsContent>
 
-                            {/* Política de Cookies */}
                             <TabsContent value="cookies" className="p-6 md:p-8 relative">
                                 <div className="prose dark:prose-invert max-w-none relative z-10">
                                     <div className="flex flex-col md:flex-row gap-8">
-                                        {/* Tabla de contenidos - Barra lateral */}
                                         <div className="md:w-64 lg:w-72 shrink-0">
                                             <div className="md:sticky md:top-4">
                                                 <div className="p-4 rounded-lg bg-purple-50/50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-600/30 mb-6">
@@ -171,9 +166,7 @@ export default function Terms() {
                                             </div>
                                         </div>
 
-                                        {/* Contenido principal */}
                                         <div className="flex-1">
-                                            {/* Secciones de la política de cookies */}
                                             <section id="introduccion">
                                                 <h3 className="text-xl font-semibold mb-3 text-[#7c28eb]">1. {t('introduction')}</h3>
                                                 <p>{t('introduction_text')}</p>
