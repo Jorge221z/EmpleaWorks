@@ -2,7 +2,7 @@ import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarGroup, useSideb
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ComponentType } from 'react';
+import { ComponentType, useEffect, useState } from 'react';
 
 interface NavMainProps {
     items: (NavItem & {
@@ -14,12 +14,35 @@ interface NavMainProps {
 export function NavMain({ items }: NavMainProps) {
     const { url } = usePage(); // usamos usePage para obtener la URL actual
     const { state } = useSidebar();
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detectar si es dispositivo móvil
+    useEffect(() => {
+        // Función para actualizar el estado según el ancho de la ventana
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768); // 768px es el breakpoint típico para móvil
+        };
+
+        // Establecer el estado inicial
+        handleResize();
+
+        // Añadir el event listener
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     // Verificar si un ítem está activo
     const isItemActive = (item: NavItem) => {
         const currentPath = url;
         return currentPath === item.href || currentPath.startsWith(`${item.href}/`);
     };
+
+    // Determinar si se debe mostrar el texto
+    const shouldShowText = isMobile || state !== 'collapsed';
 
     return (
         <SidebarMenu>
@@ -47,7 +70,7 @@ export function NavMain({ items }: NavMainProps) {
                                             )} 
                                         />
                                     )}
-                                    {state !== 'collapsed' && (
+                                    {shouldShowText && (
                                         <span 
                                             className={cn(
                                                 "sidebar-menu-button-text",
@@ -80,7 +103,7 @@ export function NavMain({ items }: NavMainProps) {
                                                 )} 
                                             />
                                         )}
-                                        {state !== 'collapsed' && (
+                                        {shouldShowText && (
                                             <span 
                                                 className={cn(
                                                     "sidebar-menu-button-text",
