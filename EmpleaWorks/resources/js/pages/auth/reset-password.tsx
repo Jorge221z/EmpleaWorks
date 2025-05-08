@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 import { cn } from '@/lib/utils';
+import { InputPassword } from '@/components/ui/input-password';
 
 interface ResetPasswordProps {
     token: string;
@@ -52,9 +53,8 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
     return (
         <AuthLayout 
-            title={<span className="text-[#7c28eb] dark:text-purple-300">{t('reset_password')}</span>} 
+            title={t('reset_password')}
             description={t('enter_new_password_below')}
-            logoClassName="text-[#7c28eb] dark:text-purple-300"
         >
             <Head title={t('reset_password')} />
 
@@ -89,27 +89,15 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
 
                     {/* Password Input */}
                     <div className="space-y-2">
-                        <Label 
-                            htmlFor="password" 
-                            className="text-[#7c28eb] dark:text-purple-300 font-medium"
-                        >
-                            {t('password')}
-                        </Label>
-                        <Input
+                        <InputPassword
                             id="password"
-                            type="password"
                             name="password"
-                            autoComplete="new-password"
                             value={data.password}
-                            className={cn(
-                                "block w-full",
-                                "border-gray-200 dark:border-gray-700",
-                                "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500",
-                                "focus-visible:border-[#7c28eb] dark:focus-visible:border-purple-500"
-                            )}
-                            autoFocus
-                            onChange={(e) => setData('password', e.target.value)}
+                            onChange={(value) => setData('password', value)}
+                            label={t('password')}
+                            className="[&_label]:text-[#7c28eb] [&_label]:dark:text-purple-300 [&_label]:font-medium [&_input]:border-gray-200 [&_input]:dark:border-gray-700 [&_input]:focus-visible:ring-[#7c28eb] [&_input]:focus-visible:border-[#7c28eb]"
                             placeholder={t('password_placeholder')}
+                            required
                         />
                         <InputError message={errors.password} className="text-red-500 text-sm" />
                     </div>
