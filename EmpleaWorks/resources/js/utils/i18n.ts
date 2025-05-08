@@ -365,6 +365,11 @@ const translations: Record<string, Record<string, string>> = {
         'confirm_delete_account': 'Are you sure you want to delete your account?',
         'delete_account_confirmation': 'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
         'enter_password': 'Enter your password',
+
+        // Current password form
+        'current_password_incorrect': 'The current password is incorrect.',
+        'password_updated': 'Password updated successfully',
+        'error_occurred': 'An error has occurred',
     },
     es: {
         // Sidebar
@@ -729,6 +734,11 @@ const translations: Record<string, Record<string, string>> = {
         'confirm_delete_account': '¿Estás seguro de que deseas eliminar tu cuenta?',
         'delete_account_confirmation': 'Una vez que se elimine tu cuenta, todos sus recursos y datos también se eliminarán permanentemente. Por favor, introduce tu contraseña para confirmar que deseas eliminar permanentemente tu cuenta.',
         'enter_password': 'Introduce tu contraseña',
+
+        // Current password form
+        'current_password_incorrect': 'La contraseña actual es incorrecta.',
+        'password_updated': 'Contraseña actualizada correctamente',
+        'error_occurred': 'Ha ocurrido un error',
     }
 };
 

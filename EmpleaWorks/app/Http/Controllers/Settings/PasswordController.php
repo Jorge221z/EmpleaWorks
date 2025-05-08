@@ -29,24 +29,21 @@ class PasswordController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        try {
-            $validated = $request->validate([
-                'current_password' => ['required', 'current_password'],
-                'password' => ['required', Password::defaults(), 'confirmed'],
-            ], [
-                'current_password.required' => __('messages.current_password_required'),
-                'current_password.current_password' => __('messages.current_password_incorrect'),
-                'password.required' => __('messages.new_password_required'),
-                'password.confirmed' => __('messages.password_confirmation_mismatch'),
-            ]);
+        // Eliminar try/catch que está causando confusión en el flujo de errores
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ], [
+            'current_password.required' => __('messages.current_password_required'),
+            'current_password.current_password' => __('messages.current_password_incorrect'),
+            'password.required' => __('messages.new_password_required'),
+            'password.confirmed' => __('messages.password_confirmation_mismatch'),
+        ]);
 
-            $request->user()->update([
-                'password' => Hash::make($validated['password']),
-            ]);
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
 
-            return back()->with('success', __('messages.password_updated_success'));
-        } catch (\Exception $e) {
-            return back()->with('error', __('messages.password_updated_error'));
-        }
+        return back()->with('success', __('messages.password_updated_success'));
     }
 }
