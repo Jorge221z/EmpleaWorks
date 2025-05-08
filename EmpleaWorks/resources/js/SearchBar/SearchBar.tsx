@@ -137,27 +137,14 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
   return (
     <div className="w-full">
       <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-2xl shadow-md overflow-hidden">
-        {/* Ícono de búsqueda */}
-        <div className="col-span-1 flex items-center justify-center border-r border-gray-100 dark:border-gray-700">
-          <svg
-            className="w-5 h-5 text-gray-500 dark:text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-        
-        {/* Campo de búsqueda - Ajustado para todos los breakpoints */}
-        <div className="col-span-5 sm:col-span-6 md:col-span-6 lg:col-span-3">
+        {/* Campo de búsqueda - Ahora ocupa el espacio de la lupa eliminada */}
+        <div className="col-span-6 sm:col-span-7 md:col-span-7 lg:col-span-4">
           <input
             type="text"
             placeholder={t('search_placeholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full h-full px-3 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-sm text-gray-900 dark:text-white"
+            className="w-full h-full px-4 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-sm text-gray-900 dark:text-white"
           />
         </div>
         
