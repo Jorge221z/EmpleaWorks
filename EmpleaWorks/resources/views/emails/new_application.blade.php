@@ -69,12 +69,6 @@
                                 </tr>
                             </table>
                         </div>
-                        <p>{{ __('messages.review_candidate_profile') }}</p>
-                        <!-- Call-to-Action -->
-                        <p style="margin-top: 30px; text-align: center;">
-                            <a href="#"
-                                style="background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">{{ __('messages.view_candidate_profile') }}</a>
-                        </p>
                         <p style="margin-top: 30px;">{{ __('messages.regards') }},<br>
                             {{ __('messages.emplea_works_team') }}</p>
                     </div>
