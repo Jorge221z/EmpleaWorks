@@ -167,6 +167,22 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                       <p className="font-medium">{offer.degree || t('not_specified')}</p>
                     </div>
                   </div>
+                  
+                  <div className="flex items-center md:col-span-2">
+                    <div className="size-9 flex items-center justify-center rounded-full mr-3" 
+                      style={{ backgroundColor: `${primaryColor}15` }}>
+                      <MailIcon className="size-5 text-[#9645f4] dark:text-[#c79dff]" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">{t('contact_email')}</p>
+                      <a 
+                        href={`mailto:${offer.email}`} 
+                        className="font-medium hover:underline text-[#7c28eb] dark:text-purple-300"
+                      >
+                        {offer.email}
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
               <CardFooter>
