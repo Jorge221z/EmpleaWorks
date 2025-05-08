@@ -34,17 +34,13 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
     
     // Colores de acento (ámbar)
     const accentColor = '#FDC231';
-    const accentDarkColor = '#E3B100';
-    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
     // Clases CSS para aplicar el tema púrpura
     const borderColor = 'border-purple-100 dark:border-purple-600/30';
     const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
-    const cardBgColor = 'bg-white dark:bg-gray-900';
 
     // ----- FORM STATE -----
-    const [agreed, setAgreed] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [showSpinner, setShowSpinner] = useState(false);
 
@@ -110,7 +106,8 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                 </div>
             )}
             
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            {/* Aplicación del fondo blanco hueso en tema claro */}
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 {/* Cabecera de la página */}
                 <div className="mb-6">
                     <Button

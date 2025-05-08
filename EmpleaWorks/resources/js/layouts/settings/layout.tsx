@@ -46,7 +46,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     };
 
     return (
-        <div className="px-4 py-6">
+        <div className="px-4 py-6 bg-[#FEFBF2] dark:bg-transparent rounded-xl">
             <div className="text-[#7c28eb] dark:text-purple-300 mb-6">
                 <Heading 
                     title={t('settings')} 

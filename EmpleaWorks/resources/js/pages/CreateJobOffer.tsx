@@ -42,14 +42,11 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
     
     // Colores de acento (ámbar)
     const accentColor = '#FDC231';
-    const accentDarkColor = '#E3B100';
-    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
     // Clases CSS para aplicar el tema púrpura con acentos ámbar
     const borderColor = 'border-purple-100 dark:border-purple-600/30';
     const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
-    const cardBgColor = 'bg-white dark:bg-gray-900';
 
     // ----- CONFIGURATION -----
     const breadcrumbs: BreadcrumbItem[] = [
@@ -108,7 +105,9 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                 }}
             />
             <Head title={t('create_job_listing')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            
+            {/* Aplicación del fondo blanco hueso en tema claro */}
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 <div className="px-2">
                     <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
                         {t('create_new_job')}

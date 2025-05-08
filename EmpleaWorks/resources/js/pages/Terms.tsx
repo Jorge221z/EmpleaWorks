@@ -24,9 +24,11 @@ export default function Terms() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={activeTab === "terms" ? t('terms_title') : t('cookies_title')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            
+            {/* Aplicación del fondo blanco hueso en tema claro */}
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 <div className="px-2">
-                    <h2 className="text-3xl font-semibold mb-2 text-[#7c28eb]">
+                    <h2 className="text-3xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
                         {activeTab === "terms" ? t('terms_title') : t('cookies_title')}
                     </h2>
                     <p className="text-muted-foreground mb-6">

@@ -36,10 +36,8 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
     // Colores de acento (ámbar)
     const accentColor = '#FDC231';
     const accentDarkColor = '#E3B100';
-    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
-    // Clases CSS para aplicar el tema púrpura con acentos ámbar
     const borderColor = 'border-purple-100 dark:border-purple-600/30';
     const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
     const cardBgColor = 'bg-white dark:bg-gray-900';
@@ -81,7 +79,8 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                 }}
             />
             <Head title={t('candidate_dashboard_title')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 {/* Título del Dashboard */}
                 <div className="px-2">
                     <h2 

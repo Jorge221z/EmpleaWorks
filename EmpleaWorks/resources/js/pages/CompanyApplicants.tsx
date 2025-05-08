@@ -66,7 +66,8 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('applicants_by_job')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 {/* Título de la página */}
                 <div className="px-2">
                     <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">{t('applicants_by_job')}</h2>
