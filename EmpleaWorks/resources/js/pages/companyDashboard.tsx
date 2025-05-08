@@ -72,7 +72,8 @@ export default function CompanyDashboard({ companyOffers = [], totalApplicants =
                 }}
             />
             <Head title={t('company_dashboard')} />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 {/* Título del Dashboard */}
                 <div className="px-2">
                     <h2 

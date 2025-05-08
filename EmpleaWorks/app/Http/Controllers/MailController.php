@@ -113,7 +113,8 @@ class MailController extends Controller
             // Preparamos los datos del mensaje
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
             $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
-            $toAddress = "{$data['company']->name} <{$data['company']->email}>";
+            $toAddress = "{$data['company']->name} <{$data['offer']->email}>";
+            
             $subject = __("messages.new_application_from", [
                 'name' => $data['candidate']->name,
                 'offer' => $data['offer']->name,
@@ -164,7 +165,6 @@ class MailController extends Controller
             // Si hay un CV para adjuntar, lo añadimos como adjunto
             if (!empty($attachmentParams['attachment'])) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
-            
             }
 
             // Enviamos el mensaje

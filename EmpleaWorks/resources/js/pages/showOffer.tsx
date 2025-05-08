@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils';
 export default function ShowOffer({ offer }: ShowOfferProps) {
   // ----- HOOKS & STATE -----
   const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
-  const { auth } = usePage<SharedData>().props;
   const { t } = useTranslation();
   const { company } = offer;
 
@@ -27,9 +26,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
   
   // Colores de acento (ámbar)
   const accentColor = '#FDC231';
-  const accentDarkColor = '#E3B100';
-  const accentLightColor = '#FFDE7A';
-
+  
   // Clases para el tema
   const borderColor = 'border-purple-100 dark:border-purple-600/30';
   const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
@@ -73,7 +70,9 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
         }}
       />
       <Head title={`${offer.name} - EmpleaWorks`} />
-      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+      
+      {/* Contenedor principal con fondo color hueso claro en tema claro */}
+      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
         <div className="mb-6">
           <Button 
             variant="ghost" 
