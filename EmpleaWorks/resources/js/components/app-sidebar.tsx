@@ -118,9 +118,9 @@ export function AppSidebar() {
         <Sidebar 
             collapsible="icon" 
             variant="inset"
-            className="border-r border-purple-100 dark:border-purple-600/30 bg-gradient-to-b from-white to-purple-50/50 dark:from-gray-900 dark:to-purple-950/40"
+            className="border-r border-purple-100 dark:border-purple-600/30 bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm"
         >
-            <SidebarHeader className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm">
+            <SidebarHeader className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm pb-4">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild className="group/logo">
@@ -136,12 +136,12 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-
-            <SidebarContent className="mt-6">
+            
+            <SidebarContent className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm pt-4 pb-4">
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm">
+            <SidebarFooter className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm pt-4">
                 <SidebarMenu className="mt-auto">
                     <TermsAndConditions />
                     <LanguageSelector />
