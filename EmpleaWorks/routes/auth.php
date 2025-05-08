@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/offers/{offer}', [DashboardController::class, 'showOffer'])->name('offer.show');
 
     // Ruta para aplicar a una oferta
-    Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->name('offers.apply');
+    // Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->name('offers.apply');
 
     // Rutas para EMPRESAS - protegida por el middleware de rol de empresa
     Route::get('/company/dashboard', [CompanyController::class, 'dashboard'])
