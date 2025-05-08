@@ -33,17 +33,11 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
     // Colores de acento (ámbar)
     const accentColor = '#FDC231';
     const accentDarkColor = '#E3B100';
-    const accentLightColor = '#FFDE7A';
 
     // ----- TAILWIND CLASS MODIFIERS -----
-    // Clases CSS para el tema púrpura con acentos ámbar
     const borderColor = 'border-purple-100 dark:border-purple-600/30';
-    const bgAccentColor = 'bg-purple-50/50 dark:bg-purple-950/20';
-    const cardBgColor = 'bg-white dark:bg-gray-900';
-    const cardHoverBgColor = 'hover:bg-purple-50/70 dark:hover:bg-purple-900/15';
     
     // ----- DATA MANAGEMENT -----
-    // Estado y procesamiento de datos para las ofertas
     const [filteredOffers, setFilteredOffers] = useState<Offer[]>(offers);
     
     const availableCategories = useMemo(() => {
@@ -57,7 +51,6 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
     }, [contractTypes, offers]);
 
     // ----- EVENT HANDLERS -----
-    // Funciones para manejar interacciones del usuario
     const navigateToLogin = () => {
         window.location.href = route('login');
     };
@@ -71,7 +64,6 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
     }, []);
 
     // ----- SIDE EFFECTS -----
-    // Efectos para notificaciones y otros comportamientos
     useEffect(() => {
         if (flash && flash.success) {
             toast.success(flash.success);
@@ -109,10 +101,12 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
             />
             <Head title={t('dashboard')} />
             
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <div 
+                className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent"
+            >
                 {/* Banner de bienvenida para usuarios no autenticados */}
                 {!isAuthenticated && (
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative bg-card p-6 overflow-hidden rounded-xl border mb-2">
+                    <div className="relative overflow-hidden rounded-xl border p-6 bg-white dark:bg-card border-purple-100/50 dark:border-sidebar-border mb-2">
                         <div className="flex flex-col gap-2 relative z-10">
                             <h2 className="text-xl font-semibold">{t('welcome_title')}</h2>
                             <p className="text-muted-foreground">{t('welcome_subtitle')}</p>
@@ -179,8 +173,8 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                 className={cn(
                                     "relative overflow-hidden rounded-xl border p-4 flex flex-col transition-colors duration-200",
                                     borderColor,
-                                    cardBgColor,
-                                    cardHoverBgColor
+                                    "bg-white dark:bg-gray-900",
+                                    "hover:bg-purple-50/70 dark:hover:bg-purple-900/15"
                                 )}
                             >
                                 {/* Elemento decorativo ámbar */}
@@ -278,7 +272,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                             <div className={cn(
                                 "relative aspect-video overflow-hidden rounded-xl border",
                                 borderColor,
-                                "bg-purple-50/30 dark:bg-purple-900/10"
+                                "bg-white/80 dark:bg-purple-900/10"
                             )}>
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                                 <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
@@ -288,14 +282,14 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                             <div className={cn(
                                 "relative aspect-video overflow-hidden rounded-xl border",
                                 borderColor,
-                                "bg-purple-50/30 dark:bg-purple-900/10"
+                                "bg-white/80 dark:bg-purple-900/10"
                             )}>
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                             </div>
                             <div className={cn(
                                 "relative aspect-video overflow-hidden rounded-xl border",
                                 borderColor,
-                                "bg-purple-50/30 dark:bg-purple-900/10"
+                                "bg-white/80 dark:bg-purple-900/10"
                             )}>
                                 <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
                             </div>
