@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
 import {
     Popover,
     PopoverContent,
@@ -26,6 +25,7 @@ import { FormEvent, useState, useEffect } from 'react';
 import { Offer } from '@/types/types';
 import toast, { Toaster } from 'react-hot-toast';
 import { useTranslation } from '@/utils/i18n';
+import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 
 interface EditJobOfferProps {
@@ -299,8 +299,8 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
                                 {/* Closing Date */}
                                 <div className="space-y-2">
-                                    <Label 
-                                        htmlFor="closing_date" 
+                                    <Label
+                                        htmlFor="closing_date"
                                         className="text-[#7c28eb] dark:text-purple-300"
                                     >
                                         {t('application_deadline')}
@@ -319,7 +319,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                                                     "focus-visible:ring-[#7c28eb] dark:focus-visible:ring-purple-500"
                                                 )}
                                             >
-                                                <CalendarIcon 
+                                                <CalendarIcon
                                                     className="mr-2 h-4 w-4"
                                                     style={{ color: accentColor }}
                                                 />
