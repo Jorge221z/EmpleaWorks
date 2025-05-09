@@ -346,7 +346,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                             </div>
 
                             {/* Submit Button */}
-                            <div className="flex justify-end gap-2 pt-4">
+                            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-4">
                                 <Button
                                     type="button"
                                     variant="outline"
@@ -355,7 +355,8 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                                         "text-[#7c28eb] dark:text-white",
                                         "hover:bg-purple-50 dark:hover:bg-purple-900/30",
                                         "hover:border-[#7c28eb] dark:hover:border-purple-500",
-                                        "hover:text-[#6620c5] dark:hover:text-white"
+                                        "hover:text-[#6620c5] dark:hover:text-white",
+                                        "w-full sm:w-auto mt-2 sm:mt-0"
                                     )}
                                     onClick={() => window.history.back()}
                                 >
@@ -364,7 +365,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                                 <Button 
                                     type="submit" 
                                     disabled={processing}
-                                    className="text-white"
+                                    className="text-white w-full sm:w-auto"
                                     style={{ backgroundColor: primaryColor }}
                                     onMouseOver={(e) => {
                                         e.currentTarget.style.backgroundColor = primaryHoverColor;
