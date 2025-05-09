@@ -38,8 +38,17 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
     const borderColor = 'border-purple-100 dark:border-purple-600/30';
     
     // ----- DATA MANAGEMENT -----
-    const [filteredOffers, setFilteredOffers] = useState<Offer[]>(offers);
-    
+    const sortedOffers = useMemo(() => {
+        // Ordenar las ofertas por fecha de creación (de más reciente a más antigua)
+        return [...offers].sort((a, b) => {
+            const dateA = new Date(a.created_at);
+            const dateB = new Date(b.created_at);
+            return dateB.getTime() - dateA.getTime(); // Orden descendente (más reciente primero)
+        });
+    }, [offers]);
+
+    const [filteredOffers, setFilteredOffers] = useState<Offer[]>(sortedOffers);
+
     const availableCategories = useMemo(() => {
         if (categories.length > 0) return categories;
         return [...new Set(offers.map(offer => offer.category).filter(Boolean))];
@@ -72,6 +81,10 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
             toast.error(flash.error);
         }
     }, [flash]);
+
+    useEffect(() => {
+        setFilteredOffers(sortedOffers);
+    }, [sortedOffers]);
 
     // ----- CONFIGURATION -----
     const breadcrumbs: BreadcrumbItem[] = [
@@ -154,7 +167,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                         borderColor
                     )}>
                         <SearchBar
-                            data={offers}
+                            data={sortedOffers}
                             onFilteredResults={handleFilteredResults}
                             categories={availableCategories}
                             contractTypes={availableContractTypes}
