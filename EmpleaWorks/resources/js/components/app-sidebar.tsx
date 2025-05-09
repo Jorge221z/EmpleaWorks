@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/utils/i18n';
 import AppLogo from './app-logo';
+import { useEffect, useState } from 'react';
 
 interface ExtendedNavItem extends NavItem {
     disabled?: boolean;
@@ -24,6 +25,28 @@ export function AppSidebar() {
     const isAuthenticated = !!auth.user;
     const isCompany = isAuthenticated && auth.user.role_id === 2;
     const { state } = useSidebar();
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detectar si es dispositivo móvil
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768); // 768px es el breakpoint típico para móvil
+        };
+
+        // Establecer el estado inicial
+        handleResize();
+
+        // Añadir el event listener
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    // Determinar si se debe mostrar el texto del título
+    const shouldShowTitle = isMobile || state !== 'collapsed';
 
     const mainNavItems: ExtendedNavItem[] = [
         {
@@ -126,7 +149,7 @@ export function AppSidebar() {
                         <SidebarMenuButton size="lg" asChild className="group/logo">
                             <Link href="/dashboard" prefetch className="flex items-center gap-2 justify-center">
                                 <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
-                                {state !== 'collapsed' && (
+                                {shouldShowTitle && (
                                     <span className="text-xl font-bold tracking-tight group-hover/logo:text-purple-600 dark:group-hover/logo:text-purple-300 transition-colors -ml-1">
                                         EmpleaWorks
                                     </span>
