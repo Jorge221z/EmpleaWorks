@@ -16,6 +16,21 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { motion } from "framer-motion"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
+import L from "leaflet"
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png"
+import markerIcon from "leaflet/dist/images/marker-icon.png"
+import markerShadow from "leaflet/dist/images/marker-shadow.png"
+
+// Crear el icono de Leaflet fuera del componente para evitar recrearlo en cada render
+const leafletIcon = new L.Icon({
+    iconUrl: markerIcon,
+    iconRetinaUrl: markerIcon2x,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+})
 
 export default function Contact() {
     const { t } = useTranslation()
@@ -166,18 +181,6 @@ export default function Contact() {
         }
     }, [])
 
-    // Fix for default marker icon in leaflet
-    useEffect(() => {
-        import("leaflet").then(L => {
-            delete (L.Icon.Default.prototype as any)._getIconUrl
-            L.Icon.Default.mergeOptions({
-                iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-                iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-                shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-            })
-        })
-    }, [])
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t("contact_us")} />
@@ -265,7 +268,7 @@ export default function Contact() {
                                     <TileLayer
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     />
-                                    <Marker position={[38.6136, -1.1147]}>
+                                    <Marker position={[38.6136, -1.1147]} icon={leafletIcon}>
                                         <Popup>
                                             Yecla, Murcia, España
                                         </Popup>
