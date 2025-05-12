@@ -235,7 +235,7 @@ class CompanyController extends Controller
         $offers = Offer::whereDate('closing_date', '<', $thresholdDate)->get();
 
         foreach ($offers as $offer) {
-            $msg = "Borrando oferta ID: {$offer->id}, título: {$offer->title}";
+            $msg = "Borrando oferta ID: {$offer->id}, título: {$offer->name}";
             Log::info($msg);
             if ($output) {
                 $output->info($msg);
