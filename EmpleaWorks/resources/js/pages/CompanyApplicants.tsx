@@ -77,8 +77,15 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                 {jobsWithApplicants.length > 0 ? (
                     <div className="grid gap-8">
                         {jobsWithApplicants.map((job) => (
-                            <Card key={job.id} className={cn("overflow-hidden", borderColor)}>
-                                <CardHeader className={cn(bgAccentColor)}>
+                            <Card key={job.id} className={cn(
+                                "overflow-hidden", 
+                                borderColor,
+                                "bg-white dark:bg-gray-900/90"
+                            )}>
+                                <CardHeader className={cn(
+                                    bgAccentColor,
+                                    "px-6 py-4"
+                                )}>
                                     <div className="flex flex-wrap items-start justify-between gap-2">
                                         <div>
                                             <CardTitle className="text-xl flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
@@ -215,7 +222,7 @@ export default function CompanyApplicants({ jobsWithApplicants = [] }: CompanyAp
                     <div className={cn(
                         "relative p-8 overflow-hidden rounded-xl border text-center my-6",
                         borderColor,
-                        cardBgColor
+                        "bg-white dark:bg-gray-900/90"
                     )}>
                         <div className="flex flex-col items-center gap-2 relative z-10">
                             <UsersIcon 

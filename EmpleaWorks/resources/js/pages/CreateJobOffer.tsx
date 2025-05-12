@@ -106,7 +106,6 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
             />
             <Head title={t('create_job_listing')} />
             
-            {/* Aplicación del fondo blanco hueso en tema claro */}
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 <div className="px-2">
                     <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
@@ -115,8 +114,14 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                     <p className="text-muted-foreground">{t('fill_job_details')}</p>
                 </div>
 
-                <Card className={cn(borderColor)}>
-                    <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+                <Card className={cn(
+                    borderColor,
+                    "bg-white dark:bg-gray-900/90"
+                )}>
+                    <CardHeader className={cn(
+                        bgAccentColor, 
+                        "px-6 py-4"
+                    )}>
                         <CardTitle className="text-[#7c28eb] dark:text-purple-300">
                             {t('job_information')}
                         </CardTitle>
