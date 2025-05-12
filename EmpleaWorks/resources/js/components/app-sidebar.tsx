@@ -356,9 +356,9 @@ export function AppSidebar() {
 
                 <SidebarFooter className="bg-transparent pt-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu className="mt-auto">
+                        <LanguageSelector />
                         <TermsAndConditions />
                         <ContactLink />
-                        <LanguageSelector />
                     </SidebarMenu>
                     <NavUser />
                 </SidebarFooter>
