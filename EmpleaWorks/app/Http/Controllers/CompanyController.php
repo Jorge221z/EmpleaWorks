@@ -6,6 +6,7 @@ use App\Models\Offer;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class CompanyController extends Controller
@@ -223,14 +224,25 @@ class CompanyController extends Controller
     /**
      * Delete job offers that have been closed for more than 10 days.
      *
+     * @param  mixed  $output
      * @return int Number of deleted offers
      */
-    public function deleteOldClosedOffers()
+    public function deleteOldClosedOffers($output = null)
     {
-        // Ofertas cuya fecha de cierre fue hace más de 10 días
         $thresholdDate = Carbon::now()->subDays(10)->startOfDay();
 
-        // Buscar y eliminar ofertas cerradas hace más de 10 días
+        // Recuperar las ofertas a borrar
+        $offers = Offer::whereDate('closing_date', '<', $thresholdDate)->get();
+
+        foreach ($offers as $offer) {
+            $msg = "Borrando oferta ID: {$offer->id}, título: {$offer->title}";
+            Log::info($msg);
+            if ($output) {
+                $output->info($msg);
+            }
+        }
+
+        // Borrar las ofertas
         $deleted = Offer::whereDate('closing_date', '<', $thresholdDate)->delete();
 
         return $deleted;

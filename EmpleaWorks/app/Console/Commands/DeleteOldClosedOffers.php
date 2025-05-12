@@ -14,7 +14,7 @@ class DeleteOldClosedOffers extends Command
     public function handle()
     {
         $controller = new CompanyController();
-        $deleted = $controller->deleteOldClosedOffers();
+        $deleted = $controller->deleteOldClosedOffers($this);
         $this->info("Deleted {$deleted} old closed offers.");
         return 0;
     }
