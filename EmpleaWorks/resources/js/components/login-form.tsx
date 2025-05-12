@@ -144,7 +144,7 @@ export function LoginForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/images/login-background.png"
+              src="/images/login-background.webp"
               alt="Login background"
               className="absolute inset-0 h-full w-full object-cover"
             />
