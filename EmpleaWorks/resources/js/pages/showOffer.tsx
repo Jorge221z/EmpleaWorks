@@ -71,7 +71,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
       />
       <Head title={`${offer.name} - EmpleaWorks`} />
       
-      {/* Contenedor principal con fondo color hueso claro en tema claro */}
+      {/* Contenedor principal */}
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
         <div className="mb-6">
           <Button 
@@ -108,8 +108,14 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <Card className={cn(borderColor)}>
-              <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+            <Card className={cn(
+              borderColor,
+              "bg-white dark:bg-gray-900/90"
+            )}>
+              <CardHeader className={cn(
+                bgAccentColor, 
+                "px-6 py-4"
+              )}>
                 <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('job_description')}</CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
@@ -117,8 +123,14 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
               </CardContent>
             </Card>
             
-            <Card className={cn(borderColor)}>
-              <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+            <Card className={cn(
+              borderColor,
+              "bg-white dark:bg-gray-900/90"
+            )}>
+              <CardHeader className={cn(
+                bgAccentColor, 
+                "px-6 py-4"
+              )}>
                 <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('job_details')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 pt-6">
@@ -205,8 +217,14 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
           </div>
           
           <div>
-            <Card className={cn(borderColor)}>
-              <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+            <Card className={cn(
+              borderColor,
+              "bg-white dark:bg-gray-900/90"
+            )}>
+              <CardHeader className={cn(
+                bgAccentColor, 
+                "px-6 py-4"
+              )}>
                 <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('about_company')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 pt-6">

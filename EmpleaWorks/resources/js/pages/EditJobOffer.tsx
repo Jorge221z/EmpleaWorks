@@ -140,8 +140,14 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                     <p className="text-muted-foreground">{t('update_job_details')}</p>
                 </div>
                 
-                <Card className={cn(borderColor)}>
-                    <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+                <Card className={cn(
+                    borderColor,
+                    "bg-white dark:bg-gray-900/90"
+                )}>
+                    <CardHeader className={cn(
+                        bgAccentColor, 
+                        "px-6 py-4"
+                    )}>
                         <CardTitle className="text-[#7c28eb] dark:text-purple-300">
                             {t('job_information')}
                         </CardTitle>

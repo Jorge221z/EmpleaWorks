@@ -106,7 +106,6 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                 </div>
             )}
             
-            {/* Aplicación del fondo blanco hueso en tema claro */}
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent">
                 {/* Cabecera de la página */}
                 <div className="mb-6">
@@ -143,8 +142,14 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Formulario de Aplicación */}
                     <div className="lg:col-span-2">
-                        <Card className={cn(borderColor)}>
-                            <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+                        <Card className={cn(
+                            borderColor,
+                            "bg-white dark:bg-gray-900/90"
+                        )}>
+                            <CardHeader className={cn(
+                                bgAccentColor, 
+                                "px-6 py-4"
+                            )}>
                                 <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('application_form')}</CardTitle>
                                 <CardDescription className="dark:text-gray-300">
                                     {t('complete_all_fields')}
@@ -259,8 +264,14 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
 
                     {/* Resumen del Trabajo */}
                     <div>
-                        <Card className={cn(borderColor)}>
-                            <CardHeader className={cn(bgAccentColor, "rounded-t-xl")}>
+                        <Card className={cn(
+                            borderColor,
+                            "bg-white dark:bg-gray-900/90"
+                        )}>
+                            <CardHeader className={cn(
+                                bgAccentColor, 
+                                "px-6 py-4"
+                            )}>
                                 <CardTitle className="text-[#7c28eb] dark:text-purple-300">{t('job_summary')}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4 pt-6">
