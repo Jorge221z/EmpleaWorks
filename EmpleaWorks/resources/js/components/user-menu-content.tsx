@@ -1,6 +1,6 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Link } from "@inertiajs/react";
-import { LogOut, Settings, User, KeyRound, SunMoon } from "lucide-react";
+import { LogOut, Settings, User, KeyRound, Palette } from "lucide-react";
 import { useTranslation } from "@/utils/i18n";
 
 interface UserMenuContentProps {
@@ -79,7 +79,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     className="focus:bg-purple-50 dark:focus:bg-purple-900/20 focus:text-[#7c28eb] dark:focus:text-purple-300"
                 >
                     <Link href={route('appearance')} className="flex items-center w-full focus:outline-none">
-                        <SunMoon className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
+                        <Palette className="mr-2 size-4 text-[#9645f4] dark:text-[#c79dff] group-hover:text-[#7c28eb]" />
                         <span>{t('appearance')}</span>
                     </Link>
                 </DropdownMenuItem>
