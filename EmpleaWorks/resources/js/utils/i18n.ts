@@ -35,7 +35,7 @@ const translations: Record<string, Record<string, string>> = {
         'your_applications': 'Your Applications',
         'jobs_applied_to': 'Jobs you\'ve applied to',
         'closed_in': 'Closed in',
-        'closed': 'Closed',
+        'closed': 'Closed', // Estado de oferta de empleo
         'days_remaining': '{days} day',
         'days_remaining_plural': '{days} days',
         'company_info': 'Company Info',
@@ -370,6 +370,39 @@ const translations: Record<string, Record<string, string>> = {
         'current_password_incorrect': 'The current password is incorrect.',
         'password_updated': 'Password updated successfully',
         'error_occurred': 'An error has occurred',
+
+        // Contact page
+        'contact_us': 'Contact Us',
+        'contact_subtitle': "We're here to help. Fill out the form below and we'll get back to you as soon as possible.",
+        'contact_info': 'Contact Information',
+        'phone': 'Phone',
+        'address': 'Address',
+        'hours': 'Hours',
+        'monday_friday': 'Monday - Friday',
+        'weekend': 'Weekend',
+        'closed_hours': 'Closed', // Horario (nuevo nombre de clave)
+        'map_placeholder': 'Interactive map would be displayed here',
+        'contact_form': 'Contact Form',
+        'inquiry_type': 'Inquiry Type',
+        'select_inquiry_type': 'Select inquiry type',
+        'general_inquiry': 'General Inquiry',
+        'technical_support': 'Technical Support',
+        'billing_question': 'Billing Question',
+        'partnership': 'Partnership',
+        'other': 'Other',
+        'your_name': 'Your name',
+        'your_email': 'Your email',
+        'subject': 'Subject',
+        'message_subject': 'Message subject',
+        'message': 'Message',
+        'your_message': 'Your message',
+        'message_sent': 'Message sent!',
+        'message_sent_description': "Thank you for contacting us. We'll get back to you as soon as possible.",
+        'error': 'Error',
+        'error_description': 'There was an error sending your message. Please try again later.',
+        'sending': 'Sending...',
+        'send_message': 'Send Message',
+        'privacy_notice': 'By submitting this form, you agree to our Terms and Conditions and Privacy Policy.',
     },
     es: {
         // Sidebar
@@ -403,7 +436,7 @@ const translations: Record<string, Record<string, string>> = {
         'your_applications': 'Tus Solicitudes',
         'jobs_applied_to': 'Empleos a los que has aplicado',
         'closed_in': 'Cierra en',
-        'closed': 'Cerrado',
+        'closed': 'Cerrado', // Estado de oferta de empleo
         'days_remaining': '{days} día',
         'days_remaining_plural': '{days} días',
         'company_info': 'Info de Empresa',
@@ -739,8 +772,46 @@ const translations: Record<string, Record<string, string>> = {
         'current_password_incorrect': 'La contraseña actual es incorrecta.',
         'password_updated': 'Contraseña actualizada correctamente',
         'error_occurred': 'Ha ocurrido un error',
+
+        // Página de contacto
+        'contact_us': 'Contáctanos',
+        'contact_subtitle': 'Estamos aquí para ayudarte. Completa el formulario y te responderemos lo antes posible.',
+        'contact_info': 'Información de Contacto',
+        'phone': 'Teléfono',
+        'address': 'Dirección',
+        'hours': 'Horario',
+        'monday_friday': 'Lunes - Viernes',
+        'weekend': 'Fin de semana',
+        'closed_hours': 'Cerrado', // Horario (nuevo nombre de clave)
+        'map_placeholder': 'Aquí se mostraría un mapa interactivo',
+        'contact_form': 'Formulario de Contacto',
+        'inquiry_type': 'Tipo de consulta',
+        'select_inquiry_type': 'Selecciona el tipo de consulta',
+        'general_inquiry': 'Consulta general',
+        'technical_support': 'Soporte técnico',
+        'billing_question': 'Consulta de facturación',
+        'partnership': 'Colaboración',
+        'other': 'Otro',
+        'your_name': 'Tu nombre',
+        'your_email': 'Tu correo electrónico',
+        'subject': 'Asunto',
+        'message_subject': 'Asunto del mensaje',
+        'message': 'Mensaje',
+        'your_message': 'Tu mensaje',
+        'message_sent': '¡Mensaje enviado!',
+        'message_sent_description': 'Gracias por contactarnos. Te responderemos lo antes posible.',
+        'error': 'Error',
+        'error_description': 'Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.',
+        'sending': 'Enviando...',
+        'send_message': 'Enviar mensaje',
+        'privacy_notice': 'Al enviar este formulario, aceptas nuestros Términos y Condiciones y la Política de Privacidad.',
     }
 };
+
+// Helper to escape RegExp special characters
+function escapeRegExp(string: string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 export function useTranslation() {
     const { locale } = usePage<SharedData>().props;
@@ -753,7 +824,10 @@ export function useTranslation() {
         // Si hay parámetros, reemplazarlos en el texto
         if (params) {
             Object.entries(params).forEach(([paramKey, value]) => {
-                text = text.replace(new RegExp(`{${paramKey}}`, 'g'), String(value));
+                text = text.replace(
+                    new RegExp(escapeRegExp(`{${paramKey}}`), 'g'),
+                    String(value)
+                );
             });
         }
         

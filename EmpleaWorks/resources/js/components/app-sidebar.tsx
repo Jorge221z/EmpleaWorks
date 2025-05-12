@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import type { NavItem, SharedData } from "@/types"
 import { Link, usePage } from "@inertiajs/react"
-import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe } from "lucide-react"
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
@@ -141,6 +141,26 @@ export function AppSidebar() {
                             {t("terms_and_conditions")}
                         </span>
                         <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/terms:w-full"></span>
+                    </Link>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+        )
+    }
+
+    // Componente de Contacto
+    const ContactLink = () => {
+        return (
+            <SidebarMenuItem>
+                <SidebarMenuButton
+                    asChild
+                    className="group/contact relative overflow-hidden transition-all duration-300 hover:translate-x-1"
+                >
+                    <Link href={route("contact")} className="flex items-center w-full" preserveState>
+                        <MessageSquare className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200" />
+                        <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200">
+                            {t("contact_us")}
+                        </span>
+                        <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/contact:w-full"></span>
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
@@ -337,6 +357,7 @@ export function AppSidebar() {
                 <SidebarFooter className="bg-transparent pt-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu className="mt-auto">
                         <TermsAndConditions />
+                        <ContactLink />
                         <LanguageSelector />
                     </SidebarMenu>
                     <NavUser />
