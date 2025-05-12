@@ -18,7 +18,7 @@
                     <div
                         style="background-color: #3730A3; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
                         <div style="background: #fff; border-radius: 6px; padding: 10px 0; margin-bottom: 10px; text-align: center;">
-                            <img src="https://emplea.works/images/logo.png" alt="EmpleaWorks Logo" style="height: 100px; display: inline-block;">
+                            <img src="http://emplea.works/images/logo.webp" alt="EmpleaWorks Logo" style="height: 100px; display: inline-block;">
                         </div>
                         <h1 style="font-size: 28px; margin: 0;">{{ __('messages.reset_password_email_title') }}</h1>
                     </div>
