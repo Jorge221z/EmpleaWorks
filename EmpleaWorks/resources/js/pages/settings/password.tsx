@@ -3,9 +3,10 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { FormEventHandler, useRef, useState } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import { useTranslation } from '@/utils/i18n';
 import { LoaderCircle } from 'lucide-react';
+import toast, { Toaster } from 'react-hot-toast';
 
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
@@ -35,18 +36,7 @@ export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
-    // Manejar mensajes de estado
-    const [updateStatus, setUpdateStatus] = useState<{
-        success: boolean;
-        error: boolean;
-        message: string;
-    }>({
-        success: false,
-        error: false,
-        message: ''
-    });
-
-    const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
+    const { data, setData, errors, put, reset, processing } = useForm({
         current_password: '',
         password: '',
         password_confirmation: '',
@@ -54,39 +44,23 @@ export default function Password() {
 
     const updatePassword: FormEventHandler = (e) => {
         e.preventDefault();
-        // Resetear estado al iniciar
-        setUpdateStatus({ success: false, error: false, message: '' });
 
         put(route('password.update'), {
             preserveScroll: true,
             onSuccess: (page) => {
                 // Verificar si hay errores en la respuesta recibida del servidor
-                // en lugar de usar el estado local de errores
                 const responseErrors = page.props.errors || {};
                 
                 if (Object.keys(responseErrors).length > 0) {
-                    // Si hay errores en la respuesta, no mostrar mensaje de éxito
-                    // Los errores serán manejados por onError o se mostrarán automáticamente
+                    // Los errores serán manejados por onError
                     return;
                 }
                 
                 // Si llegamos aquí, significa que la operación fue exitosa
                 reset();
-                setUpdateStatus({
-                    success: true,
-                    error: false,
-                    message: t('password_updated')
-                });
-                
-                // Ocultar el mensaje después de 3 segundos
-                setTimeout(() => {
-                    setUpdateStatus(prev => ({ ...prev, success: false }));
-                }, 3000);
+                toast.success(t('password_updated'));
             },
             onError: (errors) => {
-                // Importante: asegurarse de que no hay mensajes de éxito
-                setUpdateStatus(prev => ({ ...prev, success: false }));
-                
                 // Verificar si hay errores específicos
                 const hasCurrentPasswordError = !!errors.current_password;
                 
@@ -98,29 +72,10 @@ export default function Password() {
                 if (hasCurrentPasswordError) {
                     reset('current_password');
                     currentPasswordInput.current?.focus();
-                    
-                    // Mostrar mensaje de error personalizado
-                    setUpdateStatus({
-                        success: false,
-                        error: true,
-                        message: t('current_password_incorrect')
-                    });
-                    
-                    // Ocultar el mensaje después de 3 segundos
-                    setTimeout(() => {
-                        setUpdateStatus(prev => ({ ...prev, error: false }));
-                    }, 3000);
+                    toast.error(t('current_password_incorrect'));
                 } else if (Object.keys(errors).length > 0) {
-                    // Si hay otros errores pero no es de contraseña actual
-                    setUpdateStatus({
-                        success: false,
-                        error: true,
-                        message: t('error_occurred')
-                    });
-                    
-                    setTimeout(() => {
-                        setUpdateStatus(prev => ({ ...prev, error: false }));
-                    }, 3000);
+                    // Si hay otros errores
+                    toast.error(t('error_occurred'));
                 }
             },
         });
@@ -128,6 +83,20 @@ export default function Password() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    className: 'toast-offers',
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                        borderRadius: '8px',
+                        padding: '20px 28px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    },
+                    id: 'unique-toast2',
+                }}
+            />
             <Head title={t('password_settings')} />
 
             <SettingsLayout>
@@ -167,7 +136,6 @@ export default function Password() {
                             <InputError message={errors.current_password} className="text-red-500 text-sm" />
                         </div>
 
-                        {/* Reemplazando el input normal por InputPassword para la nueva contraseña */}
                         <div className="grid gap-2">
                             <InputPassword
                                 id="password"
@@ -226,19 +194,6 @@ export default function Password() {
                                 {processing && <LoaderCircle className="h-4 w-4 mr-2 animate-spin" />}
                                 {t('save_password')}
                             </Button>
-
-                            {/* Reemplazamos la transición original por nuestros mensajes personalizados */}
-                            {updateStatus.success && (
-                                <p className="text-sm font-medium text-green-600 dark:text-green-400">
-                                    {updateStatus.message || t('saved')}
-                                </p>
-                            )}
-                            
-                            {updateStatus.error && (
-                                <p className="text-sm font-medium text-red-600 dark:text-red-400">
-                                    {updateStatus.message || t('error_occurred')}
-                                </p>
-                            )}
                         </div>
                     </form>
                     
