@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Head, useForm, usePage } from "@inertiajs/react"
+import { Head, useForm, usePage, Inertia } from "@inertiajs/react"
 import AppLayout from "@/layouts/app-layout"
 import { useTranslation } from "@/utils/i18n"
 import type { BreadcrumbItem } from "@/types"
@@ -20,10 +20,8 @@ import L from "leaflet"
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
-// Import toast from react-hot-toast
 import toast, { Toaster } from "react-hot-toast"
 
-// Crear el icono de Leaflet fuera del componente para evitar recrearlo en cada render
 const leafletIcon = new L.Icon({
     iconUrl: markerIcon,
     iconRetinaUrl: markerIcon2x,
@@ -45,7 +43,7 @@ export default function Contact() {
     })
     const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
     const [activeField, setActiveField] = useState<string | null>(null)
-    const { flash } = (usePage().props as unknown as { flash: { success?: string; error?: string } })
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -81,40 +79,32 @@ export default function Contact() {
 
         post('/contact', {
             onSuccess: () => {
-                // Reset and form status will be handled by the useEffect
+                setFormStatus("success")
+                reset()
             },
             onError: () => {
-                if (!flash.error) {
-                    setFormStatus("error")
-                    toast.error(t("error_description") || "There was an error sending your message. Please try again later.", {
-                        id: "error-toast",
-                        duration: 5000,
-                    })
-                }
+                setFormStatus("error")
             }
         });
     }
 
     useEffect(() => {
-        if (flash.success) {
+        if (flash && flash.success) {
             toast.success(flash.success, {
                 id: "success-toast",
-                duration: 5000,
+                duration: 1500,
                 icon: "👍",
             })
-            setFormStatus("success")
-            reset()
         }
         
-        if (flash.error) {
+        if (flash && flash.error) {
             toast.error(flash.error, {
                 id: "error-toast",
-                duration: 5000,
+                duration: 1500,
                 icon: "❌",
             })
-            setFormStatus("error")
         }
-    }, [flash, toast, t])
+    }, [flash])
 
     useEffect(() => {
         const canvas = document.getElementById("particle-canvas") as HTMLCanvasElement
@@ -203,7 +193,6 @@ export default function Contact() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t("contact_us")} />
 
-            {/* Add the custom Toaster component */}
             <Toaster
                 position="bottom-center"
                 toastOptions={{
