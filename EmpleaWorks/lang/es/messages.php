@@ -117,6 +117,7 @@ return [
     'candidate_profile_not_found' => 'Perfil de candidato no encontrado.',
     'user_not_found' => 'No se encontró ningún usuario con ese correo electrónico.',
     'mail_send_failed' => 'No se pudo enviar el correo electrónico. Por favor, inténtalo de nuevo más tarde.',
+    'failed' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
 
     // Create job offer form
     'job_title_required' => 'El campo título del empleo es obligatorio.',
