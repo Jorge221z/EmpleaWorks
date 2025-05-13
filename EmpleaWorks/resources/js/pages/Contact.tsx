@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Head } from "@inertiajs/react"
+import { Head, useForm, usePage } from "@inertiajs/react"
 import AppLayout from "@/layouts/app-layout"
 import { useTranslation } from "@/utils/i18n"
 import type { BreadcrumbItem } from "@/types"
@@ -20,6 +20,8 @@ import L from "leaflet"
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
+// Import toast from react-hot-toast
+import toast, { Toaster } from "react-hot-toast"
 
 // Crear el icono de Leaflet fuera del componente para evitar recrearlo en cada render
 const leafletIcon = new L.Icon({
@@ -34,7 +36,7 @@ const leafletIcon = new L.Icon({
 
 export default function Contact() {
     const { t } = useTranslation()
-    const [formState, setFormState] = useState({
+    const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         email: "",
         subject: "",
@@ -43,6 +45,7 @@ export default function Contact() {
     })
     const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
     const [activeField, setActiveField] = useState<string | null>(null)
+    const { flash } = (usePage().props as unknown as { flash: { success?: string; error?: string } })
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -57,11 +60,11 @@ export default function Contact() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
-        setFormState((prev) => ({ ...prev, [name]: value }))
+        setData(name as any, value)
     }
 
     const handleSelectChange = (value: string) => {
-        setFormState((prev) => ({ ...prev, inquiryType: value }))
+        setData('inquiryType', value)
     }
 
     const handleFocus = (fieldName: string) => {
@@ -76,22 +79,43 @@ export default function Contact() {
         e.preventDefault()
         setFormStatus("loading")
 
-        // Simulate form submission
-        setTimeout(() => {
-            // In a real application, you would send the form data to the server here
-            setFormStatus("success")
-            // Reset form after successful submission
-            setFormState({
-                name: "",
-                email: "",
-                subject: "",
-                message: "",
-                inquiryType: "",
-            })
-        }, 1500)
+        post('/contact', {
+            onSuccess: () => {
+                // Reset and form status will be handled by the useEffect
+            },
+            onError: () => {
+                if (!flash.error) {
+                    setFormStatus("error")
+                    toast.error(t("error_description") || "There was an error sending your message. Please try again later.", {
+                        id: "error-toast",
+                        duration: 5000,
+                    })
+                }
+            }
+        });
     }
 
-    // Particle animation effect
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success, {
+                id: "success-toast",
+                duration: 5000,
+                icon: "👍",
+            })
+            setFormStatus("success")
+            reset()
+        }
+        
+        if (flash.error) {
+            toast.error(flash.error, {
+                id: "error-toast",
+                duration: 5000,
+                icon: "❌",
+            })
+            setFormStatus("error")
+        }
+    }, [flash, toast, t])
+
     useEffect(() => {
         const canvas = document.getElementById("particle-canvas") as HTMLCanvasElement
         if (!canvas) return
@@ -99,7 +123,6 @@ export default function Contact() {
         const ctx = canvas.getContext("2d")
         if (!ctx) return
 
-        // Set canvas dimensions
         const setCanvasDimensions = () => {
             const container = canvas.parentElement
             if (container) {
@@ -111,7 +134,6 @@ export default function Contact() {
         setCanvasDimensions()
         window.addEventListener("resize", setCanvasDimensions)
 
-        // Particle class
         class Particle {
             x: number
             y: number
@@ -127,7 +149,6 @@ export default function Contact() {
                 this.speedX = Math.random() * 0.5 - 0.25
                 this.speedY = Math.random() * 0.5 - 0.25
 
-                // Purple color palette
                 const colors = ["rgba(124, 40, 235, 0.4)", "rgba(150, 69, 244, 0.3)", "rgba(199, 157, 255, 0.5)"]
                 this.color = colors[Math.floor(Math.random() * colors.length)]
             }
@@ -152,7 +173,6 @@ export default function Contact() {
             }
         }
 
-        // Create particles
         const particles: Particle[] = []
         const particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 10000))
 
@@ -160,7 +180,6 @@ export default function Contact() {
             particles.push(new Particle())
         }
 
-        // Animation loop
         const animate = () => {
             if (!ctx) return
             ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -175,7 +194,6 @@ export default function Contact() {
 
         animate()
 
-        // Cleanup
         return () => {
             window.removeEventListener("resize", setCanvasDimensions)
         }
@@ -185,13 +203,27 @@ export default function Contact() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t("contact_us")} />
 
+            {/* Add the custom Toaster component */}
+            <Toaster
+                position="bottom-center"
+                toastOptions={{
+                    className: "toast-offers",
+                    style: {
+                        background: "#363636",
+                        color: "#fff",
+                        borderRadius: "8px",
+                        padding: "20px 28px",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                    },
+                    id: "unique-toast",
+                }}
+            />
+
             <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
-                {/* Animated background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
                     <canvas id="particle-canvas" className="absolute inset-0 w-full h-full bg-[#fefbf2]" />
                 </div>
 
-                {/* Content with glassmorphism effect */}
                 <div className="relative z-10 px-2">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                         <div className="flex items-center gap-3 mb-2">
@@ -205,14 +237,12 @@ export default function Contact() {
                     </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Contact info cards */}
                         <motion.div
                             className="lg:col-span-1 space-y-4"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                         >
-                            {/* Contact info card */}
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]">
                                 <div className="p-6">
                                     <h3 className="text-xl font-semibold mb-6 text-[#7c28eb] dark:text-purple-300 flex items-center gap-2">
@@ -253,11 +283,9 @@ export default function Contact() {
                                     </div>
                                 </div>
 
-                                {/* Decorative gradient footer */}
                                 <div className="h-2 bg-gradient-to-r from-[#7c28eb] via-[#9645f4] to-[#c79dff]"></div>
                             </div>
 
-                            {/* Interactive map */}
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 h-64 relative transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02] mt-11">
                                 <MapContainer
                                     center={[38.6136, -1.1147]}
@@ -278,7 +306,6 @@ export default function Contact() {
                             </div>
                         </motion.div>
 
-                        {/* Contact form */}
                         <motion.div
                             className="lg:col-span-2"
                             initial={{ opacity: 0, x: 20 }}
@@ -287,7 +314,6 @@ export default function Contact() {
                         >
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30">
                                 <div className="p-6 md:p-8 relative">
-                                    {/* Form header with gradient */}
                                     <div className="relative mb-8 pb-4">
                                         <h3 className="text-xl font-semibold text-[#7c28eb] dark:text-purple-300 flex items-center gap-2">
                                             <span className="inline-block p-2 rounded-full bg-purple-100 dark:bg-purple-900/50">
@@ -343,7 +369,7 @@ export default function Contact() {
                                                 <Input
                                                     id="name"
                                                     name="name"
-                                                    value={formState.name}
+                                                    value={data.name}
                                                     onChange={handleChange}
                                                     onFocus={() => handleFocus("name")}
                                                     onBlur={handleBlur}
@@ -374,7 +400,7 @@ export default function Contact() {
                                                     id="email"
                                                     name="email"
                                                     type="email"
-                                                    value={formState.email}
+                                                    value={data.email}
                                                     onChange={handleChange}
                                                     onFocus={() => handleFocus("email")}
                                                     onBlur={handleBlur}
@@ -405,7 +431,7 @@ export default function Contact() {
                                                     {t("inquiry_type")}
                                                 </Label>
                                                 <Select
-                                                    value={formState.inquiryType}
+                                                    value={data.inquiryType}
                                                     onValueChange={handleSelectChange}
                                                     onOpenChange={(open) => {
                                                         if (open) handleFocus("inquiryType")
@@ -447,7 +473,7 @@ export default function Contact() {
                                                 <Input
                                                     id="subject"
                                                     name="subject"
-                                                    value={formState.subject}
+                                                    value={data.subject}
                                                     onChange={handleChange}
                                                     onFocus={() => handleFocus("subject")}
                                                     onBlur={handleBlur}
@@ -479,7 +505,7 @@ export default function Contact() {
                                             <Textarea
                                                 id="message"
                                                 name="message"
-                                                value={formState.message}
+                                                value={data.message}
                                                 onChange={handleChange}
                                                 onFocus={() => handleFocus("message")}
                                                 onBlur={handleBlur}
@@ -504,11 +530,11 @@ export default function Contact() {
                                         <div className="pt-4">
                                             <Button
                                                 type="submit"
-                                                disabled={formStatus === "loading"}
+                                                disabled={processing}
                                                 className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                                             >
                                                 <span className="relative z-10 flex items-center gap-2">
-                                                    {formStatus === "loading" ? (
+                                                    {processing ? (
                                                         <>
                                                             <svg
                                                                 className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
@@ -557,7 +583,6 @@ export default function Contact() {
                 </div>
             </div>
 
-            {/* CSS for animations */}
             <style>{`
         @keyframes shimmer {
           0% {
@@ -573,7 +598,6 @@ export default function Contact() {
         }
       `}</style>
 
-            {/* CSS for Leaflet */}
             <style>{`
                 .leaflet-container {
                     border-radius: 1rem;

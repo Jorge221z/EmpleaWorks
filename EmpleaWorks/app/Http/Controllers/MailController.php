@@ -180,4 +180,65 @@ class MailController extends Controller
             return false;
         }
     }
+
+    /**
+     * Envía el correo desde el formulario de contacto.
+     *
+     * @param array $data Datos validados del formulario de contacto
+     * @return bool Éxito del envío
+     */
+    public function sendContactFormEmail($data)
+    {
+        try {
+            $mg = Mailgun::create(env('API_KEY'), env('MG_ENDPOINT', 'https://api.eu.mailgun.net'));
+            
+            // Preparamos los datos del mensaje
+            $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
+            $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>'; // Usar dirección verificada como remitente
+            $toAddress = 'EmpleaWorks <empleaworks@gmail.com>'; // Actualizado al email solicitado
+            $subject = "Formulario de contacto: {$data['subject']}";
+            
+            $inquiryType = $data['inquiryType'] ?? 'General';
+            
+            // Preparamos el cuerpo del correo (texto plano)
+            $plainTextBody = "Nuevo mensaje del formulario de contacto\n\n" .
+                             "Nombre: {$data['name']}\n" .
+                             "Email: {$data['email']}\n" .
+                             "Tipo de consulta: {$inquiryType}\n" .
+                             "Asunto: {$data['subject']}\n\n" .
+                             "Mensaje:\n{$data['message']}\n\n" .
+                             "-- Enviado desde el formulario de contacto de EmpleaWorks --";
+            
+            // Preparamos el HTML por si se desea usar
+            $htmlBody = view('emails.contact_form', [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'subject' => $data['subject'],
+                'message' => $data['message'],
+                'inquiryType' => $inquiryType
+            ])->render();
+            
+            // Preparamos los parámetros del mensaje
+            $messageParams = [
+                'from' => $fromAddress,
+                'to' => $toAddress,
+                'subject' => $subject,
+                'text' => $plainTextBody, // Incluimos versión texto plano
+                'html' => $htmlBody,
+                'h:Reply-To' => $data['email'] // Para que se pueda responder directamente al remitente
+            ];
+            
+            // Enviamos el mensaje
+            $mg->messages()->send($domain, $messageParams);
+            
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Error al enviar correo del formulario de contacto', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return false;
+        }
+    }
 }

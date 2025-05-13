@@ -33,6 +33,10 @@ Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
 
+// Ruta para el formulario de contacto
+Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])
+    ->name('contact.submit');
+
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
 
