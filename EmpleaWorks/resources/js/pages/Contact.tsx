@@ -188,7 +188,7 @@ export default function Contact() {
             <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
                 {/* Animated background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
-                    <canvas id="particle-canvas" className="absolute inset-0 w-full h-full" />
+                    <canvas id="particle-canvas" className="absolute inset-0 w-full h-full bg-[#fefbf2]" />
                 </div>
 
                 {/* Content with glassmorphism effect */}
