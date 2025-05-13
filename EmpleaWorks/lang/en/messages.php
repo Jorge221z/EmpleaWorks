@@ -117,6 +117,7 @@ return [
     'candidate_profile_not_found' => 'Candidate profile not found.',
     'user_not_found' => 'No user found with that email address.',
     'mail_send_failed' => 'Could not send the email. Please try again later.',
+    'failed' => 'The provided credentials do not match our records.',
 
     // Create job offer form
     'job_title_required' => 'The job title field is required.',
