@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import AppLayout from "@/layouts/app-layout"
 import type { BreadcrumbItem, SharedData } from "@/types"
 import { Head, Link, usePage } from "@inertiajs/react"
-import { CalendarIcon, MapPinIcon, BriefcaseIcon, ArrowRightIcon, SearchIcon, Sparkles } from "lucide-react"
+import { CalendarIcon, MapPinIcon, BriefcaseIcon, ArrowRightIcon, SearchIcon, Sparkles, Zap } from "lucide-react"
 import type { Offer } from "@/types/types"
 import SearchBar from "@/SearchBar/SearchBar"
 import { useState, useCallback, useEffect, useMemo, useRef } from "react"
@@ -273,13 +273,13 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5 }}
-                                className="relative overflow-hidden rounded-xl border p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-purple-100/50 dark:border-purple-500/20 mb-4 shadow-lg transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30"
+                                className="relative rounded-xl border p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-purple-100/50 dark:border-purple-500/20 mb-4 shadow-lg transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30"
                             >
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
                                     <div className="flex flex-col gap-2">
                                         <h2 className="text-2xl font-bold text-[#7c28eb] dark:text-purple-300 flex items-center gap-2">
                                             {t("welcome_title")}
-                                            <Sparkles className="h-5 w-5 text-[#FDC231] animate-pulse" />
+                                            <Zap className="h-5 w-5 text-[#FDC231] animate-pulse" />
                                         </h2>
                                         <p className="text-muted-foreground max-w-xl">{t("welcome_subtitle")}</p>
                                         <div className="flex gap-3 mt-3">
@@ -300,85 +300,139 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                             </Button>
                                         </div>
                                     </div>
-                                    <div className="hidden md:block relative w-64 h-32">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-[#7c28eb]/10 to-[#FDC231]/10 rounded-lg overflow-hidden">
-                                            <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-30"></div>
-                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                                {/* More visually appealing illustration */}
-                                                <svg
-                                                    width="120"
-                                                    height="80"
-                                                    viewBox="0 0 120 80"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="opacity-80"
-                                                >
+                                    <div className="hidden md:block relative w-80 h-48 -mr-8 -mt-4 -mb-4">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-[#7c28eb]/10 to-[#FDC231]/10 rounded-lg">
+                                            {/* Fondo con patrón de puntos */}
+                                            <div className="absolute top-0 left-0 w-full h-full">
+                                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                                    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+                                                        <circle cx="2" cy="2" r="1" fill="#7c28eb" opacity="0.2" />
+                                                    </pattern>
+                                                    <rect width="100%" height="100%" fill="url(#dots)" />
+                                                </svg>
+                                            </div>
+
+                                            {/* Ilustración creativa de búsqueda de empleo */}
+                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                                                <svg viewBox="0 0 240 140" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                                                     <defs>
-                                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                            <stop offset="0%" stopColor="#7c28eb" stopOpacity="0.7" />
-                                                            <stop offset="100%" stopColor="#9645f4" stopOpacity="0.7" />
+                                                        <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                            <stop offset="0%" stopColor="#7c28eb" stopOpacity="0.9" />
+                                                            <stop offset="100%" stopColor="#9645f4" stopOpacity="0.9" />
                                                         </linearGradient>
-                                                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                            <stop offset="0%" stopColor="#FDC231" stopOpacity="0.7" />
-                                                            <stop offset="100%" stopColor="#E3B100" stopOpacity="0.7" />
+                                                        <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                            <stop offset="0%" stopColor="#FDC231" stopOpacity="0.9" />
+                                                            <stop offset="100%" stopColor="#E3B100" stopOpacity="0.9" />
+                                                        </linearGradient>
+                                                        <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.9" />
+                                                            <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.9" />
                                                         </linearGradient>
                                                         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                                                            <feGaussianBlur stdDeviation="2" result="blur" />
+                                                            <feGaussianBlur stdDeviation="3" result="blur" />
                                                             <feComposite in="SourceGraphic" in2="blur" operator="over" />
                                                         </filter>
                                                     </defs>
 
-                                                    {/* Decorative elements */}
-                                                    <circle
-                                                        cx="60"
-                                                        cy="40"
-                                                        r="30"
-                                                        fill="url(#grad1)"
-                                                        opacity="0.1"
-                                                        className="animate-pulse-slow"
-                                                    />
-                                                    <circle
-                                                        cx="60"
-                                                        cy="40"
-                                                        r="20"
-                                                        fill="url(#grad2)"
-                                                        opacity="0.1"
-                                                        className="animate-pulse-slower"
+                                                    {/* Línea de conexión central */}
+                                                    <path
+                                                        d="M30,70 C60,20 180,120 210,70"
+                                                        stroke="url(#purpleGrad)"
+                                                        strokeWidth="2"
+                                                        strokeDasharray="4 2"
+                                                        fill="none"
+                                                        className="animate-dash"
                                                     />
 
-                                                    {/* Main elements */}
-                                                    <g className="animate-float-slow" filter="url(#glow)">
-                                                        <path
-                                                            d="M45 25L75 25C77.7614 25 80 27.2386 80 30L80 50C80 52.7614 77.7614 55 75 55L45 55C42.2386 55 40 52.7614 40 50L40 30C40 27.2386 42.2386 25 45 25Z"
-                                                            fill="#7c28eb"
-                                                            fillOpacity="0.2"
-                                                            stroke="#7c28eb"
+                                                    {/* Gráfico de crecimiento */}
+                                                    <path
+                                                        d="M40,100 L60,80 L80,85 L100,65 L120,60 L140,50 L160,30"
+                                                        stroke="url(#yellowGrad)"
+                                                        strokeWidth="3"
+                                                        fill="none"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        className="animate-draw"
+                                                    />
+                                                    <circle cx="40" cy="100" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+                                                    <circle cx="60" cy="80" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+                                                    <circle cx="80" cy="85" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+                                                    <circle cx="100" cy="65" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+                                                    <circle cx="120" cy="60" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+                                                    <circle cx="140" cy="50" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+                                                    <circle cx="160" cy="30" r="4" fill="url(#yellowGrad)" className="animate-pulse-slow" />
+
+                                                    {/* Elementos de búsqueda de empleo */}
+                                                    {/* Maletín */}
+                                                    <g filter="url(#glow)" className="animate-float-slow">
+                                                        <rect x="30" y="50" width="30" height="24" rx="4" fill="url(#purpleGrad)" />
+                                                        <rect x="42" y="44" width="6" height="6" rx="2" fill="url(#purpleGrad)" />
+                                                        <rect x="36" y="50" width="18" height="2" fill="#FDC231" />
+                                                    </g>
+
+                                                    {/* Documento/CV */}
+                                                    <g filter="url(#glow)" className="animate-float-medium">
+                                                        <rect
+                                                            x="180"
+                                                            y="40"
+                                                            width="20"
+                                                            height="26"
+                                                            rx="2"
+                                                            fill="white"
+                                                            stroke="url(#purpleGrad)"
                                                             strokeWidth="1.5"
                                                         />
-                                                        <path d="M50 35H70" stroke="#7c28eb" strokeWidth="1.5" strokeLinecap="round" />
-                                                        <path d="M50 42H65" stroke="#7c28eb" strokeWidth="1.5" strokeLinecap="round" />
-                                                        <path d="M50 49H60" stroke="#7c28eb" strokeWidth="1.5" strokeLinecap="round" />
+                                                        <path d="M185 48H195" stroke="#7c28eb" strokeWidth="1.5" strokeLinecap="round" />
+                                                        <path d="M185 53H193" stroke="#7c28eb" strokeWidth="1.5" strokeLinecap="round" />
+                                                        <path d="M185 58H190" stroke="#7c28eb" strokeWidth="1.5" strokeLinecap="round" />
+                                                        <circle
+                                                            cx="190"
+                                                            cy="35"
+                                                            r="8"
+                                                            fill="url(#yellowGrad)"
+                                                            opacity="0.8"
+                                                            className="animate-pulse-slow"
+                                                        />
                                                     </g>
 
-                                                    {/* Sparkles */}
-                                                    <g className="animate-pulse-fast">
-                                                        <circle cx="30" cy="30" r="2" fill="#FDC231" />
-                                                        <circle cx="85" cy="25" r="2" fill="#FDC231" />
-                                                        <circle cx="90" cy="55" r="2" fill="#FDC231" />
-                                                        <circle cx="25" cy="50" r="2" fill="#FDC231" />
+                                                    {/* Lupa de búsqueda */}
+                                                    <g filter="url(#glow)" className="animate-float-fast">
+                                                        <circle cx="120" cy="90" r="15" fill="none" stroke="url(#blueGrad)" strokeWidth="3" />
+                                                        <path d="M132 102L140 110" stroke="url(#blueGrad)" strokeWidth="3" strokeLinecap="round" />
                                                     </g>
 
-                                                    {/* Stars */}
+                                                    {/* Personas/Conexiones */}
+                                                    <g className="animate-float-medium">
+                                                        <circle cx="70" cy="110" r="8" fill="url(#purpleGrad)" />
+                                                        <circle cx="90" cy="110" r="8" fill="url(#yellowGrad)" />
+                                                        <circle cx="110" cy="110" r="8" fill="url(#blueGrad)" />
+                                                        <path d="M78 110H82" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                                                        <path d="M98 110H102" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                                                    </g>
+
+                                                    {/* Estrellas/Logros */}
                                                     <path
-                                                        d="M95 35L97 39L101 40L97 41L95 45L93 41L89 40L93 39L95 35Z"
-                                                        fill="#FDC231"
+                                                        d="M200 90L203 96L210 97L203 99L200 105L197 99L190 97L197 96L200 90Z"
+                                                        fill="url(#yellowGrad)"
                                                         className="animate-spin-slow"
                                                     />
                                                     <path
-                                                        d="M25 25L26 27L28 28L26 29L25 31L24 29L22 28L24 27L25 25Z"
-                                                        fill="#FDC231"
+                                                        d="M50 30L52 34L57 35L52 36L50 40L48 36L43 35L48 34L50 30Z"
+                                                        fill="url(#yellowGrad)"
                                                         className="animate-spin-slow"
                                                     />
+                                                    <path
+                                                        d="M150 110L152 114L157 115L152 116L150 120L148 116L143 115L148 114L150 110Z"
+                                                        fill="url(#yellowGrad)"
+                                                        className="animate-spin-slow"
+                                                    />
+
+                                                    {/* Destellos */}
+                                                    <circle cx="40" cy="70" r="2" fill="#FDC231" className="animate-pulse-fast" />
+                                                    <circle cx="180" cy="80" r="2" fill="#FDC231" className="animate-pulse-fast" />
+                                                    <circle cx="100" cy="40" r="2" fill="#FDC231" className="animate-pulse-fast" />
+                                                    <circle cx="140" cy="120" r="2" fill="#FDC231" className="animate-pulse-fast" />
+                                                    <circle cx="210" cy="50" r="2" fill="#FDC231" className="animate-pulse-fast" />
                                                 </svg>
                                             </div>
                                         </div>
@@ -397,9 +451,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                         >
                             <div className="flex items-center gap-3 mb-2">
                                 <h2 className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">{t("recent_jobs")}</h2>
-                                <div className="p-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30">
-                                    <BriefcaseIcon className="h-5 w-5 text-[#FDC231]" />
-                                </div>
+                                
                             </div>
                             <p className="text-muted-foreground max-w-2xl">{t("explore_opportunities")}</p>
                         </motion.div>
