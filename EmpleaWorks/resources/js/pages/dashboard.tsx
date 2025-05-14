@@ -47,7 +47,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
         return [...offers].sort((a, b) => {
             const dateA = new Date(a.created_at)
             const dateB = new Date(b.created_at)
-            return dateB.getTime() - dateA.getTime() // Orden descendente (más reciente primero)
+            return dateB.getTime() - dateA.getTime()
         })
     }, [offers])
 
@@ -77,7 +77,6 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
 
     const handleFilteredResults = useCallback(
         (results: Offer[]) => {
-            // Only set isSearching to true when it's an actual search, not initial load
             if (results.length !== sortedOffers.length) {
                 setIsSearching(true)
                 setTimeout(() => setIsSearching(false), 300)
@@ -286,15 +285,15 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                             <Button
                                                 variant="default"
                                                 onClick={navigateToLogin}
-                                                className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                                                className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer"
                                             >
                                                 <span className="relative z-10 flex items-center gap-2">{t("sign_in")}</span>
-                                                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                                                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
                                             </Button>
                                             <Button
                                                 variant="outline"
                                                 onClick={navigateToRegister}
-                                                className="border-purple-100 dark:border-purple-600/30 hover:text-[#7c28eb] hover:bg-purple-50/50 dark:hover:bg-purple-950/20 transition-all duration-300"
+                                                className="border-purple-100 dark:border-purple-600/30 hover:text-[#7c28eb] hover:bg-purple-50/50 dark:hover:bg-purple-950/20 transition-all duration-300 cursor-pointer"
                                             >
                                                 {t("create_account")}
                                             </Button>
@@ -644,7 +643,6 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                 </motion.div>
                             ) : // Estados alternativos: sin resultados o sin datos
                                 filteredOffers.length === 0 ? (
-                                    // Estado de "No se encontraron resultados" cuando la búsqueda no arroja coincidencias
                                     <motion.div
                                         key="no-results"
                                         initial={{ opacity: 0 }}

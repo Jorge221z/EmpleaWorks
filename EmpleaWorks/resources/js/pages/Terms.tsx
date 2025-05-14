@@ -21,11 +21,10 @@ export default function Terms() {
         },
         {
             title: activeTab === "terms" ? t("terms_and_conditions") : t("cookies_policy"),
-            href: "/terms", // Fixed: Replaced route("terms") with a static route
+            href: "/terms",
         },
     ]
 
-    // Handle scroll to highlight active section in table of contents
     useEffect(() => {
         const handleScroll = () => {
             const sections = document.querySelectorAll("section[id]")
@@ -42,7 +41,7 @@ export default function Terms() {
         }
 
         window.addEventListener("scroll", handleScroll, { passive: true })
-        handleScroll() // Initial check
+        handleScroll()
 
         return () => {
             window.removeEventListener("scroll", handleScroll)
