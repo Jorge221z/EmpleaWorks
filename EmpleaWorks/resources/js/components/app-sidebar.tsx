@@ -254,7 +254,8 @@ export function AppSidebar() {
           font-weight: 500;
         }
         
-        [data-sidebar="menu-item"] a[href^="${url}"]::after {
+        /* Mostrar los puntos de indicación solo cuando la barra lateral está expandida */
+        [data-sidebar-state="expanded"] [data-sidebar="menu-item"] a[href^="${url}"]::after {
           content: '';
           position: absolute;
           right: 10px;
@@ -330,7 +331,12 @@ export function AppSidebar() {
         }
       `}</style>
 
-            <Sidebar collapsible="icon" variant="inset" className="transition-all duration-300 shadow-sm">
+            <Sidebar 
+                collapsible="icon" 
+                variant="inset" 
+                className="transition-all duration-300 shadow-sm"
+                data-sidebar-state={state}
+            >
                 <SidebarHeader className="bg-transparent pb-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu>
                         <SidebarMenuItem>
