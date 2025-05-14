@@ -25,6 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useEffect } from "react"
+import { motion } from "framer-motion"
 
 export default function CompanyDashboard({
   companyOffers = [],
@@ -153,6 +154,26 @@ export default function CompanyDashboard({
     }
   }, [])
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+  }
+
   // ----- RENDER COMPONENT -----
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -180,136 +201,153 @@ export default function CompanyDashboard({
 
         {/* Content with glassmorphism effect */}
         <div className="relative z-10">
-          {/* Título del Dashboard */}
-          <div className="px-2 mb-4">
+          {/* Título del Dashboard con animación */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.5 }}
+            className="px-2 mb-4"
+          >
             <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
               {t("company_dashboard")}
             </h2>
             <p className="text-muted-foreground">{t("manage_company_listings")}</p>
-          </div>
+          </motion.div>
 
-          {/* Acciones rápidas */}
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Acciones rápidas con animación de contenedor */}
+          <motion.div 
+            className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {/* Tarjeta de Job Listings */}
-            <Card
-              className={cn(
-                "overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
-                borderColor,
-                "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
-              )}
-              style={{ borderTop: `4px solid ${primaryColor}` }}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-primary/80"
-                    style={{ color: primaryLightColor }}
+            <motion.div variants={itemVariants}>
+              <Card
+                className={cn(
+                  "overflow-hidden flex flex-col h-full min-h-[230px]",
+                  "transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
+                  borderColor,
+                  "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
+                )}
+                style={{ borderTop: `4px solid ${primaryColor}` }}
+              >
+                <CardHeader className="px-3 py-1.5">
+                  <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-primary/80"
+                      style={{ color: primaryLightColor }}
+                    >
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                    {t("job_listings")}
+                  </CardTitle>
+                  <CardDescription className="dark:text-gray-300">{t("manage_jobs")}</CardDescription>
+                </CardHeader>
+
+                <CardContent className="flex-grow flex flex-col justify-between px-3 pt-0 pb-1">
+                  <div>
+                    <div className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">{companyOffers.length}</div>
+                    <div className="text-sm text-muted-foreground mb-1">{t("active_positions")}</div>
+                  </div>
+
+                  <Button
+                    size="sm"
+                    className="gap-1 w-full mt-0 relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                    asChild
                   >
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                  </svg>
-                  {t("job_listings")}
-                </CardTitle>
-                <CardDescription className="dark:text-gray-300">{t("manage_jobs")}</CardDescription>
-              </CardHeader>
-
-              <CardContent className="flex-grow flex flex-col justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">{companyOffers.length}</div>
-                  <div className="text-sm text-muted-foreground">{t("active_positions")}</div>
-                </div>
-
-                <Button
-                  size="sm"
-                  className="gap-1 w-full mt-4 relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                  asChild
-                >
-                  <Link href={route("company.create-job")} className="flex items-center justify-center">
-                    <PlusCircleIcon className="h-4 w-4 mr-1" />
-                    {t("new_job")}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+                    <Link href={route("company.create-job")} className="flex items-center justify-center">
+                      <PlusCircleIcon className="h-4 w-4 mr-1" />
+                      {t("new_job")}
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
 
             {/* Tarjeta de Aplicantes */}
-            <Card
-              className={cn(
-                "overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
-                borderColor,
-                "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
-              )}
-              style={{ borderTop: `4px solid ${accentColor}` }}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
-                  <UsersIcon className="h-5 w-5" style={{ color: accentColor }} />
-                  {t("applicants")}
-                </CardTitle>
-                <CardDescription className="dark:text-gray-300">{t("applications_to_jobs")}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow flex flex-col justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">{totalApplicants}</div>
-                  <div className="text-sm text-muted-foreground">{t("total_candidates")}</div>
-                </div>
+            <motion.div variants={itemVariants}>
+              <Card
+                className={cn(
+                  "overflow-hidden flex flex-col h-full min-h-[230px]",
+                  "transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
+                  borderColor,
+                  "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
+                )}
+                style={{ borderTop: `4px solid ${accentColor}` }}
+              >
+                <CardHeader className="px-3 py-2">
+                  <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
+                    <UsersIcon className="h-5 w-5" style={{ color: accentColor }} />
+                    {t("applicants")}
+                  </CardTitle>
+                  <CardDescription className="dark:text-gray-300">{t("applications_to_jobs")}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow flex flex-col justify-between px-3 pt-0 pb-1">
+                  <div>
+                    <div className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">{totalApplicants}</div>
+                    <div className="text-sm text-muted-foreground mb-1">{t("total_candidates")}</div>
+                  </div>
 
-                <Button
-                  size="sm"
-                  className="gap-1 w-full mt-4"
-                  style={{
-                    backgroundColor: accentColor,
-                    color: "#4a2982",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = accentDarkColor
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = accentColor
-                  }}
-                  asChild
-                >
-                  <Link href={route("company.applicants")} className="flex items-center justify-center">
-                    <UsersIcon className="h-4 w-4 mr-1" />
-                    {t("view_applicants")}
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+                  <Button
+                    size="sm"
+                    className="gap-1 w-full mt-2 cursor-pointer"
+                    style={{
+                      backgroundColor: accentColor,
+                      color: "#4a2982",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = accentDarkColor
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = accentColor
+                    }}
+                    asChild
+                  >
+                    <Link href={route("company.applicants")} className="flex items-center justify-center">
+                      <UsersIcon className="h-4 w-4 mr-1" />
+                      {t("view_applicants")}
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
 
             {/* Tarjeta de Perfil de Empresa */}
-            <Card
-              className={cn(
-                "overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
-                borderColor,
-                "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
-              )}
-              style={{ borderTop: `4px solid ${primaryLightColor}` }}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
-                  <BuildingIcon className="h-5 w-5" style={{ color: primaryLightColor }} />
-                  {t("company_profile")}
-                </CardTitle>
-                <CardDescription className="dark:text-gray-300">{t("update_profile")}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <div className="flex flex-col h-full justify-between">
+            <motion.div variants={itemVariants}>
+              <Card
+                className={cn(
+                  "overflow-hidden flex flex-col h-full min-h-[230px]",
+                  "transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
+                  borderColor,
+                  "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
+                )}
+                style={{ borderTop: `4px solid ${primaryLightColor}` }}
+              >
+                <CardHeader className="px-3 py-2">
+                  <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
+                    <BuildingIcon className="h-5 w-5" style={{ color: primaryLightColor }} />
+                    {t("company_profile")}
+                  </CardTitle>
+                  <CardDescription className="dark:text-gray-300">{t("update_profile")}</CardDescription>
+                </CardHeader>
+                <CardContent className="px-3 pt-0 pb-1 flex-grow flex flex-col justify-between">
                   {/* Bloque de perfil */}
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 mb-2">
                     {/* Logo de la empresa */}
                     {auth.user.image ? (
-                      <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0 border border-purple-100 dark:border-purple-700/30">
+                      <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0 border border-purple-100 dark:border-purple-700/30">
                         <img
                           src={`/storage/${auth.user.image}`}
                           alt={auth.user.name}
@@ -318,7 +356,7 @@ export default function CompanyDashboard({
                       </div>
                     ) : (
                       <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border border-purple-200 dark:border-purple-700/30"
+                        className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border border-purple-200 dark:border-purple-700/30"
                         style={{ backgroundColor: `${primaryColor}15` }}
                       >
                         <BuildingIcon className="h-6 w-6" style={{ color: primaryColor }} />
@@ -329,7 +367,7 @@ export default function CompanyDashboard({
                       <div className="text-sm text-muted-foreground">{t("complete_profile")}</div>
                       {/* Estado de verificación de correo */}
                       {auth.user?.email_verified_at === null ? (
-                        <div className="flex items-center gap-1 text-xs text-red-600 mt-1">
+                        <div className="flex items-center gap-1 text-xs text-red-600 mt-0.5">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-3.5 w-3.5"
@@ -348,7 +386,7 @@ export default function CompanyDashboard({
                           {t("email_not_verified")}
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1 text-xs text-green-600 mt-1">
+                        <div className="flex items-center gap-1 text-xs text-green-600 mt-0.5">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-3.5 w-3.5"
@@ -365,46 +403,56 @@ export default function CompanyDashboard({
                   </div>
 
                   {/* Botón de editar */}
-                  <div className="mt-4">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className={cn(
-                        "gap-1 w-full",
-                        "border-purple-200 dark:border-purple-700",
-                        "text-[#7c28eb] dark:text-white",
-                        "hover:bg-purple-50 dark:hover:bg-purple-900/30",
-                        "hover:border-[#7c28eb] dark:hover:border-purple-500",
-                        "hover:text-[#6620c5] dark:hover:text-white",
-                        "transition-all duration-300",
-                      )}
-                      asChild
-                    >
-                      <Link href={"/settings/profile"} className="flex items-center justify-center">
-                        <BuildingIcon className="h-4 w-4 mr-1" />
-                        {t("edit_profile")}
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className={cn(
+                      "gap-1 w-full mt-0",
+                      "border-purple-200 dark:border-purple-700",
+                      "text-[#7c28eb] dark:text-white",
+                      "hover:bg-purple-50 dark:hover:bg-purple-900/30",
+                      "hover:border-[#7c28eb] dark:hover:border-purple-500",
+                      "hover:text-[#6620c5] dark:hover:text-white",
+                      "transition-all duration-300",
+                      "cursor-pointer"
+                    )}
+                    asChild
+                  >
+                    <Link href={"/settings/profile"} className="flex items-center justify-center">
+                      <BuildingIcon className="h-4 w-4 mr-1" />
+                      {t("edit_profile")}
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
 
-          {/* Título de las ofertas */}
-          <div className="px-2 mt-8">
+          {/* Título de las ofertas con animación */}
+          <motion.div 
+            className="px-2 mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
               {t("your_job_listings")}
             </h2>
             <p className="text-muted-foreground">{t("manage_current_postings")}</p>
-          </div>
+          </motion.div>
 
-          {/* Mostrar ofertas en el grid */}
+          {/* Mostrar ofertas en el grid con animación */}
           {companyOffers && companyOffers.length > 0 ? (
-            <div className="grid auto-rows-min gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            <motion.div 
+              className="grid auto-rows-min gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {companyOffers.map((offer) => (
-                <div
+                <motion.div
                   key={offer.id}
+                  variants={itemVariants}
                   className={cn(
                     "relative overflow-hidden rounded-xl border p-4 flex flex-col transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.01]",
                     borderColor,
@@ -528,7 +576,7 @@ export default function CompanyDashboard({
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           >
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0-2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                           </svg>
                           {t("edit")}
@@ -581,11 +629,12 @@ export default function CompanyDashboard({
                       </AlertDialog>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
 
               {/* Card para añadir nueva oferta */}
-              <div
+              <motion.div
+                variants={itemVariants}
                 className={cn(
                   "relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px] transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
                   borderColor,
@@ -604,11 +653,14 @@ export default function CompanyDashboard({
                     <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
                   </Link>
                 </Button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ) : (
             // Si no hay ofertas publicadas por la empresa
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
               className={cn(
                 "relative p-8 overflow-hidden rounded-xl border text-center my-6 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30",
                 borderColor,
@@ -633,7 +685,7 @@ export default function CompanyDashboard({
                 </Button>
               </div>
               <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
