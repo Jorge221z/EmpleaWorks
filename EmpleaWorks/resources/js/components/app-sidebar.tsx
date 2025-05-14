@@ -253,6 +253,23 @@ export function AppSidebar() {
           height: 70%;
         }
         
+        /* Reglas específicas para el logo */
+        .logo-menu-item[data-sidebar="menu-item"] a[href^="/dashboard"]::before,
+        .logo-menu-item[data-sidebar="menu-item"] a[href^="/dashboard"]::after {
+          display: none; /* Ocultar indicadores cuando está seleccionado */
+        }
+        
+        /* Eliminar el fondo cuando el logo está activo */
+        .logo-menu-item[data-sidebar="menu-item"] a[href^="${url}"] {
+          background: transparent !important; /* Sobreescribir el fondo morado */
+        }
+        
+        /* Mostrar la barra vertical solo en hover para el logo */
+        .logo-menu-item[data-sidebar="menu-item"]:hover::before {
+          opacity: 0.7;
+          height: 70%;
+        }
+        
         /* Estilo para elementos activos basado en la URL actual */
         [data-sidebar="menu-item"] a[href^="${url}"] {
           background: rgba(150, 69, 244, 0.1);
@@ -345,7 +362,7 @@ export function AppSidebar() {
             >
                 <SidebarHeader className="bg-transparent pb-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu>
-                        <SidebarMenuItem>
+                        <SidebarMenuItem className="logo-menu-item">
                             <SidebarMenuButton size="lg" asChild className="group/logo logo-button">
                                 <Link href="/dashboard" prefetch className="flex items-center gap-2 justify-center">
                                     <div className="logo-glow">
