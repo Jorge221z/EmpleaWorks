@@ -259,10 +259,10 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                 />
                 <Head title={t("dashboard")} />
 
-                <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
+                <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">
                     {/* Animated background gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
-                        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
+                    <div className="absolute inset-0 bg-gradient-to-br bg-[#fefbf2] dark:bg-[#0a0a0a] z-0">
+                        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full bg-[#fefbf2] dark:bg-[#0a0a0a]" />
                     </div>
 
                     {/* Content with glassmorphism effect */}

@@ -210,7 +210,7 @@ export default function Contact() {
 
             <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
-                    <canvas id="particle-canvas" className="absolute inset-0 w-full h-full bg-[#fefbf2]" />
+                    <canvas id="particle-canvas" className="absolute inset-0 w-full h-full bg-[#fefbf2] dark:bg-[#0a0a0a]" />
                 </div>
 
                 <div className="relative z-10 px-2">

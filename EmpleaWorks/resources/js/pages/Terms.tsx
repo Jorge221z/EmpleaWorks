@@ -151,12 +151,12 @@ export default function Terms() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={activeTab === "terms" ? t("terms_title") : t("cookies_title")} />
 
-            <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
+            <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">
                 {/* Animated background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
                     <canvas
                         id="particle-canvas"
-                        className="absolute inset-0 w-full h-full bg-[#FEFBF2] dark:bg-gray-900"
+                        className="absolute inset-0 w-full h-full bg-[#FEFBF2] dark:bg-[#0a0a0a]"
                     />
                 </div>
 
@@ -178,7 +178,7 @@ export default function Terms() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="bg-[#FEFBF2] dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20"
+                        className="bg-[#FEFBF2] dark:bg-[#0a0a0a]/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20"
                     >
                         {/* Tabs header with glassmorphism */}
                         <div className="border-b border-purple-100/70 dark:border-purple-600/30 p-2 bg-[#FEFBF2] dark:bg-purple-950/30 backdrop-blur-sm">
