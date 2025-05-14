@@ -28,6 +28,7 @@ const translations: Record<string, Record<string, string>> = {
         'try_other_terms': 'Try with other search terms',
         'no_offers_available': 'No offers available',
         'company_not_available': 'Company not available',
+        'loading_offers': 'Loading offers...',
 
         // Candidate Dashboard
         'candidate_dashboard_title': 'Candidate Dashboard',
@@ -429,6 +430,7 @@ const translations: Record<string, Record<string, string>> = {
         'try_other_terms': 'Intenta con otros términos de búsqueda',
         'no_offers_available': 'No hay ofertas disponibles',
         'company_not_available': 'Empresa no disponible',
+        'loading_offers': 'Cargando ofertas...',
 
         // Dashboard de candidato
         'candidate_dashboard_title': 'Mis Ofertas',
