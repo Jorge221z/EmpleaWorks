@@ -1,35 +1,31 @@
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarGroup, useSidebar } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import { ComponentType, useEffect, useState } from 'react';
+import { useMobileSidebarClose } from "@/components/mobile-sidebar";
 
 interface NavMainProps {
     items: (NavItem & {
         disabled?: boolean;
         onClick?: () => void;
     })[];
+    onNavigate?: () => void;
 }
 
-export function NavMain({ items }: NavMainProps) {
-    const { url } = usePage(); // usamos usePage para obtener la URL actual
+export function NavMain({ items, onNavigate }: NavMainProps) {
+    const { url } = usePage(); 
     const { state } = useSidebar();
     const [isMobile, setIsMobile] = useState(false);
+    const closeSidebar = useMobileSidebarClose();
 
     // Detectar si es dispositivo móvil
     useEffect(() => {
-        // Función para actualizar el estado según el ancho de la ventana
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768); // 768px es el breakpoint típico para móvil
+            setIsMobile(window.innerWidth < 768);
         };
-
-        // Establecer el estado inicial
         handleResize();
-
-        // Añadir el event listener
         window.addEventListener('resize', handleResize);
-
-        // Cleanup
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -50,7 +46,33 @@ export function NavMain({ items }: NavMainProps) {
                 {items.map((item, index) => {
                     const isActive = isItemActive(item);
                     const Icon = item.icon as ComponentType<{ className?: string }>;
-                    const groupName = `nav-item-${index}`; // nombre único para cada grupo
+                    const groupName = `nav-item-${index}`; 
+
+                    // Función simplificada para manejar clics
+                    const handleItemClick = (e: React.MouseEvent) => {
+                        // Detener el evento para evitar propagación
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Para elementos deshabilitados
+                        if (item.disabled) {
+                            if (item.onClick) item.onClick();
+                            return;
+                        }
+                        
+                        // Ejecutar onClick personalizado si existe
+                        if (item.onClick) {
+                            item.onClick();
+                        }
+                        
+                        // Notificar al componente padre
+                        if (onNavigate) {
+                            onNavigate();
+                        }
+                        
+                        // Navegar directamente sin más lógica
+                        router.visit(item.href);
+                    };
 
                     return (
                         <SidebarMenuItem key={item.href}>
@@ -92,7 +114,10 @@ export function NavMain({ items }: NavMainProps) {
                                         isActive && "bg-purple-100 dark:bg-purple-800/50"
                                     )}
                                 >
-                                    <Link href={item.href}>
+                                    <button 
+                                        onClick={handleItemClick}
+                                        className="flex items-center w-full"
+                                    >
                                         {Icon && (
                                             <Icon 
                                                 className={cn(
@@ -115,7 +140,7 @@ export function NavMain({ items }: NavMainProps) {
                                                 {item.title}
                                             </span>
                                         )}
-                                    </Link>
+                                    </button>
                                 </SidebarMenuButton>
                             )}
                         </SidebarMenuItem>

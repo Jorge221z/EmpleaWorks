@@ -161,6 +161,7 @@ function Sidebar({
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
+  mobileSidebarDisabled = false, // Nueva prop para desactivar el sidebar móvil
   className,
   children,
   ...props
@@ -168,6 +169,7 @@ function Sidebar({
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
+  mobileSidebarDisabled?: boolean
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
 
@@ -186,26 +188,19 @@ function Sidebar({
     )
   }
 
-  if (isMobile) {
+  if (isMobile && !mobileSidebarDisabled) { // Solo renderizar el Sheet móvil si mobileSidebarDisabled es false
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetHeader className="sr-only">
-          <SheetTitle>Sidebar</SheetTitle>
-          <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-        </SheetHeader>
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
         <SheetContent
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
-          className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-          style={
-            {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-            } as React.CSSProperties
-          }
+          className="bg-sidebar text-sidebar-foreground w-[85%] max-w-[300px] p-0 left-0 fixed z-50 flex flex-col shadow-xl"
           side={side}
         >
-          <div className="flex h-full w-full flex-col">{children}</div>
+          <div className="flex h-full w-full flex-col overflow-y-auto">
+            <div className="p-4">{children}</div>
+          </div>
         </SheetContent>
       </Sheet>
     )

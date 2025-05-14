@@ -157,3 +157,29 @@
         @apply bg-background text-foreground;
     }
 }
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.mobile-sidebar-open {
+  animation: slideInFromLeft 0.3s ease forwards;
+}
+
+.mobile-sidebar-closed {
+  animation: slideOutToLeft 0.3s ease forwards;
+}
