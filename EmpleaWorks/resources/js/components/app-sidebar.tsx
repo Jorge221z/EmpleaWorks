@@ -223,6 +223,11 @@ export function AppSidebar() {
           background: rgba(150, 69, 244, 0.08);
         }
         
+        /* Estilo especial para el botón del logo - eliminar movimiento completamente */
+        .logo-button[data-sidebar="menu-button"]:hover {
+          transform: translateX(0); /* Sin movimiento para el logo */
+        }
+        
         [data-sidebar="menu-item"] {
           position: relative;
           margin: 2px 0;
@@ -268,7 +273,8 @@ export function AppSidebar() {
           box-shadow: 0 0 5px 0 rgba(150, 69, 244, 0.5);
         }
         
-        [data-sidebar="menu-item"] a[href^="${url}"]::before {
+        /* Mostrar la barra vertical solo cuando la barra lateral está expandida */
+        [data-sidebar-state="expanded"] [data-sidebar="menu-item"] a[href^="${url}"]::before {
           content: '';
           position: absolute;
           left: 0;
@@ -340,10 +346,10 @@ export function AppSidebar() {
                 <SidebarHeader className="bg-transparent pb-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton size="lg" asChild className="group/logo">
+                            <SidebarMenuButton size="lg" asChild className="group/logo logo-button">
                                 <Link href="/dashboard" prefetch className="flex items-center gap-2 justify-center">
                                     <div className="logo-glow">
-                                        <AppLogo className="h-12 w-8 bg-transparent p-0 m-0 transition-transform duration-300 hover:scale-105" />
+                                        <AppLogo className="h-12 w-8 bg-transparent p-0 m-0 transition-transform duration-300" />
                                     </div>
                                     {shouldShowTitle && (
                                         <span className="text-xl font-bold tracking-tight group-hover/logo:text-purple-600 dark:group-hover/logo:text-purple-300 transition-colors -ml-1">
