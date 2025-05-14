@@ -146,6 +146,32 @@ export default function Terms() {
         }
     }
 
+    useEffect(() => {
+        // Mejorar el manejador para el enlace de política de cookies
+        const handleCookiesPolicyClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const cookiesPolicyLink = target.closest('.cookies-policy-link');
+            
+            if (cookiesPolicyLink) {
+                e.preventDefault();
+                
+                // Cambiar a la pestaña de cookies
+                setActiveTab("cookies");
+                
+                // Hacer scroll hasta arriba para mejor UX
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        // Agregar evento de clic en el documento para capturar todos los enlaces, incluso los dinámicos
+        document.addEventListener('click', handleCookiesPolicyClick);
+
+        // Limpiar el event listener al desmontar
+        return () => {
+            document.removeEventListener('click', handleCookiesPolicyClick);
+        };
+    }, []); // No depende de activeTab para evitar recrear listeners innecesariamente
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={activeTab === "terms" ? t("terms_title") : t("cookies_title")} />
@@ -347,12 +373,12 @@ export default function Terms() {
                                                         <div className="mt-1 p-2 rounded-full bg-purple-100/80 dark:bg-purple-900/50 flex-shrink-0">
                                                             <CheckCircle2 className="h-5 w-5 text-[#7c28eb] dark:text-purple-300" />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-full">
                                                             <h3 className="text-xl font-semibold mb-3 text-[#7c28eb] dark:text-purple-300">
                                                                 4. {t("gdpr_rights")}
                                                             </h3>
-                                                            <div className="prose dark:prose-invert">
-                                                                <p>{t("gdpr_rights_text")}</p>
+                                                            <div className="prose dark:prose-invert max-w-full break-words">
+                                                                <div dangerouslySetInnerHTML={{ __html: t("gdpr_rights_text") }}></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -417,24 +443,12 @@ export default function Terms() {
                                                         <div className="mt-1 p-2 rounded-full bg-purple-100/80 dark:bg-purple-900/50 flex-shrink-0">
                                                             <Cookie className="h-5 w-5 text-[#7c28eb] dark:text-purple-300" />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-full">
                                                             <h3 className="text-xl font-semibold mb-3 text-[#7c28eb] dark:text-purple-300">
                                                                 7. {t("cookies_tracking")}
                                                             </h3>
-                                                            <div className="prose dark:prose-invert">
-                                                                <p>
-                                                                    {t("cookies_tracking_text", {
-                                                                        cookies_policy: (
-                                                                            <button
-                                                                                onClick={() => setActiveTab("cookies")}
-                                                                                className="text-[#7c28eb] hover:underline font-medium border-0 bg-transparent p-0 cursor-pointer inline-flex items-center gap-1"
-                                                                            >
-                                                                                <Cookie className="h-3 w-3" />
-                                                                                {t("cookies_policy")}
-                                                                            </button>
-                                                                        ),
-                                                                    })}
-                                                                </p>
+                                                            <div className="prose dark:prose-invert max-w-full break-words">
+                                                                <div dangerouslySetInnerHTML={{ __html: t("cookies_tracking_text") }}></div>
                                                             </div>
                                                         </div>
                                                     </div>
