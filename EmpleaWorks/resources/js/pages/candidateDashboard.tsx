@@ -260,10 +260,15 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                     size="sm"
                     className="gap-1 w-full mt-4 relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                   >
-                    <Link href={route("dashboard")} className="w-full flex items-center justify-center gap-1">
+                    <Link 
+                      href={route("dashboard")} 
+                      className="w-full h-full absolute inset-0 z-10"
+                      aria-label={t("find_jobs")}
+                    />
+                    <div className="w-full flex items-center justify-center gap-1 pointer-events-none">
                       {t("find_jobs")}
-                    </Link>
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                    </div>
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
                   </Button>
                 </CardContent>
               </Card>
@@ -555,7 +560,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                               variant="outline"
                               size="sm"
                               className={cn(
-                                "gap-1.5 text-sm w-full",
+                                "gap-1.5 text-sm w-full cursor-pointer",
                                 "border-purple-200 dark:border-purple-700",
                                 "text-[#7c28eb] dark:text-white",
                                 "hover:bg-purple-50 dark:hover:bg-purple-900/30",
@@ -726,12 +731,16 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
                 <p className="text-muted-foreground max-w-md mx-auto mb-4">{t("no_applications_message")}</p>
                 <Button
                   className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                  asChild
                 >
-                  <Link href={route("dashboard")} className="flex items-center gap-2">
+                  <Link 
+                    href={route("dashboard")} 
+                    className="w-full h-full absolute inset-0 z-10"
+                    aria-label={t("browse_available_jobs")}
+                  />
+                  <div className="flex items-center gap-2 pointer-events-none">
                     {t("browse_available_jobs")}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
-                  </Link>
+                  </div>
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
                 </Button>
               </div>
               <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />

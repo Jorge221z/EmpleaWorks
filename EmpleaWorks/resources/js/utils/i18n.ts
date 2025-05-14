@@ -28,6 +28,7 @@ const translations: Record<string, Record<string, string>> = {
         'try_other_terms': 'Try with other search terms',
         'no_offers_available': 'No offers available',
         'company_not_available': 'Company not available',
+        'loading_offers': 'Loading offers...',
 
         // Candidate Dashboard
         'candidate_dashboard_title': 'Candidate Dashboard',
@@ -324,7 +325,7 @@ const translations: Record<string, Record<string, string>> = {
         'gdpr_rights_text': 'In accordance with the General Data Protection Regulation (GDPR), you have the right to access, rectify, restrict, delete, object to processing, and request the portability of your personal data. To exercise these rights, you can contact us at <a href="mailto:empleaworks@gmail.com" class="text-primary hover:underline">empleaworks@gmail.com</a>.',
         'data_retention_text': 'The data provided during the application process will be stored for a maximum period of 2 years from the user\'s last activity on the platform, after which it will be securely deleted. Users may request the deletion of their data at any time before this period.',
         'security_text': 'EmpleaWorks is committed to implementing appropriate technical and organizational measures to ensure the security of your personal data, including the use of encryption, access controls, and regular audits.',
-        'cookies_tracking_text': 'This site uses cookies and similar technologies to enhance user experience and analyze platform usage. For more information, see our {cookies_policy}.',
+        'cookies_tracking_text': 'This site uses cookies and similar technologies to enhance user experience and analyze platform usage. For more information, see our <a href="#" class="text-primary hover:underline cookies-policy-link">Cookies Policy</a>.',
         'liability_limitation_text': 'EmpleaWorks acts as an intermediary between candidates and companies and does not assume responsibility for the content of published offers, the accuracy of information provided by companies, or the selection processes carried out by them. However, EmpleaWorks commits to taking reasonable steps to verify the legitimacy of companies and published offers.',
         'modifications_text': 'We reserve the right to modify these terms and conditions at any time. Modifications will take effect immediately after being published on the site. We will notify you of any significant changes via email or through a notice on the platform.',
         'applicable_law_text': 'These terms and conditions are governed by Spanish law, and any dispute related to these terms will be subject to the exclusive jurisdiction of Spanish courts.',
@@ -429,6 +430,7 @@ const translations: Record<string, Record<string, string>> = {
         'try_other_terms': 'Intenta con otros términos de búsqueda',
         'no_offers_available': 'No hay ofertas disponibles',
         'company_not_available': 'Empresa no disponible',
+        'loading_offers': 'Cargando ofertas...',
 
         // Dashboard de candidato
         'candidate_dashboard_title': 'Mis Ofertas',
@@ -726,7 +728,7 @@ const translations: Record<string, Record<string, string>> = {
         'gdpr_rights_text': 'De acuerdo con el Reglamento General de Protección de Datos (RGPD), tienes derecho a acceder, rectificar, limitar, eliminar, oponerte al procesamiento y solicitar la portabilidad de tus datos personales. Para ejercer estos derechos, puedes contactar con nosotros a través de <a href="mailto:empleaworks@gmail.com" class="text-primary hover:underline">empleaworks@gmail.com</a>.',
         'data_retention_text': 'Los datos proporcionados durante el proceso de solicitud se almacenarán por un período máximo de 2 años desde la última actividad del usuario en la plataforma, tras el cual serán eliminados de forma segura. Los usuarios pueden solicitar la eliminación de sus datos en cualquier momento antes de este plazo.',
         'security_text': 'EmpleaWorks se compromete a implementar medidas técnicas y organizativas adecuadas para garantizar la seguridad de tus datos personales, incluyendo el uso de cifrado, controles de acceso y auditorías regulares.',
-        'cookies_tracking_text': 'Este sitio utiliza cookies y tecnologías similares para mejorar la experiencia del usuario y analizar el uso de la plataforma. Para más información, consulta nuestra {cookies_policy}.',
+        'cookies_tracking_text': 'Este sitio utiliza cookies y tecnologías similares para mejorar la experiencia del usuario y analizar el uso de la plataforma. Para más información, consulta nuestra <a href="#" class="text-primary hover:underline cookies-policy-link">Política de Cookies</a>.',
         'liability_limitation_text': 'EmpleaWorks actúa como intermediario entre candidatos y empresas, y no asume responsabilidad por el contenido de las ofertas publicadas, la veracidad de la información proporcionada por las empresas, o por los procesos de selección realizados por las mismas. Sin embargo, EmpleaWorks se compromete a tomar medidas razonables para verificar la legitimidad de las empresas y las ofertas publicadas.',
         'modifications_text': 'Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación en el sitio. Te notificaremos de cualquier cambio significativo a través de correo electrónico o mediante un aviso en la plataforma.',
         'applicable_law_text': 'Estos términos y condiciones se rigen por la legislación española y cualquier disputa relacionada con estos términos estará sujeta a la jurisdicción exclusiva de los tribunales españoles.',

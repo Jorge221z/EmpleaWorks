@@ -415,6 +415,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                       "hover:border-[#7c28eb] dark:hover:border-purple-500",
                       "hover:text-[#6620c5] dark:hover:text-white",
                       "w-full sm:w-auto mt-2 sm:mt-0 transition-all duration-300",
+                      "cursor-pointer"
                     )}
                     onClick={() => window.history.back()}
                   >
@@ -423,10 +424,10 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                   <Button
                     type="submit"
                     disabled={processing}
-                    className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] w-full sm:w-auto"
+                    className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] w-full sm:w-auto cursor-pointer"
                   >
                     <span className="relative z-10">{processing ? t("updating") : t("update_job_listing")}</span>
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
                   </Button>
                 </div>
               </form>

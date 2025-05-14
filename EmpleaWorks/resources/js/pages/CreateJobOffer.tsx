@@ -403,6 +403,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                       "hover:border-[#7c28eb] dark:hover:border-purple-500",
                       "hover:text-[#6620c5] dark:hover:text-white",
                       "transition-all duration-300",
+                      "cursor-pointer"
                     )}
                   >
                     <Link href={route("company.dashboard")}>{t("cancel")}</Link>
@@ -410,10 +411,10 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                   <Button
                     type="submit"
                     disabled={processing}
-                    className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                    className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer"
                   >
                     <span className="relative z-10">{processing ? t("creating") : t("create_job_listing")}</span>
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
                   </Button>
                 </div>
               </form>
