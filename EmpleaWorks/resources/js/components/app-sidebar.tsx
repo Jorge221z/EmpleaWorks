@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import type { NavItem, SharedData } from "@/types"
 import { usePage, router } from "@inertiajs/react"
-import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, Menu } from "lucide-react"
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
@@ -410,6 +410,18 @@ export function AppSidebar() {
         [role="dialog"] {
           z-index: 50 !important;
         }
+
+        /* Fondo redondeado y suave para el trigger mobile sidebar */
+        .mobile-sidebar-trigger-bg {
+          background: linear-gradient(135deg, rgba(150,69,244,0.10) 0%, rgba(236,72,153,0.10) 100%);
+          border-radius: 9999px;
+          box-shadow: 0 2px 8px 0 rgba(150,69,244,0.08);
+          transition: background 0.2s, box-shadow 0.2s;
+        }
+        .mobile-sidebar-trigger-bg:hover, .mobile-sidebar-trigger-bg:focus {
+          background: linear-gradient(135deg, rgba(150,69,244,0.18) 0%, rgba(236,72,153,0.18) 100%);
+          box-shadow: 0 4px 16px 0 rgba(150,69,244,0.13);
+        }
       `}</style>
 
             {/* Mobile Menu Trigger - Solo visible en móvil */}
@@ -417,10 +429,10 @@ export function AppSidebar() {
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-10 w-10 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-md border border-purple-100 dark:border-purple-900/30"
+                    className="h-6 w-10 rounded-full shadow-md mobile-sidebar-trigger-bg"
                     onClick={() => setMobileMenuOpen(true)}
                 >
-                    <Menu className="h-5 w-5 text-purple-600 dark:text-purple-300" />
+                    <PanelLeft className="h-10 w-5 text-purple-600 dark:text-purple-400" />
                     <span className="sr-only">Abrir menú</span>
                 </Button>
             </div>

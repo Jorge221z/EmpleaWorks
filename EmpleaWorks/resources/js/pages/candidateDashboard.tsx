@@ -204,7 +204,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
       />
       <Head title={t("candidate_dashboard_title")} />
 
-      <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent relative overflow-hidden">
+      <div className="flex h-full flex-1 flex-col gap-4 p-4 bg-[#FEFBF2] dark:bg-transparent relative overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
