@@ -429,9 +429,10 @@ export function AppSidebar() {
           position: relative;
           z-index: 11000 !important;
         }
-        /* Forzar el z-index del dropdown del usuario */
+        /* Forzar el z-index del dropdown del usuario y moverlo a la derecha en mobile */
         .user-dropdown-z {
           z-index: 12000 !important;
+          left: 56px !important; /* Ajusta este valor según el ancho de tu sidebar */
         }
         /* Asegurar que el Sheet y overlay no tapen el menú */
         [role="dialog"] {
@@ -457,22 +458,28 @@ export function AppSidebar() {
 
             {/* Mobile Navigation - Usar nuestro componente personalizado */}
             <MobileNavDialog open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-                <div className="space-y-4">
-                    <NavMain 
-                        items={mainNavItems} 
-                        onNavigate={() => setMobileMenuOpen(false)} 
-                    />
-                    <div className="border-t border-purple-100/50 dark:border-purple-700/30 pt-4 mt-6">
-                        <SidebarMenu className="mt-4">
-                            <LanguageSelector />
-                            <TermsAndConditions />
-                            <ContactLink />
-                        </SidebarMenu>
-                        {/* Envolver NavUser en un div con clase y ref para z-index */}
+                <div className="flex flex-col h-full">
+                    <div className="flex-1 space-y-4 overflow-y-auto">
+                        <NavMain 
+                            items={mainNavItems} 
+                            onNavigate={() => setMobileMenuOpen(false)} 
+                        />
+                        <div className="pt-4 mt-6">
+                            <SidebarMenu className="mt-4">
+                                <LanguageSelector />
+                                <TermsAndConditions />
+                                <ContactLink />
+                            </SidebarMenu>
+                        </div>
+                    </div>
+                    {/* Footer fijo abajo para el perfil */}
+                    <div className="pt-4 pb-6 px-2">
                         <div ref={userMenuContainerRef} className="mobile-user-menu-z">
                             <NavUser 
                                 dropdownContainer={userMenuContainerRef.current}
                                 dropdownClassName="user-dropdown-z"
+                                dropdownAlign="start"
+                                dropdownSideOffset={16}
                             />
                         </div>
                     </div>

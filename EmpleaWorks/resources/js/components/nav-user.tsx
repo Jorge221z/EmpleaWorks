@@ -15,9 +15,17 @@ interface NavUserProps {
     closeMenu?: () => void;
     dropdownContainer?: HTMLElement | null;
     dropdownClassName?: string;
+    dropdownAlign?: "start" | "center" | "end";
+    dropdownSideOffset?: number;
 }
 
-export function NavUser({ closeMenu, dropdownContainer, dropdownClassName }: NavUserProps) {
+export function NavUser({
+    closeMenu,
+    dropdownContainer,
+    dropdownClassName,
+    dropdownAlign,
+    dropdownSideOffset,
+}: NavUserProps) {
     const { auth } = usePage<SharedData>().props;
     const getInitials = useInitials();
     const { t } = useTranslation();
@@ -78,7 +86,8 @@ export function NavUser({ closeMenu, dropdownContainer, dropdownClassName }: Nav
                         </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
-                        align="end" 
+                        align={dropdownAlign}
+                        sideOffset={dropdownSideOffset}
                         className={dropdownClassName}
                         container={dropdownContainer}
                     >
