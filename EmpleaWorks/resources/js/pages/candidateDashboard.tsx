@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import AppLayout from "@/layouts/app-layout"
 import type { BreadcrumbItem, SharedData } from "@/types"
 import { Head, Link, usePage } from "@inertiajs/react"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { CalendarIcon, MapPinIcon, BriefcaseIcon, FileIcon, UserIcon, Sparkles } from "lucide-react"
 import type { Offer } from "@/types/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,6 +29,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
   const { auth } = usePage<SharedData>().props
   const { t } = useTranslation()
   const user = auth.user
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // ----- COLOR THEMING SYSTEM -----
   // Colores principales (púrpura)
@@ -55,6 +56,106 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
       toast.error(flash.error)
     }
   }, [flash])
+
+  // Particle animation effect
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    // Set canvas dimensions
+    const setCanvasDimensions = () => {
+      const container = canvas.parentElement
+      if (container) {
+        canvas.width = container.offsetWidth
+        canvas.height = container.offsetHeight
+      }
+    }
+
+    setCanvasDimensions()
+    window.addEventListener("resize", setCanvasDimensions)
+
+    // Particle class
+    class Particle {
+      x: number
+      y: number
+      size: number
+      speedX: number
+      speedY: number
+      color: string
+
+      constructor() {
+        if (canvas) {
+          this.x = Math.random() * canvas.width
+          this.y = Math.random() * canvas.height
+        } else {
+          this.x = 0
+          this.y = 0
+        }
+        this.size = Math.random() * 3 + 1
+        this.speedX = Math.random() * 0.5 - 0.25
+        this.speedY = Math.random() * 0.5 - 0.25
+
+        // Purple color palette
+        const colors = ["rgba(124, 40, 235, 0.4)", "rgba(150, 69, 244, 0.3)", "rgba(199, 157, 255, 0.5)"]
+        this.color = colors[Math.floor(Math.random() * colors.length)]
+      }
+
+      update() {
+        if (canvas) {
+          this.x += this.speedX
+          this.y += this.speedY
+
+          if (this.x > canvas.width) this.x = 0
+          else if (this.x < 0) this.x = canvas.width
+
+          if (this.y > canvas.height) this.y = 0
+          else if (this.y < 0) this.y = canvas.height
+        }
+      }
+
+      draw() {
+        if (!ctx) return
+        ctx.fillStyle = this.color
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    // Create particles
+    const particles: Particle[] = []
+    const particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 10000))
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle())
+    }
+
+    // Animation loop
+    let animationFrameId: number
+
+    const animate = () => {
+      if (!ctx) return
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      for (const particle of particles) {
+        particle.update()
+        particle.draw()
+      }
+
+      animationFrameId = requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", setCanvasDimensions)
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [])
 
   // ----- CONFIGURATION -----
   const breadcrumbs: BreadcrumbItem[] = [
@@ -104,9 +205,9 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
       <Head title={t("candidate_dashboard_title")} />
 
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 bg-[#FEFBF2] dark:bg-transparent relative overflow-hidden">
-        {/* Animated background gradient - only visible in dark mode */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100/50 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0 hidden dark:block">
-          <canvas id="particle-canvas" className="absolute inset-0 w-full h-full" />
+        {/* Animated background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
+          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
         </div>
 
         {/* Content with glassmorphism effect */}
@@ -653,98 +754,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
         .animate-shimmer {
           animation: shimmer 2s infinite;
         }
-
-        /* Particle animation */
-        #particle-canvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
       `}</style>
-
-      {/* Particle animation effect */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-          document.addEventListener('DOMContentLoaded', function() {
-            const canvas = document.getElementById('particle-canvas');
-            if (!canvas) return;
-
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
-
-            // Set canvas dimensions
-            const setCanvasDimensions = () => {
-              const container = canvas.parentElement;
-              if (container) {
-                canvas.width = container.offsetWidth;
-                canvas.height = container.offsetHeight;
-              }
-            };
-
-            setCanvasDimensions();
-            window.addEventListener('resize', setCanvasDimensions);
-
-            // Particle class
-            class Particle {
-              constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-
-                // Purple color palette
-                const colors = ["rgba(124, 40, 235, 0.4)", "rgba(150, 69, 244, 0.3)", "rgba(199, 157, 255, 0.5)"];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-              }
-
-              update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x > canvas.width) this.x = 0;
-                else if (this.x < 0) this.x = canvas.width;
-
-                if (this.y > canvas.height) this.y = 0;
-                else if (this.y < 0) this.y = canvas.height;
-              }
-
-              draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-              }
-            }
-
-            // Create particles
-            const particles = [];
-            const particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 10000));
-
-            for (let i = 0; i < particleCount; i++) {
-              particles.push(new Particle());
-            }
-
-            // Animation loop
-            const animate = () => {
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-              for (const particle of particles) {
-                particle.update();
-                particle.draw();
-              }
-
-              requestAnimationFrame(animate);
-            };
-
-            animate();
-          });
-        `,
-        }}
-      />
     </AppLayout>
   )
 }
