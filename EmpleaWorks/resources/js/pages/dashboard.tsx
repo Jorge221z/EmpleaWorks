@@ -600,9 +600,24 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <CalendarIcon className="size-3.5" style={{ color: primaryLightColor }} />
-                                                    <span>
-                                                        {t("until")}: {new Date(offer.closing_date).toLocaleDateString()}
-                                                    </span>
+                                                    {(() => {
+                                                        const closingDate = new Date(offer.closing_date)
+                                                        const currentDate = new Date()
+                                                        const daysLeft = Math.ceil(
+                                                            (closingDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+                                                        )
+
+                                                        return (
+                                                            <span className={daysLeft < 3 ? "text-red-500 font-medium" : ""}>
+                                                                {t("closed_in")}:{" "}
+                                                                {daysLeft <= 0
+                                                                    ? t("closed")
+                                                                    : daysLeft === 1
+                                                                        ? t("days_remaining", { days: daysLeft })
+                                                                        : t("days_remaining_plural", { days: daysLeft })}
+                                                            </span>
+                                                        )
+                                                    })()}
                                                 </div>
                                             </div>
 

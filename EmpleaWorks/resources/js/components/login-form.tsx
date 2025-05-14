@@ -234,6 +234,7 @@ export function LoginForm({
                 src="/images/login-background.webp"
                 alt="Login background"
                 className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
           </CardContent>
