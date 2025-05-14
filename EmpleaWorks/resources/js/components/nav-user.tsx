@@ -13,9 +13,11 @@ import { useMobileSidebarClose } from '@/components/mobile-sidebar';
 
 interface NavUserProps {
     closeMenu?: () => void;
+    dropdownContainer?: HTMLElement | null;
+    dropdownClassName?: string;
 }
 
-export function NavUser({ closeMenu }: NavUserProps) {
+export function NavUser({ closeMenu, dropdownContainer, dropdownClassName }: NavUserProps) {
     const { auth } = usePage<SharedData>().props;
     const getInitials = useInitials();
     const { t } = useTranslation();
@@ -77,10 +79,11 @@ export function NavUser({ closeMenu }: NavUserProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent 
                         align="end" 
-                        className="w-56 border-purple-100 dark:border-purple-600/30 dark:bg-gray-900 p-1 shadow-lg"
+                        className={dropdownClassName}
+                        container={dropdownContainer}
                     >
-                        <DropdownMenuLabel>{t('my_account')}</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
+                        
+                        
                         {hasProfileRoute && (
                             <DropdownMenuItem asChild>
                                 <button 

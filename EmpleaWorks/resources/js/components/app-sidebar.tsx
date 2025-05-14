@@ -19,7 +19,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
 import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { MobileNavDialog } from "@/components/mobile-nav-dialog"
 
 interface ExtendedNavItem extends NavItem {
@@ -36,6 +36,7 @@ export function AppSidebar() {
     const [isMobile, setIsMobile] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const { url } = usePage()
+    const userMenuContainerRef = useRef<HTMLDivElement>(null)
 
     // Detectar si es dispositivo móvil
     useEffect(() => {
@@ -408,7 +409,7 @@ export function AppSidebar() {
         
         /* Asegurarse que el contenido de Radix Sheet es visible */
         [role="dialog"] {
-          z-index: 50 !important;
+          z-index: 10000 !important;
         }
 
         /* Fondo redondeado y suave para el trigger mobile sidebar */
@@ -421,6 +422,23 @@ export function AppSidebar() {
         .mobile-sidebar-trigger-bg:hover, .mobile-sidebar-trigger-bg:focus {
           background: linear-gradient(135deg, rgba(150,69,244,0.18) 0%, rgba(236,72,153,0.18) 100%);
           box-shadow: 0 4px 16px 0 rgba(150,69,244,0.13);
+        }
+
+        /* Forzar el z-index del contenedor del menú de usuario en mobile */
+        .mobile-user-menu-z {
+          position: relative;
+          z-index: 11000 !important;
+        }
+        /* Forzar el z-index del dropdown del usuario */
+        .user-dropdown-z {
+          z-index: 12000 !important;
+        }
+        /* Asegurar que el Sheet y overlay no tapen el menú */
+        [role="dialog"] {
+          z-index: 10000 !important;
+        }
+        .radix-portal {
+          z-index: 12000 !important;
         }
       `}</style>
 
@@ -450,7 +468,13 @@ export function AppSidebar() {
                             <TermsAndConditions />
                             <ContactLink />
                         </SidebarMenu>
-                        <NavUser closeMenu={() => setMobileMenuOpen(false)} />
+                        {/* Envolver NavUser en un div con clase y ref para z-index */}
+                        <div ref={userMenuContainerRef} className="mobile-user-menu-z">
+                            <NavUser 
+                                dropdownContainer={userMenuContainerRef.current}
+                                dropdownClassName="user-dropdown-z"
+                            />
+                        </div>
                     </div>
                 </div>
             </MobileNavDialog>
