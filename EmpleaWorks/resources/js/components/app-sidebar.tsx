@@ -280,155 +280,6 @@ export function AppSidebar() {
           }
         }
         
-        /* Estilo especial para el botón del logo - eliminar movimiento completamente */
-        .logo-button[data-sidebar="menu-button"]:hover {
-          transform: translateX(0); /* Sin movimiento para el logo */
-        }
-        
-        [data-sidebar="menu-item"] {
-          position: relative;
-          margin: 2px 0;
-        }
-        
-        /* Indicador de barra lateral */
-        [data-sidebar="menu-item"]::before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 0;
-          width: 3px;
-          border-radius: 0 3px 3px 0;
-          background: linear-gradient(to bottom, #9645f4, #a855f7);
-          opacity: 0;
-          transition: all 0.3s ease;
-        }
-        
-        [data-sidebar="menu-item"]:hover::before {
-          opacity: 0.7;
-          height: 70%;
-        }
-        
-        /* Reglas específicas para el logo */
-        .logo-menu-item[data-sidebar="menu-item"] a[href^="/dashboard"]::before,
-        .logo-menu-item[data-sidebar="menu-item"] a[href^="/dashboard"]::after {
-          display: none; /* Ocultar indicadores cuando está seleccionado */
-        }
-        
-        /* Eliminar el fondo cuando el logo está activo */
-        .logo-menu-item[data-sidebar="menu-item"] a[href^="${url}"] {
-          background: transparent !important; /* Sobreescribir el fondo morado */
-        }
-        
-        /* Mostrar la barra vertical solo en hover para el logo */
-        .logo-menu-item[data-sidebar="menu-item"]:hover::before {
-          opacity: 0.7;
-          height: 70%;
-        }
-        
-        /* Estilo para elementos activos basado en la URL actual */
-        [data-sidebar="menu-item"] a[href^="${url}"] {
-          background: rgba(150, 69, 244, 0.1);
-          font-weight: 500;
-        }
-        
-        /* Mostrar los puntos de indicación solo cuando la barra lateral está expandida */
-        [data-sidebar-state="expanded"] [data-sidebar="menu-item"] a[href^="${url}"]::after {
-          content: '';
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #9645f4;
-          box-shadow: 0 0 5px 0 rgba(150, 69, 244, 0.5);
-        }
-        
-        /* Mostrar la barra vertical solo cuando la barra lateral está expandida */
-        [data-sidebar-state="expanded"] [data-sidebar="menu-item"] a[href^="${url}"]::before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 70%;
-          width: 3px;
-          border-radius: 0 3px 3px 0;
-          background: linear-gradient(to bottom, #9645f4, #a855f7);
-          opacity: 1;
-        }
-        
-        /* Animación de pulso para el indicador */
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(150, 69, 244, 0.5);
-          }
-          70% {
-            box-shadow: 0 0 0 6px rgba(150, 69, 244, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(150, 69, 244, 0);
-          }
-        }
-        
-        /* Efecto de brillo para el logo */
-        .logo-glow {
-          position: relative;
-        }
-        
-        .logo-glow::after {
-          content: '';
-          position: absolute;
-          inset: -5px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(150, 69, 244, 0.3) 0%, rgba(150, 69, 244, 0) 70%);
-          opacity: 0;
-          z-index: -1;
-          filter: blur(8px);
-          transition: opacity 0.3s ease;
-        }
-        
-        .logo-glow:hover::after {
-          opacity: 1;
-        }
-        
-        /* Estilo para la barra de desplazamiento */
-        [data-sidebar="content"]::-webkit-scrollbar {
-          width: 5px;
-        }
-        
-        [data-sidebar="content"]::-webkit-scrollbar-track {
-          background: rgba(150, 69, 244, 0.05);
-          border-radius: 10px;
-        }
-        
-        [data-sidebar="content"]::-webkit-scrollbar-thumb {
-          background: linear-gradient(to bottom, #9645f4, #a855f7);
-          border-radius: 10px;
-        }
-        
-        /* Estilos específicos para el Sheet en mobile */
-        [data-mobile="true"][data-sidebar="sidebar"] {
-          height: 100% !important;
-          display: flex !important;
-          z-index: 9999 !important;
-          visibility: visible !important;
-          opacity: 1 !important;
-          transform: none !important;
-        }
-
-        /* Asegurar que el botón de cierre del Sheet sea visible */
-        [data-mobile="true"] button[data-radix-collection-item] {
-          display: flex !important;
-          position: absolute !important;
-          right: 10px !important;
-          top: 10px !important;
-          z-index: 100 !important;
-        }
-        
         /* Clase de depuración para hacer muy visible el sidebar móvil */
         .fixed-mobile-sidebar-debug {
           position: fixed !important;
@@ -481,14 +332,14 @@ export function AppSidebar() {
       `}</style>
 
             {/* Mobile Menu Trigger - Solo visible en móvil */}
-            <div className="fixed top-3 left-3 z-50 md:hidden">
+            <div className="fixed top-1 left-3 z-50 md:hidden">
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-10 rounded-full shadow-md mobile-sidebar-trigger-bg overflow-visible"
+                    className="min-h-[40px] min-w-[40px] h-10 w-10 rounded-full shadow-md mobile-sidebar-trigger-bg flex items-center justify-center"
                     onClick={() => setMobileMenuOpen(true)}
                 >
-                    <PanelLeft className="h-5 w-5 text-black dark:text-white" />
+                    <PanelLeft className="h-6 w-6 text-black dark:text-white" />
                     <span className="sr-only">Abrir menú</span>
                 </Button>
             </div>
