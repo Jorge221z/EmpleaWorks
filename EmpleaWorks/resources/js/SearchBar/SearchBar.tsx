@@ -134,7 +134,7 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
   return (
     <div className="w-full">
       {/* Barra de búsqueda principal */}
-      <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-t-2xl shadow-md overflow-hidden">
+      <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-2xl shadow-md overflow-hidden">
         {/* Campo de búsqueda */}
         <div className="col-span-6 sm:col-span-7 md:col-span-7 lg:col-span-4">
           <input
