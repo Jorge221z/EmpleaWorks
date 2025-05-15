@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import toast, { Toast as ToastType, Toaster as HotToaster } from 'react-hot-toast';
-import { CheckCircle2, XCircle, X, Info, AlertTriangle } from 'lucide-react';
+import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 type ToastProps = {
@@ -82,43 +82,22 @@ class Particle {
   }
 }
 
-const Toast = ({ t, message, type }: ToastProps) => {
+// Create completely separate toast components for each type
+// This ensures no component will ever "switch" icons
+
+const SuccessToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-
-  // Enhanced color schemes with more distinct error styling
-  const bgColors = {
-    success: 'from-purple-700 via-emerald-600 to-purple-400',
-    error: 'from-red-700 via-purple-600 to-red-500', // More distinct red for errors
-    default: 'from-purple-800 via-indigo-600 to-purple-400',
-  };
-
-  // Particle colors with more distinct error particles
-  const particleColors = {
-    success: [
-      'rgba(126, 34, 206, 0.6)',
-      'rgba(147, 51, 234, 0.7)',
-      'rgba(107, 33, 168, 0.4)',
-      'rgba(139, 92, 246, 0.5)',
-      'rgba(52, 211, 153, 0.5)',
-    ],
-    error: [
-      'rgba(220, 38, 38, 0.6)', // Red particles for errors
-      'rgba(239, 68, 68, 0.7)',
-      'rgba(185, 28, 28, 0.5)',
-      'rgba(252, 165, 165, 0.4)',
-      'rgba(126, 34, 206, 0.3)', // A bit of purple for brand consistency
-    ],
-    default: [
-      'rgba(126, 34, 206, 0.6)',
-      'rgba(147, 51, 234, 0.7)',
-      'rgba(107, 33, 168, 0.4)',
-      'rgba(139, 92, 246, 0.5)',
-      'rgba(192, 132, 252, 0.6)',
-    ],
-  };
-
   const duration = t.duration ? t.duration / 1000 : 4;
+
+  // Particle colors for success
+  const particleColors = [
+    'rgba(126, 34, 206, 0.6)',
+    'rgba(147, 51, 234, 0.7)',
+    'rgba(107, 33, 168, 0.4)',
+    'rgba(139, 92, 246, 0.5)',
+    'rgba(52, 211, 153, 0.5)',
+  ];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -133,7 +112,7 @@ const Toast = ({ t, message, type }: ToastProps) => {
     const particleCount = Math.max(15, Math.min(25, canvas.width / 20));
     const particles: Particle[] = [];
     for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle(canvas, particleColors[type]));
+      particles.push(new Particle(canvas, particleColors));
     }
     particlesRef.current = particles;
 
@@ -153,28 +132,11 @@ const Toast = ({ t, message, type }: ToastProps) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [type]);
+  }, []);
 
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return <CheckCircle2 className="h-6 w-6 text-white drop-shadow-md" />;
-      case 'error':
-        return <AlertTriangle className="h-6 w-6 text-white drop-shadow-md" />; // Using AlertTriangle for errors
-      default:
-        return <Info className="h-6 w-6 text-white drop-shadow-md" />;
-    }
-  };
-
-  // Different animations based on toast type - removing the shake animation for error toasts
   const containerAnimation = {
     initial: { opacity: 0, y: 20, scale: 0.9, rotateX: -10 },
-    animate: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1, 
-      rotateX: 0,
-    },
+    animate: { opacity: 1, y: 0, scale: 1, rotateX: 0 },
     exit: { opacity: 0, y: -20, scale: 0.9, rotateX: 10 }
   };
 
@@ -190,34 +152,66 @@ const Toast = ({ t, message, type }: ToastProps) => {
         damping: 30,
         mass: 1,
       }}
-      className={`relative overflow-hidden min-w-[320px] rounded-xl shadow-lg border backdrop-blur-sm
-        ${type === 'success'
-          ? 'border-green-300/40 shadow-emerald-500/10'
-          : type === 'error'
-          ? 'border-red-300/40 shadow-red-500/20' 
-          : 'border-purple-300/40 shadow-purple-500/10'
-        }`}
+      className="relative overflow-hidden min-w-[320px] rounded-xl shadow-lg border backdrop-blur-sm border-green-300/40 shadow-emerald-500/10"
       style={{
         boxShadow: `0 4px 20px -2px rgba(0, 0, 0, 0.2),
                     0 0 10px rgba(0, 0, 0, 0.1), 
-                    0 0 15px rgba(${type === 'success'
-          ? '16, 185, 129'
-          : type === 'error'
-          ? '239, 68, 68'
-          : '79, 70, 229'}, ${type === 'error' ? '0.25' : '0.15'})`,
+                    0 0 15px rgba(16, 185, 129, 0.15)`,
         willChange: 'transform, opacity',
         transformStyle: 'preserve-3d',
       }}
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${bgColors[type]} opacity-95`}></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-700 via-emerald-600 to-purple-400 opacity-95"></div>
 
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
       <div className="relative flex items-center p-4 z-10">
-        <div className={`flex-shrink-0 mr-4 p-1.5 rounded-full ${
-          type === 'error' ? 'bg-red-500/20' : 'bg-white/10'
-        } backdrop-blur-sm`}>
-          {getIcon()}
+        <div 
+          className="flex-shrink-0 mr-4 rounded-full"
+          style={{ 
+            width: '34px', 
+            height: '34px', 
+            backgroundColor: 'rgba(255, 255, 255, 0.15)', 
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            position: 'relative'
+          }}
+        >
+          <div 
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="white" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              style={{
+                filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4))',
+                width: '20px',
+                height: '20px',
+                minWidth: '20px',
+                minHeight: '20px',
+                flexShrink: 0
+              }}
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
         </div>
 
         <div className="flex-1 pr-8">
@@ -230,12 +224,199 @@ const Toast = ({ t, message, type }: ToastProps) => {
           onClick={() => toast.dismiss(t.id)}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
+          style={{ touchAction: 'manipulation' }}
         >
-          <X className="h-4 w-4 text-white/90 hover:text-white" />
+          <X className="h-4 w-4 text-white/90 hover:text-white" strokeWidth={2} />
         </button>
       </div>
 
-      <div className={`relative h-1.5 w-full ${type === 'error' ? 'bg-black/20' : 'bg-black/10'}`}>
+      <div className="relative h-1.5 w-full bg-black/10">
+        <motion.div
+          className="h-full bg-white/90 relative overflow-hidden"
+          initial={{ width: '0%' }}
+          animate={{ width: '100%' }}
+          transition={{
+            duration: duration,
+            ease: "linear",
+            repeat: 0,
+          }}
+          onAnimationComplete={() => toast.dismiss(t.id)}
+          style={{
+            willChange: 'width',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(0)',
+            WebkitFontSmoothing: 'subpixel-antialiased',
+          }}
+        >
+          <motion.span
+            className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent"
+            initial={{ x: '-100%' }}
+            animate={{ x: '100%' }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: 'linear',
+              repeatDelay: 0,
+            }}
+            style={{
+              willChange: 'transform',
+              transform: 'translateZ(0)',
+            }}
+          />
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+});
+SuccessToast.displayName = 'SuccessToast';
+
+const ErrorToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const duration = t.duration ? t.duration / 1000 : 4;
+
+  // Particle colors for error
+  const particleColors = [
+    'rgba(220, 38, 38, 0.6)', // Red particles for errors
+    'rgba(239, 68, 68, 0.7)',
+    'rgba(185, 28, 28, 0.5)',
+    'rgba(252, 165, 165, 0.4)',
+    'rgba(126, 34, 206, 0.3)', // A bit of purple for brand consistency
+  ];
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particleCount = Math.max(15, Math.min(25, canvas.width / 20));
+    const particles: Particle[] = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle(canvas, particleColors));
+    }
+    particlesRef.current = particles;
+
+    let animationFrameId: number;
+    const animate = () => {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((particle) => {
+        particle.update(canvas);
+        particle.draw(ctx);
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  const containerAnimation = {
+    initial: { opacity: 0, y: 20, scale: 0.9, rotateX: -10 },
+    animate: { opacity: 1, y: 0, scale: 1, rotateX: 0 },
+    exit: { opacity: 0, y: -20, scale: 0.9, rotateX: 10 }
+  };
+
+  return (
+    <motion.div
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={containerAnimation}
+      transition={{
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+        mass: 1,
+      }}
+      className="relative overflow-hidden min-w-[320px] rounded-xl shadow-lg border backdrop-blur-sm border-red-300/40 shadow-red-500/20"
+      style={{
+        boxShadow: `0 4px 20px -2px rgba(0, 0, 0, 0.2),
+                    0 0 10px rgba(0, 0, 0, 0.1), 
+                    0 0 15px rgba(239, 68, 68, 0.25)`,
+        willChange: 'transform, opacity',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-red-700 via-purple-600 to-red-500 opacity-95"></div>
+
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+
+      <div className="relative flex items-center p-4 z-10">
+        <div 
+          className="flex-shrink-0 mr-4 rounded-full"
+          style={{ 
+            width: '34px', 
+            height: '34px', 
+            backgroundColor: 'rgba(220, 38, 38, 0.25)', // Color rojo sólido con baja opacidad
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            position: 'relative'
+          }}
+        >
+          <div 
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="white" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              style={{
+                filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4))',
+                width: '20px',
+                height: '20px',
+                minWidth: '20px',
+                minHeight: '20px',
+                flexShrink: 0
+              }}
+            >
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+        </div>
+
+        <div className="flex-1 pr-8">
+          <p className="text-white font-medium text-[15px] drop-shadow-sm">
+            {typeof message === 'string' ? message : 'Notification'}
+          </p>
+        </div>
+
+        <button
+          onClick={() => toast.dismiss(t.id)}
+          className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
+          aria-label="Dismiss"
+          style={{ touchAction: 'manipulation' }}
+        >
+          <X className="h-4 w-4 text-white/90 hover:text-white" strokeWidth={2} />
+        </button>
+      </div>
+
+      <div className="relative h-1.5 w-full bg-black/20">
         <motion.div
           className="h-full bg-white/90 relative overflow-hidden"
           initial={{ width: '0%' }}
@@ -271,28 +452,210 @@ const Toast = ({ t, message, type }: ToastProps) => {
         </motion.div>
       </div>
 
-      {type === 'error' && (
-        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500/50"></div>
-      )}
+      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-red-500/50"></div>
     </motion.div>
   );
-};
+});
+ErrorToast.displayName = 'ErrorToast';
 
-const DefaultToast = ({ t }: { t: ToastType }) => {
+const DefaultToast = memo(({ t }: { t: ToastType }) => {
   const message = typeof t.message === 'string' ? t.message : 'Notification';
-  return <Toast t={t} message={message} type="default" />;
-};
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const duration = t.duration ? t.duration / 1000 : 4;
+
+  // Particle colors for default
+  const particleColors = [
+    'rgba(126, 34, 206, 0.6)',
+    'rgba(147, 51, 234, 0.7)',
+    'rgba(107, 33, 168, 0.4)',
+    'rgba(139, 92, 246, 0.5)',
+    'rgba(192, 132, 252, 0.6)',
+  ];
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const particleCount = Math.max(15, Math.min(25, canvas.width / 20));
+    const particles: Particle[] = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle(canvas, particleColors));
+    }
+    particlesRef.current = particles;
+
+    let animationFrameId: number;
+    const animate = () => {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((particle) => {
+        particle.update(canvas);
+        particle.draw(ctx);
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  const containerAnimation = {
+    initial: { opacity: 0, y: 20, scale: 0.9, rotateX: -10 },
+    animate: { opacity: 1, y: 0, scale: 1, rotateX: 0 },
+    exit: { opacity: 0, y: -20, scale: 0.9, rotateX: 10 }
+  };
+
+  return (
+    <motion.div
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={containerAnimation}
+      transition={{
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+        mass: 1,
+      }}
+      className="relative overflow-hidden min-w-[320px] rounded-xl shadow-lg border backdrop-blur-sm border-purple-300/40 shadow-purple-500/10"
+      style={{
+        boxShadow: `0 4px 20px -2px rgba(0, 0, 0, 0.2),
+                    0 0 10px rgba(0, 0, 0, 0.1), 
+                    0 0 15px rgba(79, 70, 229, 0.15)`,
+        willChange: 'transform, opacity',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-800 via-indigo-600 to-purple-400 opacity-95"></div>
+
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+
+      <div className="relative flex items-center p-4 z-10">
+        <div 
+          className="flex-shrink-0 mr-4 rounded-full"
+          style={{ 
+            width: '34px', 
+            height: '34px', 
+            backgroundColor: 'rgba(255, 255, 255, 0.15)', 
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            position: 'relative'
+          }}
+        >
+          <div 
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="white" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              style={{
+                filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4))',
+                width: '20px',
+                height: '20px',
+                minWidth: '20px',
+                minHeight: '20px',
+                flexShrink: 0
+              }}
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+        </div>
+
+        <div className="flex-1 pr-8">
+          <p className="text-white font-medium text-[15px] drop-shadow-sm">
+            {message}
+          </p>
+        </div>
+
+        <button
+          onClick={() => toast.dismiss(t.id)}
+          className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
+          aria-label="Dismiss"
+          style={{ touchAction: 'manipulation' }}
+        >
+          <X className="h-4 w-4 text-white/90 hover:text-white" strokeWidth={2} />
+        </button>
+      </div>
+
+      <div className="relative h-1.5 w-full bg-black/10">
+        <motion.div
+          className="h-full bg-white/90 relative overflow-hidden"
+          initial={{ width: '0%' }}
+          animate={{ width: '100%' }}
+          transition={{
+            duration: duration,
+            ease: "linear",
+            repeat: 0,
+          }}
+          onAnimationComplete={() => toast.dismiss(t.id)}
+          style={{
+            willChange: 'width',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(0)',
+            WebkitFontSmoothing: 'subpixel-antialiased',
+          }}
+        >
+          <motion.span
+            className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent"
+            initial={{ x: '-100%' }}
+            animate={{ x: '100%' }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: 'linear',
+              repeatDelay: 0,
+            }}
+            style={{
+              willChange: 'transform',
+              transform: 'translateZ(0)',
+            }}
+          />
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+});
+DefaultToast.displayName = 'DefaultToast';
 
 export const Toaster = () => {
   return (
     <HotToaster position="bottom-center">
       {(t) => {
+        // Use completely separate components with no shared logic
         if (t.type === 'success') {
-          return <Toast t={t} message={t.message as string} type="success" />;
+          return <SuccessToast t={t} message={t.message as string} />;
         }
 
         if (t.type === 'error') {
-          return <Toast t={t} message={t.message as string} type="error" />;
+          return <ErrorToast t={t} message={t.message as string} />;
         }
 
         return <DefaultToast t={t} />;
@@ -303,15 +666,23 @@ export const Toaster = () => {
 
 export const showToast = {
   success: (message: string, options = {}) =>
-    toast.success(message, { duration: 4000, ...options }),
+    toast.success(message, { 
+      duration: 4000, 
+      id: `success-${Date.now()}`, // Add unique ID to prevent conflicts
+      ...options 
+    }),
   error: (message: string, options = {}) =>
     toast.error(message, { 
-      duration: 4000, // Standardize duration with success toasts
-      id: `error-${Date.now()}`, // Add unique ID to prevent duplicate toasts
+      duration: 4000,
+      id: `error-${Date.now()}`,
       ...options 
     }),
   custom: (message: string, options = {}) =>
-    toast(message, { duration: 4000, ...options }),
+    toast(message, { 
+      duration: 4000,
+      id: `info-${Date.now()}`,
+      ...options 
+    }),
 };
 
 export default { Toaster, showToast };
