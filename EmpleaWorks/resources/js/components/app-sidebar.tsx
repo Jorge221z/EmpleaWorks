@@ -13,12 +13,14 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import type { NavItem, SharedData } from "@/types"
-import { Link, usePage } from "@inertiajs/react"
-import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare } from "lucide-react"
+import { usePage, router } from "@inertiajs/react"
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
-import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { useEffect, useState, useRef } from "react"
+import { MobileNavDialog } from "@/components/mobile-nav-dialog"
 
 interface ExtendedNavItem extends NavItem {
     disabled?: boolean
@@ -30,9 +32,11 @@ export function AppSidebar() {
     const { t } = useTranslation()
     const isAuthenticated = !!auth.user
     const isCompany = isAuthenticated && auth.user.role_id === 2
-    const { state } = useSidebar()
+    const { state, openMobile, setOpenMobile } = useSidebar()
     const [isMobile, setIsMobile] = useState(false)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const { url } = usePage()
+    const userMenuContainerRef = useRef<HTMLDivElement>(null)
 
     // Detectar si es dispositivo móvil
     useEffect(() => {
@@ -86,6 +90,8 @@ export function AppSidebar() {
 
     // Componente para el selector de idioma
     const LanguageSelector = () => {
+        // Detectar si estamos en mobile sidebar abierta
+        const isMobileSidebarOpen = mobileMenuOpen && isMobile;
         return (
             <SidebarMenuItem>
                 <DropdownMenu>
@@ -101,24 +107,29 @@ export function AppSidebar() {
                     <DropdownMenuContent
                         align="start"
                         className="w-40 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900 animate-in slide-in-from-left-5 duration-200"
+                        // Forzar z-index alto y container en mobile sidebar
+                        style={isMobileSidebarOpen ? { zIndex: 13000 } : undefined}
+                        container={isMobileSidebarOpen ? userMenuContainerRef.current : undefined}
+                        onClick={(e) => e.stopPropagation()} // Evitar propagación
                     >
                         {locale?.available &&
                             Object.entries(locale.available).map(([code, name]) => (
                                 <DropdownMenuItem key={code} asChild>
-                                    <Link
-                                        href={route("locale.change", code)}
-                                        method="get"
-                                        as="button"
-                                        type="button"
-                                        preserveState={false}
-                                        preserveScroll={false}
+                                    <button
                                         className={`flex items-center w-full px-2 py-1 transition-all duration-200 ${locale.current === code
                                                 ? "font-semibold text-[#7c28eb] dark:text-purple-300"
                                                 : "text-gray-700 dark:text-gray-300 hover:text-[#7c28eb] dark:hover:text-purple-300 font-medium"
                                             }`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            // Cerrar sidebar mobile si está abierta
+                                            if (isMobileSidebarOpen) setMobileMenuOpen(false);
+                                            // Navegar directamente
+                                            router.visit(route("locale.change", code));
+                                        }}
                                     >
                                         {name}
-                                    </Link>
+                                    </button>
                                 </DropdownMenuItem>
                             ))}
                     </DropdownMenuContent>
@@ -135,13 +146,21 @@ export function AppSidebar() {
                     asChild
                     className="group/terms relative overflow-hidden transition-all duration-300 hover:translate-x-1"
                 >
-                    <Link href={route("terms")} className="flex items-center w-full" preserveState>
+                    <button
+                        className="flex items-center w-full"
+                        onClick={(e) => {
+                            // Detener propagación
+                            e.stopPropagation();
+                            // Navegar directamente
+                            router.visit(route("terms"));
+                        }}
+                    >
                         <FileText className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200" />
                         <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200">
                             {t("terms_and_conditions")}
                         </span>
                         <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/terms:w-full"></span>
-                    </Link>
+                    </button>
                 </SidebarMenuButton>
             </SidebarMenuItem>
         )
@@ -155,13 +174,21 @@ export function AppSidebar() {
                     asChild
                     className="group/contact relative overflow-hidden transition-all duration-300 hover:translate-x-1"
                 >
-                    <Link href={route("contact")} className="flex items-center w-full" preserveState>
+                    <button
+                        className="flex items-center w-full"
+                        onClick={(e) => {
+                            // Detener propagación
+                            e.stopPropagation();
+                            // Navegar directamente
+                            router.visit(route("contact"));
+                        }}
+                    >
                         <MessageSquare className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200" />
                         <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200">
                             {t("contact_us")}
                         </span>
                         <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/contact:w-full"></span>
-                    </Link>
+                    </button>
                 </SidebarMenuButton>
             </SidebarMenuItem>
         )
@@ -352,19 +379,135 @@ export function AppSidebar() {
           background: linear-gradient(to bottom, #9645f4, #a855f7);
           border-radius: 10px;
         }
+        
+        /* Estilos específicos para el Sheet en mobile */
+        [data-mobile="true"][data-sidebar="sidebar"] {
+          height: 100% !important;
+          display: flex !important;
+          z-index: 9999 !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+
+        /* Asegurar que el botón de cierre del Sheet sea visible */
+        [data-mobile="true"] button[data-radix-collection-item] {
+          display: flex !important;
+          position: absolute !important;
+          right: 10px !important;
+          top: 10px !important;
+          z-index: 100 !important;
+        }
+        
+        /* Clase de depuración para hacer muy visible el sidebar móvil */
+        .fixed-mobile-sidebar-debug {
+          position: fixed !important;
+          left: 0 !important;
+          top: 0 !important;
+          bottom: 0 !important;
+          width: 85% !important;
+          max-width: 300px !important;
+          z-index: 9999 !important;
+          background: white !important;
+          border-right: 2px solid purple !important;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) !important;
+        }
+        
+        /* Asegurar que el contenido de Radix Sheet es visible */
+        [role="dialog"] {
+          z-index: 10000 !important;
+        }
+
+        /* Fondo redondeado y suave para el trigger mobile sidebar */
+        .mobile-sidebar-trigger-bg {
+          background: linear-gradient(135deg, rgba(150,69,244,0.10) 0%, rgba(236,72,153,0.10) 100%);
+          border-radius: 9999px;
+          box-shadow: 0 2px 8px 0 rgba(150,69,244,0.08);
+          transition: background 0.2s, box-shadow 0.2s;
+        }
+        .mobile-sidebar-trigger-bg:hover, .mobile-sidebar-trigger-bg:focus {
+          background: linear-gradient(135deg, rgba(150,69,244,0.18) 0%, rgba(236,72,153,0.18) 100%);
+          box-shadow: 0 4px 16px 0 rgba(150,69,244,0.13);
+        }
+
+        /* Forzar el z-index del contenedor del menú de usuario en mobile */
+        .mobile-user-menu-z {
+          position: relative;
+          z-index: 11000 !important;
+        }
+        /* Forzar el z-index del dropdown del usuario y moverlo a la derecha en mobile */
+        .user-dropdown-z {
+          z-index: 12000 !important;
+          left: 56px !important; /* Ajusta este valor según el ancho de tu sidebar */
+        }
+        /* Asegurar que el Sheet y overlay no tapen el menú */
+        [role="dialog"] {
+          z-index: 10000 !important;
+        }
+        .radix-portal {
+          z-index: 12000 !important;
+        }
       `}</style>
 
+            {/* Mobile Menu Trigger - Solo visible en móvil */}
+            <div className="fixed top-3 left-3 z-50 md:hidden">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-10 rounded-full shadow-md mobile-sidebar-trigger-bg"
+                    onClick={() => setMobileMenuOpen(true)}
+                >
+                    <PanelLeft className="h-10 w-5 text-purple-600 dark:text-purple-400" />
+                    <span className="sr-only">Abrir menú</span>
+                </Button>
+            </div>
+
+            {/* Mobile Navigation - Usar nuestro componente personalizado */}
+            <MobileNavDialog open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                <div className="flex flex-col h-full">
+                    <div className="flex-1 space-y-4 overflow-hidden">
+                        <NavMain 
+                            items={mainNavItems} 
+                            onNavigate={() => setMobileMenuOpen(false)} 
+                        />
+                        <div className="pt-10 mt-38">
+                            <SidebarMenu className="mt-4">
+                                <LanguageSelector />
+                                <TermsAndConditions />
+                                <ContactLink />
+                            </SidebarMenu>
+                        </div>
+                    </div>
+                    {/* Footer fijo abajo para el perfil */}
+                    <div className="pt-4 pb-6 px-2">
+                        <div ref={userMenuContainerRef} className="mobile-user-menu-z">
+                            <NavUser 
+                                dropdownContainer={userMenuContainerRef.current}
+                                dropdownClassName="user-dropdown-z"
+                                dropdownAlign="start"
+                                dropdownSideOffset={16}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </MobileNavDialog>
+            
+            {/* Desktop Sidebar - Usar el componente de la UI en desktop, DESACTIVADO completamente en móvil */}
             <Sidebar 
                 collapsible="icon" 
                 variant="inset" 
-                className="transition-all duration-300 shadow-sm"
+                className="transition-all duration-300 shadow-sm hidden md:flex"
                 data-sidebar-state={state}
+                mobileSidebarDisabled={true} // Esta prop es crucial para desactivar la versión móvil
             >
                 <SidebarHeader className="bg-transparent pb-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu>
                         <SidebarMenuItem className="logo-menu-item">
                             <SidebarMenuButton size="lg" asChild className="group/logo logo-button">
-                                <Link href="/dashboard" prefetch className="flex items-center gap-2 justify-center">
+                                <button 
+                                    onClick={() => router.visit('/dashboard')} 
+                                    className="flex items-center gap-2 justify-center"
+                                >
                                     <div className="logo-glow">
                                         <AppLogo className="h-12 w-8 bg-transparent p-0 m-0 transition-transform duration-300" />
                                     </div>
@@ -373,7 +516,7 @@ export function AppSidebar() {
                                             EmpleaWorks
                                         </span>
                                     )}
-                                </Link>
+                                </button>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
