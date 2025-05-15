@@ -37,10 +37,12 @@ export function MobileNavDialog({ open, onOpenChange, children }: MobileNavDialo
       >
         <div className="flex items-center justify-between p-4 border-b border-purple-100/50 dark:border-purple-800/30">
           <button
-            className="flex items-center gap-2"
+            className="flex items-center gap-3 px-1"
             onClick={() => handleNavigate('/dashboard')}
           >
-            <AppLogo className="h-8 w-6" />
+            <div className="flex items-center justify-center rounded-md overflow-visible">
+              <AppLogo className="h-9 w-8" />
+            </div>
             <span className="text-xl font-bold tracking-tight text-[#7c28eb] dark:text-purple-300">
               EmpleaWorks
             </span>

@@ -90,6 +90,8 @@ export function AppSidebar() {
 
     // Componente para el selector de idioma
     const LanguageSelector = () => {
+        // Detectar si estamos en mobile sidebar abierta
+        const isMobileSidebarOpen = mobileMenuOpen && isMobile;
         return (
             <SidebarMenuItem>
                 <DropdownMenu>
@@ -105,6 +107,9 @@ export function AppSidebar() {
                     <DropdownMenuContent
                         align="start"
                         className="w-40 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900 animate-in slide-in-from-left-5 duration-200"
+                        // Forzar z-index alto y container en mobile sidebar
+                        style={isMobileSidebarOpen ? { zIndex: 13000 } : undefined}
+                        container={isMobileSidebarOpen ? userMenuContainerRef.current : undefined}
                         onClick={(e) => e.stopPropagation()} // Evitar propagación
                     >
                         {locale?.available &&
@@ -116,8 +121,9 @@ export function AppSidebar() {
                                                 : "text-gray-700 dark:text-gray-300 hover:text-[#7c28eb] dark:hover:text-purple-300 font-medium"
                                             }`}
                                         onClick={(e) => {
-                                            // Detener propagación
                                             e.stopPropagation();
+                                            // Cerrar sidebar mobile si está abierta
+                                            if (isMobileSidebarOpen) setMobileMenuOpen(false);
                                             // Navegar directamente
                                             router.visit(route("locale.change", code));
                                         }}
@@ -407,7 +413,7 @@ export function AppSidebar() {
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) !important;
         }
         
-        /* Asegurarse que el contenido de Radix Sheet es visible */
+        /* Asegurar que el contenido de Radix Sheet es visible */
         [role="dialog"] {
           z-index: 10000 !important;
         }
@@ -459,12 +465,12 @@ export function AppSidebar() {
             {/* Mobile Navigation - Usar nuestro componente personalizado */}
             <MobileNavDialog open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <div className="flex flex-col h-full">
-                    <div className="flex-1 space-y-4 overflow-y-auto">
+                    <div className="flex-1 space-y-4 overflow-hidden">
                         <NavMain 
                             items={mainNavItems} 
                             onNavigate={() => setMobileMenuOpen(false)} 
                         />
-                        <div className="pt-4 mt-6">
+                        <div className="pt-10 mt-38">
                             <SidebarMenu className="mt-4">
                                 <LanguageSelector />
                                 <TermsAndConditions />
