@@ -20,7 +20,7 @@ import L from "leaflet"
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, showToast } from "@/components/toast"
 
 const leafletIcon = new L.Icon({
     iconUrl: markerIcon,
@@ -91,19 +91,11 @@ export default function Contact() {
 
     useEffect(() => {
         if (flash && flash.success) {
-            toast.success(flash.success, {
-                id: "success-toast",
-                duration: 1500,
-                icon: "👍",
-            })
+            showToast.success(flash.success);
         }
         
         if (flash && flash.error) {
-            toast.error(flash.error, {
-                id: "error-toast",
-                duration: 1500,
-                icon: "❌",
-            })
+            showToast.error(flash.error);
         }
     }, [flash])
 
@@ -194,20 +186,7 @@ export default function Contact() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t("contact_us")} />
 
-            <Toaster
-                position="bottom-center"
-                toastOptions={{
-                    className: "toast-offers",
-                    style: {
-                        background: "#363636",
-                        color: "#fff",
-                        borderRadius: "8px",
-                        padding: "20px 28px",
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                    },
-                    id: "unique-toast",
-                }}
-            />
+            <Toaster />
 
             <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">

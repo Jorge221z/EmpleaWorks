@@ -197,6 +197,14 @@ const translations: Record<string, Record<string, string>> = {
         'dark': 'Dark',
         'system': 'System',
 
+        // Appearance and Theme
+        'theme_changed': 'Theme changed to {theme}',
+        'theme_light': 'Light',
+        'theme_dark': 'Dark',
+        'theme_system': 'System',
+        'theme_change_success': 'Theme changed successfully',
+        'theme_change_error': 'Error changing theme',
+
         // Dropdown menu footer sidebar
         'guest_user': 'Guest User',
         'account': 'Account',
@@ -620,6 +628,14 @@ const translations: Record<string, Record<string, string>> = {
         'light': 'Claro',
         'dark': 'Oscuro',
         'system': 'Sistema',
+
+        // Apariencia y Tema
+        'theme_changed': 'Tema cambiado a {theme}',
+        'theme_light': 'Claro',
+        'theme_dark': 'Oscuro',
+        'theme_system': 'Sistema',
+        'theme_change_success': 'Tema cambiado correctamente',
+        'theme_change_error': 'Error al cambiar el tema',
 
         // Dropdown menu footer sidebar
         'guest_user': 'Usuario Invitado',

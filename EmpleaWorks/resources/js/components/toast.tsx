@@ -166,7 +166,7 @@ const Toast = ({ t, message, type }: ToastProps) => {
     }
   };
 
-  // Different animations based on toast type
+  // Different animations based on toast type - removing the shake animation for error toasts
   const containerAnimation = {
     initial: { opacity: 0, y: 20, scale: 0.9, rotateX: -10 },
     animate: { 
@@ -174,7 +174,6 @@ const Toast = ({ t, message, type }: ToastProps) => {
       y: 0, 
       scale: 1, 
       rotateX: 0,
-      x: type === 'error' ? [0, -5, 5, -5, 5, 0] : 0 // Shake animation for errors
     },
     exit: { opacity: 0, y: -20, scale: 0.9, rotateX: 10 }
   };
@@ -190,24 +189,22 @@ const Toast = ({ t, message, type }: ToastProps) => {
         stiffness: 400,
         damping: 30,
         mass: 1,
-        // Special timing for shake effect on errors
-        x: { type: 'spring', stiffness: 300, damping: 10, duration: 0.5 }
       }}
       className={`relative overflow-hidden min-w-[320px] rounded-xl shadow-lg border backdrop-blur-sm
         ${type === 'success'
           ? 'border-green-300/40 shadow-emerald-500/10'
           : type === 'error'
-          ? 'border-red-300/40 shadow-red-500/20' // Red border for errors
+          ? 'border-red-300/40 shadow-red-500/20' 
           : 'border-purple-300/40 shadow-purple-500/10'
         }`}
       style={{
         boxShadow: `0 4px 20px -2px rgba(0, 0, 0, 0.2),
                     0 0 10px rgba(0, 0, 0, 0.1), 
                     0 0 15px rgba(${type === 'success'
-          ? '16, 185, 129' // Green glow for success
+          ? '16, 185, 129'
           : type === 'error'
-          ? '239, 68, 68' // Red glow for errors
-          : '79, 70, 229'}, ${type === 'error' ? '0.25' : '0.15'})`, // Stronger glow for errors
+          ? '239, 68, 68'
+          : '79, 70, 229'}, ${type === 'error' ? '0.25' : '0.15'})`,
         willChange: 'transform, opacity',
         transformStyle: 'preserve-3d',
       }}
@@ -308,7 +305,11 @@ export const showToast = {
   success: (message: string, options = {}) =>
     toast.success(message, { duration: 4000, ...options }),
   error: (message: string, options = {}) =>
-    toast.error(message, { duration: 5000, ...options }),
+    toast.error(message, { 
+      duration: 4000, // Standardize duration with success toasts
+      id: `error-${Date.now()}`, // Add unique ID to prevent duplicate toasts
+      ...options 
+    }),
   custom: (message: string, options = {}) =>
     toast(message, { duration: 4000, ...options }),
 };

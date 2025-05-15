@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Company, Candidate, User } from '@/types/types';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster, showToast } from '@/components/toast';
 import { useTranslation } from '@/utils/i18n';
 import { cn } from '@/lib/utils';
 
@@ -71,10 +71,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     // Mostramos los mensajes flash del backend
     useEffect(() => {
         if (flash && flash.success) {
-            toast.success(flash.success);
+            showToast.success(flash.success);
         }
         if (flash && flash.error) {
-            toast.error(flash.error);
+            showToast.error(flash.error);
         }
     }, [flash]);
 
@@ -129,20 +129,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Toaster
-                position="bottom-center"
-                toastOptions={{
-                    className: 'toast-offers',
-                    style: {
-                        background: '#363636',
-                        color: '#fff',
-                        borderRadius: '8px',
-                        padding: '20px 28px',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                    },
-                    id: 'unique-toast2',
-                }}
-            />
+            <Toaster />
             <Head title={t('profile_settings')} />
 
             <SettingsLayout>
@@ -313,7 +300,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                             setData('delete_cv', false);
                                             setCvName(file.name);
                                         } else if (file) {
-                                            toast.error(t('only_pdf_doc'));
+                                            showToast.error(t('only_pdf_doc'));
                                         }
                                     }}
                                 >
@@ -330,7 +317,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                     setCvName(file.name);
                                                 } else {
                                                     e.target.value = '';
-                                                    toast.error(t('only_pdf_doc'));
+                                                    showToast.error(t('only_pdf_doc'));
                                                 }
                                             }
                                         }}
@@ -425,7 +412,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         };
                                         reader.readAsDataURL(file);
                                     } else if (file) {
-                                        toast.error(t('only_image_files'));
+                                        showToast.error(t('only_image_files'));
                                     }
                                 }}
                             >
@@ -446,7 +433,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                                 reader.readAsDataURL(file);
                                             } else {
                                                 e.target.value = '';
-                                                toast.error(t('only_image_files'));
+                                                showToast.error(t('only_image_files'));
                                             }
                                         }
                                     }}

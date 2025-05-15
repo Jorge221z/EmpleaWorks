@@ -4,7 +4,11 @@ import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
 import { useTranslation } from '@/utils/i18n';
 
-export default function AppearanceToggleTab({ className = '', ...props }: HTMLAttributes<HTMLDivElement>) {
+interface AppearanceToggleTabProps extends HTMLAttributes<HTMLDivElement> {
+    onThemeChange?: (theme: Appearance) => void;
+}
+
+export default function AppearanceToggleTab({ className = '', onThemeChange, ...props }: AppearanceToggleTabProps) {
     const { appearance, updateAppearance } = useAppearance();
     const { t } = useTranslation();
     
@@ -31,7 +35,12 @@ export default function AppearanceToggleTab({ className = '', ...props }: HTMLAt
             {tabs.map(({ value, icon: Icon, label }) => (
                 <button
                     key={value}
-                    onClick={() => updateAppearance(value)}
+                    onClick={() => {
+                        updateAppearance(value);
+                        if (onThemeChange && typeof onThemeChange === 'function') {
+                            onThemeChange(value);
+                        }
+                    }}
                     className={cn(
                         'flex items-center rounded-md px-3.5 py-1.5 transition-colors',
                         appearance === value

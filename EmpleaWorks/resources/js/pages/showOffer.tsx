@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import type { BreadcrumbItem } from "@/types"
 import type { ShowOfferProps } from "@/types/types"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, showToast } from "@/components/toast"
 import { useTranslation } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
 
@@ -48,10 +48,10 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
   // ----- SIDE EFFECTS -----
   useEffect(() => {
     if (flash && flash.success) {
-      toast.success(flash.success)
+      showToast.success(flash.success)
     }
     if (flash && flash.error) {
-      toast.error(flash.error)
+      showToast.error(flash.error)
     }
   }, [flash])
 
@@ -151,19 +151,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
   // ----- RENDER COMPONENT -----
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: "toast-offers",
-          style: {
-            background: "#363636",
-            color: "#fff",
-            borderRadius: "8px",
-            padding: "20px 28px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          },
-        }}
-      />
+      <Toaster />
       <Head title={`${offer.name} - EmpleaWorks`} />
 
       {/* Contenedor principal */}
