@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\Auth\GoogleController;
 
 // Home y Dashboard (mostrar ofertas)
 Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -36,6 +37,12 @@ Route::get('/contact', function () {
 // Ruta para el formulario de contacto
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'submit'])
     ->name('contact.submit');
+
+// Google Auth Routes
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::get('auth/google/select-role', [GoogleController::class, 'showRoleSelectionForm'])->name('google.select.role');
+Route::post('auth/google/process-role', [GoogleController::class, 'processRoleSelection'])->name('google.process.role');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

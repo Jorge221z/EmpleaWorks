@@ -404,6 +404,24 @@ const translations: Record<string, Record<string, string>> = {
         'sending': 'Sending...',
         'send_message': 'Send Message',
         'privacy_notice': 'By submitting this form, you agree to our Terms and Conditions and Privacy Policy.',
+
+        // Google API
+        'or_continue_with': 'Or continue with',
+        'or_register_with_email': 'Or register with email',
+        'sign_in_with_google': 'Sign in with Google',
+        'register_with_google': 'Register with Google',
+        'complete_registration': 'Complete your registration',
+        'select_role_description': 'Please select your role to complete your registration with Google',
+        'select_your_role': 'Select your role',
+        'completing': 'Completing...',
+        'candidate_role_description': 'Search and apply for job opportunities',
+        'company_role_description': 'Post job offers and find candidates',
+        'candidate_feature_1': 'Create a professional profile',
+        'candidate_feature_2': 'Apply to job offers with one click',
+        'candidate_feature_3': 'Track application status',
+        'company_feature_1': 'Post unlimited job offers',
+        'company_feature_2': 'Find qualified candidates',
+        'company_feature_3': 'Manage hiring process efficiently',
     },
     es: {
         // Sidebar
@@ -807,6 +825,24 @@ const translations: Record<string, Record<string, string>> = {
         'sending': 'Enviando...',
         'send_message': 'Enviar mensaje',
         'privacy_notice': 'Al enviar este formulario, aceptas nuestros Términos y Condiciones y la Política de Privacidad.',
+
+        // Google API
+        'or_continue_with': 'O continuar con',
+        'or_register_with_email': 'O regístrate con email',
+        'sign_in_with_google': 'Iniciar sesión con Google',
+        'register_with_google': 'Registrarse con Google',
+        'complete_registration': 'Completa tu registro',
+        'select_role_description': 'Por favor, selecciona tu rol para completar tu registro con Google',
+        'select_your_role': 'Selecciona tu rol',
+        'completing': 'Completando...',
+        'candidate_role_description': 'Busca y aplica a oportunidades laborales',
+        'company_role_description': 'Publica ofertas de trabajo y encuentra candidatos',
+        'candidate_feature_1': 'Crea un perfil profesional',
+        'candidate_feature_2': 'Aplica a ofertas con un solo clic',
+        'candidate_feature_3': 'Sigue el estado de tus solicitudes',
+        'company_feature_1': 'Publica ofertas de trabajo ilimitadas',
+        'company_feature_2': 'Encuentra candidatos cualificados',
+        'company_feature_3': 'Gestiona el proceso de contratación eficientemente',
     }
 };
 
