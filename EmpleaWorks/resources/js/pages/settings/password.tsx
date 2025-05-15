@@ -6,7 +6,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 import { useTranslation } from '@/utils/i18n';
 import { LoaderCircle } from 'lucide-react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster, showToast } from '@/components/toast';
 
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
@@ -58,7 +58,7 @@ export default function Password() {
                 
                 // Si llegamos aquí, significa que la operación fue exitosa
                 reset();
-                toast.success(t('password_updated'));
+                showToast.success(t('password_updated'));
             },
             onError: (errors) => {
                 // Verificar si hay errores específicos
@@ -72,10 +72,10 @@ export default function Password() {
                 if (hasCurrentPasswordError) {
                     reset('current_password');
                     currentPasswordInput.current?.focus();
-                    toast.error(t('current_password_incorrect'));
+                    showToast.error(t('current_password_incorrect'));
                 } else if (Object.keys(errors).length > 0) {
                     // Si hay otros errores
-                    toast.error(t('error_occurred'));
+                    showToast.error(t('error_occurred'));
                 }
             },
         });
@@ -83,20 +83,7 @@ export default function Password() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Toaster
-                position="bottom-center"
-                toastOptions={{
-                    className: 'toast-offers',
-                    style: {
-                        background: '#363636',
-                        color: '#fff',
-                        borderRadius: '8px',
-                        padding: '20px 28px',
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                    },
-                    id: 'unique-toast2',
-                }}
-            />
+            <Toaster />
             <Head title={t('password_settings')} />
 
             <SettingsLayout>

@@ -20,7 +20,7 @@ import L from "leaflet"
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, showToast } from "@/components/toast"
 
 const leafletIcon = new L.Icon({
     iconUrl: markerIcon,
@@ -46,10 +46,6 @@ export default function Contact() {
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props
 
     const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: t("dashboard"),
-            href: "/dashboard",
-        },
         {
             title: t("contact_us"),
             href: "/contact",
@@ -91,19 +87,11 @@ export default function Contact() {
 
     useEffect(() => {
         if (flash && flash.success) {
-            toast.success(flash.success, {
-                id: "success-toast",
-                duration: 1500,
-                icon: "👍",
-            })
+            showToast.success(flash.success);
         }
         
         if (flash && flash.error) {
-            toast.error(flash.error, {
-                id: "error-toast",
-                duration: 1500,
-                icon: "❌",
-            })
+            showToast.error(flash.error);
         }
     }, [flash])
 
@@ -194,20 +182,7 @@ export default function Contact() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t("contact_us")} />
 
-            <Toaster
-                position="bottom-center"
-                toastOptions={{
-                    className: "toast-offers",
-                    style: {
-                        background: "#363636",
-                        color: "#fff",
-                        borderRadius: "8px",
-                        padding: "20px 28px",
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                    },
-                    id: "unique-toast",
-                }}
-            />
+            <Toaster />
 
             <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
@@ -313,39 +288,6 @@ export default function Contact() {
                                         </h3>
                                         <div className="absolute bottom-0 left-0 h-1 w-24 bg-gradient-to-r from-[#7c28eb] to-[#9645f4]"></div>
                                     </div>
-
-                                    {formStatus === "success" && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                        >
-                                            <Alert className="mb-6 bg-green-50/90 dark:bg-green-950/50 backdrop-blur-sm border-green-200 dark:border-green-800 shadow-sm">
-                                                <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
-                                                <AlertTitle className="text-green-800 dark:text-green-300">{t("message_sent")}</AlertTitle>
-                                                <AlertDescription className="text-green-700 dark:text-green-400">
-                                                    {t("message_sent_description") ||
-                                                        "Thank you for contacting us. We'll get back to you as soon as possible."}
-                                                </AlertDescription>
-                                            </Alert>
-                                        </motion.div>
-                                    )}
-
-                                    {formStatus === "error" && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                        >
-                                            <Alert className="mb-6 bg-red-50/90 dark:bg-red-950/50 backdrop-blur-sm border-red-200 dark:border-red-800 shadow-sm">
-                                                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
-                                                <AlertTitle className="text-red-800 dark:text-red-300">{t("error")}</AlertTitle>
-                                                <AlertDescription className="text-red-700 dark:text-red-400">
-                                                    {t("error_description") || "There was an error sending your message. Please try again later."}
-                                                </AlertDescription>
-                                            </Alert>
-                                        </motion.div>
-                                    )}
 
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

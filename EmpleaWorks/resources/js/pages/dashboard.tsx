@@ -9,7 +9,7 @@ import { CalendarIcon, MapPinIcon, BriefcaseIcon, ArrowRightIcon, SearchIcon, Sp
 import type { Offer } from "@/types/types"
 import SearchBar from "@/SearchBar/SearchBar"
 import { useState, useCallback, useEffect, useMemo, useRef } from "react"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, showToast } from "@/components/toast"
 import { useTranslation } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
@@ -89,10 +89,10 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
     // ----- SIDE EFFECTS -----
     useEffect(() => {
         if (flash && flash.success) {
-            toast.success(flash.success)
+            showToast.success(flash.success)
         }
         if (flash && flash.error) {
-            toast.error(flash.error)
+            showToast.error(flash.error)
         }
     }, [flash])
 
@@ -242,20 +242,7 @@ export default function Dashboard({ offers = [], categories = [], contractTypes 
         <>
             <AppLayout breadcrumbs={breadcrumbs}>
                 {/* Sistema de notificaciones */}
-                <Toaster
-                    position="bottom-center"
-                    toastOptions={{
-                        className: "toast-offers",
-                        style: {
-                            background: "#363636",
-                            color: "#fff",
-                            borderRadius: "8px",
-                            padding: "20px 28px",
-                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                        },
-                        id: "unique-toast",
-                    }}
-                />
+                <Toaster />
                 <Head title={t("dashboard")} />
 
                 <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">

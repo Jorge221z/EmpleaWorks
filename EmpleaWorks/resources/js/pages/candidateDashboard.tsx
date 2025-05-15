@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react"
 import { CalendarIcon, MapPinIcon, BriefcaseIcon, FileIcon, UserIcon, Sparkles } from "lucide-react"
 import type { Offer } from "@/types/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, showToast } from "@/components/toast"
 import {
   Dialog,
   DialogContent,
@@ -50,10 +50,10 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
   // ----- SIDE EFFECTS -----
   useEffect(() => {
     if (flash && flash.success) {
-      toast.success(flash.success)
+      showToast.success(flash.success)
     }
     if (flash && flash.error) {
-      toast.error(flash.error)
+      showToast.error(flash.error)
     }
   }, [flash])
 
@@ -188,20 +188,7 @@ export default function CandidateDashboard({ candidateOffers = [] }: { candidate
   // ----- RENDER COMPONENT -----
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: "toast-offers",
-          style: {
-            background: "#363636",
-            color: "#fff",
-            borderRadius: "8px",
-            padding: "20px 28px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          },
-          id: "unique-toast",
-        }}
-      />
+      <Toaster />
       <Head title={t("candidate_dashboard_title")} />
 
       <div className="flex h-full flex-1 flex-col gap-4 p-4 bg-[#FEFBF2] dark:bg-transparent relative overflow-hidden">
