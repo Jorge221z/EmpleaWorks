@@ -450,14 +450,15 @@ export function AppSidebar() {
 
         /* Fondo redondeado y suave para el trigger mobile sidebar */
         .mobile-sidebar-trigger-bg {
-          background: linear-gradient(135deg, rgba(150,69,244,0.10) 0%, rgba(236,72,153,0.10) 100%);
+          background: #FFFFFF; /* Fondo sólido blanco en tema light */
           border-radius: 9999px;
+          border: 2px solid #000000; /* Borde negro más gordo en tema light */
           box-shadow: 0 2px 8px 0 rgba(150,69,244,0.08);
-          transition: background 0.2s, box-shadow 0.2s;
+          transition: background 0.2s, box-shadow 0.2s, border 0.2s;
         }
-        .mobile-sidebar-trigger-bg:hover, .mobile-sidebar-trigger-bg:focus {
-          background: linear-gradient(135deg, rgba(150,69,244,0.18) 0%, rgba(236,72,153,0.18) 100%);
-          box-shadow: 0 4px 16px 0 rgba(150,69,244,0.13);
+        .dark .mobile-sidebar-trigger-bg {
+          background: #000000; /* Fondo sólido negro en tema dark */
+          border: 2px solid #FFFFFF; /* Borde blanco más gordo en tema dark */
         }
 
         /* Forzar el z-index del contenedor del menú de usuario en mobile */
@@ -484,10 +485,10 @@ export function AppSidebar() {
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-10 rounded-full shadow-md mobile-sidebar-trigger-bg"
+                    className="h-8 w-10 rounded-full shadow-md mobile-sidebar-trigger-bg overflow-visible"
                     onClick={() => setMobileMenuOpen(true)}
                 >
-                    <PanelLeft className="h-10 w-5 text-purple-600 dark:text-purple-400" />
+                    <PanelLeft className="h-5 w-5 text-black dark:text-white" />
                     <span className="sr-only">Abrir menú</span>
                 </Button>
             </div>
