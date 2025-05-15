@@ -250,6 +250,36 @@ export function AppSidebar() {
           background: rgba(150, 69, 244, 0.08);
         }
         
+        /* Agregar cursor pointer a todos los botones en la sidebar de desktop */
+        @media (min-width: 768px) {
+          [data-sidebar="sidebar"] button,
+          [data-sidebar="sidebar"] a,
+          [data-sidebar="menu-button"],
+          .logo-button,
+          .sidebar-menu-button-text,
+          [data-sidebar="menu-item"] button,
+          [data-sidebar="menu-item"] a {
+            cursor: pointer;
+          }
+          
+          /* Cursor pointer para los elementos del dropdown */
+          [role="menu"] [role="menuitem"],
+          .DropdownMenuContent button,
+          .DropdownMenuContent a,
+          [data-radix-dropdown-menu-content] button,
+          [data-radix-dropdown-menu-content] a,
+          .dropdown-menu-content *,
+          [class*="dropdown"] button,
+          [class*="dropdown"] a,
+          [class*="dropdown-menu"] *,
+          [id*="radix-"] button,
+          [id*="radix-"] a,
+          [data-state="open"] ~ div button,
+          [data-state="open"] ~ div a {
+            cursor: pointer !important;
+          }
+        }
+        
         /* Estilo especial para el botón del logo - eliminar movimiento completamente */
         .logo-button[data-sidebar="menu-button"]:hover {
           transform: translateX(0); /* Sin movimiento para el logo */
