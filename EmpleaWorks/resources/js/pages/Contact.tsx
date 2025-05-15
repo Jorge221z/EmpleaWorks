@@ -293,39 +293,6 @@ export default function Contact() {
                                         <div className="absolute bottom-0 left-0 h-1 w-24 bg-gradient-to-r from-[#7c28eb] to-[#9645f4]"></div>
                                     </div>
 
-                                    {formStatus === "success" && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                        >
-                                            <Alert className="mb-6 bg-green-50/90 dark:bg-green-950/50 backdrop-blur-sm border-green-200 dark:border-green-800 shadow-sm">
-                                                <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
-                                                <AlertTitle className="text-green-800 dark:text-green-300">{t("message_sent")}</AlertTitle>
-                                                <AlertDescription className="text-green-700 dark:text-green-400">
-                                                    {t("message_sent_description") ||
-                                                        "Thank you for contacting us. We'll get back to you as soon as possible."}
-                                                </AlertDescription>
-                                            </Alert>
-                                        </motion.div>
-                                    )}
-
-                                    {formStatus === "error" && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                        >
-                                            <Alert className="mb-6 bg-red-50/90 dark:bg-red-950/50 backdrop-blur-sm border-red-200 dark:border-red-800 shadow-sm">
-                                                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
-                                                <AlertTitle className="text-red-800 dark:text-red-300">{t("error")}</AlertTitle>
-                                                <AlertDescription className="text-red-700 dark:text-red-400">
-                                                    {t("error_description") || "There was an error sending your message. Please try again later."}
-                                                </AlertDescription>
-                                            </Alert>
-                                        </motion.div>
-                                    )}
-
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2 relative">
