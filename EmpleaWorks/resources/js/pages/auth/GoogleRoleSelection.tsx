@@ -9,6 +9,10 @@ import { useTranslation } from "@/utils/i18n"
 import { motion } from "framer-motion"
 import { User, Building2, CheckCircle } from "lucide-react"
 
+/**
+ * Componente de selección de rol para nuevos usuarios registrados con Google.
+ * Permite elegir entre candidato o empresa para determinar el tipo de perfil.
+ */
 export default function GoogleRoleSelection() {
   const { t } = useTranslation()
   
@@ -21,7 +25,6 @@ export default function GoogleRoleSelection() {
     post(route('google.process.role'))
   }
   
-  // Simplificado el método de selección para evitar problemas
   const selectRole = (role: string) => {
     setData('role_id', role)
   }
@@ -30,15 +33,15 @@ export default function GoogleRoleSelection() {
     <>
       <Head title={t("select_role")} />
       <div className="relative flex min-h-screen items-center justify-center p-4 overflow-hidden">
-        {/* Animated background gradient */}
+        {/* Fondo con gradiente */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
           <canvas id="particle-canvas" className="absolute inset-0 w-full h-full" />
         </div>
   
-        {/* Content with glassmorphism effect */}
+        {/* Contenedor principal */}
         <div className="relative z-10 w-full max-w-md space-y-8">
           <div className="flex flex-col items-center justify-center space-y-2 text-center">
-            {/* Logo actualizado con estilo de login-form */}
+            {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group justify-center mb-2">
               <AppLogo className="h-12 w-8 bg-transparent p-0 m-0" />
               <span className="text-xl font-bold tracking-tight hover:text-purple-600 dark:hover:text-purple-300 transition-colors -ml-1">
@@ -69,7 +72,7 @@ export default function GoogleRoleSelection() {
                     onValueChange={(value) => setData('role_id', value)}
                     className="flex flex-col gap-4"
                   >
-                    {/* Candidato */}
+                    {/* Opción Candidato */}
                     <label htmlFor="candidate-option" className="cursor-pointer w-full">
                       <div 
                         className={`
@@ -113,7 +116,7 @@ export default function GoogleRoleSelection() {
                       </div>
                     </label>
                     
-                    {/* Empresa */}
+                    {/* Opción Empresa */}
                     <label htmlFor="company-option" className="cursor-pointer w-full">
                       <div 
                         className={`

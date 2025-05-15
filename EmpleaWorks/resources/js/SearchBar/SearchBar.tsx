@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Offer } from "@/types/types";
 import { useTranslation } from "@/utils/i18n";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { ChevronDown, ChevronUp, Filter } from "lucide-react";
 
 interface SearchBarProps {
   data: Offer[];
@@ -21,17 +21,13 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedContractType, setSelectedContractType] = useState("all");
   const [resultsCount, setResultsCount] = useState(data.length);
-  const [isFiltersDialogOpen, setIsFiltersDialogOpen] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // ----- COLOR THEMING SYSTEM -----
-  // Colores principales (púrpura)
   const purpleColor = '#7c28eb';
   const purpleHoverColor = '#6620c5';
-  
-  // Colores de acento (ámbar)
   const amberColor = '#FDC231';
   const amberDarkColor = '#E3B100';
-  const amberLightColor = '#FFDE7A';
 
   // ----- DATA PREPARATION -----
   const availableCategories = categories || [...new Set(data.map(offer => offer.category).filter(Boolean))];
@@ -95,7 +91,11 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
     setQuery("");
     setSelectedCategory("all");
     setSelectedContractType("all");
-    setIsFiltersDialogOpen(false);
+    setShowMobileFilters(false);
+  };
+
+  const toggleMobileFilters = () => {
+    setShowMobileFilters(prev => !prev);
   };
 
   const activeFiltersCount = 
@@ -103,11 +103,9 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
     (selectedContractType !== "all" ? 1 : 0);
 
   // ----- THEMING & STYLES -----
-  // Determinar colores para elementos de la UI
   const buttonBgColor = { backgroundColor: purpleColor, color: 'white' };
   const buttonHoverBgColor = { backgroundColor: purpleHoverColor }; 
 
-  // Determinar colores para badges
   const categoryBadgeStyle = { 
     backgroundColor: `${amberColor}20`, 
     color: amberDarkColor 
@@ -118,7 +116,6 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
     color: purpleColor 
   };
 
-  // Determinar colores para counter badge
   const counterBadgeStyle = { 
     backgroundColor: amberColor,
     color: "#333"
@@ -136,7 +133,8 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
   // ----- RENDER COMPONENT -----
   return (
     <div className="w-full">
-      <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-2xl shadow-md overflow-hidden">
+      {/* Barra de búsqueda principal */}
+      <div className="grid grid-cols-12 bg-white dark:bg-gray-950 rounded-t-2xl shadow-md overflow-hidden">
         {/* Campo de búsqueda */}
         <div className="col-span-6 sm:col-span-7 md:col-span-7 lg:col-span-4">
           <input
@@ -149,85 +147,25 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
         </div>
         
         {/* Botón de filtros para móvil y tablet - Visible en sm y md */}
-        <Dialog open={isFiltersDialogOpen} onOpenChange={setIsFiltersDialogOpen}>
-          <DialogTrigger asChild>
-            <button 
-              className="lg:hidden col-span-4 sm:col-span-3 md:col-span-3 flex items-center justify-center gap-2 border-l border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+        <button 
+          className="lg:hidden col-span-4 sm:col-span-3 md:col-span-3 flex items-center justify-center gap-2 border-l border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          onClick={toggleMobileFilters}
+        >
+          <Filter className="w-4 h-4" style={{ color: purpleColor }} />
+          <span className="text-sm">{t('filters')}</span>
+          {activeFiltersCount > 0 && (
+            <span 
+              className="flex items-center justify-center w-5 h-5 text-xs rounded-full"
+              style={counterBadgeStyle}
             >
-              <svg className="w-4 h-4" fill="none" stroke={purpleColor} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-              <span className="text-sm">{t('filters')}</span>
-              {activeFiltersCount > 0 && (
-                <span 
-                  className="flex items-center justify-center w-5 h-5 text-xs rounded-full"
-                  style={counterBadgeStyle}
-                >
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md dark:bg-gray-900 border-purple-100 dark:border-purple-600/30">
-            <DialogHeader>
-              <DialogTitle className="text-[#7c28eb] dark:text-purple-300">{t('filters')}</DialogTitle>
-              <DialogDescription>
-                {t('filter_description')}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <label className="text-sm font-medium text-[#7c28eb] dark:text-purple-300">{t('category')}</label>
-                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
-                  <SelectTrigger className="focus-visible:ring-purple-500 border-purple-100 dark:border-purple-600/30">
-                    <SelectValue placeholder={t('select_category')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('all_categories')}</SelectItem>
-                    {availableCategories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <label className="text-sm font-medium text-[#7c28eb] dark:text-purple-300">{t('contract_type')}</label>
-                <Select value={selectedContractType} onValueChange={(value) => setSelectedContractType(value)}>
-                  <SelectTrigger className="focus-visible:ring-purple-500 border-purple-100 dark:border-purple-600/30">
-                    <SelectValue placeholder={t('select_contract_type')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('all_contract_types')}</SelectItem>
-                    {availableContractTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex justify-between mt-4">
-                <button 
-                  onClick={clearSearch}
-                  className="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 cursor-pointer"
-                >
-                  {t('clear_filters')}
-                </button>
-                <button 
-                  onClick={() => setIsFiltersDialogOpen(false)}
-                  className="px-3 py-2 text-sm text-white rounded-md cursor-pointer"
-                  style={buttonBgColor}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                >
-                  {t('apply_filters')}
-                </button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+              {activeFiltersCount}
+            </span>
+          )}
+          {showMobileFilters ? 
+            <ChevronUp className="w-4 h-4 ml-1" /> : 
+            <ChevronDown className="w-4 h-4 ml-1" />
+          }
+        </button>
         
         {/* Categoría con icono - Visible SOLO en lg y superiores */}
         <div className="hidden lg:block col-span-3 border-l border-gray-100 dark:border-gray-700">
@@ -315,6 +253,70 @@ function SearchBar({ data, onFilteredResults, categories, contractTypes, primary
               </svg>
             </button>
           )}
+        </div>
+      </div>
+      
+      {/* Panel de filtros para móvil - desplegable */}
+      <div 
+        className={cn(
+          "lg:hidden bg-white dark:bg-gray-950 border-x border-b border-gray-100 dark:border-gray-700 rounded-b-2xl shadow-md overflow-hidden transition-all duration-300 ease-in-out",
+          showMobileFilters ? "max-h-96 py-4 px-5 opacity-100" : "max-h-0 py-0 px-0 opacity-0 pointer-events-none"
+        )}
+      >
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <label className="text-sm font-medium text-[#7c28eb] dark:text-purple-300">
+              {t('category')}
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full rounded-md border border-purple-100 dark:border-purple-600/30 bg-white dark:bg-gray-800 py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="all">{t('all_categories')}</option>
+              {availableCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="grid gap-2">
+            <label className="text-sm font-medium text-[#7c28eb] dark:text-purple-300">
+              {t('contract_type')}
+            </label>
+            <select
+              value={selectedContractType}
+              onChange={(e) => setSelectedContractType(e.target.value)}
+              className="w-full rounded-md border border-purple-100 dark:border-purple-600/30 bg-white dark:bg-gray-800 py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="all">{t('all_contract_types')}</option>
+              {availableContractTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="flex justify-between mt-2">
+            <button 
+              onClick={clearSearch}
+              className="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 cursor-pointer"
+            >
+              {t('clear_filters')}
+            </button>
+            <button 
+              onClick={toggleMobileFilters}
+              className="px-3 py-2 text-sm text-white rounded-md cursor-pointer"
+              style={buttonBgColor}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+            >
+              {t('apply_filters')}
+            </button>
+          </div>
         </div>
       </div>
       

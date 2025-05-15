@@ -15,12 +15,15 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Inertia\Inertia;
 
+/**
+ * Controlador para gestionar la autenticación a través de Google OAuth 2.0.
+ */
 class GoogleController extends Controller
 {
     /**
-     * Redirige al usuario al proceso de autenticación de Google.
+     * Inicia el proceso de autenticación OAuth 2.0 con Google.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function redirectToGoogle()
     {
@@ -28,14 +31,15 @@ class GoogleController extends Controller
     }
     
     /**
-     * Obtiene la información del usuario de Google después de la autorización.
+     * Procesa la respuesta de autenticación de Google.
+     * Autentica usuarios existentes o inicia el proceso de registro.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function handleGoogleCallback()
     {
         try {
-            // Guardar datos del usuario de Google en la sesión para su uso posterior
+            // Obtener información del perfil del usuario de Google
             $googleUser = Socialite::driver('google')->user();
             session([
                 'google_user' => [
@@ -46,21 +50,18 @@ class GoogleController extends Controller
                 ]
             ]);
             
-            // Comprobar si el usuario ya existe
+            // Verificar si el usuario ya existe
             $user = User::where('email', $googleUser->email)->first();
             
             if ($user) {
-                // Si el usuario ya existe, actualizar el google_id si es necesario
+                // Actualizar el ID de Google si es necesario
                 if (!$user->google_id) {
                     $user->update(['google_id' => $googleUser->id]);
                 }
                 
-                // Iniciar sesión
                 Auth::login($user);
-                
                 return redirect()->intended('/dashboard');
             } else {
-                // Si es un usuario nuevo, redirigir a la página de selección de rol
                 return redirect()->route('google.select.role');
             }
         } catch (\Exception $e) {
@@ -72,13 +73,12 @@ class GoogleController extends Controller
     }
 
     /**
-     * Muestra la página de selección de rol.
+     * Muestra el formulario para seleccionar rol (candidato o empresa).
      *
      * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
      */
     public function showRoleSelectionForm()
     {
-        // Verificar que existan datos de Google en la sesión
         if (!session('google_user')) {
             return redirect()->route('login');
         }
@@ -87,7 +87,7 @@ class GoogleController extends Controller
     }
 
     /**
-     * Procesa la selección de rol y completa el registro.
+     * Procesa la selección de rol y completa el registro del usuario.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
@@ -95,10 +95,9 @@ class GoogleController extends Controller
     public function processRoleSelection(Request $request)
     {
         $request->validate([
-            'role_id' => 'required|in:1,2', // 1=candidate, 2=company
+            'role_id' => 'required|in:1,2',
         ]);
         
-        // Verificar que existan datos de Google en la sesión
         if (!session('google_user')) {
             return redirect()->route('login');
         }
@@ -106,7 +105,6 @@ class GoogleController extends Controller
         $googleUser = session('google_user');
         
         try {
-            // Crear el usuario con el rol seleccionado
             $user = User::create([
                 'name' => $googleUser['name'],
                 'email' => $googleUser['email'],
@@ -116,39 +114,30 @@ class GoogleController extends Controller
                 'google_id' => $googleUser['id'],
             ]);
             
-            // Crear el perfil correspondiente según el rol
             if ($request->role_id == 1) {
-                // Candidato
                 Candidate::create([
                     'user_id' => $user->id,
                     'surname' => '',
                     'cv' => null
                 ]);
-                
-                Log::info("Perfil de candidato creado para usuario de Google con ID: {$user->id}");
+                Log::info("Perfil candidato creado: {$user->id}");
             } else {
-                // Empresa
                 Company::create([
                     'user_id' => $user->id,
                     'address' => '',
                     'website' => ''
                 ]);
-                
-                Log::info("Perfil de empresa creado para usuario de Google con ID: {$user->id}");
+                Log::info("Perfil empresa creado: {$user->id}");
             }
             
             event(new Registered($user));
-            
-            // Limpiar datos de sesión
             session()->forget('google_user');
-            
-            // Iniciar sesión
             Auth::login($user);
             
             return redirect()->intended('/dashboard');
             
         } catch (\Exception $e) {
-            Log::error('Error en registro con Google: ' . $e->getMessage());
+            Log::error('Error en registro Google: ' . $e->getMessage());
             return redirect()->route('login')->with('error', 'Error al completar el registro. Por favor, inténtalo de nuevo.');
         }
     }
