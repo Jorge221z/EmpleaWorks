@@ -8,7 +8,7 @@ import { Head, Link, usePage } from "@inertiajs/react"
 import { CalendarIcon, MapPinIcon, BriefcaseIcon, PlusCircleIcon, UsersIcon, BuildingIcon } from "lucide-react"
 import type { Offer } from "@/types/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, showToast } from "@/components/toast"
 import { TrashIcon } from "lucide-react"
 import { router } from "@inertiajs/react"
 import { useTranslation } from "@/utils/i18n"
@@ -33,6 +33,7 @@ export default function CompanyDashboard({
 }: { companyOffers?: Offer[]; totalApplicants?: number }) {
   // ----- HOOKS & STATE -----
   const { auth } = usePage<SharedData>().props
+  const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props
   const { t } = useTranslation()
 
   // ----- COLOR THEMING SYSTEM -----
@@ -174,23 +175,20 @@ export default function CompanyDashboard({
     },
   }
 
+  // Añadimos useEffect para mostrar los mensajes flash
+  useEffect(() => {
+    if (flash && flash.success) {
+      showToast.success(flash.success);
+    }
+    if (flash && flash.error) {
+      showToast.error(flash.error);
+    }
+  }, [flash]);
+
   // ----- RENDER COMPONENT -----
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: "toast-offers",
-          style: {
-            background: "#363636",
-            color: "#fff",
-            borderRadius: "8px",
-            padding: "20px 28px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          },
-          id: "unique-toast",
-        }}
-      />
+      <Toaster />
       <Head title={t("company_dashboard")} />
 
       <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
@@ -614,10 +612,10 @@ export default function CompanyDashboard({
                               onClick={() => {
                                 router.delete(route("offers.destroy", offer.id), {
                                   onSuccess: () => {
-                                    toast.success(t("job_deleted_success"))
+                                    showToast.success(t("job_deleted_success"))
                                   },
                                   onError: () => {
-                                    toast.error(t("job_deleted_error"))
+                                    showToast.error(t("job_deleted_error"))
                                   },
                                 })
                               }}
