@@ -386,6 +386,10 @@ const translations: Record<string, Record<string, string>> = {
         'contact_form': 'Contact Form',
         'inquiry_type': 'Inquiry Type',
         'select_inquiry_type': 'Select inquiry type',
+        'job_inquiry': 'Job Inquiry', // Pregunta sobre ofertas laborales
+        'application_help': 'Application Help', // Ayuda con postulación
+        'employer_support': 'Employer Support', // Soporte para empresas
+        'collaboration': 'Collaboration', // Colaboraciones o alianzas
         'general_inquiry': 'General Inquiry',
         'technical_support': 'Technical Support',
         'billing_question': 'Billing Question',
@@ -789,6 +793,10 @@ const translations: Record<string, Record<string, string>> = {
         'contact_form': 'Formulario de Contacto',
         'inquiry_type': 'Tipo de consulta',
         'select_inquiry_type': 'Selecciona el tipo de consulta',
+        'job_inquiry': 'Consulta sobre ofertas laborales', // Pregunta sobre ofertas laborales
+        'application_help': 'Ayuda con postulación', // Ayuda con postulación
+        'employer_support': 'Soporte para empresas', // Soporte para empresas
+        'collaboration': 'Colaboraciones', // Colaboraciones o alianzas
         'general_inquiry': 'Consulta general',
         'technical_support': 'Soporte técnico',
         'billing_question': 'Consulta de facturación',

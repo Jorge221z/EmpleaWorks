@@ -81,6 +81,7 @@ export default function Contact() {
             onSuccess: () => {
                 setFormStatus("success")
                 reset()
+                setActiveField(null)
             },
             onError: () => {
                 setFormStatus("error")
@@ -436,11 +437,13 @@ export default function Contact() {
                                                         <SelectValue placeholder={t("select_inquiry_type")} />
                                                     </SelectTrigger>
                                                     <SelectContent className="border-purple-100 dark:border-purple-600/30">
-                                                        <SelectItem value="general">{t("general_inquiry")}</SelectItem>
-                                                        <SelectItem value="support">{t("technical_support")}</SelectItem>
-                                                        <SelectItem value="billing">{t("billing_question")}</SelectItem>
-                                                        <SelectItem value="partnership">{t("partnership")}</SelectItem>
-                                                        <SelectItem value="other">{t("other")}</SelectItem>
+                                                        <SelectItem value="Consulta general">{t("general_inquiry")}</SelectItem>
+                                                        <SelectItem value="Consulta sobre ofertas">{t("job_inquiry")}</SelectItem>
+                                                        <SelectItem value="Problemas aplicando">{t("application_help")}</SelectItem>
+                                                        <SelectItem value="Problemas de empresa">{t("employer_support")}</SelectItem>
+                                                        <SelectItem value="Soporte tecnico">{t("technical_support")}</SelectItem>
+                                                        <SelectItem value="Colaboracion">{t("collaboration")}</SelectItem>
+                                                        <SelectItem value="Otro">{t("other")}</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                                 {activeField === "inquiryType" && (
