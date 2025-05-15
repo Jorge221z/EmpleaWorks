@@ -16,10 +16,6 @@ export default function Terms() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: t("dashboard"),
-            href: "/dashboard",
-        },
-        {
             title: activeTab === "terms" ? t("terms_and_conditions") : t("cookies_policy"),
             href: "/terms",
         },

@@ -47,10 +47,6 @@ export default function Contact() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: t("dashboard"),
-            href: "/dashboard",
-        },
-        {
             title: t("contact_us"),
             href: "/contact",
         },
