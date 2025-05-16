@@ -70,7 +70,6 @@ export function LoginForm({
                   </div>
                   <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-2xl font-bold text-[#7c28eb] dark:text-purple-300">{t("welcome_back")}</h1>
-                    <Sparkles className="h-5 w-5 text-[#9645f4] animate-pulse" />
                   </div>
                 </div>
 
@@ -122,7 +121,7 @@ export function LoginForm({
                 </div>
 
                 <div className="space-y-2 relative">
-                  <div className="flex items-center">
+                  <div className="flex flex-col sm:flex-row sm:items-center">
                     <Label
                       htmlFor="password"
                       className={`text-[#9645f4] dark:text-[#c79dff] transition-all duration-300 ${
@@ -134,7 +133,7 @@ export function LoginForm({
                     {canResetPassword && (
                       <Link
                         href="/forgot-password"
-                        className="ml-auto text-sm text-[#9645f4] dark:text-[#c79dff] underline-offset-4 hover:text-[#7c28eb] dark:hover:text-purple-300 hover:underline"
+                        className="text-sm text-[#9645f4] dark:text-[#c79dff] underline-offset-4 hover:text-[#7c28eb] dark:hover:text-purple-300 hover:underline sm:ml-auto mt-1 sm:mt-0"
                       >
                         {t("forgot_your_password")}
                       </Link>
