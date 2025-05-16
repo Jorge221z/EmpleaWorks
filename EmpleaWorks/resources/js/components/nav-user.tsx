@@ -63,7 +63,7 @@ export function NavUser({
                             "focus-visible:ring-2 focus-visible:ring-offset-2"
                         )}>
                             {auth.user ? (
-                                <Avatar className="border-2 border-purple-100 dark:border-purple-500/50">
+                                <Avatar className="border-2 border-purple-400 dark:border-purple-500/50">
                                     <AvatarImage
                                         src={auth.user.image ? `/storage/${auth.user.image}` : undefined}
                                         alt={auth.user.name}

@@ -211,7 +211,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
       <Head title={`${offer.name} - EmpleaWorks`} />
 
       {/* Contenedor principal */}
-      <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
+      <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
           <canvas id="particle-canvas" className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />

@@ -118,6 +118,8 @@ return [
     'user_not_found' => 'No se encontró ningún usuario con ese correo electrónico.',
     'mail_send_failed' => 'No se pudo enviar el correo electrónico. Por favor, inténtalo de nuevo más tarde.',
     'failed' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
+    'register_success' => '¡Registro exitoso! Bienvenido a EmpleaWorks.',
+    'login_success' => '¡Inicio de sesión exitoso!',
 
     // Create job offer form
     'job_title_required' => 'El campo título del empleo es obligatorio.',
@@ -253,6 +255,7 @@ return [
     'verify_email' => 'Verificar correo electrónico',
     'email_verification' => 'Verificación de correo electrónico',
     'verify_email_description' => 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
+    'email_verified_success' => '¡Tu correo electrónico ha sido verificado exitosamente!',
 
     //Traduccion de mensajes de mailgun
     'new_application_from' => 'Nueva solicitud de EmpleaWorks',
@@ -284,6 +287,9 @@ return [
     'no_cv_uploaded' => 'No has subido ningún CV a EmpleaWorks.',
     'cv_empty' => 'No has subido ningún CV a EmpleaWorks. Por favor, añade un CV a tu perfil para que las empresas puedan revisarlo.',
     'reset_password_subject'=> 'Restablecer contraseña - EmpleaWorks',
+
+    'email_already_verified_success' => 'Tu correo electrónico ya ha sido verificado.',
+    'logout_success' => '¡Has cerrado sesión con éxito! Hasta pronto.',
 
     // Company controller messages
     'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',

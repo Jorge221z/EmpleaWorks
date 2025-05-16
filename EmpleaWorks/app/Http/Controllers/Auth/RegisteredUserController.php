@@ -78,7 +78,7 @@ class RegisteredUserController extends Controller
             Auth::login($user);
             
             // Redirect to dashboard instead of using RouteServiceProvider::HOME
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('success', __('messages.register_success'));
             
         } catch (\Exception $e) {
             // Log the error for debugging

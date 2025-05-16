@@ -221,7 +221,11 @@ const SuccessToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
         </div>
 
         <button
-          onClick={() => toast.dismiss(t.id)}
+          onClick={() => {
+            toast.dismiss(t.id, true);
+            // Fuerza la duración a 0 para evitar animación de salida
+            toast.remove(t.id);
+          }}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
           style={{ touchAction: 'manipulation' }}
@@ -238,9 +242,10 @@ const SuccessToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
           transition={{
             duration: duration,
             ease: "linear",
-            repeat: 0,
           }}
-          onAnimationComplete={() => toast.dismiss(t.id)}
+          onAnimationComplete={() => {
+            toast.remove(t.id); // Use remove instead of dismiss for immediate removal
+          }}
           style={{
             willChange: 'width',
             backfaceVisibility: 'hidden',
@@ -407,7 +412,10 @@ const ErrorToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
         </div>
 
         <button
-          onClick={() => toast.dismiss(t.id)}
+          onClick={() => {
+            toast.dismiss(t.id, true);
+            toast.remove(t.id);
+          }}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
           style={{ touchAction: 'manipulation' }}
@@ -424,9 +432,10 @@ const ErrorToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
           transition={{
             duration: duration,
             ease: "linear",
-            repeat: 0,
           }}
-          onAnimationComplete={() => toast.dismiss(t.id)}
+          onAnimationComplete={() => {
+            toast.remove(t.id); // Use remove instead of dismiss for immediate removal
+          }}
           style={{
             willChange: 'width',
             backfaceVisibility: 'hidden',
@@ -596,7 +605,10 @@ const DefaultToast = memo(({ t }: { t: ToastType }) => {
         </div>
 
         <button
-          onClick={() => toast.dismiss(t.id)}
+          onClick={() => {
+            toast.dismiss(t.id, true);
+            toast.remove(t.id);
+          }}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
           style={{ touchAction: 'manipulation' }}
@@ -613,9 +625,10 @@ const DefaultToast = memo(({ t }: { t: ToastType }) => {
           transition={{
             duration: duration,
             ease: "linear",
-            repeat: 0,
           }}
-          onAnimationComplete={() => toast.dismiss(t.id)}
+          onAnimationComplete={() => {
+            toast.remove(t.id); // Use remove instead of dismiss for immediate removal
+          }}
           style={{
             willChange: 'width',
             backfaceVisibility: 'hidden',
@@ -667,19 +680,19 @@ export const Toaster = () => {
 export const showToast = {
   success: (message: string, options = {}) =>
     toast.success(message, { 
-      duration: 4000, 
+      duration: 3200, // Reduced from 4000ms to 3200ms
       id: `success-${Date.now()}`, // Add unique ID to prevent conflicts
       ...options 
     }),
   error: (message: string, options = {}) =>
     toast.error(message, { 
-      duration: 4000,
+      duration: 3200, // Reduced from 4000ms to 3200ms
       id: `error-${Date.now()}`,
       ...options 
     }),
   custom: (message: string, options = {}) =>
     toast(message, { 
-      duration: 4000,
+      duration: 3200, // Reduced from 4000ms to 3200ms
       id: `info-${Date.now()}`,
       ...options 
     }),
