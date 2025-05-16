@@ -118,6 +118,8 @@ return [
     'user_not_found' => 'No user found with that email address.',
     'mail_send_failed' => 'Could not send the email. Please try again later.',
     'failed' => 'The provided credentials do not match our records.',
+    'register_success' => 'Registration successful! Welcome to EmpleaWorks.',
+    'login_success' => 'Login successful!',
 
     // Create job offer form
     'job_title_required' => 'The job title field is required.',
@@ -173,6 +175,7 @@ return [
     'email_unverified' => 'Your email address is unverified.',
     'resend_verification_email' => 'Click here to resend the verification email.',
     'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    'email_verified_success' => 'Your email has been successfully verified!',
     'save' => 'Save',
     'profile_updated_success' => 'Profile updated successfully',
     'profile_updated_error' => 'Error updating profile. Please try again.',
@@ -325,6 +328,8 @@ return [
     'email_greeting' => 'Regards,',
     'email_team' => 'The EmpleaWorks Team',
     'email_rights' => '© :year EmpleaWorks. All rights reserved.',
+
+    'email_already_verified_success' => 'Your email address is already verified.',
 
     // Email template keys
     'error' => 'Error',

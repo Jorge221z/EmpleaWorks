@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             $request->session()->regenerate();
 
             // Redirect to dashboard directly
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('dashboard'))->with('success', __('messages.login_success'));
             
         } catch (\Exception $e) {
             // Log the error
