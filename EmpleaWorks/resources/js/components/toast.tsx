@@ -221,7 +221,11 @@ const SuccessToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
         </div>
 
         <button
-          onClick={() => toast.dismiss(t.id)}
+          onClick={() => {
+            toast.dismiss(t.id, true);
+            // Fuerza la duración a 0 para evitar animación de salida
+            toast.remove(t.id);
+          }}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
           style={{ touchAction: 'manipulation' }}
@@ -407,7 +411,10 @@ const ErrorToast = memo(({ t, message }: Omit<ToastProps, 'type'>) => {
         </div>
 
         <button
-          onClick={() => toast.dismiss(t.id)}
+          onClick={() => {
+            toast.dismiss(t.id, true);
+            toast.remove(t.id);
+          }}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
           style={{ touchAction: 'manipulation' }}
@@ -596,7 +603,10 @@ const DefaultToast = memo(({ t }: { t: ToastType }) => {
         </div>
 
         <button
-          onClick={() => toast.dismiss(t.id)}
+          onClick={() => {
+            toast.dismiss(t.id, true);
+            toast.remove(t.id);
+          }}
           className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/20 transition-all duration-200 active:scale-90"
           aria-label="Dismiss"
           style={{ touchAction: 'manipulation' }}
