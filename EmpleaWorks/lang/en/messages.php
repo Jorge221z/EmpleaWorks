@@ -379,4 +379,23 @@ return [
     'email_send_error' => 'Could not send the email. Please try again later.',
     'contact_form_submitted' => 'Your message has been sent successfully. We will contact you soon.',
     'contact_form_error' => 'There was an error processing your request. Please try again later.',
+
+    // Saved offers for candidates
+    'saved_offers' => 'Saved Offers',
+    'jobs_saved_for_later' => 'Jobs you\'ve saved to review later',
+    'save_for_later' => 'Save for later',
+    'unsave' => 'Unsave',
+    'removing' => 'Removing...',
+    'only_candidates_can_save' => 'Only candidates can save job offers',
+    'offer_saved_success' => 'Job offer saved successfully',
+    'offer_removed_from_saved' => 'Job offer removed from your saved list',
+    'verify_email_to_save' => 'Verify email to save',
+    'operation_failed' => 'Operation failed. Please try again',
+    'no_saved_offers_yet' => 'No Saved Offers Yet',
+    'no_saved_offers_message' => 'Save job offers that interest you to review them later. Browse available offers and click "Save for later".',
+    'browse_to_save_jobs' => 'Browse offers to save',
+    'email_verified' => 'Email verified',
+    'email_not_verified' => 'Email not verified',
+    'cv_uploaded' => 'CV uploaded',
+    'cv_not_uploaded' => 'CV not uploaded',
 ];
