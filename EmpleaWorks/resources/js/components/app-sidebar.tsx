@@ -25,6 +25,7 @@ import { MobileNavDialog } from "@/components/mobile-nav-dialog"
 interface ExtendedNavItem extends NavItem {
     disabled?: boolean
     onClick?: () => void
+    isActive?: boolean
 }
 
 export function AppSidebar() {
@@ -59,11 +60,23 @@ export function AppSidebar() {
     // Determinar si se debe mostrar el texto del título
     const shouldShowTitle = isMobile || state !== "collapsed"
 
+    // Check if a route is active with proper path matching
+    const isRouteActive = (href: string): boolean => {
+        // Handle root dashboard special case
+        if (href === '/dashboard') {
+            return url === '/dashboard';
+        }
+        
+        // For other routes, check if the current URL starts with the href
+        return url.startsWith(href);
+    };
+
     const mainNavItems: ExtendedNavItem[] = [
         {
             title: t("dashboard"),
             href: "/dashboard",
             icon: LayoutGrid,
+            isActive: isRouteActive("/dashboard"),
         },
     ]
 
@@ -73,6 +86,7 @@ export function AppSidebar() {
             title: t("company_dashboard"),
             href: "/company/dashboard",
             icon: BuildingIcon,
+            isActive: isRouteActive("/company/dashboard"),
         })
     } else {
         mainNavItems.push({
@@ -80,6 +94,7 @@ export function AppSidebar() {
             href: "/candidate/dashboard",
             icon: isAuthenticated ? BookOpenCheck : Lock,
             disabled: !isAuthenticated,
+            isActive: isRouteActive("/candidate/dashboard"),
             onClick: !isAuthenticated
                 ? () => {
                     window.location.href = route("login")
@@ -96,7 +111,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton className="group/lang relative overflow-hidden transition-all duration-300 hover:translate-x-1">
+                        <SidebarMenuButton className="group/lang relative overflow-visible transition-all duration-300 hover:translate-x-1">
                             <Globe className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200" />
                             <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200">
                                 {locale?.available[locale?.current] || "Idioma"}
@@ -107,9 +122,8 @@ export function AppSidebar() {
                     <DropdownMenuContent
                         align="start"
                         className="w-40 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900 animate-in slide-in-from-left-5 duration-200"
-                        // Forzar z-index alto y container en mobile sidebar
+                        // Forzar z-index alto en mobile sidebar
                         style={isMobileSidebarOpen ? { zIndex: 13000 } : undefined}
-                        container={isMobileSidebarOpen ? userMenuContainerRef.current : undefined}
                         onClick={(e) => e.stopPropagation()} // Evitar propagación
                     >
                         {locale?.available &&
@@ -144,7 +158,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <SidebarMenuButton
                     asChild
-                    className="group/terms relative overflow-hidden transition-all duration-300 hover:translate-x-1"
+                    className="group/terms relative overflow-visible transition-all duration-300 hover:translate-x-1"
                 >
                     <button
                         className="flex items-center w-full"
@@ -172,7 +186,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <SidebarMenuButton
                     asChild
-                    className="group/contact relative overflow-hidden transition-all duration-300 hover:translate-x-1"
+                    className="group/contact relative overflow-visible transition-all duration-300 hover:translate-x-1"
                 >
                     <button
                         className="flex items-center w-full"
@@ -243,11 +257,89 @@ export function AppSidebar() {
           transition: all 0.3s ease;
           z-index: 1;
           border-radius: 6px;
+          overflow: visible !important; /* Asegurar que el indicador sea visible */
+        }
+        
+        /* Barra vertical izquierda en hover */
+        [data-sidebar="menu-button"]:not(.user-profile-button)::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          height: 0;
+          width: 3px;
+          background: linear-gradient(to bottom, #9645f4, #c48eff);
+          transform: translateY(-50%);
+          opacity: 0;
+          border-radius: 0 4px 4px 0;
+          box-shadow: 0 0 8px rgba(150, 69, 244, 0.2);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        [data-sidebar="menu-button"]:not(.user-profile-button):hover::before {
+          height: 70%;
+          opacity: 1;
+          box-shadow: 0 0 12px rgba(150, 69, 244, 0.4);
+        }
+        
+        /* Efecto especial para elementos activos */
+        .menu-item-active::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          height: 70% !important;
+          width: 3px;
+          background: linear-gradient(to bottom, #8a34ef, #b368ff) !important;
+          transform: translateY(-50%);
+          opacity: 1 !important;
+          border-radius: 0 4px 4px 0;
+          box-shadow: 0 0 12px rgba(150, 69, 244, 0.6) !important;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
         [data-sidebar="menu-button"]:hover {
           transform: translateX(4px);
           background: rgba(150, 69, 244, 0.08);
+        }
+
+        /* Asegurar que los contenedores padres tengan overflow visible */
+        [data-sidebar="menu-item"],
+        [data-sidebar="menu"],
+        .sidebar-menu-button-text,
+        .menu-item-active,
+        [data-sidebar="content"],
+        [data-sidebar="menu-container"] {
+          overflow: visible !important;
+        }
+
+        /* Estilo para el indicador de activo en los elementos del menú */
+        .menu-item-active::after {
+          content: '';
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #9645f4, #b368ff);
+          box-shadow: 0 0 8px rgba(150, 69, 244, 0.7);
+          animation: pulse 2s infinite;
+          transition: all 0.3s ease;
+        }
+
+        /* Animación para el punto de activo */
+        @keyframes pulse {
+          0% { box-shadow: 0 0 0 0 rgba(150, 69, 244, 0.7); }
+          70% { box-shadow: 0 0 0 6px rgba(150, 69, 244, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(150, 69, 244, 0); }
+        }
+
+        /* Efecto hover en el punto para que resalte */
+        .menu-item-active:hover::after {
+          transform: translateY(-50%) scale(1.2);
+          background: linear-gradient(45deg, #8a34ef, #c48eff);
         }
         
         /* Agregar cursor pointer a todos los botones en la sidebar de desktop */
@@ -350,7 +442,7 @@ export function AppSidebar() {
                     <div className="flex-1 space-y-4 overflow-hidden">
                         <NavMain 
                             items={mainNavItems} 
-                            onNavigate={() => setMobileMenuOpen(false)} 
+                            onNavigate={() => setMobileMenuOpen(false)}
                         />
                         <div className="pt-10 mt-38">
                             <SidebarMenu className="mt-4">
@@ -364,6 +456,7 @@ export function AppSidebar() {
                     <div className="pt-4 pb-6 px-2">
                         <div ref={userMenuContainerRef} className="mobile-user-menu-z">
                             <NavUser 
+                                className="user-profile-button"
                                 dropdownContainer={userMenuContainerRef.current}
                                 dropdownClassName="user-dropdown-z"
                                 dropdownAlign="start"
@@ -414,7 +507,7 @@ export function AppSidebar() {
                         <TermsAndConditions />
                         <ContactLink />
                     </SidebarMenu>
-                    <NavUser />
+                    <NavUser className="user-profile-button" />
                 </SidebarFooter>
             </Sidebar>
         </>
