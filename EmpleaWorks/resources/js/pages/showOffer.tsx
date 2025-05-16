@@ -2,8 +2,8 @@
 
 import AppLayout from "@/layouts/app-layout"
 import { Head, Link, usePage } from "@inertiajs/react"
-import { useEffect } from "react"
-import { BriefcaseIcon, CalendarIcon, MapPinIcon, BuildingIcon, MailIcon, GlobeIcon, ArrowLeftIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { BriefcaseIcon, CalendarIcon, MapPinIcon, BuildingIcon, MailIcon, GlobeIcon, ArrowLeftIcon, BookmarkIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -13,12 +13,18 @@ import type { ShowOfferProps } from "@/types/types"
 import { Toaster, showToast } from "@/components/toast"
 import { useTranslation } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
+import axios from "axios"
 
 export default function ShowOffer({ offer }: ShowOfferProps) {
   // ----- HOOKS & STATE -----
-  const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props
+  const { flash, auth } = usePage<{ flash: { success?: string; error?: string }, auth: { user?: { role_id: number, email_verified_at?: string } } }>().props
   const { t } = useTranslation()
   const { company } = offer
+  const isAuthenticated = !!auth.user;
+  const isCandidate = isAuthenticated && auth.user?.role_id === 1;
+  const isVerified = isAuthenticated && auth.user?.email_verified_at !== null;
+  const [isSaved, setIsSaved] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
 
   // ----- COLOR THEMING SYSTEM -----
   // Colores principales (púrpura)
@@ -147,6 +153,56 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
       cancelAnimationFrame(animationFrameId)
     }
   }, [])
+
+  // Check if the offer is saved
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      if (isAuthenticated && isCandidate && isVerified) {
+        try {
+          const response = await axios.get(route('saved.offers'), {
+            withCredentials: true,
+            headers: {
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+            }
+          });
+          
+          const savedOffers = response.data.savedOffers || [];
+          setIsSaved(savedOffers.some((savedOffer: { id: number }) => savedOffer.id === offer.id));
+        } catch (error) {
+          console.error('Error checking saved status:', error);
+        }
+      } else {
+        setIsSaved(false);
+      }
+    };
+    
+    checkIfSaved();
+  }, [isAuthenticated, isCandidate, isVerified, offer.id]);
+
+  // Toggle save offer
+  const toggleSaveOffer = async () => {
+    if (!isAuthenticated) {
+      window.location.href = route('login')
+      return
+    }
+
+    if (!isCandidate) {
+      showToast.error(t('only_candidates_can_save'))
+      return
+    }
+
+    try {
+      setIsToggling(true)
+      await axios.post(route('offer.save.toggle', offer.id))
+      setIsSaved(!isSaved)
+      showToast.success(isSaved ? t('offer_removed_from_saved') : t('offer_saved_success'))
+    } catch (error) {
+      console.error('Error toggling saved status:', error)
+      showToast.error(t('operation_failed'))
+    } finally {
+      setIsToggling(false)
+    }
+  }
 
   // ----- RENDER COMPONENT -----
   return (
@@ -292,16 +348,73 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter>
-                  <Button
-                    className="w-full relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                    asChild
-                  >
-                    <Link href={route("apply.form", offer.id)}>
-                      <span className="relative z-10">{t("apply_to_this_offer")}</span>
-                      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
-                    </Link>
-                  </Button>
+                <CardFooter className="flex flex-col sm:flex-row gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                    <div className="flex sm:col-span-1">
+                      {isCandidate && isVerified && (
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-center",
+                            isSaved ? "bg-purple-50 text-[#7c28eb] border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-700" : 
+                            "border-purple-100 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                          )}
+                          onClick={toggleSaveOffer}
+                          disabled={isToggling}
+                        >
+                          <BookmarkIcon className={cn(
+                            "h-4 w-4 mr-2 transition-transform duration-300",
+                            isSaved ? "text-[#7c28eb] dark:text-purple-300 fill-current" : "fill-none",
+                            isToggling ? "animate-pulse" : ""
+                          )} />
+                          <span className="truncate">
+                            {isSaved ? t('saved') : t('save_for_later')}
+                          </span>
+                        </Button>
+                      )}
+
+                      {isCandidate && !isVerified && (
+                        <Button
+                          variant="outline"
+                          className="w-full justify-center border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                          onClick={() => window.location.href = route('verification.notice')}
+                        >
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="24" 
+                            height="24" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            className="w-4 h-4 mr-2 flex-shrink-0"
+                          >
+                            <path d="M22 10.5V12c0 5-3.58 9-8 9s-8-4-8-9v-1.5" />
+                            <path d="M6 8h12" />
+                            <path d="M10 5V3" />
+                            <path d="M14 5V3" />
+                          </svg>
+                          <span className="truncate">
+                            {t('verify_email_to_save')}
+                          </span>
+                        </Button>
+                      )}
+                    </div>
+                    
+                    <div className="sm:col-span-1">
+                      <Button
+                        className="w-full justify-center relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300"
+                        asChild
+                      >
+                        <Link href={route("apply.form", offer.id)}>
+                          <span className="relative z-10 truncate">{t("apply_to_this_offer")}</span>
+                          <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
                 </CardFooter>
               </Card>
             </div>

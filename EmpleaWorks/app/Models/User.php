@@ -226,4 +226,77 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new VerifyEmail());
     }
+
+    /**
+    * Get the offers this user has saved (as a candidate).
+    * 
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+    public function savedOffers()
+    {
+        return $this->belongsToMany(Offer::class, 'saved_offers', 'user_id', 'offer_id')
+            ->withTimestamps();
+    }
+
+    /**
+    * Save an offer for later (for candidates)
+    * 
+    * @param Offer $offer The offer to save
+    * @return bool Success status of the save operation
+    */
+    public function saveOffer(Offer $offer)
+    {
+        if (!$this->isCandidate()) {
+            return false;
+        }
+
+        // Prevent duplicated saves
+        if (!$this->savedOffers->contains($offer->id)) {
+            $this->savedOffers()->attach($offer->id);
+            return true;
+        }
+    
+        return false;
+    }
+
+    /**
+    * Remove a saved offer (for candidates)
+    * 
+    * @param Offer $offer The offer to unsave
+    * @return bool Success status of the unsave operation
+    */
+    public function unsaveOffer(Offer $offer)
+    {
+        if (!$this->isCandidate()) {
+            return false;
+        }
+
+        $this->savedOffers()->detach($offer->id);
+        return true;
+    }
+
+    /**
+    * Check if an offer is saved by this user
+    * 
+    * @param int $offerId The ID of the offer to check
+    * @return bool Whether the offer is saved
+    */
+    public function hasSavedOffer($offerId)
+    {
+        return $this->savedOffers()->where('offers.id', $offerId)->exists();
+    }
+
+    /**
+    * Get all offers this candidate has saved.
+    * 
+    * @return \Illuminate\Database\Eloquent\Collection|null
+    */
+    public function getCandidateSavedOffers()
+    {
+        if (!$this->isCandidate()) {
+            return null;
+        }
+
+        return $this->savedOffers;
+    }
 }

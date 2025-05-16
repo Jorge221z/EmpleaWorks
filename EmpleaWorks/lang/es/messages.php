@@ -371,4 +371,23 @@ return [
     'email_send_error' => 'No se pudo enviar el correo electrónico. Por favor, inténtalo de nuevo más tarde.',
     'contact_form_submitted' => 'Tu mensaje ha sido enviado con éxito. Nos pondremos en contacto contigo pronto.',
     'contact_form_error' => 'Hubo un error al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.',
+
+    // Saved offers for candidates
+    'saved_offers' => 'Ofertas Guardadas',
+    'jobs_saved_for_later' => 'Empleos que has guardado para revisar más tarde',
+    'save_for_later' => 'Guardar para más tarde',
+    'unsave' => 'Quitar de guardados',
+    'removing' => 'Quitando...',
+    'only_candidates_can_save' => 'Solo los candidatos pueden guardar ofertas',
+    'offer_saved_success' => 'Oferta guardada correctamente',
+    'offer_removed_from_saved' => 'Oferta eliminada de tus guardados',
+    'verify_email_to_save' => 'Verificar email para guardar',
+    'operation_failed' => 'La operación ha fallado. Inténtalo de nuevo',
+    'no_saved_offers_yet' => 'Aún no has guardado ofertas',
+    'no_saved_offers_message' => 'Guarda ofertas que te interesen para revisarlas más tarde. Navega por las ofertas disponibles y haz clic en "Guardar para más tarde".',
+    'browse_to_save_jobs' => 'Explorar ofertas para guardar',
+    'email_verified' => 'Email verificado',
+    'email_not_verified' => 'Email no verificado',
+    'cv_uploaded' => 'CV subido',
+    'cv_not_uploaded' => 'CV no subido',
 ];

@@ -79,4 +79,25 @@ class Offer extends Model
         // Delegate to the user's applyToOffer method
         return $user->applyToOffer($this);
     }
+
+    /**
+    * Get the candidates who saved this offer.
+    */
+    public function savedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'saved_offers', 'offer_id', 'user_id')
+            ->whereHas('candidate')
+            ->withTimestamps();
+    }
+
+    /**
+    * Check if this offer is saved by a specific user
+    * 
+    * @param User $user The user to check
+    * @return bool Whether the offer is saved by the user
+    */
+    public function isSavedBy(User $user)
+    {
+        return $this->savedByUsers()->where('users.id', $user->id)->exists();
+    }
 }

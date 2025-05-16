@@ -389,15 +389,15 @@ const translations: Record<string, Record<string, string>> = {
         'hours': 'Hours',
         'monday_friday': 'Monday - Friday',
         'weekend': 'Weekend',
-        'closed_hours': 'Closed', // Horario (nuevo nombre de clave)
+        'closed_hours': 'Closed',
         'map_placeholder': 'Interactive map would be displayed here',
         'contact_form': 'Contact Form',
         'inquiry_type': 'Inquiry Type',
         'select_inquiry_type': 'Select inquiry type',
-        'job_inquiry': 'Job Inquiry', // Pregunta sobre ofertas laborales
-        'application_help': 'Application Help', // Ayuda con postulación
-        'employer_support': 'Employer Support', // Soporte para empresas
-        'collaboration': 'Collaboration', // Colaboraciones o alianzas
+        'job_inquiry': 'Job Inquiry',
+        'application_help': 'Application Help',
+        'employer_support': 'Employer Support',
+        'collaboration': 'Collaboration',
         'general_inquiry': 'General Inquiry',
         'technical_support': 'Technical Support',
         'billing_question': 'Billing Question',
@@ -434,6 +434,21 @@ const translations: Record<string, Record<string, string>> = {
         'company_feature_1': 'Post unlimited job offers',
         'company_feature_2': 'Find qualified candidates',
         'company_feature_3': 'Manage hiring process efficiently',
+
+        // Saved offers for candidates
+        'saved_offers': 'Saved Offers',
+        'jobs_saved_for_later': 'Jobs you\'ve saved to review later',
+        'save_for_later': 'Save offer',
+        'unsave': 'Unsave',
+        'removing': 'Removing...',
+        'only_candidates_can_save': 'Only candidates can save job offers',
+        'offer_saved_success': 'Job offer saved successfully',
+        'offer_removed_from_saved': 'Job offer removed from your saved list',
+        'verify_email_to_save': 'Verify email to save',
+        'operation_failed': 'Operation failed. Please try again',
+        'no_saved_offers_yet': 'No Saved Offers Yet',
+        'no_saved_offers_message': 'Save job offers that interest you to review them later. Browse available offers and click "Save for later".',
+        'browse_to_save_jobs': 'Browse offers to save',
     },
     es: {
         // Sidebar
@@ -822,15 +837,15 @@ const translations: Record<string, Record<string, string>> = {
         'hours': 'Horario',
         'monday_friday': 'Lunes - Viernes',
         'weekend': 'Fin de semana',
-        'closed_hours': 'Cerrado', // Horario (nuevo nombre de clave)
+        'closed_hours': 'Cerrado',
         'map_placeholder': 'Aquí se mostraría un mapa interactivo',
         'contact_form': 'Formulario de Contacto',
         'inquiry_type': 'Tipo de consulta',
         'select_inquiry_type': 'Selecciona el tipo de consulta',
-        'job_inquiry': 'Consulta sobre ofertas laborales', // Pregunta sobre ofertas laborales
-        'application_help': 'Ayuda con postulación', // Ayuda con postulación
-        'employer_support': 'Soporte para empresas', // Soporte para empresas
-        'collaboration': 'Colaboraciones', // Colaboraciones o alianzas
+        'job_inquiry': 'Consulta sobre ofertas laborales',
+        'application_help': 'Ayuda con postulación',
+        'employer_support': 'Soporte para empresas',
+        'collaboration': 'Colaboraciones',
         'general_inquiry': 'Consulta general',
         'technical_support': 'Soporte técnico',
         'billing_question': 'Consulta de facturación',
@@ -867,6 +882,21 @@ const translations: Record<string, Record<string, string>> = {
         'company_feature_1': 'Publica ofertas de trabajo ilimitadas',
         'company_feature_2': 'Encuentra candidatos cualificados',
         'company_feature_3': 'Gestiona el proceso de contratación eficientemente',
+
+        // Saved offers for candidates
+        'saved_offers': 'Ofertas Guardadas',
+        'jobs_saved_for_later': 'Empleos que has guardado para revisar más tarde',
+        'save_for_later': 'Guardar oferta',
+        'unsave': 'Quitar de guardados',
+        'removing': 'Quitando...',
+        'only_candidates_can_save': 'Solo los candidatos pueden guardar ofertas',
+        'offer_saved_success': 'Oferta guardada correctamente',
+        'offer_removed_from_saved': 'Oferta eliminada de tus guardados',
+        'verify_email_to_save': 'Verificar email para guardar',
+        'operation_failed': 'La operación ha fallado. Inténtalo de nuevo',
+        'no_saved_offers_yet': 'Aún no has guardado ofertas',
+        'no_saved_offers_message': 'Guarda ofertas que te interesen para revisarlas más tarde. Navega por las ofertas disponibles y haz clic en "Guardar oferta".',
+        'browse_to_save_jobs': 'Explorar ofertas para guardar',
     }
 };
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\SavedOfferController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CompanyController;
@@ -91,6 +92,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/company/applicants', [CompanyController::class, 'applicants'])
         ->middleware(['company.role', 'verified'])
         ->name('company.applicants');
+    
+        
     // Rutas para CANDIDATOS - protegida por el middleware de rol de candidato
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')
@@ -103,4 +106,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/apply', [OfferController::class, 'apply'])
         ->middleware('candidate.role')
         ->name('apply');
+    // Ruta para guardar una oferta
+    Route::post('/offers/{offer}/save', [SavedOfferController::class, 'toggle'])
+    ->middleware(['candidate.role', 'verified'])
+    ->name('offer.save.toggle');
+    Route::get('/saved-offers', [SavedOfferController::class, 'getSavedOffers'])
+        ->middleware(['candidate.role'])
+        ->name('saved.offers');
 });
