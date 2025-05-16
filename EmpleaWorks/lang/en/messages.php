@@ -330,6 +330,7 @@ return [
     'email_rights' => '© :year EmpleaWorks. All rights reserved.',
 
     'email_already_verified_success' => 'Your email address is already verified.',
+    'logout_success' => 'Logout successful! See you soon.',
 
     // Email template keys
     'error' => 'Error',

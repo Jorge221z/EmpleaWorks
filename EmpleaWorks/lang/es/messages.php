@@ -289,6 +289,7 @@ return [
     'reset_password_subject'=> 'Restablecer contraseña - EmpleaWorks',
 
     'email_already_verified_success' => 'Tu correo electrónico ya ha sido verificado.',
+    'logout_success' => '¡Has cerrado sesión con éxito! Hasta pronto.',
 
     // Company controller messages
     'edit_only_own_listings' => 'Solo puedes editar tus propias ofertas de trabajo',
