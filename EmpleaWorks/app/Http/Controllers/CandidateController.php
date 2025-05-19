@@ -10,26 +10,31 @@ use App\Models\Offer;
 
 class CandidateController extends Controller
 {
+    /** @var OfferController Instancia del controlador de ofertas */
     protected $offerController;
 
+    /**
+     * Inicializa el controlador con sus dependencias
+     */
     public function __construct(OfferController $offerController)
     {
         $this->offerController = $offerController;
     }
+
     /**
-     * Display the candidate dashboard.
+     * Muestra el panel principal del candidato con sus ofertas aplicadas y guardadas
      *
-     * @return \Inertia\Response
+     * @return \Inertia\Response Vista del dashboard con los datos del candidato
      */
     public function dashboard()
     {
-        // Get the authenticated user
+        // Obtiene el usuario autenticado
         $user = Auth::user();
-        
-        // Initialize empty arrays for offers
+
+        // Inicializa los arrays de ofertas
         $candidateOffers = [];
         $savedOffers = [];
-        
+
         if ($user && $user->isCandidate()) {
             $candidateOffers = $user->appliedOffers()
                 ->with('user.company')
@@ -37,6 +42,7 @@ class CandidateController extends Controller
                 ->map(function ($offer) {
                     $companyData = null;
                     if ($offer->user && $offer->user->company) {
+                        // Estructura los datos de la empresa
                         $companyData = [
                             'id' => $offer->user->company->id,
                             'name' => $offer->user->name,
@@ -48,8 +54,8 @@ class CandidateController extends Controller
                         ];
                     }
 
-                        
-                    // Return formatted offer with company data
+
+                    // Estructura los datos de la oferta
                     return [
                         'id' => $offer->id,
                         'name' => $offer->name,
@@ -63,7 +69,7 @@ class CandidateController extends Controller
                         'company' => $companyData,
                     ];
                 });
-                
+
             $savedOffers = $user->savedOffers()
                 ->with('user.company')
                 ->get()
@@ -80,8 +86,8 @@ class CandidateController extends Controller
                             'web_link' => $offer->user->company->web_link,
                         ];
                     }
-                        
-                    // Return formatted offer with company data
+
+                    // Estructura los datos de la oferta
                     return [
                         'id' => $offer->id,
                         'name' => $offer->name,
@@ -96,7 +102,8 @@ class CandidateController extends Controller
                     ];
                 });
         }
-        
+
+        // Prepara los mensajes flash para la vista
         $flash = [
             'success' => session('success'),
             'error' => session('error')
@@ -110,37 +117,41 @@ class CandidateController extends Controller
     }
 
     /**
-     * Show the application form for a specific offer
+     * Muestra el formulario de solicitud para una oferta específica
      *
-     * @param  \App\Models\Offer $offer
-     * @return \Inertia\Response
+     * @param Offer $offer Oferta a la que se desea aplicar
+     * @return \Inertia\Response Vista del formulario o mensaje de error
      */
     public function showForm(Offer $offer)
     {
-        // If an offer was provided, get the full offer details
+        // Verifica si la oferta existe y obtiene los detalles completos
         if ($offer->exists) {
             $offerWithCompany = $this->offerController->getOffer($offer);
 
             $user = Auth::user();
-            
+
+            // Verifica si el usuario tiene perfil de candidato
             if (!$user->candidate) {
                 return Inertia::render('dashboard', [
                     'message' => __('messages.candidate_profile_not_found')
                 ]);
             }
-            
+
             return Inertia::render('AplicationForm', [
                 'offer' => $offerWithCompany,
             ]);
         }
-        
+
         return Inertia::render('dashboard', [
             'message' => __('messages.offer_not_found')
         ]);
     }
+
     /**
-    * Muestra las aplicaciones del candidato
-    */
+     * Recupera y muestra el listado de ofertas a las que el candidato ha aplicado
+     *
+     * @return \Inertia\Response Vista con las aplicaciones del candidato
+     */
     public function applications()
     {
         $user = Auth::user();
@@ -158,8 +169,8 @@ class CandidateController extends Controller
                         'web_link' => $offer->user->company->web_link,
                     ];
                 }
-                
-                // Return formatted offer with company data
+
+                // Estructura los datos de la oferta
                 return [
                     'id' => $offer->id,
                     'name' => $offer->name,
@@ -180,8 +191,10 @@ class CandidateController extends Controller
     }
 
     /**
-    * Muestra las ofertas guardadas del candidato
-    */
+     * Recupera y muestra el listado de ofertas guardadas por el candidato
+     *
+     * @return \Inertia\Response Vista con las ofertas guardadas
+     */
     public function savedOffers()
     {
         $user = Auth::user();
@@ -193,21 +206,23 @@ class CandidateController extends Controller
     }
 
     /**
-     * Check if the candidate has applied to a specific offer.
+     * Verifica si el candidato ha aplicado a una oferta específica
      *
-     * @param  \App\Models\Offer  $offer
-     * @return \Illuminate\Http\JsonResponse
+     * @param Offer $offer Oferta a verificar
+     * @return \Illuminate\Http\JsonResponse Estado de la aplicación
      */
     public function checkApplication(Offer $offer)
     {
         $user = Auth::user();
-        
+
+        // Verifica si el usuario es candidato
         if (!$user || !$user->isCandidate()) {
             return response()->json(['hasApplied' => false]);
         }
-        
+
+        // Comprueba si existe una aplicación para esta oferta
         $hasApplied = $user->appliedOffers()->where('offers.id', $offer->id)->exists();
-        
+
         return response()->json(['hasApplied' => $hasApplied]);
     }
 }
