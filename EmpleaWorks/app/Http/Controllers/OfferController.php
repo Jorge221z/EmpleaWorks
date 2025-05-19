@@ -404,8 +404,8 @@ class OfferController extends Controller
             $offer->delete();
             
             // Redireccionar con mensaje de éxito
-            return redirect()->route('company.dashboard')
-                ->with('success', 'Job listing deleted successfully!');
+            return redirect()->route('company.dashboard');
+                
         } catch (\Exception $e) {
             Log::error('Offer delete error: ' . $e->getMessage());
             return redirect()->back()
