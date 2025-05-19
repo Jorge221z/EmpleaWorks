@@ -5,7 +5,7 @@ import { SharedData } from '@/types';
 const translations: Record<string, Record<string, string>> = {
     en: {
         // Sidebar
-        'dashboard': 'Dashboard',
+        'dashboard': 'Offers',
         'company_dashboard': 'Company Dashboard',
         'my_offers': 'My Offers',
         'repository': 'Repository',

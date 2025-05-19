@@ -25,6 +25,7 @@ import { MobileNavDialog } from "@/components/mobile-nav-dialog"
 interface ExtendedNavItem extends NavItem {
     disabled?: boolean
     onClick?: () => void
+    isActive?: boolean
 }
 
 export function AppSidebar() {
@@ -59,11 +60,23 @@ export function AppSidebar() {
     // Determinar si se debe mostrar el texto del título
     const shouldShowTitle = isMobile || state !== "collapsed"
 
+    // Check if a route is active with proper path matching
+    const isRouteActive = (href: string): boolean => {
+        // Handle root dashboard special case
+        if (href === '/dashboard') {
+            return url === '/dashboard';
+        }
+        
+        // For other routes, check if the current URL starts with the href
+        return url.startsWith(href);
+    };
+
     const mainNavItems: ExtendedNavItem[] = [
         {
             title: t("dashboard"),
             href: "/dashboard",
             icon: LayoutGrid,
+            isActive: isRouteActive("/dashboard"),
         },
     ]
 
@@ -73,6 +86,7 @@ export function AppSidebar() {
             title: t("company_dashboard"),
             href: "/company/dashboard",
             icon: BuildingIcon,
+<<<<<<< HEAD
         });
     } else if (isAuthenticated){
         mainNavItems.push({
@@ -92,18 +106,30 @@ export function AppSidebar() {
             href: "/candidate/saved-offers",
             icon: BookmarkIcon,
         });
+=======
+            isActive: isRouteActive("/company/dashboard"),
+        })
+>>>>>>> 9144b053a374fea017631c3af461269faa5aa16f
     } else {
+        // Personalizar más los estilos directamente aquí para "Mis Ofertas"
         mainNavItems.push({
             title: t("my_offers"),
             href: "/candidate/dashboard",
             icon: isAuthenticated ? BookOpenCheck : Lock,
             disabled: !isAuthenticated,
+            isActive: isRouteActive("/candidate/dashboard"),
             onClick: !isAuthenticated
                 ? () => {
                     window.location.href = route("login")
                 }
                 : undefined,
+<<<<<<< HEAD
         });
+=======
+            // Añadir una clase CSS personalizada si no está autenticado
+            className: !isAuthenticated ? "disabled" : "",
+        })
+>>>>>>> 9144b053a374fea017631c3af461269faa5aa16f
     }
 
     // Componente para el selector de idioma
@@ -114,20 +140,23 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton className="group/lang relative overflow-hidden transition-all duration-300 hover:translate-x-1">
+                        <SidebarMenuButton className="group/lang relative overflow-visible transition-all duration-300 hover:translate-x-1">
                             <Globe className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200" />
-                            <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200">
-                                {locale?.available[locale?.current] || "Idioma"}
-                            </span>
-                            <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/lang:w-full"></span>
+                            {shouldShowTitle && (
+                                <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/lang:text-[#7c28eb] dark:group-hover/lang:text-purple-200">
+                                    {locale?.available[locale?.current] || "Idioma"}
+                                </span>
+                            )}
+                            {shouldShowTitle && (
+                                <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/lang:w-full"></span>
+                            )}
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                         align="start"
                         className="w-40 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900 animate-in slide-in-from-left-5 duration-200"
-                        // Forzar z-index alto y container en mobile sidebar
+                        // Forzar z-index alto en mobile sidebar
                         style={isMobileSidebarOpen ? { zIndex: 13000 } : undefined}
-                        container={isMobileSidebarOpen ? userMenuContainerRef.current : undefined}
                         onClick={(e) => e.stopPropagation()} // Evitar propagación
                     >
                         {locale?.available &&
@@ -162,7 +191,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <SidebarMenuButton
                     asChild
-                    className="group/terms relative overflow-hidden transition-all duration-300 hover:translate-x-1"
+                    className="group/terms relative overflow-visible transition-all duration-300 hover:translate-x-1"
                 >
                     <button
                         className="flex items-center w-full"
@@ -174,10 +203,14 @@ export function AppSidebar() {
                         }}
                     >
                         <FileText className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200" />
-                        <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200">
-                            {t("terms_and_conditions")}
-                        </span>
-                        <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/terms:w-full"></span>
+                        {shouldShowTitle && (
+                            <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/terms:text-[#7c28eb] dark:group-hover/terms:text-purple-200">
+                                {t("terms_and_conditions")}
+                            </span>
+                        )}
+                        {shouldShowTitle && (
+                            <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/terms:w-full"></span>
+                        )}
                     </button>
                 </SidebarMenuButton>
             </SidebarMenuItem>
@@ -190,7 +223,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
                 <SidebarMenuButton
                     asChild
-                    className="group/contact relative overflow-hidden transition-all duration-300 hover:translate-x-1"
+                    className="group/contact relative overflow-visible transition-all duration-300 hover:translate-x-1"
                 >
                     <button
                         className="flex items-center w-full"
@@ -202,10 +235,14 @@ export function AppSidebar() {
                         }}
                     >
                         <MessageSquare className="h-4 w-4 text-[#9645f4] dark:text-[#c79dff] group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200" />
-                        <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200">
-                            {t("contact_us")}
-                        </span>
-                        <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/contact:w-full"></span>
+                        {shouldShowTitle && (
+                            <span className="sidebar-menu-button-text text-gray-700 dark:text-gray-300 group-hover/contact:text-[#7c28eb] dark:group-hover/contact:text-purple-200">
+                                {t("contact_us")}
+                            </span>
+                        )}
+                        {shouldShowTitle && (
+                            <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-purple-500 to-purple-300 transition-all duration-300 group-hover/contact:w-full"></span>
+                        )}
                     </button>
                 </SidebarMenuButton>
             </SidebarMenuItem>
@@ -227,7 +264,7 @@ export function AppSidebar() {
         [data-sidebar="sidebar"] {
           background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,235,255,0.95) 100%);
           position: relative;
-          overflow: hidden;
+          overflow: visible !important; /* Prevenir scroll */
           border-right: 1px solid rgba(150, 69, 244, 0.2);
         }
         
@@ -261,11 +298,196 @@ export function AppSidebar() {
           transition: all 0.3s ease;
           z-index: 1;
           border-radius: 6px;
+          overflow: visible !important;
+        }
+
+        /* Mejorar el espaciado entre iconos y texto - Reducido */
+        [data-sidebar="menu-button"]:not(.logo-button) a svg,
+        [data-sidebar="menu-button"]:not(.logo-button) button svg {
+          margin-right: 6px; /* Reducido de 10px a 6px */
+        }
+        
+        /* Especificamente para el texto de los items de navegación */
+        .sidebar-menu-button-text {
+          margin-left: 0px; /* Eliminado el margen adicional de 4px */
+        }
+        
+        /* Mantener espaciado en el logo */
+        .logo-button svg,
+        .logo-button button svg {
+          margin-right: 10px;
+        }
+        
+        /* Aplicar overflow visible a todos los contenedores principales */
+        [data-sidebar="menu"],
+        [data-sidebar="menu-item"],
+        [data-sidebar="menu-container"],
+        [data-sidebar="content"],
+        [data-sidebar="header"],
+        [data-sidebar="footer"] {
+          overflow: visible !important;
         }
         
         [data-sidebar="menu-button"]:hover {
           transform: translateX(4px);
           background: rgba(150, 69, 244, 0.08);
+        }
+
+        /* Centrar iconos cuando la barra está colapsada - Mejorado */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"],
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] > a,
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] > button {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+        
+        /* Asegurar centrado correcto para los main nav items */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] > a > svg,
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] > button > svg,
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] > svg {
+          margin: 0 !important;
+        }
+
+        /* Centrar el contenido del texto cuando está colapsado */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-item"] {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+        }
+
+        /* Mantener ancho adecuado para los botones */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] {
+          width: 100%;
+        }
+        
+        /* Ajustar posición de los iconos en estado colapsado */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] a,
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"] button {
+          width: 100%;
+        }
+
+        /* Estilos específicos para los indicadores - con mejor manejo de overflow */
+        /* Solo aplicamos overflow visible a los elementos que necesitan mostrar los indicadores */
+        [data-sidebar="menu-button"].menu-item-active,
+        [data-sidebar="menu-button"]:not(.user-profile-button) {
+          overflow: visible !important;
+        }
+
+        /* Preservar comportamiento normal para estado colapsado */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu"],
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-item"] {
+          overflow: visible !important;
+        }
+        
+        /* Barra vertical izquierda en hover */
+        [data-sidebar="menu-button"]:not(.user-profile-button)::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          height: 0;
+          width: 3px;
+          background: linear-gradient(to bottom, #9645f4, #c48eff);
+          transform: translateY(-50%);
+          opacity: 0;
+          border-radius: 0 4px 4px 0;
+          box-shadow: 0 0 8px rgba(150, 69, 244, 0.2);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          z-index: 5;
+        }
+        
+        [data-sidebar="menu-button"]:not(.user-profile-button):hover::before {
+          height: 70%;
+          opacity: 1;
+          box-shadow: 0 0 12px rgba(150, 69, 244, 0.4);
+        }
+        
+        /* Efecto especial para elementos activos */
+        .menu-item-active::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          height: 70% !important;
+          width: 3px;
+          background: linear-gradient(to bottom, #8a34ef, #b368ff) !important;
+          transform: translateY(-50%);
+          opacity: 1 !important;
+          border-radius: 0 4px 4px 0;
+          box-shadow: 0 0 12px rgba(150, 69, 244, 0.6) !important;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          z-index: 5;
+        }
+
+        /* Estilo para el indicador de activo en los elementos del menú */
+        .menu-item-active::after {
+          content: '';
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #9645f4, #b368ff);
+          box-shadow: 0 0 8px rgba(150, 69, 244, 0.7);
+          animation: pulse 2s infinite;
+          transition: all 0.3s ease;
+          z-index: 5;
+        }
+
+        /* Ajustes para el estado colapsado - Ocultar el indicador (la bola) */
+        [data-sidebar-state="collapsed"] .menu-item-active::after {
+          display: none; /* Ocultar el indicador en estado colapsado */
+        }
+
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"]::before {
+          left: 50%;
+          top: auto;
+          bottom: 0;
+          transform: translateX(-50%);
+          width: 0;
+          height: 3px;
+        }
+
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"]:hover::before {
+          width: 70%;
+          height: 3px;
+        }
+
+        [data-sidebar-state="collapsed"] .menu-item-active::before {
+          left: 50%;
+          top: auto;
+          bottom: 0;
+          transform: translateX(-50%);
+          width: 70% !important;
+          height: 3px !important;
+        }
+
+        /* Restablecer transformación en hover para estado colapsado */
+        [data-sidebar-state="collapsed"] [data-sidebar="menu-button"]:hover {
+          transform: translateY(-4px);
+        }
+
+        /* Animación para el punto de activo */
+        @keyframes pulse {
+          0% { box-shadow: 0 0 0 0 rgba(150, 69, 244, 0.7); }
+          70% { box-shadow: 0 0 0 6px rgba(150, 69, 244, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(150, 69, 244, 0); }
+        }
+
+        /* Efecto hover en el punto para que resalte */
+        .menu-item-active:hover::after {
+          transform: translateY(-50%) scale(1.2);
+          background: linear-gradient(45deg, #8a34ef, #c48eff);
+        }
+
+        /* Eliminar también el hover del punto en estado colapsado */
+        [data-sidebar-state="collapsed"] .menu-item-active:hover::after {
+          display: none;
         }
         
         /* Agregar cursor pointer a todos los botones en la sidebar de desktop */
@@ -368,7 +590,7 @@ export function AppSidebar() {
                     <div className="flex-1 space-y-4 overflow-hidden">
                         <NavMain 
                             items={mainNavItems} 
-                            onNavigate={() => setMobileMenuOpen(false)} 
+                            onNavigate={() => setMobileMenuOpen(false)}
                         />
                         <div className="pt-10 mt-38">
                             <SidebarMenu className="mt-4">
@@ -382,6 +604,7 @@ export function AppSidebar() {
                     <div className="pt-4 pb-6 px-2">
                         <div ref={userMenuContainerRef} className="mobile-user-menu-z">
                             <NavUser 
+                                className="user-profile-button"
                                 dropdownContainer={userMenuContainerRef.current}
                                 dropdownClassName="user-dropdown-z"
                                 dropdownAlign="start"
@@ -432,7 +655,7 @@ export function AppSidebar() {
                         <TermsAndConditions />
                         <ContactLink />
                     </SidebarMenu>
-                    <NavUser />
+                    <NavUser className="user-profile-button" />
                 </SidebarFooter>
             </Sidebar>
         </>
