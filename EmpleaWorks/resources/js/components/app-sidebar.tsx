@@ -89,6 +89,7 @@ export function AppSidebar() {
             isActive: isRouteActive("/company/dashboard"),
         })
     } else {
+        // Personalizar más los estilos directamente aquí para "Mis Ofertas"
         mainNavItems.push({
             title: t("my_offers"),
             href: "/candidate/dashboard",
@@ -100,6 +101,8 @@ export function AppSidebar() {
                     window.location.href = route("login")
                 }
                 : undefined,
+            // Añadir una clase CSS personalizada si no está autenticado
+            className: !isAuthenticated ? "disabled" : "",
         })
     }
 
@@ -272,6 +275,23 @@ export function AppSidebar() {
           overflow: visible !important;
         }
 
+        /* Mejorar el espaciado entre iconos y texto - Reducido */
+        [data-sidebar="menu-button"]:not(.logo-button) a svg,
+        [data-sidebar="menu-button"]:not(.logo-button) button svg {
+          margin-right: 6px; /* Reducido de 10px a 6px */
+        }
+        
+        /* Especificamente para el texto de los items de navegación */
+        .sidebar-menu-button-text {
+          margin-left: 0px; /* Eliminado el margen adicional de 4px */
+        }
+        
+        /* Mantener espaciado en el logo */
+        .logo-button svg,
+        .logo-button button svg {
+          margin-right: 10px;
+        }
+        
         /* Aplicar overflow visible a todos los contenedores principales */
         [data-sidebar="menu"],
         [data-sidebar="menu-item"],
