@@ -13,6 +13,7 @@ export function InputPassword({
   required = true,
   name = "password",
   className,
+  disabled = false,
 }: {
   value?: string;
   onChange?: (value: string) => void;
@@ -22,6 +23,7 @@ export function InputPassword({
   required?: boolean;
   name?: string;
   className?: string;
+  disabled?: boolean;
 }) {
   const { t } = useTranslation();
   const [password, setPassword] = useState(value || "");
@@ -93,6 +95,7 @@ export function InputPassword({
             onChange={handleChange}
             required={required}
             autoComplete="new-password"
+            disabled={disabled}
           />
           <button
             className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import type { NavItem, SharedData } from "@/types"
 import { usePage, router } from "@inertiajs/react"
-import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft, BookmarkIcon } from "lucide-react"
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft, BookmarkIcon, UsersIcon } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
@@ -88,18 +88,25 @@ export function AppSidebar() {
             icon: BuildingIcon,
             isActive: isRouteActive("/company/dashboard"),
         });
+        
+        mainNavItems.push({
+            title: t("applicants"),
+            href: "/company/applicants",
+            icon: UsersIcon,
+            isActive: isRouteActive("/company/applicants"),
+        });
     } else if (isAuthenticated){
         mainNavItems.push({
             title: t("my_offers"),
             href: "/candidate/dashboard",
-            icon: BookOpenCheck,
+            icon: FileText,
             isActive: isRouteActive("/candidate/dashboard"),
         });
 
         mainNavItems.push({
             title: t("your_applications"),
             href: "/candidate/applications",
-            icon: FileText,
+            icon: BookOpenCheck,
             isActive: isRouteActive("/candidate/applications"),
         });
 

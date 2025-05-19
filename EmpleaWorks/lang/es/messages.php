@@ -396,4 +396,5 @@ return [
     'email_not_verified' => 'Email no verificado',
     'cv_uploaded' => 'CV subido',
     'cv_not_uploaded' => 'CV no subido',
+    'cannot_change_google_password' => 'No puedes cambiar la contraseña de una cuenta vinculada a Google desde aquí. Por favor, usa la configuración de tu cuenta de Google.',
 ];

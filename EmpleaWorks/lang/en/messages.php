@@ -398,4 +398,5 @@ return [
     'email_not_verified' => 'Email not verified',
     'cv_uploaded' => 'CV uploaded',
     'cv_not_uploaded' => 'CV not uploaded',
+    'cannot_change_google_password' => 'You cannot change the password for a Google-linked account from here. Please use your Google account settings.',
 ];

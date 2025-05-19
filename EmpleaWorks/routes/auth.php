@@ -90,7 +90,7 @@ Route::middleware('auth')->group(function () {
         ->name('offers.destroy');
     // Ruta para ver los candidatos que han aplicado a las ofertas de una empresa
     Route::get('/company/applicants', [CompanyController::class, 'applicants'])
-        ->middleware(['company.role', 'verified'])
+        ->middleware(['company.role'])
         ->name('company.applicants');
     
         

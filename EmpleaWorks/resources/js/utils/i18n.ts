@@ -7,7 +7,7 @@ const translations: Record<string, Record<string, string>> = {
         // Sidebar
         'dashboard': 'Offers',
         'company_dashboard': 'Company Dashboard',
-        'my_offers': 'My Offers',
+        'my_offers': 'Personal Area',
         'repository': 'Repository',
         'documentation': 'Documentation',
         'language': 'Language',
@@ -31,7 +31,7 @@ const translations: Record<string, Record<string, string>> = {
         'loading_offers': 'Loading offers...',
 
         // Candidate Dashboard
-        'candidate_dashboard_title': 'Candidate Dashboard',
+        'candidate_dashboard_title': 'My personal Area',
         'candidate_dashboard_subtitle': 'Track your applications and profile',
         'your_applications': 'Your Applications',
         'jobs_applied_to': 'Jobs you\'ve applied to',
@@ -443,6 +443,9 @@ const translations: Record<string, Record<string, string>> = {
         'company_feature_1': 'Post unlimited job offers',
         'company_feature_2': 'Find qualified candidates',
         'company_feature_3': 'Manage hiring process efficiently',
+        'google_account_notice': 'Google Account Detected',
+        'google_password_change_info': 'You registered using Google authentication. Password changes must be made through your Google account settings.',
+        'go_to_google_account': 'Go to Google Account',
 
         // Saved offers for candidates
         'saved_offers': 'Saved Offers',
@@ -463,7 +466,7 @@ const translations: Record<string, Record<string, string>> = {
         // Sidebar
         'dashboard': 'Ofertas',
         'company_dashboard': 'Panel de Empresa',
-        'my_offers': 'Mis Ofertas',
+        'my_offers': 'Área personal',
         'repository': 'Repositorio',
         'documentation': 'Documentación',
         'language': 'Idioma',
@@ -487,7 +490,7 @@ const translations: Record<string, Record<string, string>> = {
         'loading_offers': 'Cargando ofertas...',
 
         // Dashboard de candidato
-        'candidate_dashboard_title': 'Mis Ofertas',
+        'candidate_dashboard_title': 'Mi área personal',
         'candidate_dashboard_subtitle': 'Gestiona tus solicitudes y perfil',
         'your_applications': 'Tus Solicitudes',
         'jobs_applied_to': 'Empleos a los que has aplicado',
@@ -900,6 +903,9 @@ const translations: Record<string, Record<string, string>> = {
         'company_feature_1': 'Publica ofertas de trabajo ilimitadas',
         'company_feature_2': 'Encuentra candidatos cualificados',
         'company_feature_3': 'Gestiona el proceso de contratación eficientemente',
+        'google_account_notice': 'Cuenta de Google detectada',
+        'google_password_change_info': 'Te registraste utilizando autenticación de Google. Los cambios de contraseña deben realizarse a través de la configuración de tu cuenta de Google.',
+        'go_to_google_account': 'Ir a cuenta de Google',
 
         // Saved offers for candidates
         'saved_offers': 'Ofertas Guardadas',

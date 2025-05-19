@@ -5,7 +5,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 import { useTranslation } from '@/utils/i18n';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, AlertTriangle } from 'lucide-react';
 import { Toaster, showToast } from '@/components/toast';
 
 import HeadingSmall from '@/components/heading-small';
@@ -14,8 +14,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { InputPassword } from '@/components/ui/input-password';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-export default function Password() {
+export default function Password({ isGoogleUser = false }) {
     const { t } = useTranslation();
     
     // ----- COLOR THEMING SYSTEM -----
@@ -95,6 +96,19 @@ export default function Password() {
                         />
                     </div>
 
+                    {/* Alerta para usuarios de Google */}
+                    {isGoogleUser && (
+                        <Alert variant="warning" className="bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800">
+                            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                            <AlertTitle className="text-amber-700 dark:text-amber-300 font-medium">
+                                {t('google_account_notice')}
+                            </AlertTitle>
+                            <AlertDescription className="text-amber-600 dark:text-amber-400">
+                                {t('google_password_change_info')}
+                            </AlertDescription>
+                        </Alert>
+                    )}
+
                     <form onSubmit={updatePassword} className="space-y-6">
                         <div className="grid gap-2">
                             <Label 
@@ -118,6 +132,7 @@ export default function Password() {
                                 )}
                                 autoComplete="current-password"
                                 placeholder={t('current_password')}
+                                disabled={isGoogleUser}
                             />
 
                             <InputError message={errors.current_password} className="text-red-500 text-sm" />
@@ -133,6 +148,7 @@ export default function Password() {
                                 className="[&_label]:text-[#7c28eb] [&_label]:dark:text-purple-300 [&_label]:font-medium [&_input]:border-gray-200 [&_input]:dark:border-gray-700 [&_input]:focus-visible:ring-[#7c28eb] [&_input]:focus-visible:border-[#7c28eb]"
                                 placeholder={t('new_password')}
                                 required
+                                disabled={isGoogleUser}
                             />
                             <InputError message={errors.password} className="text-red-500 text-sm" />
                         </div>
@@ -158,6 +174,7 @@ export default function Password() {
                                 )}
                                 autoComplete="new-password"
                                 placeholder={t('confirm_password')}
+                                disabled={isGoogleUser}
                             />
 
                             <InputError message={errors.password_confirmation} className="text-red-500 text-sm" />
@@ -165,7 +182,7 @@ export default function Password() {
 
                         <div className="flex items-center gap-4">
                             <Button 
-                                disabled={processing}
+                                disabled={processing || isGoogleUser}
                                 className="text-white"
                                 style={{ 
                                     backgroundColor: primaryColor,
@@ -181,6 +198,17 @@ export default function Password() {
                                 {processing && <LoaderCircle className="h-4 w-4 mr-2 animate-spin" />}
                                 {t('save_password')}
                             </Button>
+                            
+                            {isGoogleUser && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="text-amber-600 border-amber-200 hover:bg-amber-50 dark:text-amber-400 dark:border-amber-800 dark:hover:bg-amber-900/30"
+                                    onClick={() => window.open('https://myaccount.google.com/security', '_blank')}
+                                >
+                                    {t('go_to_google_account')}
+                                </Button>
+                            )}
                         </div>
                     </form>
                     
