@@ -11,7 +11,7 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import AppLayout from "@/layouts/app-layout"
 import type { BreadcrumbItem, SharedData } from "@/types"
-import { useForm, Head } from "@inertiajs/react"
+import { useForm, Head, router } from "@inertiajs/react"
 import { usePage } from "@inertiajs/react"
 import { type FormEvent, useState, useEffect } from "react"
 import type { Offer } from "@/types/types"
@@ -103,10 +103,8 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
 
     put(route("offers.update", offer.id), {
       onSuccess: () => {
-        // Remove the toast call here to prevent duplication
-        // toast.success(t("job_updated_success"));
-        // Redirect to company dashboard
-        window.location.href = route("company.dashboard")
+        // Using Inertia's router instead of window.location
+        router.visit(route("company.dashboard"))
       },
       onError: () => {
         toast.error(t("job_updated_error"))
@@ -224,7 +222,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
       />
       <Head title={t("edit_job_listing")} />
 
-      <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
+      <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
           <canvas id="particle-canvas" className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
