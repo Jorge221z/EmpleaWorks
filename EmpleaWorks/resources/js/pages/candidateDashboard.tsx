@@ -5,7 +5,7 @@ import AppLayout from "@/layouts/app-layout"
 import type { BreadcrumbItem, SharedData } from "@/types"
 import { Head, Link, usePage } from "@inertiajs/react"
 import { useEffect, useRef, useState } from "react"
-import { FileIcon, UserIcon, Sparkles, BookmarkIcon } from "lucide-react"
+import { BookOpenCheck, UserIcon, Sparkles, BookmarkIcon } from "lucide-react"
 import type { Offer } from "@/types/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Toaster, showToast } from "@/components/toast"
@@ -249,32 +249,95 @@ export default function CandidateDashboard({
               >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
-                    <FileIcon className="h-5 w-5" style={{ color: primaryLightColor }} />
-                    {t("applications")}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ color: primaryLightColor }}
+                    >
+                      <rect width="7" height="7" x="3" y="3" rx="1" />
+                      <rect width="7" height="7" x="14" y="3" rx="1" />
+                      <rect width="7" height="7" x="14" y="14" rx="1" />
+                      <rect width="7" height="7" x="3" y="14" rx="1" />
+                    </svg>
+                    {t("explore_jobs")}
                   </CardTitle>
-                  <CardDescription>{t("track_applications")}</CardDescription>
+                  <CardDescription>{t("find_new_opportunities")}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col justify-between">
-                  <div>
-                    <div className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">
-                      {candidateOffers.length}
+                  {/* Contenido con ilustración a un lado y texto al otro */}
+                  <div className="flex flex-row items-center gap-4 mb-4 flex-grow">
+                    <div className="flex-shrink-0 w-1/3 flex justify-center">
+                      <div className="w-20 h-20 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="text-[#7c28eb] dark:text-purple-300"
+                        >
+                          <path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" />
+                          <path d="M16 2v4" />
+                          <path d="M8 2v4" />
+                          <path d="M3 10h18" />
+                          <circle cx="18" cy="18" r="3" />
+                          <path d="M18 15v1.5" />
+                          <path d="M18 19.5V21" />
+                        </svg>
+                      </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      {candidateOffers.length !== 1 ? t("active_applications_plural") : t("active_applications")}
+                    <div className="flex-grow w-2/3">
+                      <div className="space-y-2">
+                        <h3 className="font-medium text-[#7c28eb] dark:text-purple-300">
+                          {t("latest_jobs_waiting")}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {t("personalized_job_opportunities")}
+                        </p>
+                        <div className="flex items-center text-xs space-x-2 text-muted-foreground">
+                          <span className="inline-flex items-center gap-0.5">
+                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" />
+                              <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            {t("updated_daily")}
+                          </span>
+                          <span className="inline-flex items-center gap-0.5">
+                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                              <rect width="7" height="7" x="14" y="14" rx="1" />
+                              <rect width="7" height="7" x="3" y="14" rx="1" />
+                              <rect width="7" height="7" x="3" y="3" rx="1" />
+                              <rect width="7" height="7" x="14" y="3" rx="1" />
+                            </svg>
+                            {t("multiple_categories")}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
                   <Button
                     size="sm"
-                    className="gap-1 w-full mt-4 relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                    className="gap-1 w-full mt-2 relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                   >
-                    <Link 
-                      href={route("dashboard")} 
+                    <Link
+                      href={route("dashboard")}
                       className="w-full h-full absolute inset-0 z-10"
                       aria-label={t("find_jobs")}
                     />
-                    <div className="w-full flex items-center justify-center gap-1 pointer-events-none">
-                      {t("find_jobs")}
+                    <div className="w-full flex items-center justify-center pointer-events-none">
+                      {t("browse_all_jobs")}
                     </div>
                     <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer pointer-events-none"></span>
                   </Button>
@@ -460,7 +523,7 @@ export default function CandidateDashboard({
               >
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-[#7c28eb] dark:text-purple-300">
-                    <FileIcon className="h-5 w-5" style={{ color: primaryLightColor }} />
+                    <BookOpenCheck className="h-5 w-5" style={{ color: primaryLightColor }} />
                     {t("your_applications")}
                     <div className="ml-auto bg-purple-100 dark:bg-purple-900/30 text-[#7c28eb] dark:text-purple-300 text-xs py-1 px-2 rounded-full">
                       {candidateOffers.length}

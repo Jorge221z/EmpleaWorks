@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import type { NavItem, SharedData } from "@/types"
 import { usePage, router } from "@inertiajs/react"
-import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft, BookmarkIcon, UsersIcon } from "lucide-react"
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft, BookmarkIcon, UsersIcon, Home } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
@@ -99,7 +99,7 @@ export function AppSidebar() {
         mainNavItems.push({
             title: t("my_offers"),
             href: "/candidate/dashboard",
-            icon: FileText,
+            icon: Home,
             isActive: isRouteActive("/candidate/dashboard"),
         });
 

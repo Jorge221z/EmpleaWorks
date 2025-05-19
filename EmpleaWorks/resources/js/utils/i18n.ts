@@ -64,6 +64,14 @@ const translations: Record<string, Record<string, string>> = {
         'browse_to_apply': 'Browse job listings to apply',
         'browse_to_save': 'Save offers you might like',
         'offer_removed_from_saved_when_applied': 'The offer has been removed from your saved items.',
+        'latest_jobs_waiting': 'Latest Jobs Waiting for You',
+        'personalized_job_opportunities': 'Discover job opportunities tailored to your skills and experience',
+        'updated_daily': 'Updated daily',
+        'multiple_categories': 'Multiple categories',
+        'explore_jobs': 'Explore Jobs',
+        'find_new_opportunities': 'Find new job opportunities',
+        'job_search_description': 'Browse through hundreds of job listings tailored to your profile',
+        'browse_all_jobs': 'Browse All Jobs',
         
         // Company Dashboard
         'job_listings': 'Job Listings',
@@ -523,6 +531,14 @@ const translations: Record<string, Record<string, string>> = {
         'browse_to_apply': 'Navega por las ofertas para aplicar',
         'browse_to_save': 'Guarda ofertas que te interesen',
         'offer_removed_from_saved_when_applied': 'La oferta ha sido eliminada de tus guardados.',
+        'latest_jobs_waiting': 'Últimas ofertas esperándote',
+        'personalized_job_opportunities': 'Descubre oportunidades laborales adaptadas a tus habilidades y experiencia',
+        'updated_daily': 'Actualizado diariamente',
+        'multiple_categories': 'Múltiples categorías',
+        'explore_jobs': 'Explorar Ofertas',
+        'find_new_opportunities': 'Encuentra nuevas oportunidades laborales',
+        'job_search_description': 'Navega entre cientos de ofertas de trabajo adaptadas a tu perfil',
+        'browse_all_jobs': 'Ver Todas las Ofertas',
         
         // Tarjetas de empresa
         'job_listings': 'Ofertas de Empleo',
