@@ -7,16 +7,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label"
 import AppLayout from "@/layouts/app-layout"
 import type { BreadcrumbItem, SharedData } from "@/types"
-import { Head, Link, useForm, usePage } from "@inertiajs/react"
+import { Head, Link, useForm, usePage, router } from "@inertiajs/react"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { type FormEvent, useState, useEffect } from "react"
-import toast, { Toaster } from "react-hot-toast"
 import { useTranslation } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
+import { toast } from "react-hot-toast"
 
 interface CreateJobOfferProps {
   categories: string[]
@@ -81,9 +81,8 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
     post(route("offers.store"), {
       onSuccess: () => {
-        toast.success(t("job_created_success"))
-        // Redirect to company dashboard after success
-        window.location.href = route("company.dashboard")
+        // Using Inertia's router instead of window.location
+        router.visit(route("company.dashboard"))
       },
       onError: () => {
         toast.error(t("job_created_error"))
@@ -186,22 +185,9 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: "toast-offers",
-          style: {
-            background: "#363636",
-            color: "#fff",
-            borderRadius: "8px",
-            padding: "20px 28px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          },
-        }}
-      />
       <Head title={t("create_job_listing")} />
 
-      <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
+      <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
           <canvas id="particle-canvas" className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
