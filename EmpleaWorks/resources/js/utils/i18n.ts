@@ -36,7 +36,7 @@ const translations: Record<string, Record<string, string>> = {
         'your_applications': 'Your Applications',
         'jobs_applied_to': 'Jobs you\'ve applied to',
         'closed_in': 'Closed in',
-        'closed': 'Closed', // Estado de oferta de empleo
+        'closed': 'Closed',
         'days_remaining': '{days} day',
         'days_remaining_plural': '{days} days',
         'company_info': 'Company Info',
@@ -57,6 +57,13 @@ const translations: Record<string, Record<string, string>> = {
         'your_information': 'Your candidate information',
         'complete_profile': 'Complete profile',
         'edit_profile': 'Edit Profile',
+        'saved_offers_plural': 'Saved offers',
+        'saved_offer_singular': 'Saved offer',
+        'view_applications': 'View applications',
+        'view_saved_offers': 'View saved offers',
+        'browse_to_apply': 'Browse job listings to apply',
+        'browse_to_save': 'Save offers you might like',
+        'offer_removed_from_saved_when_applied': 'The offer has been removed from your saved items.',
         
         // Company Dashboard
         'job_listings': 'Job Listings',
@@ -143,6 +150,8 @@ const translations: Record<string, Record<string, string>> = {
         'apply_to_this_offer': 'Apply to this job offer',
         'description': 'Description',
         'contact': 'Contact',
+        'cannot_save_applied_offer': 'You cannot save an offer you have already applied to.',
+        'applied': 'Applied',
 
         // Profile settings form
         'profile_settings': 'Profile Settings',
@@ -483,7 +492,7 @@ const translations: Record<string, Record<string, string>> = {
         'your_applications': 'Tus Solicitudes',
         'jobs_applied_to': 'Empleos a los que has aplicado',
         'closed_in': 'Cierra en',
-        'closed': 'Cerrado', // Estado de oferta de empleo
+        'closed': 'Cerrado',
         'days_remaining': '{days} día',
         'days_remaining_plural': '{days} días',
         'company_info': 'Info de Empresa',
@@ -504,6 +513,13 @@ const translations: Record<string, Record<string, string>> = {
         'your_information': 'Completa el perfil con tus datos',
         'complete_profile': 'Completar perfil',
         'edit_profile': 'Editar Perfil',
+        'saved_offers_plural': 'Ofertas guardadas',
+        'saved_offer_singular': 'Oferta guardada',
+        'view_applications': 'Ver aplicaciones',
+        'view_saved_offers': 'Ver ofertas guardadas',
+        'browse_to_apply': 'Navega por las ofertas para aplicar',
+        'browse_to_save': 'Guarda ofertas que te interesen',
+        'offer_removed_from_saved_when_applied': 'La oferta ha sido eliminada de tus guardados.',
         
         // Tarjetas de empresa
         'job_listings': 'Ofertas de Empleo',
@@ -590,6 +606,8 @@ const translations: Record<string, Record<string, string>> = {
         'apply_to_this_offer': 'Aplicar a esta oferta',
         'description': 'Descripción',
         'contact': 'Contacto',
+        'cannot_save_applied_offer': 'No puedes guardar una oferta a la que ya has aplicado.',
+        'applied': 'Aplicado',
 
         // Profile settings form
         'profile_settings': 'Ajustes de Perfil',

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import type { NavItem, SharedData } from "@/types"
 import { usePage, router } from "@inertiajs/react"
-import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft } from "lucide-react"
+import { FileText, LayoutGrid, Lock, BuildingIcon, BookOpenCheck, Globe, MessageSquare, PanelLeft, BookmarkIcon } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useTranslation } from "@/utils/i18n"
 import AppLogo from "./app-logo"
@@ -73,7 +73,25 @@ export function AppSidebar() {
             title: t("company_dashboard"),
             href: "/company/dashboard",
             icon: BuildingIcon,
-        })
+        });
+    } else if (isAuthenticated){
+        mainNavItems.push({
+            title: t("my_offers"),
+            href: "/candidate/dashboard",
+            icon: BookOpenCheck,
+        });
+
+        mainNavItems.push({
+            title: t("your_applications"),
+            href: "/candidate/applications",
+            icon: FileText,
+        });
+
+        mainNavItems.push({
+            title: t("saved_offers"),
+            href: "/candidate/saved-offers",
+            icon: BookmarkIcon,
+        });
     } else {
         mainNavItems.push({
             title: t("my_offers"),
@@ -85,7 +103,7 @@ export function AppSidebar() {
                     window.location.href = route("login")
                 }
                 : undefined,
-        })
+        });
     }
 
     // Componente para el selector de idioma

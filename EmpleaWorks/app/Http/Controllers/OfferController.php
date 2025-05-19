@@ -253,8 +253,6 @@ class OfferController extends Controller
 
         $candidate->refresh();
 
-
-
         // Check if the candidate has a CV before attempting to save application
         if (!$candidate->cv || !Storage::disk('public')->exists($candidate->cv)) {
             return redirect()->route('profile.update')
@@ -263,6 +261,12 @@ class OfferController extends Controller
         
         // Solo lo guardamos si el CV existe para ese candidato//
         $user->applyToOffer($offer);
+
+        // Si la oferta estaba guardada, la eliminamos de las guardadas
+        if ($user->hasSavedOffer($offer->id)) {
+            $user->unsaveOffer($offer);
+            Log::info("Oferta {$offer->id} eliminada de guardados al aplicar para el usuario {$user->id}");
+        }
 
         // Preparamos los datos para los correos
         $company = User::find($offer->user_id);
@@ -306,8 +310,16 @@ class OfferController extends Controller
         }
 
         //caso en el que salga todo bien y no haya ningun fallo//
+        $successMessage = __('messages.application_submitted');
+        
+        // Si la oferta estaba guardada, lo mencionamos en el mensaje de éxito
+        if ($user->savedOffers()->where('offers.id', $offer->id)->exists() === false && 
+            isset($GLOBALS['offer_was_saved']) && $GLOBALS['offer_was_saved']) {
+            $successMessage .= ' ' . __('messages.offer_removed_from_saved');
+        }
+        
         return redirect()->route('candidate.dashboard')
-            ->with('success', __('messages.application_submitted'));
+            ->with('success', $successMessage);
     }
 
     /**

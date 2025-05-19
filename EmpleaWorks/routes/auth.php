@@ -98,6 +98,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard'])
         ->middleware('candidate.role')
         ->name('candidate.dashboard');
+    // Ruta para la vista de ofertas aplicadas
+    Route::get('/candidate/applications', [CandidateController::class, 'applications'])
+        ->middleware('candidate.role')
+        ->name('candidate.applications');
+    // Ruta para la vista de ofertas guardadas
+    Route::get('/candidate/saved-offers', [CandidateController::class, 'savedOffers'])
+        ->middleware('candidate.role')
+        ->name('candidate.saved-offers');
     // Ruta para mostrar el formulario de aplicación a una oferta
     Route::get('/apply-form/{offer}', [CandidateController::class, 'showForm'])
         ->middleware(['candidate.role', 'verified'])
@@ -113,4 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/saved-offers', [SavedOfferController::class, 'getSavedOffers'])
         ->middleware(['candidate.role'])
         ->name('saved.offers');
+    Route::get('/candidate/applications/check/{offer}', [CandidateController::class, 'checkApplication'])
+        ->middleware(['candidate.role'])
+        ->name('candidate.applications.check');
 });

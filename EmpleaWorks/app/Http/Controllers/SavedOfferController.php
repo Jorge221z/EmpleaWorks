@@ -29,6 +29,12 @@ class SavedOfferController extends Controller
         }
         
         try {
+            $hasApplied = $user->appliedOffers()->where('offers.id', $offer->id)->exists();
+            if ($hasApplied) {
+                return redirect()->back()
+                    ->with('error', __('messages.cannot_save_applied_offer'));
+            }
+            
             if ($user->hasSavedOffer($offer->id)) {
                 $user->unsaveOffer($offer);
                 return redirect()->back()
