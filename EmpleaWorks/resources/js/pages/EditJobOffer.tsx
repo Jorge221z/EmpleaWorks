@@ -102,13 +102,11 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
     setData("closing_date", date ? format(date, "yyyy-MM-dd") : "")
 
     put(route("offers.update", offer.id), {
-      onSuccess: () => {
-        // Using Inertia's router instead of window.location
-        router.visit(route("company.dashboard"))
-      },
+      // Eliminar la redirección explícita y dejar que el servidor maneje la navegación
       onError: () => {
         toast.error(t("job_updated_error"))
       },
+      // No es necesaria la función onSuccess ya que el controlador de Laravel se encargará de la redirección
     })
   }
 

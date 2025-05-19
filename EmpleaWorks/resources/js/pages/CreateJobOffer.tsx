@@ -80,13 +80,11 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
     setData("closing_date", date ? format(date, "yyyy-MM-dd") : "")
 
     post(route("offers.store"), {
-      onSuccess: () => {
-        // Using Inertia's router instead of window.location
-        router.visit(route("company.dashboard"))
-      },
+      // Eliminar la redirección explícita y dejar que el servidor maneje la navegación
       onError: () => {
         toast.error(t("job_created_error"))
       },
+      // No es necesaria la función onSuccess ya que el controlador de Laravel se encargará de la redirección
     })
   }
 

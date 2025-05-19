@@ -247,4 +247,12 @@ class CompanyController extends Controller
 
         return $deleted;
     }
+
+    /**
+     * Obtiene los datos necesarios para el dashboard de la empresa.
+     *
+     * @param  \App\Models\User  $user
+     * @return array
+     */
+    
 }
