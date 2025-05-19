@@ -14,7 +14,6 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { type FormEvent, useState, useEffect } from "react"
-import toast, { Toaster } from "react-hot-toast"
 import { useTranslation } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
 
@@ -81,7 +80,8 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
     post(route("offers.store"), {
       onSuccess: () => {
-        toast.success(t("job_created_success"))
+        // Remove the toast call here to prevent duplication
+        // toast.success(t("job_created_success"))
         // Redirect to company dashboard after success
         window.location.href = route("company.dashboard")
       },
@@ -186,19 +186,6 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          className: "toast-offers",
-          style: {
-            background: "#363636",
-            color: "#fff",
-            borderRadius: "8px",
-            padding: "20px 28px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-          },
-        }}
-      />
       <Head title={t("create_job_listing")} />
 
       <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
