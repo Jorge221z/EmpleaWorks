@@ -98,9 +98,18 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
+    // Update the closing_date in case the date picker changed
+    setData("closing_date", date ? format(date, "yyyy-MM-dd") : "")
+
     put(route("offers.update", offer.id), {
       onSuccess: () => {
-        toast.success(t("job_updated_success"))
+        // Remove the toast call here to prevent duplication
+        // toast.success(t("job_updated_success"));
+        // Redirect to company dashboard
+        window.location.href = route("company.dashboard")
+      },
+      onError: () => {
+        toast.error(t("job_updated_error"))
       },
     })
   }
