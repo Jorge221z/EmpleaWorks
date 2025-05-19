@@ -413,13 +413,9 @@ export function AppSidebar() {
           z-index: 5;
         }
 
-        /* Ajustes para el estado colapsado */
+        /* Ajustes para el estado colapsado - Ocultar el indicador (la bola) */
         [data-sidebar-state="collapsed"] .menu-item-active::after {
-          right: auto;
-          left: 50%;
-          transform: translate(-50%, 16px);
-          width: 6px;
-          height: 6px;
+          display: none; /* Ocultar el indicador en estado colapsado */
         }
 
         [data-sidebar-state="collapsed"] [data-sidebar="menu-button"]::before {
@@ -463,9 +459,9 @@ export function AppSidebar() {
           background: linear-gradient(45deg, #8a34ef, #c48eff);
         }
 
-        /* Ajuste para hover en estado colapsado */
+        /* Eliminar también el hover del punto en estado colapsado */
         [data-sidebar-state="collapsed"] .menu-item-active:hover::after {
-          transform: translate(-50%, 16px) scale(1.2);
+          display: none;
         }
         
         /* Agregar cursor pointer a todos los botones en la sidebar de desktop */
