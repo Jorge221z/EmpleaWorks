@@ -18,9 +18,9 @@ use Mailgun\Exception\HttpClientException;
 class OfferController extends Controller
 {
     /**
-     * Store a newly created offer in storage.
+     * Almacena una nueva oferta de empleo en la base de datos
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request Datos de la nueva oferta
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -72,25 +72,24 @@ class OfferController extends Controller
             return redirect()->route('company.dashboard')
                 ->with('success', __('messages.job_created_success'));
         } catch (\Exception $e) {
-            // Manejar cualquier error
-            Log::error('Offer creation error: ' . $e->getMessage());
+            // Manejar cualquier error en la creación
+            Log::error('Error en creación de oferta: ' . $e->getMessage());
             return redirect()->back()
-                ->with('error', __('messages.job_created_error') . ': ' . $e->getMessage())
-->withInput();
+                ->with('error', __('messages.job_created_error'))
+                ->withInput();
         }
     }
-    
+
     /**
-     * Get all offers as array.
+     * Recupera todas las ofertas con información de la empresa
      *
-     * @return array
+     * @return array Lista formateada de ofertas con datos de empresa
      */
     public function list()
     {
-        // Modificado para cargar la información de la empresa a través de la relación user->company
+        // Cargar la información de la empresa
         $offers = Offer::with(['user.company'])->get();
 
-        // Transformamos los datos para mantener la estructura esperada por el frontend
         $formattedOffers = $offers->map(function ($offer) {
             // Verificamos que el usuario exista y tenga una compañía asociada
             $companyData = null;
@@ -143,14 +142,14 @@ class OfferController extends Controller
     }
 
     /**
-     * Get a specific offer with its company.
+     * Obtiene los detalles de una oferta específica con datos de empresa
      *
-     * @param  \App\Models\Offer  $offer
-     * @return array
+     * @param  \App\Models\Offer  $offer Oferta a consultar
+     * @return array Datos formateados de la oferta y empresa
      */
     public function getOffer(Offer $offer)
     {
-                // Cargamos el usuario y su empresa relacionada
+        // Cargamos el usuario y su empresa relacionada
         $offer->load('user.company');
 
         // Formateamos los datos para mantener la estructura esperada
@@ -164,7 +163,7 @@ class OfferController extends Controller
             'contract_type' => $offer->contract_type,
             'job_location' => $offer->job_location,
             'closing_date' => $offer->closing_date,
-            'company_id' => $offer->user_id, // Para compatibilidad
+            'company_id' => $offer->user_id,
             'user_id' => $offer->user_id,
             'created_at' => $offer->created_at,
             'updated_at' => $offer->updated_at,
@@ -185,10 +184,10 @@ class OfferController extends Controller
     }
 
     /**
-     * Apply to an offer.
+     * Procesa la solicitud de un candidato a una oferta
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse | \Inertia\Response
+     * @param  \Illuminate\Http\Request  $request Datos de la solicitud
+     * @return mixed Redirección según resultado de la operación
      */
     public function apply(Request $request)
     {
@@ -213,7 +212,7 @@ class OfferController extends Controller
             ]
         );
 
-        //sanitizamos los datos para evitar inyecciones//
+        // Sanitizamos los datos para evitar inyecciones
         $sanitized = [
             'phone' => preg_replace('/[^\d\+]/', '', trim($validated['phone'])),
             'email' => filter_var($validated['email'], FILTER_SANITIZE_EMAIL),
@@ -225,7 +224,6 @@ class OfferController extends Controller
             return redirect()->back()->with('error', __('messages.login_required_for_apply'));
         }
 
-        // Obtenemos el usuario autenticado
         $user = Auth::user();
 
         // Verificamos si el usuario es un candidato
@@ -253,13 +251,11 @@ class OfferController extends Controller
 
         $candidate->refresh();
 
-        // Check if the candidate has a CV before attempting to save application
         if (!$candidate->cv || !Storage::disk('public')->exists($candidate->cv)) {
             return redirect()->route('profile.update')
                 ->with('error', __('messages.cv_empty'));
         }
-        
-        // Solo lo guardamos si el CV existe para ese candidato//
+
         $user->applyToOffer($offer);
 
         // Si la oferta estaba guardada, la eliminamos de las guardadas
@@ -270,7 +266,7 @@ class OfferController extends Controller
 
         // Preparamos los datos para los correos
         $company = User::find($offer->user_id);
-        
+
         $emailData = [
             'candidate' => $user,
             'offer' => $offer,
@@ -279,54 +275,51 @@ class OfferController extends Controller
             'email' => $sanitized['email'],
             'coverLetter' => $sanitized['cl'],
         ];
-        
+
         // Instanciamos el MailController
         $mailController = new \App\Http\Controllers\MailController();
-        
+
         // Enviamos correo al candidato
         $candidateEmailResult = $mailController->sendApplicationConfirmation($emailData);
-        
+
         // Verificamos si hay un error específico por CV faltante
         if (is_array($candidateEmailResult) && isset($candidateEmailResult['success']) && $candidateEmailResult['success'] === false) {
             if ($candidateEmailResult['error'] === 'cv_missing') {
-                // Si falta el CV, redirigir al usuario a la página de actualización de perfil
                 return redirect()->route('profile.update')
                     ->with('error', $candidateEmailResult['message']);
             }
         }
-        
+
         if (!$candidateEmailResult) {
-            // Log del error ya se maneja en el MailController
-            return redirect()->back()
-                ->with('error', __('messages.email_send_error'));
-        }
-        
-        // Enviamos correo a la empresa
-        $companyEmailSent = $mailController->sendApplicationNotification($emailData);
-        if (!$companyEmailSent) {
-            // Log del error ya se maneja en el MailController
             return redirect()->back()
                 ->with('error', __('messages.email_send_error'));
         }
 
-        //caso en el que salga todo bien y no haya ningun fallo//
+        // Enviamos correo a la empresa
+        $companyEmailSent = $mailController->sendApplicationNotification($emailData);
+        if (!$companyEmailSent) {
+            return redirect()->back()
+                ->with('error', __('messages.email_send_error'));
+        }
+
+        // En caso en el que salga todo bien y no haya ningun fallo
         $successMessage = __('messages.application_submitted');
-        
+
         // Si la oferta estaba guardada, lo mencionamos en el mensaje de éxito
-        if ($user->savedOffers()->where('offers.id', $offer->id)->exists() === false && 
+        if ($user->savedOffers()->where('offers.id', $offer->id)->exists() === false &&
             isset($GLOBALS['offer_was_saved']) && $GLOBALS['offer_was_saved']) {
             $successMessage .= ' ' . __('messages.offer_removed_from_saved');
         }
-        
+
         return redirect()->route('candidate.dashboard')
             ->with('success', $successMessage);
     }
 
     /**
-     * Update the specified offer in storage.
+     * Actualiza una oferta existente
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Offer  $offer
+     * @param  \Illuminate\Http\Request  $request Datos actualizados
+     * @param  \App\Models\Offer  $offer Oferta a actualizar
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Offer $offer)
@@ -339,7 +332,7 @@ class OfferController extends Controller
         if ($offer->user_id !== $user->id) {
             return redirect()->back()->with('error', __('messages.not_your_listing'));
         }
-        
+
         // Validar los datos de la oferta con mensajes traducidos
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:offers,name,' . $offer->id,
@@ -363,16 +356,14 @@ class OfferController extends Controller
             'closing_date.required' => __('messages.closing_date_required'),
             'closing_date.date' => __('messages.closing_date_invalid'),
         ]);
-        
+
         try {
             // Actualizar la oferta
             $offer->update($validated);
-            
-            // Redireccionar con mensaje de éxito
+
             return redirect()->route('company.dashboard')
                 ->with('success', __('messages.job_updated_success'));
         } catch (\Exception $e) {
-            // Loggear el error pero no mostrar detalles al usuario
             Log::error('Offer update error: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', __('messages.job_updated_error'))
@@ -381,9 +372,9 @@ class OfferController extends Controller
     }
 
     /**
-     * Remove the specified offer from storage.
+     * Elimina una oferta del sistema
      *
-     * @param  \App\Models\Offer  $offer
+     * @param  \App\Models\Offer  $offer Oferta a eliminar
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Offer $offer)
@@ -398,14 +389,13 @@ class OfferController extends Controller
             return redirect()->route('company.dashboard')
                 ->with('error', 'You can only delete your own job listings');
         }
-        
+
         try {
             // Eliminar la oferta
             $offer->delete();
-            
-            // Redireccionar con mensaje de éxito
+
             return redirect()->route('company.dashboard');
-                
+
         } catch (\Exception $e) {
             Log::error('Offer delete error: ' . $e->getMessage());
             return redirect()->back()

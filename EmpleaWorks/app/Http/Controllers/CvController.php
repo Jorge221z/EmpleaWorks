@@ -10,49 +10,49 @@ use Symfony\Component\HttpFoundation\Response;
 class CvController extends Controller
 {
     /**
-     * Download a candidate's CV.
+     * Permite la descarga del CV de un candidato
      *
-     * @param  \App\Models\Candidate  $candidate
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param  \App\Models\Candidate  $candidate Candidato del que se descargará el CV
+     * @return \Symfony\Component\HttpFoundation\Response Respuesta con el archivo para descarga
      */
     public function download(Candidate $candidate)
     {
-        // Check if the candidate has a CV
+        // Verifica si el candidato tiene CV asignado
         if (!$candidate->cv) {
             abort(404, 'CV no encontrado');
         }
 
-        // Check if the file exists in storage
+        // Verifica si el archivo existe
         if (!Storage::disk('public')->exists($candidate->cv)) {
             abort(404, 'Archivo no encontrado');
         }
 
-        // Get the full path to the file
+        // Obtiene la ruta completa del archivo
         $path = Storage::disk('public')->path($candidate->cv);
-        
-        // Get the original filename, or use a default if it can't be determined
+
+        // Obtiene el nombre original del archivo
         $filename = basename($candidate->cv);
-        
-        // Set the content type based on the file extension
+
+        // Determina el tipo de contenido según la extensión
         $contentType = $this->getContentType($path);
-        
-        // Return the file as a download response
+
+        // Genera la respuesta para la descarga del archivo
         return response()->file($path, [
             'Content-Type' => $contentType,
             'Content-Disposition' => 'attachment; filename="' . $filename . '"'
         ]);
     }
-    
+
     /**
-     * Determine the content type based on file extension.
+     * Determina el tipo de contenido según la extensión del archivo
      *
-     * @param  string  $path
-     * @return string
+     * @param  string  $path Ruta del archivo
+     * @return string Tipo MIME correspondiente al archivo
      */
     private function getContentType($path)
     {
         $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-        
+
         switch ($extension) {
             case 'pdf':
                 return 'application/pdf';

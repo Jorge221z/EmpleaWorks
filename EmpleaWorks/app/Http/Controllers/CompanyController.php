@@ -12,32 +12,31 @@ use Carbon\Carbon;
 class CompanyController extends Controller
 {
     /**
-     * Display the company dashboard.
+     * Muestra el panel de control principal de la empresa
      *
-     * @return \Inertia\Response
+     * @return \Inertia\Response Panel de control con ofertas y estadísticas
      */
     public function dashboard()
     {
-        // Usar Auth::user() en lugar de auth()->user()
+        // Obtiene el usuario autenticado actual
         $user = Auth::user();
-        
-        // Verificar si el usuario existe antes de intentar acceder a sus ofertas
+
+        // Inicializa las variables para almacenar datos
         $companyOffers = [];
-        $totalApplicants = 0; // Variable para contar solicitantes
+        $totalApplicants = 0;
 
         if ($user && $user->isCompany()) {
-            // Obtener las ofertas creadas por la empresa del usuario actual
+            // Recupera las ofertas activas de la empresa
             $offers = $user->offers()->get();
-            
-            // Calcular el total de aplicantes
+
+            // Calcula el total de candidatos para todas las ofertas
             foreach ($offers as $offer) {
                 $applicantsCount = $offer->candidates()->count();
                 $totalApplicants += $applicantsCount;
             }
 
-            // Obtener las ofertas creadas por la empresa del usuario actual
+            // Formatea las ofertas para la vista
             $companyOffers = $user->offers()->get()->map(function ($offer) use ($user) {
-                // Formatear datos para la vista
                 return [
                     'id' => $offer->id,
                     'name' => $offer->name,
@@ -64,7 +63,7 @@ class CompanyController extends Controller
                 ];
             });
         }
-        
+
         return Inertia::render('companyDashboard', [
             'companyOffers' => $companyOffers,
             'totalApplicants' => $totalApplicants
@@ -72,16 +71,16 @@ class CompanyController extends Controller
     }
 
     /**
-     * Display the form to create a new job offer.
+     * Muestra el formulario para crear una nueva oferta de trabajo
      *
-     * @return \Inertia\Response
+     * @return \Inertia\Response Vista del formulario con opciones predefinidas
      */
     public function createJobForm()
     {
-        // Verificar si el usuario está autenticado y es una empresa
+        // Obtiene el usuario empresa actual
         $user = Auth::user();
 
-        // Preparar categorías y tipos de contrato para el formulario
+        // Define las categorías laborales disponibles
         $categories = [
             __('messages.job_categories.informatics'),
             __('messages.job_categories.administration'),
@@ -97,7 +96,8 @@ class CompanyController extends Controller
             __('messages.job_categories.security_environment'),
             __('messages.job_categories.other')
         ];
-        
+
+        // Define los tipos de contrato disponibles
         $contractTypes = [
             __('messages.contract_types.permanent'),
             __('messages.contract_types.temporary'),
@@ -105,8 +105,7 @@ class CompanyController extends Controller
             __('messages.contract_types.professional_practice'),
             __('messages.contract_types.remote')
         ];
-        
-        // Renderizar el formulario de creación de oferta
+
         return Inertia::render('CreateJobOffer', [
             'categories' => $categories,
             'contractTypes' => $contractTypes,
@@ -115,22 +114,22 @@ class CompanyController extends Controller
     }
 
     /**
-     * Display the form to edit an existing job offer.
+     * Muestra el formulario para editar una oferta existente
      *
-     * @param  \App\Models\Offer  $offer
-     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse
+     * @param Offer $offer Oferta a editar
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse Vista del formulario o redirección
      */
     public function editJobForm(Offer $offer)
     {
-        // Verificar que la oferta pertenece a la empresa actual
+        // Obtiene el usuario empresa actual
         $user = Auth::user();
-        
+
         if ($offer->user_id !== $user->id) {
             return redirect()->route('company.dashboard')
                 ->with('error', __('messages.edit_only_own_listings'));
         }
-        
-        // Preparar categorías y tipos de contrato para el formulario (igual que en createJobForm)
+
+        // Define las categorías laborales disponibles
         $categories = [
             __('messages.job_categories.informatics'),
             __('messages.job_categories.administration'),
@@ -146,7 +145,8 @@ class CompanyController extends Controller
             __('messages.job_categories.security_environment'),
             __('messages.job_categories.other')
         ];
-        
+
+        // Define los tipos de contrato disponibles
         $contractTypes = [
             __('messages.contract_types.permanent'),
             __('messages.contract_types.temporary'),
@@ -154,8 +154,7 @@ class CompanyController extends Controller
             __('messages.contract_types.professional_practice'),
             __('messages.contract_types.remote')
         ];
-        
-        // Renderizar el formulario de edición con los datos actuales de la oferta
+
         return Inertia::render('EditJobOffer', [
             'offer' => $offer,
             'categories' => $categories,
@@ -165,36 +164,34 @@ class CompanyController extends Controller
     }
 
     /**
-    * Display the applicants for company's job offers.
-    *
-    * @return \Inertia\Response
-    */
+     * Muestra los candidatos para las ofertas de la empresa
+     *
+     * @return \Inertia\Response Vista con listado de candidatos por oferta
+     */
     public function applicants()
     {
         $user = Auth::user();
-    
-        // Estructura para almacenar ofertas con sus candidatos
         $jobsWithApplicants = [];
-    
+
         if ($user && $user->isCompany()) {
-            // Obtener las ofertas creadas por la empresa
+            // Recupera ofertas con sus candidatos y CVs
             $offers = $user->offers()->with(['candidates' => function($query) {
-                // Cargar candidatos con sus datos de usuario y CV
                 $query->with(['candidate' => function($q) {
                     $q->select('user_id', 'cv');
                 }]);
             }])->get();
-        
+
+            // Procesa cada oferta y sus candidatos
             foreach ($offers as $offer) {
                 $applicants = [];
-            
+
                 // Formatear los datos de candidatos
                 foreach ($offer->candidates as $candidateUser) {
                     $cv = null;
                     if ($candidateUser->candidate) {
                         $cv = $candidateUser->candidate->cv;
                     }
-                
+
                     $applicants[] = [
                         'id' => $candidateUser->id,
                         'name' => $candidateUser->name,
@@ -203,7 +200,7 @@ class CompanyController extends Controller
                         'cv' => $cv,
                     ];
                 }
-            
+
                 // Agregar oferta con sus candidatos al array
                 $jobsWithApplicants[] = [
                     'id' => $offer->id,
@@ -215,23 +212,24 @@ class CompanyController extends Controller
                 ];
             }
         }
-    
+
         return Inertia::render('CompanyApplicants', [
             'jobsWithApplicants' => $jobsWithApplicants
         ]);
     }
 
     /**
-     * Delete job offers that have been closed for more than 10 days.
+     * Elimina ofertas cerradas con más de 10 días de antigüedad
      *
-     * @param  mixed  $output
-     * @return int Number of deleted offers
+     * @param mixed $output Canal de salida para logs
+     * @return int Número de ofertas eliminadas
      */
     public function deleteOldClosedOffers($output = null)
     {
+        // Calcula la fecha límite para el borrado
         $thresholdDate = Carbon::now()->subDays(10)->startOfDay();
 
-        // Recuperar las ofertas a borrar
+        // Registra las ofertas que serán eliminadas
         $offers = Offer::whereDate('closing_date', '<', $thresholdDate)->get();
 
         foreach ($offers as $offer) {
@@ -242,17 +240,6 @@ class CompanyController extends Controller
             }
         }
 
-        // Borrar las ofertas
-        $deleted = Offer::whereDate('closing_date', '<', $thresholdDate)->delete();
-
-        return $deleted;
+        return Offer::whereDate('closing_date', '<', $thresholdDate)->delete();
     }
-
-    /**
-     * Obtiene los datos necesarios para el dashboard de la empresa.
-     *
-     * @param  \App\Models\User  $user
-     * @return array
-     */
-    
 }

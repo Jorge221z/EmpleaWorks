@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Log;
 class ContactController extends Controller
 {
     /**
-     * Process the contact form submission.
+     * Procesa el envío del formulario de contacto
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request Datos del formulario
+     * @return \Illuminate\Http\RedirectResponse Redirección con mensaje de estado
      */
     public function submit(Request $request)
     {
-        // Validar los datos del formulario
+        // Valida los campos requeridos del formulario
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -25,19 +25,19 @@ class ContactController extends Controller
         ]);
 
         try {
-            // Instanciar el MailController
+            // Gestiona el envío del correo a través del MailController
             $mailController = new MailController();
-            
-            // Enviar el correo
             $emailSent = $mailController->sendContactFormEmail($validated);
-            
+
+            // Verifica si el envío fue exitoso
             if (!$emailSent) {
                 return back()->with('error', __('messages.email_send_error'));
             }
-            
-            // Redirigir con mensaje de éxito (será mostrado como toast)
+
+            // Retorna a la página anterior con mensaje de éxito
             return back()->with('success', __('messages.contact_form_submitted'));
         } catch (\Exception $e) {
+            // Registra el error y notifica al usuario
             Log::error('Contact form submission error: ' . $e->getMessage());
             return back()->with('error', __('messages.contact_form_error'));
         }

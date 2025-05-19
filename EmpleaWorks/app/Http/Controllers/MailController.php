@@ -20,7 +20,7 @@ class MailController extends Controller
     {
         try {
             $mg = Mailgun::create(env('API_KEY'), env('MG_ENDPOINT', 'https://api.eu.mailgun.net'));
-            
+
             // Preparamos los datos del mensaje para el candidato
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
             $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
@@ -39,7 +39,7 @@ class MailController extends Controller
             // Si el candidato tiene un CV, preparamos los datos para incluirlo en el correo
             if ($candidate && $candidate->cv) {
                 $cvPath = $candidate->cv;
-                
+
                 // Generamos una URL firmada (temporal) para el CV
                 $cvUrl = URL::temporarySignedRoute(
                     'cv.download',
@@ -75,8 +75,8 @@ class MailController extends Controller
             // Si hay un CV para adjuntar, lo añadimos como adjunto
             if (!empty($attachmentParams['attachment'])) {
                 $messageParams['attachment'] = $attachmentParams['attachment'];
-            
-            } else { 
+
+            } else {
                 // En caso de faltar el CV, devolver error en lugar de intentar redireccionar
                 return [
                     'success' => false,
@@ -87,14 +87,14 @@ class MailController extends Controller
 
             // Enviamos el mensaje
             $mg->messages()->send($domain, $messageParams);
-            
+
             return true;
         } catch (\Exception $e) {
             Log::error('Error al enviar correo de nueva aplicación al candidato', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return false;
         }
     }
@@ -114,7 +114,7 @@ class MailController extends Controller
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
             $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
             $toAddress = "{$data['company']->name} <{$data['offer']->email}>";
-            
+
             $subject = __("messages.new_application_from", [
                 'name' => $data['candidate']->name,
                 'offer' => $data['offer']->name,
@@ -129,7 +129,7 @@ class MailController extends Controller
             // Si el candidato tiene un CV, preparamos los datos para incluirlo en el correo
             if ($candidate && $candidate->cv) {
                 $cvPath = $candidate->cv;
-                
+
                 // Generamos una URL firmada (temporal) para el CV
                 $cvUrl = URL::temporarySignedRoute(
                     'cv.download',
@@ -146,7 +146,7 @@ class MailController extends Controller
                 }
             }
 
-            // Añadimos los datos del CV 
+            // Añadimos los datos del CV
             $viewData = array_merge($data, [
                 'cvPath' => $cvPath,
                 'cvUrl' => $cvUrl,
@@ -169,14 +169,14 @@ class MailController extends Controller
 
             // Enviamos el mensaje
             $mg->messages()->send($domain, $messageParams);
-            
+
             return true;
         } catch (\Exception $e) {
             Log::error('Error al enviar correo de nueva aplicación a la empresa', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return false;
         }
     }
@@ -191,15 +191,15 @@ class MailController extends Controller
     {
         try {
             $mg = Mailgun::create(env('API_KEY'), env('MG_ENDPOINT', 'https://api.eu.mailgun.net'));
-            
+
             // Preparamos los datos del mensaje
             $domain = env('MAILGUN_DOMAIN', 'mg.emplea.works');
-            $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>'; // Usar dirección verificada como remitente
-            $toAddress = 'EmpleaWorks <empleaworks@gmail.com>'; // Actualizado al email solicitado
+            $fromAddress = 'EmpleaWorks <notificaciones@mg.emplea.works>';
+            $toAddress = 'EmpleaWorks <empleaworks@gmail.com>';
             $subject = "Formulario de contacto: {$data['subject']}";
-            
+
             $inquiryType = $data['inquiryType'] ?? 'General';
-            
+
             // Preparamos el cuerpo del correo (texto plano)
             $plainTextBody = "Nuevo mensaje del formulario de contacto\n\n" .
                              "Nombre: {$data['name']}\n" .
@@ -208,7 +208,7 @@ class MailController extends Controller
                              "Asunto: {$data['subject']}\n\n" .
                              "Mensaje:\n{$data['message']}\n\n" .
                              "-- Enviado desde el formulario de contacto de EmpleaWorks --";
-            
+
             // Preparamos el HTML por si se desea usar
             $htmlBody = view('emails.contact_form', [
                 'name' => $data['name'],
@@ -217,27 +217,27 @@ class MailController extends Controller
                 'message' => $data['message'],
                 'inquiryType' => $inquiryType
             ])->render();
-            
+
             // Preparamos los parámetros del mensaje
             $messageParams = [
                 'from' => $fromAddress,
                 'to' => $toAddress,
                 'subject' => $subject,
-                'text' => $plainTextBody, // Incluimos versión texto plano
+                'text' => $plainTextBody,
                 'html' => $htmlBody,
-                'h:Reply-To' => $data['email'] // Para que se pueda responder directamente al remitente
+                'h:Reply-To' => $data['email']
             ];
-            
+
             // Enviamos el mensaje
             $mg->messages()->send($domain, $messageParams);
-            
+
             return true;
         } catch (\Exception $e) {
             Log::error('Error al enviar correo del formulario de contacto', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             return false;
         }
     }

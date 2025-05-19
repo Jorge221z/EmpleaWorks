@@ -8,24 +8,30 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    /** @var OfferController Controlador para la gestión de ofertas */
     protected $offerController;
 
+    /**
+     * Constructor del controlador
+     *
+     * @param OfferController $offerController Instancia del controlador de ofertas
+     */
     public function __construct(OfferController $offerController)
     {
         $this->offerController = $offerController;
     }
 
     /**
-     * Display the dashboard with offers.
+     * Muestra el dashboard con el listado de ofertas y opciones de filtrado
      *
-     * @return \Inertia\Response
+     * @return \Inertia\Response Vista del dashboard con ofertas y filtros
      */
     public function index()
     {
-        // Obtenemos las ofertas usando el método list() del OfferController
+        // Recupera el listado completo de ofertas
         $offers = $this->offerController->list();
 
-        // Preparar categorías y tipos de contrato para los filtros
+        // Define las categorías disponibles para el filtrado
         $categories = [
             __('messages.job_categories.informatics'),
             __('messages.job_categories.administration'),
@@ -41,7 +47,8 @@ class DashboardController extends Controller
             __('messages.job_categories.security_environment'),
             __('messages.job_categories.other')
         ];
-        
+
+        // Define los tipos de contrato disponibles para el filtrado
         $contractTypes = [
             __('messages.contract_types.permanent'),
             __('messages.contract_types.temporary'),
@@ -50,6 +57,7 @@ class DashboardController extends Controller
             __('messages.contract_types.remote')
         ];
 
+        // Prepara los mensajes flash para la vista
         $flash = [
             'success' => session('success'),
             'error' => session('error')
@@ -59,19 +67,19 @@ class DashboardController extends Controller
             'offers' => $offers,
             'categories' => $categories,
             'contractTypes' => $contractTypes,
-            'flash' => $flash //pasamos explicitamente los flash a la vista //
+            'flash' => $flash
         ]);
     }
 
     /**
-     * Display a specific offer.
+     * Muestra los detalles de una oferta específica
      *
-     * @param  int  $id
-     * @return \Inertia\Response
+     * @param Offer $offer Oferta a mostrar
+     * @return \Inertia\Response Vista con los detalles de la oferta
      */
     public function showOffer(Offer $offer)
     {
-        // Usamos el método getOffer() del OfferController
+        // Recupera la oferta con los datos de la empresa
         $offerWithCompany = $this->offerController->getOffer($offer);
 
         return Inertia::render('showOffer', [
