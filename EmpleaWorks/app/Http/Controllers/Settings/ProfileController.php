@@ -17,7 +17,10 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     /**
-     * Show the user's profile settings page.
+     * Muestra la página de configuración del perfil de usuario
+     *
+     * @param Request $request Solicitud HTTP actual
+     * @return Response Vista de configuración del perfil
      */
     public function edit(Request $request): Response
     {
@@ -28,33 +31,39 @@ class ProfileController extends Controller
     }
 
     /**
-     * Generate a unique filename by adding a timestamp if necessary
+     * Genera un nombre de archivo único para almacenamiento
+     *
+     * @param string $directory Directorio destino del archivo
+     * @param string $originalName Nombre original del archivo
+     * @return string Nombre de archivo único generado
      */
     private function getUniqueFilename(string $directory, string $originalName): string
     {
         $filename = pathinfo($originalName, PATHINFO_FILENAME);
         $extension = pathinfo($originalName, PATHINFO_EXTENSION);
-        
-        // Clean the filename to prevent issues with special characters
+
+        // Validación de caracteres permitidos
         $filename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $filename);
-        
+
         $newFilename = $filename . '.' . $extension;
-        
-        // Check if file exists, if so add timestamp to make it unique
+
         if (Storage::disk('public')->exists($directory . '/' . $newFilename)) {
             $newFilename = $filename . '_' . time() . '.' . $extension;
         }
-        
+
         return $newFilename;
     }
 
     /**
-     * Update the user's profile settings.
+     * Actualiza la información del perfil del usuario
+     *
+     * @param ProfileUpdateRequest $formRequest Datos validados del formulario
+     * @return RedirectResponse Redirección con mensaje de estado
      */
     public function update(ProfileUpdateRequest $formRequest): RedirectResponse
     {
         try {
-            $request = request(); // Para manejar archivos
+            $request = request();
             $user = Auth::user();
             $validated = $formRequest->validated();
 
@@ -74,14 +83,13 @@ class ProfileController extends Controller
 
             // Manejar eliminación de imagen
             if (isset($validated['delete_image']) && $validated['delete_image'] && $user->image) {
-                // Eliminar archivo físico
                 if (Storage::disk('public')->exists($user->image)) {
                     Storage::disk('public')->delete($user->image);
                 }
                 $user->image = null;
-                $user->save(); // Guardar inmediatamente para asegurar la actualización en la BD
+                $user->save();
             }
-            // Manejar imagen con nombre original (solo si no se está eliminando)
+            // Manejar imagen con nombre original
             else if ($request->hasFile('image')) {
                 $imageFile = $request->file('image');
 
@@ -106,31 +114,30 @@ class ProfileController extends Controller
                 if (isset($validated['surname'])) {
                     $user->candidate->surname = $validated['surname'];
                 }
-                
+
                 // Manejar eliminación de CV
                 if (isset($validated['delete_cv']) && $validated['delete_cv'] && $user->candidate->cv) {
-                    // Eliminar archivo físico
                     if (Storage::disk('public')->exists($user->candidate->cv)) {
                         Storage::disk('public')->delete($user->candidate->cv);
                     }
                     $user->candidate->cv = null;
-                    $user->candidate->save(); // Guardar inmediatamente
+                    $user->candidate->save();
                 }
-                // Manejar CV con nombre original (solo si no se está eliminando)
+                // Manejar CV con nombre original
                 else if ($request->hasFile('cv')) {
                     // Si hay un CV previo, eliminarlo
                     if ($user->candidate->cv && Storage::disk('public')->exists($user->candidate->cv)) {
                         Storage::disk('public')->delete($user->candidate->cv);
                     }
-                    
+
                     $cvFile = $request->file('cv');
                     $uniqueFilename = $this->getUniqueFilename('cvs', $cvFile->getClientOriginalName());
-                    
+
                     // Almacena el CV con el nombre original o uno único si ya existe
                     $path = $cvFile->storeAs('cvs', $uniqueFilename, 'public');
                     $user->candidate->cv = $path;
                 }
-                
+
                 if ($user->candidate->isDirty()) {
                     $user->candidate->save();
                 }
@@ -147,7 +154,7 @@ class ProfileController extends Controller
                     $user->company->save();
                 }
             }
-            
+
             return redirect()->route('profile.edit')
                 ->with('success', __('messages.profile_updated_success'));
         } catch (Exception $e) {
@@ -158,7 +165,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Elimina la cuenta del usuario y todos sus datos asociados
+     *
+     * @param Request $request Solicitud con validación de contraseña
+     * @return RedirectResponse Redirección a página principal
      */
     public function destroy(Request $request): RedirectResponse
     {
