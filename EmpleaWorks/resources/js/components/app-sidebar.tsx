@@ -86,32 +86,30 @@ export function AppSidebar() {
             title: t("company_dashboard"),
             href: "/company/dashboard",
             icon: BuildingIcon,
-<<<<<<< HEAD
+            isActive: isRouteActive("/company/dashboard"),
         });
     } else if (isAuthenticated){
         mainNavItems.push({
             title: t("my_offers"),
             href: "/candidate/dashboard",
             icon: BookOpenCheck,
+            isActive: isRouteActive("/candidate/dashboard"),
         });
 
         mainNavItems.push({
             title: t("your_applications"),
             href: "/candidate/applications",
             icon: FileText,
+            isActive: isRouteActive("/candidate/applications"),
         });
 
         mainNavItems.push({
             title: t("saved_offers"),
             href: "/candidate/saved-offers",
             icon: BookmarkIcon,
+            isActive: isRouteActive("/candidate/saved-offers"),
         });
-=======
-            isActive: isRouteActive("/company/dashboard"),
-        })
->>>>>>> 9144b053a374fea017631c3af461269faa5aa16f
     } else {
-        // Personalizar más los estilos directamente aquí para "Mis Ofertas"
         mainNavItems.push({
             title: t("my_offers"),
             href: "/candidate/dashboard",
@@ -123,13 +121,7 @@ export function AppSidebar() {
                     window.location.href = route("login")
                 }
                 : undefined,
-<<<<<<< HEAD
         });
-=======
-            // Añadir una clase CSS personalizada si no está autenticado
-            className: !isAuthenticated ? "disabled" : "",
-        })
->>>>>>> 9144b053a374fea017631c3af461269faa5aa16f
     }
 
     // Componente para el selector de idioma
