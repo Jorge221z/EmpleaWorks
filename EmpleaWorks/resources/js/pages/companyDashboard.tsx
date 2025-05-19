@@ -24,8 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useEffect } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function CompanyDashboard({
   companyOffers = [],
@@ -35,6 +35,8 @@ export default function CompanyDashboard({
   const { auth } = usePage<SharedData>().props
   const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props
   const { t } = useTranslation()
+  const [offersLoading, setOffersLoading] = useState(true)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // ----- COLOR THEMING SYSTEM -----
   // Colores principales (púrpura)
@@ -62,9 +64,57 @@ export default function CompanyDashboard({
     },
   ]
 
+  // Animation variants optimized to prevent flicker
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        when: "beforeChildren",
+        staggerChildren: 0.05,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 30,
+        duration: 0.3 
+      },
+    },
+  }
+
+  // Simulate loading delay only for the offers section
+  useEffect(() => {
+    // Pre-load any resources/images that might be needed for the offers
+    // This helps ensure everything is ready when animation starts
+    const timer = setTimeout(() => {
+      setOffersLoading(false);
+    }, 800);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Añadimos useEffect para mostrar los mensajes flash
+  useEffect(() => {
+    if (flash && flash.success) {
+      showToast.success(flash.success);
+    }
+    if (flash && flash.error) {
+      showToast.error(flash.error);
+    }
+  }, [flash]);
+
   // Particle animation effect
   useEffect(() => {
-    const canvas = document.getElementById("particle-canvas") as HTMLCanvasElement
+    const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext("2d")
@@ -74,8 +124,19 @@ export default function CompanyDashboard({
     const setCanvasDimensions = () => {
       const container = canvas.parentElement
       if (container) {
-        canvas.width = container.offsetWidth
-        canvas.height = container.offsetHeight
+        // Store the current device pixel ratio
+        const dpr = window.devicePixelRatio || 1
+
+        // Set the canvas size in CSS pixels
+        canvas.style.width = `${container.offsetWidth}px`
+        canvas.style.height = `${container.offsetHeight}px`
+
+        // Set the canvas size in actual pixels
+        canvas.width = container.offsetWidth * dpr
+        canvas.height = container.offsetHeight * dpr
+
+        // Scale the context to ensure correct drawing operations
+        ctx.scale(dpr, dpr)
       }
     }
 
@@ -92,8 +153,13 @@ export default function CompanyDashboard({
       color: string
 
       constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
+        if (!canvas) throw new Error("Canvas is not available")
+        // Use CSS dimensions for positioning (not the scaled canvas dimensions)
+        const width = Number.parseInt(canvas.style.width || "0", 10)
+        const height = Number.parseInt(canvas.style.height || "0", 10)
+
+        this.x = Math.random() * width
+        this.y = Math.random() * height
         this.size = Math.random() * 3 + 1
         this.speedX = Math.random() * 0.5 - 0.25
         this.speedY = Math.random() * 0.5 - 0.25
@@ -104,14 +170,19 @@ export default function CompanyDashboard({
       }
 
       update() {
+        if (!canvas) return
+        // Use CSS dimensions for boundaries
+        const width = Number.parseInt(canvas.style.width || "0", 10)
+        const height = Number.parseInt(canvas.style.height || "0", 10)
+
         this.x += this.speedX
         this.y += this.speedY
 
-        if (this.x > canvas.width) this.x = 0
-        else if (this.x < 0) this.x = canvas.width
+        if (this.x > width) this.x = 0
+        else if (this.x < 0) this.x = width
 
-        if (this.y > canvas.height) this.y = 0
-        else if (this.y < 0) this.y = canvas.height
+        if (this.y > height) this.y = 0
+        else if (this.y < 0) this.y = height
       }
 
       draw() {
@@ -125,7 +196,9 @@ export default function CompanyDashboard({
 
     // Create particles
     const particles: Particle[] = []
-    const particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 10000))
+    const width = Number.parseInt(canvas.style.width || "0", 10)
+    const height = Number.parseInt(canvas.style.height || "0", 10)
+    const particleCount = Math.min(50, Math.floor((width * height) / 10000))
 
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle())
@@ -136,7 +209,11 @@ export default function CompanyDashboard({
 
     const animate = () => {
       if (!ctx) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      // Get current CSS dimensions
+      const width = Number.parseInt(canvas.style.width || "0", 10)
+      const height = Number.parseInt(canvas.style.height || "0", 10)
+
+      ctx.clearRect(0, 0, width, height)
 
       for (const particle of particles) {
         particle.update()
@@ -155,36 +232,6 @@ export default function CompanyDashboard({
     }
   }, [])
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  }
-
-  // Añadimos useEffect para mostrar los mensajes flash
-  useEffect(() => {
-    if (flash && flash.success) {
-      showToast.success(flash.success);
-    }
-    if (flash && flash.error) {
-      showToast.error(flash.error);
-    }
-  }, [flash]);
-
   // ----- RENDER COMPONENT -----
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -193,18 +240,18 @@ export default function CompanyDashboard({
 
       <div className="relative flex h-full flex-1 flex-col gap-4 p-4 overflow-hidden">
         {/* Animated background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#FEFBF2] via-[#FEFBF2] to-[#F8F0DD] dark:bg-[#0a0a0a] z-0">
-          <canvas id="particle-canvas" className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-br bg-[#fefbf2] dark:bg-[#0a0a0a] z-0">
+          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full dark:bg-[#0a0a0a]" />
         </div>
 
         {/* Content with glassmorphism effect */}
         <div className="relative z-10">
-          {/* Título del Dashboard con animación */}
+          {/* Dashboard Header - Always visible */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="px-2 mb-4"
+            className="px-2 mb-8"
           >
             <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
               {t("company_dashboard")}
@@ -212,12 +259,12 @@ export default function CompanyDashboard({
             <p className="text-muted-foreground">{t("manage_company_listings")}</p>
           </motion.div>
 
-          {/* Acciones rápidas con animación de contenedor */}
+          {/* Quick Action Cards - Always visible */}
           <motion.div 
-            className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-            variants={containerVariants}
             initial="hidden"
             animate="visible"
+            variants={containerVariants}
+            className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-8"
           >
             {/* Tarjeta de Job Listings */}
             <motion.div variants={itemVariants}>
@@ -426,283 +473,339 @@ export default function CompanyDashboard({
             </motion.div>
           </motion.div>
 
-          {/* Título de las ofertas con animación */}
-          <motion.div 
-            className="px-2 mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
-              {t("your_job_listings")}
-            </h2>
-            <p className="text-muted-foreground">{t("manage_current_postings")}</p>
-          </motion.div>
-
-          {/* Mostrar ofertas en el grid con animación */}
-          {companyOffers && companyOffers.length > 0 ? (
+          {/* Job Listings Section with Loading State */}
+          <div className="mt-8">
+            {/* Título de las ofertas - Always visible */}
             <motion.div 
-              className="grid auto-rows-min gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="px-2 mb-4"
             >
-              {companyOffers.map((offer) => (
+              <h2 className="text-2xl font-semibold mb-2 text-[#7c28eb] dark:text-purple-300">
+                {t("your_job_listings")}
+              </h2>
+              <p className="text-muted-foreground">{t("manage_current_postings")}</p>
+            </motion.div>
+
+            {/* Job Listings with Loading State - Using AnimatePresence for better transitions */}
+            <AnimatePresence mode="wait">
+              {offersLoading ? (
                 <motion.div
-                  key={offer.id}
-                  variants={itemVariants}
-                  className={cn(
-                    "relative overflow-hidden rounded-xl border p-4 flex flex-col transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.01]",
-                    borderColor,
-                    "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
-                    "hover:bg-purple-50/70 dark:hover:bg-purple-900/15",
-                  )}
+                  key="offers-loading"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex justify-center items-center py-20"
                 >
-                  {/* Elemento decorativo ámbar */}
-                  <div
-                    className="absolute top-0 right-0 w-12 h-1 rounded-bl"
-                    style={{ backgroundColor: accentColor }}
-                  />
-
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-semibold text-lg line-clamp-2 text-[#7c28eb] dark:text-purple-300">
-                      {offer.name}
-                    </h3>
-                    <span
-                      className="text-xs px-2 py-1 rounded-full whitespace-nowrap"
-                      style={{
-                        backgroundColor: `${accentColor}20`,
-                        color: accentDarkColor,
-                      }}
-                    >
-                      {offer.category}
-                    </span>
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="relative w-16 h-16">
+                      <div className="absolute inset-0 rounded-full border-4 border-purple-200 dark:border-purple-800/30 opacity-25"></div>
+                      <div className="absolute inset-0 rounded-full border-4 border-t-[#7c28eb] dark:border-t-purple-400 animate-spin"></div>
+                    </div>
+                    <p className="text-muted-foreground">{t("loading_job_listings")}</p>
                   </div>
-
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {t("posted")}: {new Date(offer.created_at).toLocaleDateString()}
-                  </p>
-
-                  <p className="text-sm line-clamp-3 mb-4 flex-grow">{offer.description}</p>
-
-                  <div className="flex flex-col gap-1 text-xs text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1">
-                      <BriefcaseIcon className="size-3.5" style={{ color: primaryLightColor }} />
-                      <span>{offer.contract_type}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPinIcon className="size-3.5" style={{ color: primaryLightColor }} />
-                      <span>{offer.job_location}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CalendarIcon className="size-3.5" style={{ color: primaryLightColor }} />
-                      {(() => {
-                        const closingDate = new Date(offer.closing_date)
-                        const currentDate = new Date()
-                        const daysLeft = Math.ceil(
-                          (closingDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
-                        )
-
-                        return (
-                          <span className={daysLeft < 3 ? "text-red-500 font-medium" : ""}>
-                            {t("closed_in")}:{" "}
-                            {daysLeft <= 0
-                              ? t("closed")
-                              : daysLeft === 1
-                                ? t("days_remaining", { days: daysLeft })
-                                : t("days_remaining_plural", { days: daysLeft })}
-                          </span>
-                        )
-                      })()}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 w-full">
-                    {/* Botón View Details */}
-                    <Button
-                      className="w-full text-white relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                      asChild
+                </motion.div>
+              ) : companyOffers && companyOffers.length > 0 ? (
+                <motion.div 
+                  key="offers-content"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid auto-rows-min gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+                >
+                  {companyOffers.map((offer, index) => (
+                    <motion.div
+                      key={offer.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className={cn(
+                        "relative overflow-hidden rounded-xl border p-4 flex flex-col transform transition-colors duration-200",
+                        borderColor,
+                        "bg-white dark:bg-gray-900",
+                        "hover:bg-purple-50/70 dark:hover:bg-purple-900/15",
+                      )}
                     >
-                      <Link href={route("offer.show", offer.id)} className="flex items-center justify-center gap-1.5">
-                        {t("view_details")}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="size-3.5"
-                        >
-                          <path d="M5 12h14"></path>
-                          <path d="m12 5 7 7-7 7"></path>
-                        </svg>
-                        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
-                      </Link>
-                    </Button>
+                      {/* Elemento decorativo ámbar */}
+                      <div
+                        className="absolute top-0 right-0 w-12 h-1 rounded-bl"
+                        style={{ backgroundColor: accentColor }}
+                      />
 
-                    {/* Segunda fila: Edit y Delete */}
-                    <div className="flex flex-wrap gap-2 w-full">
-                      {/* Edit Button */}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className={cn(
-                          "flex-1 min-w-[80px] text-sm rounded-full transition-all duration-300",
-                          "border-purple-300/30 dark:border-purple-400/20",
-                          "hover:bg-purple-500/10 hover:border-purple-500/50",
-                          "dark:hover:bg-purple-500/10 hover:text-purple-600",
-                        )}
-                        style={{ color: primaryColor }}
-                        asChild
-                      >
-                        <Link
-                          href={route("company.edit-job", offer.id)}
-                          className="flex items-center justify-center gap-1.5"
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-semibold text-lg line-clamp-2 text-[#7c28eb] dark:text-purple-300">
+                          {offer.name}
+                        </h3>
+                        <span
+                          className="text-xs px-2 py-1 rounded-full whitespace-nowrap"
+                          style={{
+                            backgroundColor: `${accentColor}20`,
+                            color: accentDarkColor,
+                          }}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="14"
-                            height="14"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0-2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                          </svg>
-                          {t("edit")}
-                        </Link>
-                      </Button>
+                          {offer.category}
+                        </span>
+                      </div>
 
-                      {/* Delete Button */}
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {t("posted")}: {new Date(offer.created_at).toLocaleDateString()}
+                      </p>
+
+                      <p className="text-sm line-clamp-3 mb-4 flex-grow">{offer.description}</p>
+
+                      <div className="flex flex-col gap-1 text-xs text-muted-foreground mb-4">
+                        <div className="flex items-center gap-1">
+                          <BriefcaseIcon className="size-3.5" style={{ color: primaryLightColor }} />
+                          <span>{offer.contract_type}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MapPinIcon className="size-3.5" style={{ color: primaryLightColor }} />
+                          <span>{offer.job_location}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <CalendarIcon className="size-3.5" style={{ color: primaryLightColor }} />
+                          {(() => {
+                            const closingDate = new Date(offer.closing_date)
+                            const currentDate = new Date()
+                            const daysLeft = Math.ceil(
+                              (closingDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+                            )
+
+                            return (
+                              <span className={daysLeft < 3 ? "text-red-500 font-medium" : ""}>
+                                {t("closed_in")}:{" "}
+                                {daysLeft <= 0
+                                  ? t("closed")
+                                  : daysLeft === 1
+                                    ? t("days_remaining", { days: daysLeft })
+                                    : t("days_remaining_plural", { days: daysLeft })}
+                              </span>
+                            )
+                          })()}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 w-full">
+                        {/* Botón View Details */}
+                        <Button
+                          className="w-full text-white relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                          asChild
+                        >
+                          <Link href={route("offer.show", offer.id)} className="flex items-center justify-center gap-1.5">
+                            {t("view_details")}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="size-3.5"
+                            >
+                              <path d="M5 12h14"></path>
+                              <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                          </Link>
+                        </Button>
+
+                        {/* Segunda fila: Edit y Delete */}
+                        <div className="flex flex-wrap gap-2 w-full">
+                          {/* Edit Button */}
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 min-w-[80px] text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer"
+                            className={cn(
+                              "flex-1 min-w-[80px] text-sm rounded-full transition-all duration-300",
+                              "border-purple-300/30 dark:border-purple-400/20",
+                              "hover:bg-purple-500/10 hover:border-purple-500/50",
+                              "dark:hover:bg-purple-500/10 hover:text-purple-600",
+                            )}
+                            style={{ color: primaryColor }}
+                            asChild
                           >
-                            <span className="flex items-center justify-center gap-1.5">
-                              <TrashIcon className="size-3.5" />
-                              {t("delete")}
-                            </span>
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent
-                          className={cn(borderColor, "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md")}
-                        >
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>{t("are_you_sure")}</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              {t("delete_confirmation")}
-                              <span className="font-semibold"> "{offer.name}"</span> {t("and_remove_applications")}
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
-                              onClick={() => {
-                                router.delete(route("offers.destroy", offer.id), {
-                                  onSuccess: () => {
-                                    showToast.success(t("job_deleted_success"))
-                                  },
-                                  onError: () => {
-                                    showToast.error(t("job_deleted_error"))
-                                  },
-                                })
-                              }}
+                            <Link
+                              href={route("company.edit-job", offer.id)}
+                              className="flex items-center justify-center gap-1.5"
                             >
-                              {t("delete")}
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0-2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                              </svg>
+                              {t("edit")}
+                            </Link>
+                          </Button>
 
-              {/* Card para añadir nueva oferta */}
-              <motion.div
-                variants={itemVariants}
-                className={cn(
-                  "relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px] transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]",
-                  borderColor,
-                  "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
-                )}
-              >
-                <PlusCircleIcon className="h-10 w-10 mb-2" style={{ color: `${primaryColor}80` }} />
-                <h3 className="font-medium text-lg mb-1 text-[#7c28eb] dark:text-purple-300">{t("create_new_job")}</h3>
-                <p className="text-sm text-muted-foreground text-center mb-4">{t("add_job_opportunity")}</p>
-                <Button
-                  className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                  asChild
+                          {/* Delete Button */}
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="flex-1 min-w-[80px] text-sm rounded-full border-red-300/30 dark:border-red-400/20 hover:bg-red-500/10 hover:border-red-500/50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors cursor-pointer"
+                              >
+                                <span className="flex items-center justify-center gap-1.5">
+                                  <TrashIcon className="size-3.5" />
+                                  {t("delete")}
+                                </span>
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent
+                              className={cn(borderColor, "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md")}
+                            >
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>{t("are_you_sure")}</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {t("delete_confirmation")}
+                                  <span className="font-semibold"> "{offer.name}"</span> {t("and_remove_applications")}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-red-500 hover:bg-red-600 text-white cursor-pointer"
+                                  onClick={() => {
+                                    router.delete(route("offers.destroy", offer.id), {
+                                      onSuccess: () => {
+                                        showToast.success(t("job_deleted_success"))
+                                      },
+                                      onError: () => {
+                                        showToast.error(t("job_deleted_error"))
+                                      },
+                                    })
+                                  }}
+                                >
+                                  {t("delete")}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                  {/* Card para añadir nueva oferta */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: companyOffers.length * 0.05 }}
+                    className={cn(
+                      "relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px] transform transition-colors duration-200",
+                      borderColor,
+                      "bg-white dark:bg-gray-900",
+                      "hover:bg-purple-50/70 dark:hover:bg-purple-900/15",
+                    )}
+                  >
+                    <PlusCircleIcon className="h-10 w-10 mb-2" style={{ color: `${primaryColor}80` }} />
+                    <h3 className="font-medium text-lg mb-1 text-[#7c28eb] dark:text-purple-300">{t("create_new_job")}</h3>
+                    <p className="text-sm text-muted-foreground text-center mb-4">{t("add_job_opportunity")}</p>
+                    <Button
+                      className="relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                      asChild
+                    >
+                      <Link href={route("company.create-job")}>
+                        {t("create_job_listing")}
+                        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                      </Link>
+                    </Button>
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="no-offers"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className={cn(
+                    "relative p-8 overflow-hidden rounded-xl border text-center my-6 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30",
+                    borderColor,
+                    "bg-white dark:bg-gray-900",
+                  )}
                 >
-                  <Link href={route("company.create-job")}>
-                    {t("create_job_listing")}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
-                  </Link>
-                </Button>
-              </motion.div>
-            </motion.div>
-          ) : (
-            // Si no hay ofertas publicadas por la empresa
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className={cn(
-                "relative p-8 overflow-hidden rounded-xl border text-center my-6 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30",
-                borderColor,
-                "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md",
+                  <div className="flex flex-col items-center gap-2 relative z-10">
+                    <BuildingIcon className="h-12 w-12 mb-2" style={{ color: `${primaryColor}60` }} />
+                    <h2 className="text-xl font-semibold text-[#7c28eb] dark:text-purple-300">
+                      {t("no_job_listings_yet")}
+                    </h2>
+                    <p className="text-muted-foreground max-w-md mx-auto mb-4">{t("no_job_listings_message")}</p>
+                    <Button
+                      className="gap-1 text-white relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                      asChild
+                    >
+                      <Link href={route("company.create-job")} className="flex items-center justify-center">
+                        <PlusCircleIcon className="h-4 w-4 mr-1" />
+                        {t("create_first_job")}
+                        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
+                      </Link>
+                    </Button>
+                  </div>
+                  <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
+                </motion.div>
               )}
-            >
-              <div className="flex flex-col items-center gap-2 relative z-10">
-                <BuildingIcon className="h-12 w-12 mb-2" style={{ color: `${primaryColor}60` }} />
-                <h2 className="text-xl font-semibold text-[#7c28eb] dark:text-purple-300">
-                  {t("no_job_listings_yet")}
-                </h2>
-                <p className="text-muted-foreground max-w-md mx-auto mb-4">{t("no_job_listings_message")}</p>
-                <Button
-                  className="gap-1 text-white relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
-                  asChild
-                >
-                  <Link href={route("company.create-job")} className="flex items-center justify-center">
-                    <PlusCircleIcon className="h-4 w-4 mr-1" />
-                    {t("create_first_job")}
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7c28eb]/0 via-white/20 to-[#7c28eb]/0 -translate-x-full animate-shimmer group-hover:animate-shimmer"></span>
-                  </Link>
-                </Button>
-              </div>
-              <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
-            </motion.div>
-          )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
       {/* CSS for animations */}
       <style>{`
-                @keyframes shimmer {
-                  0% {
-                    transform: translateX(-100%);
-                  }
-                  100% {
-                    transform: translateX(100%);
-                  }
-                }
-                
-                .animate-shimmer {
-                  animation: shimmer 2s infinite;
-                }
-            `}</style>
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+
+        @keyframes pulse-slow {
+          0% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.05); }
+          100% { opacity: 0.6; transform: scale(1); }
+        }
+
+        @keyframes pulse-slower {
+          0% { opacity: 0.7; transform: scale(1); }
+          50% { opacity: 0.9; transform: scale(1.1); }
+          100% { opacity: 0.7; transform: scale(1); }
+        }
+
+        @keyframes pulse-fast {
+          0% { opacity: 0.5; }
+          50% { opacity: 1; }
+          100% { opacity: 0.5; }
+        }
+
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+      `}</style>
     </AppLayout>
-  )
+  );
 }
