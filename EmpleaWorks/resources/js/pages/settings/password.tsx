@@ -53,11 +53,9 @@ export default function Password({ isGoogleUser = false }) {
                 const responseErrors = page.props.errors || {};
                 
                 if (Object.keys(responseErrors).length > 0) {
-                    // Los errores serán manejados por onError
                     return;
                 }
                 
-                // Si llegamos aquí, significa que la operación fue exitosa
                 reset();
                 showToast.success(t('password_updated'));
             },
@@ -75,7 +73,6 @@ export default function Password({ isGoogleUser = false }) {
                     currentPasswordInput.current?.focus();
                     showToast.error(t('current_password_incorrect'));
                 } else if (Object.keys(errors).length > 0) {
-                    // Si hay otros errores
                     showToast.error(t('error_occurred'));
                 }
             },
@@ -212,7 +209,7 @@ export default function Password({ isGoogleUser = false }) {
                         </div>
                     </form>
                     
-                    {/* Decorative element */}
+                    {/* Elemento decorativo */}
                     <div 
                         className="h-1 w-full rounded-full opacity-80 mt-8"
                         style={{ background: `linear-gradient(to right, ${primaryColor}, ${accentColor})` }}

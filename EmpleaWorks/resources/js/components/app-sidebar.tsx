@@ -42,7 +42,7 @@ export function AppSidebar() {
     // Detectar si es dispositivo móvil
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768) // 768px es el breakpoint típico para móvil
+            setIsMobile(window.innerWidth < 768)
         }
 
         // Establecer el estado inicial

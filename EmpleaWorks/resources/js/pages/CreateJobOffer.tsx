@@ -32,7 +32,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
   const { auth } = usePage<SharedData>().props
   const { t } = useTranslation()
   const [date, setDate] = useState<Date | undefined>(
-    // Set default date to 30 days from now
+    // Fija la fecha de cierre a 30 días
     new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   )
 
@@ -76,7 +76,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
-    // Update the closing_date in case the date picker changed
+    // Actualiza la fecha de cierre antes de enviar el formulario
     setData("closing_date", date ? format(date, "yyyy-MM-dd") : "")
 
     post(route("offers.store"), {
@@ -84,7 +84,6 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
       onError: () => {
         toast.error(t("job_created_error"))
       },
-      // No es necesaria la función onSuccess ya que el controlador de Laravel se encargará de la redirección
     })
   }
 
@@ -227,7 +226,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                     {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                   </div>
 
-                  {/* Job Category */}
+                  {/* Categorias */}
                   <div className="space-y-2">
                     <Label htmlFor="category" className="text-[#7c28eb] dark:text-purple-300">
                       {t("category")}
@@ -248,7 +247,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                   </div>
                 </div>
 
-                {/* Job Description */}
+                {/* Descripciones */}
                 <div className="space-y-2">
                   <Label htmlFor="description" className="text-[#7c28eb] dark:text-purple-300">
                     {t("job_description")}
@@ -265,7 +264,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  {/* Required Degree */}
+                  {/* Check necesario */}
                   <div className="space-y-2">
                     <Label htmlFor="degree" className="text-[#7c28eb] dark:text-purple-300">
                       {t("required_degree")}
@@ -280,7 +279,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                     {errors.degree && <p className="text-red-500 text-sm">{errors.degree}</p>}
                   </div>
 
-                  {/* Contact Email */}
+                  {/* Email de contacto */}
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-[#7c28eb] dark:text-purple-300">
                       {t("contact_email")}
@@ -297,7 +296,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-3">
-                  {/* Contract Type */}
+                  {/* Tipo de contrato */}
                   <div className="space-y-2">
                     <Label htmlFor="contract_type" className="text-[#7c28eb] dark:text-purple-300">
                       {t("contract_type")}
@@ -317,7 +316,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                     {errors.contract_type && <p className="text-red-500 text-sm">{errors.contract_type}</p>}
                   </div>
 
-                  {/* Job Location */}
+                  {/* Localización del trabajo */}
                   <div className="space-y-2">
                     <Label htmlFor="job_location" className="text-[#7c28eb] dark:text-purple-300">
                       {t("job_location")}
@@ -332,7 +331,7 @@ export default function CreateJobOffer({ categories = [], contractTypes = [], co
                     {errors.job_location && <p className="text-red-500 text-sm">{errors.job_location}</p>}
                   </div>
 
-                  {/* Closing Date */}
+                  {/* Fecha de cierre */}
                   <div className="space-y-2">
                     <Label htmlFor="closing_date" className="text-[#7c28eb] dark:text-purple-300">
                       {t("application_deadline")}

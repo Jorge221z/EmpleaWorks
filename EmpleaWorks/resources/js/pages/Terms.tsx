@@ -154,19 +154,16 @@ export default function Terms() {
                 // Cambiar a la pestaña de cookies
                 setActiveTab("cookies");
                 
-                // Hacer scroll hasta arriba para mejor UX
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         };
 
-        // Agregar evento de clic en el documento para capturar todos los enlaces, incluso los dinámicos
         document.addEventListener('click', handleCookiesPolicyClick);
 
-        // Limpiar el event listener al desmontar
         return () => {
             document.removeEventListener('click', handleCookiesPolicyClick);
         };
-    }, []); // No depende de activeTab para evitar recrear listeners innecesariamente
+    }, []);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -201,7 +198,7 @@ export default function Terms() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="bg-[#FEFBF2] dark:bg-[#0a0a0a]/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20"
                     >
-                        {/* Tabs header with glassmorphism */}
+                        {/* Tabs header */}
                         <div className="border-b border-purple-100/70 dark:border-purple-600/30 p-2 bg-[#FEFBF2] dark:bg-purple-950/30 backdrop-blur-sm">
                             <Tabs defaultValue="terms" value={activeTab} onValueChange={setActiveTab} className="w-full">
                                 <TabsList className="grid w-full max-w-md grid-cols-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-lg p-1">

@@ -246,7 +246,7 @@ export default function CompanyDashboard({
 
         {/* Content with glassmorphism effect */}
         <div className="relative z-10">
-          {/* Dashboard Header - Always visible */}
+          {/* Dashboard Header - Siempre visible */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -259,7 +259,7 @@ export default function CompanyDashboard({
             <p className="text-muted-foreground">{t("manage_company_listings")}</p>
           </motion.div>
 
-          {/* Quick Action Cards - Always visible */}
+          {/* Quick Action Cards - Siempre visible */}
           <motion.div 
             initial="hidden"
             animate="visible"
@@ -473,9 +473,8 @@ export default function CompanyDashboard({
             </motion.div>
           </motion.div>
 
-          {/* Job Listings Section with Loading State */}
           <div className="mt-8">
-            {/* Título de las ofertas - Always visible */}
+            {/* Título de las ofertas - Siempre visible */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -488,7 +487,7 @@ export default function CompanyDashboard({
               <p className="text-muted-foreground">{t("manage_current_postings")}</p>
             </motion.div>
 
-            {/* Job Listings with Loading State - Using AnimatePresence for better transitions */}
+            {/* Sección de ofertas */}
             <AnimatePresence mode="wait">
               {offersLoading ? (
                 <motion.div
@@ -589,7 +588,7 @@ export default function CompanyDashboard({
                       </div>
 
                       <div className="flex flex-col gap-2 w-full">
-                        {/* Botón View Details */}
+                        {/* Botón Ver detalles */}
                         <Button
                           className="w-full text-white relative overflow-hidden group bg-gradient-to-r from-[#7c28eb] to-[#9645f4] hover:from-[#6a1fd0] hover:to-[#8a3ae0] shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                           asChild
@@ -700,7 +699,7 @@ export default function CompanyDashboard({
                       </div>
                     </motion.div>
                   ))}
-                  {/* Card para añadir nueva oferta */}
+                  {/* Tarjeta para añadir nueva oferta */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

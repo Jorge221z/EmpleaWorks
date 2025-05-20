@@ -47,6 +47,7 @@ export default function Appearance() {
 
             <SettingsLayout>
                 <div className="space-y-6">
+                    {/* Encabezado de la sección con título y descripción */}
                     <div className="text-[#7c28eb] dark:text-purple-300">
                         <HeadingSmall 
                             title={t('appearance_settings')} 
@@ -54,7 +55,7 @@ export default function Appearance() {
                         />
                     </div>
                     
-                    {/* Pass the handleThemeChange function to AppearanceTabs */}
+                    {/* Componente de selección de tema con múltiples opciones */}
                     <div className="py-2">
                         <AppearanceTabs 
                             className="mt-2" 
@@ -62,7 +63,7 @@ export default function Appearance() {
                         />
                     </div>
                     
-                    {/* Decorative element */}
+                    {/* Elemento decorativo - línea degradada para separación visual */}
                     <div 
                         className="h-1 w-full rounded-full opacity-80 mt-8"
                         style={{ background: `linear-gradient(to right, ${primaryColor}, ${accentColor})` }}

@@ -1,4 +1,4 @@
-//definimos aqui los tipos de array de objetos para ganar modularidad y reutilizar el código//
+//Definimos aqui los tipos de array de objetos para ganar modularidad y reutilizar el código//
 
 export interface Offer {
   id: number;
@@ -18,10 +18,10 @@ export interface Offer {
 
 export interface Company {
   id?: number;
-  name?: string;       // Añadido para acceder a company.name
-  description?: string; // Añadido para acceder a company.description
+  name?: string;
+  description?: string;
   address?: string;
-  web_link?: string;    // Nota: en tu SearchBar usas web_link pero aquí está como weblink
+  web_link?: string;
   email?: string;
   logo?: string | null;
 }
@@ -39,8 +39,7 @@ export interface User {
     description: string | null;
     candidate?: Candidate;
     company?: Company;
-    email_verified_at: string | null; // campo para comprobar si el email ha sido verificado //
-    // Otros campos del usuario si los hubiese
+    email_verified_at: string | null;
 }
 
 export interface ShowOfferProps {

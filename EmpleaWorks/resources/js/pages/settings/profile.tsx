@@ -258,7 +258,6 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                         value={data.weblink}
                                         onChange={(e) => setData('weblink', e.target.value)}
                                         onBlur={() => {
-                                            // Format URL by adding https:// if no protocol is present
                                             if (data.weblink && !data.weblink.match(/^https?:\/\//)) {
                                                 setData('weblink', `https://${data.weblink}`);
                                             }
@@ -553,7 +552,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
                     </form>
                     
-                    {/* Decorative element */}
+                    {/* Elemento decorativo */}
                     <div 
                         className="h-1 w-full rounded-full opacity-80 mt-8"
                         style={{ background: `linear-gradient(to right, ${primaryColor}, ${accentColor})` }}

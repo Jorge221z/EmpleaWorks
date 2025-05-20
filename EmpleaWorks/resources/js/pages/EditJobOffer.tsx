@@ -98,15 +98,14 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
-    // Update the closing_date in case the date picker changed
+    // Actualizar la fecha de cierre antes de enviar el formulario
     setData("closing_date", date ? format(date, "yyyy-MM-dd") : "")
 
     put(route("offers.update", offer.id), {
-      // Eliminar la redirección explícita y dejar que el servidor maneje la navegación
+      // Elimina la redirección explícita y dejar que el servidor maneje la navegación
       onError: () => {
         toast.error(t("job_updated_error"))
       },
-      // No es necesaria la función onSuccess ya que el controlador de Laravel se encargará de la redirección
     })
   }
 
@@ -246,7 +245,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
             </CardHeader>
             <CardContent className="pt-6">
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Job Title */}
+                {/* Titulo del trabajo */}
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-[#7c28eb] dark:text-purple-300">
                     {t("job_title")}
@@ -261,7 +260,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                   {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
 
-                {/* Job Description */}
+                {/* Descripcion del trabajo */}
                 <div className="space-y-2">
                   <Label htmlFor="description" className="text-[#7c28eb] dark:text-purple-300">
                     {t("job_description")}
@@ -278,7 +277,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-3">
-                  {/* Category */}
+                  {/* Categoría */}
                   <div className="space-y-2">
                     <Label htmlFor="category" className="text-[#7c28eb] dark:text-purple-300">
                       {t("category")}
@@ -298,7 +297,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                     {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
                   </div>
 
-                  {/* Education Level */}
+                  {/* Nivel de estudios requerido */}
                   <div className="space-y-2">
                     <Label htmlFor="degree" className="text-[#7c28eb] dark:text-purple-300">
                       {t("required_degree")}
@@ -313,7 +312,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                     {errors.degree && <p className="text-red-500 text-sm">{errors.degree}</p>}
                   </div>
 
-                  {/* Contact Email */}
+                  {/* Email de contacto */}
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-[#7c28eb] dark:text-purple-300">
                       {t("contact_email")}
@@ -330,7 +329,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-3">
-                  {/* Contract Type */}
+                  {/* Tipo de contrato */}
                   <div className="space-y-2">
                     <Label htmlFor="contract_type" className="text-[#7c28eb] dark:text-purple-300">
                       {t("contract_type")}
@@ -350,7 +349,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                     {errors.contract_type && <p className="text-red-500 text-sm">{errors.contract_type}</p>}
                   </div>
 
-                  {/* Location */}
+                  {/* Localización */}
                   <div className="space-y-2">
                     <Label htmlFor="job_location" className="text-[#7c28eb] dark:text-purple-300">
                       {t("job_location")}
@@ -365,7 +364,7 @@ export default function EditJobOffer({ offer, categories = [], contractTypes = [
                     {errors.job_location && <p className="text-red-500 text-sm">{errors.job_location}</p>}
                   </div>
 
-                  {/* Closing Date */}
+                  {/* Fecha de cierre */}
                   <div className="space-y-2">
                     <Label htmlFor="closing_date" className="text-[#7c28eb] dark:text-purple-300">
                       {t("application_deadline")}

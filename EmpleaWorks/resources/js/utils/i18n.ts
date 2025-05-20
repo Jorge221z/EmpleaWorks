@@ -940,7 +940,6 @@ const translations: Record<string, Record<string, string>> = {
     }
 };
 
-// Helper to escape RegExp special characters
 function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

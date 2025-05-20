@@ -155,7 +155,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
     }
   }, [])
 
-  // Check if the offer is saved and if the user has applied
+  // Comprobar estado de guardado y aplicado
   useEffect(() => {
     const checkStatus = async () => {
       if (isAuthenticated && isCandidate && isVerified) {
@@ -192,7 +192,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
     checkStatus();
   }, [isAuthenticated, isCandidate, isVerified, offer.id]);
 
-  // Toggle save offer
+  // Actualizar el estado de guardado
   const toggleSaveOffer = async () => {
     if (!isAuthenticated) {
       window.location.href = route('login')
@@ -414,7 +414,7 @@ export default function ShowOffer({ offer }: ShowOfferProps) {
                       </>
                     )}
 
-                    {/* Si ya ha aplicado, mostrar un solo botón de aplicado que ocupe todo el ancho */}
+                    {/* Si ya ha aplicado, mostrar un solo botón de aplicado */}
                     {isCandidate && isVerified && hasApplied && (
                       <div className="sm:col-span-2">
                         <Button
