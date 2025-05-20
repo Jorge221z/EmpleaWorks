@@ -10,16 +10,18 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\VerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Modelo User - Gestiona los usuarios del sistema.
+ * 
+ * Entidad central que maneja la autenticación, roles y perfiles de usuario.
+ * Implementa verificación de email y puede tener perfiles específicos según su rol
+ * (candidato o empresa). Gestiona también las relaciones con ofertas de trabajo.
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -30,21 +32,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'google_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -54,7 +46,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the user's role.
+     * Obtiene el rol asignado al usuario.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function role()
     {
@@ -62,7 +56,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the candidate profile associated with the user.
+     * Obtiene el perfil de candidato asociado al usuario.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function candidate()
     {
@@ -70,7 +66,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the company profile associated with the user.
+     * Obtiene el perfil de empresa asociado al usuario.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function company()
     {
@@ -78,46 +76,51 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the offers created by this user (only if user is a company).
+     * Obtiene las ofertas creadas por este usuario (solo si es empresa).
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function offers()
     {
-        // Only company users should have associated offers through this relation
         return $this->hasMany(Offer::class);
     }
 
     /**
-     * Get the offers this user has applied to (as a candidate).
+     * Obtiene las ofertas a las que este usuario ha aplicado (como candidato).
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function appliedOffers()
     {
-        // This uses the user_offer pivot table to track which offers a candidate has applied to
+        // Utiliza la tabla pivote user_offer para obtener qué ofertas ha aplicado un candidato
         return $this->belongsToMany(Offer::class, 'user_offer', 'user_id', 'offer_id')
             ->withTimestamps();
     }
 
     /**
-     * Determine if the user is a company.
+     * Determina si el usuario es una empresa.
+     * 
+     * @return bool
      */
     public function isCompany()
     {
-        return $this->role_id === 2; // role_id = 2 represents companies
+        return $this->role_id === 2;
     }
 
     /**
-     * Determine if the user is a candidate.
+     * Determina si el usuario es un candidato.
+     * 
+     * @return bool
      */
     public function isCandidate()
     {
-        return $this->role_id === 1; // role_id = 1 represents candidates
+        return $this->role_id === 1;
     }
 
     /**
-     * Get company details if user is a company.
+     * Obtiene los detalles de empresa si el usuario es una empresa.
      * 
-     * @return array|null Company details or null if user isn't a company
+     * @return array|null Detalles de la empresa o null si el usuario no es empresa
      */
     public function getCompanyDetails()
     {
@@ -136,9 +139,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get candidate details if user is a candidate.
+     * Obtiene los detalles de candidato si el usuario es un candidato.
      * 
-     * @return array|null Candidate details or null if user isn't a candidate
+     * @return array|null Detalles del candidato o null si el usuario no es candidato
      */
     public function getCandidateDetails()
     {
@@ -157,10 +160,10 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Apply to an offer (for candidates)
+     * Aplica a una oferta (para candidatos).
      * 
-     * @param Offer $offer The offer to apply to
-     * @return bool Success status of the application
+     * @param Offer $offer La oferta a la que aplicar
+     * @return bool Estado de éxito de la aplicación
      */
     public function applyToOffer(Offer $offer)
     {
@@ -168,7 +171,7 @@ class User extends Authenticatable implements MustVerifyEmail
             return false;
         }
 
-        // Prevent duplicated applications
+        // Previene aplicaciones duplicadas
         if (!$this->appliedOffers->contains($offer->id)) {
             $this->appliedOffers()->attach($offer->id);
         }
@@ -177,10 +180,10 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Create a new job offer (only for companies)
+     * Crea una nueva oferta de trabajo (solo para empresas).
      * 
-     * @param array $offerData The data for the new offer
-     * @return Offer|null The created offer or null if user is not a company
+     * @param array $offerData Los datos para la nueva oferta
+     * @return Offer|null La oferta creada o null si el usuario no es empresa
      */
     public function createOffer(array $offerData)
     {
@@ -192,7 +195,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get all offers created by this company.
+     * Obtiene todas las ofertas creadas por esta empresa.
      * 
      * @return \Illuminate\Database\Eloquent\Collection|null
      */
@@ -206,7 +209,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get all offers this candidate has applied to.
+     * Obtiene todas las ofertas a las que este candidato ha aplicado.
      * 
      * @return \Illuminate\Database\Eloquent\Collection|null
      */
@@ -220,7 +223,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Send email verification notification.
+     * Envía notificación de verificación de email personalizada.
      */
     public function sendEmailVerificationNotification()
     {
@@ -228,10 +231,10 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-    * Get the offers this user has saved (as a candidate).
-    * 
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    */
+     * Obtiene las ofertas que este usuario ha guardado.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function savedOffers()
     {
         return $this->belongsToMany(Offer::class, 'saved_offers', 'user_id', 'offer_id')
@@ -239,18 +242,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-    * Save an offer for later (for candidates)
-    * 
-    * @param Offer $offer The offer to save
-    * @return bool Success status of the save operation
-    */
+     * Guarda una oferta.
+     * 
+     * @param Offer $offer La oferta a guardar
+     * @return bool Estado de éxito de la operación de guardado
+     */
     public function saveOffer(Offer $offer)
     {
         if (!$this->isCandidate()) {
             return false;
         }
 
-        // Prevent duplicated saves
+        // Previene guardados duplicados
         if (!$this->savedOffers->contains($offer->id)) {
             $this->savedOffers()->attach($offer->id);
             return true;
@@ -260,11 +263,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-    * Remove a saved offer (for candidates)
-    * 
-    * @param Offer $offer The offer to unsave
-    * @return bool Success status of the unsave operation
-    */
+     * Elimina una oferta guardada.
+     * 
+     * @param Offer $offer La oferta a eliminar de guardados
+     * @return bool Estado de éxito de la operación
+     */
     public function unsaveOffer(Offer $offer)
     {
         if (!$this->isCandidate()) {
@@ -276,21 +279,21 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-    * Check if an offer is saved by this user
-    * 
-    * @param int $offerId The ID of the offer to check
-    * @return bool Whether the offer is saved
-    */
+     * Verifica si una oferta está guardada por este usuario.
+     * 
+     * @param int $offerId El ID de la oferta a verificar
+     * @return bool Indica si la oferta está guardada
+     */
     public function hasSavedOffer($offerId)
     {
         return $this->savedOffers()->where('offers.id', $offerId)->exists();
     }
 
     /**
-    * Get all offers this candidate has saved.
-    * 
-    * @return \Illuminate\Database\Eloquent\Collection|null
-    */
+     * Obtiene todas las ofertas que este candidato ha guardado.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection|null
+     */
     public function getCandidateSavedOffers()
     {
         if (!$this->isCandidate()) {
