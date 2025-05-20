@@ -7,26 +7,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Middleware para establecer el idioma de la aplicación.
+ * 
+ * Gestiona la configuración del idioma de la aplicación basándose en
+ * la preferencia almacenada en la sesión del usuario o en el valor
+ * predeterminado de la configuración.
+ */
 class SetLocale
 {
     /**
-     * Handle an incoming request.
+     * Procesa la solicitud y establece el idioma apropiado.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Illuminate\Http\Request  $request  Solicitud HTTP entrante
+     * @param  \Closure  $next  Callback para continuar con la cadena de middleware
+     * @return mixed  Respuesta HTTP procesada
      */
     public function handle(Request $request, Closure $next)
     {
+        // Recuperar el idioma de la sesión
         if (Session::has('locale')) {
             $locale = Session::get('locale');
         } else {
-            // Usar el idioma predeterminado de la configuración
             $locale = config('app.locale', 'es');
             Session::put('locale', $locale);
         }
         
-        // Asegurarnos de que el idioma es válido
+        // Validar que el idioma esté entre los disponibles antes de establecerlo
         $availableLocales = array_keys(config('app.available_locales', ['es' => 'Español']));
         if (in_array($locale, $availableLocales)) {
             App::setLocale($locale);

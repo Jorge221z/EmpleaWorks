@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
+/**
+ * Middleware para gestionar las peticiones de Inertia.js
+ * 
+ * Administra la comunicación entre el backend y el frontend,
+ * compartiendo datos comunes y configuración necesaria para
+ * el funcionamiento de la aplicación SPA.
+ */
 class HandleInertiaRequests extends Middleware
 {
     /**
-     * The root template that's loaded on the first page visit.
+     * Plantilla raíz que se carga en la primera visita a la página.
      *
      * @see https://inertiajs.com/server-side-setup#root-template
      *
@@ -19,7 +26,7 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     /**
-     * Determines the current asset version.
+     * Determina la versión actual de los activos.
      *
      * @see https://inertiajs.com/asset-versioning
      */
@@ -29,7 +36,7 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Define the props that are shared by default.
+     * Define las propiedades compartidas por defecto con todos los componentes.
      *
      * @see https://inertiajs.com/shared-data
      *
@@ -58,7 +65,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'currentRoute' => $request->route() ? $request->route()->getName() : null,
             
-            // Archivos de traducción
+            // Configuración de internacionalización
             'locale' => [
                 'current' => app()->getLocale(),
                 'available' => config('app.available_locales', ['es' => 'Español']),
@@ -67,10 +74,11 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Defines the props that are specific to a page or component.
+     * Resuelve componentes específicos de Inertia y registra información de depuración.
      * 
-     * @param Request $request
-     * @return array
+     * @param Request $request Solicitud HTTP
+     * @param string $component Nombre del componente
+     * @return array Datos del componente
      */
     public function resolveComponent($request, $component)
     {

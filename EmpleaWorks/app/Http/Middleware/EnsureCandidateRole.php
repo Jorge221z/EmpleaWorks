@@ -8,28 +8,36 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+/**
+ * Middleware que verifica que el usuario tenga el rol de candidato.
+ * 
+ * Este middleware garantiza que solo los usuarios con rol de candidato
+ * puedan acceder a las rutas protegidas específicas para candidatos.
+ */
 class EnsureCandidateRole
 {
     /**
-     * Handle an incoming request.
+     * Procesa la solicitud entrante y verifica el rol del usuario.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request  Solicitud HTTP entrante
+     * @param  \Closure  $next  Callback para pasar la solicitud al siguiente middleware
+     * @return \Symfony\Component\HttpFoundation\Response  Respuesta HTTP
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if the user is authenticated
+        // Verifica si el usuario está autenticado
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        // Check if the user has the candidate role
-        // Use the isCandidate() method from your User model for consistency
+        // Verifica si el usuario tiene el rol de candidato
+        // Utiliza el método isCandidate() del modelo User para mantener consistencia
         if (Auth::user()->isCandidate()) {
             return $next($request);
         }
 
-        // For authenticated users with wrong role, redirect to dashboard
-        // Add a flash message to inform the user why they were redirected
+        // Para usuarios autenticados con rol incorrecto, redirecciona al dashboard
+        // Agrega un mensaje flash para informar al usuario del motivo de la redirección
         return redirect()->route('dashboard')->with('error', 'This section is only available for candidates');
     }
 }
