@@ -590,6 +590,7 @@ export function AppSidebar() {
                         <NavMain 
                             items={mainNavItems} 
                             onNavigate={() => setMobileMenuOpen(false)}
+                            isMobile={true} // Pass isMobile as true for mobile dialog
                         />
                         <div className="pt-10 mt-38">
                             <SidebarMenu className="mt-4">
@@ -645,7 +646,10 @@ export function AppSidebar() {
                 </SidebarHeader>
 
                 <SidebarContent className="bg-transparent pt-4 pb-4 transition-all duration-300 z-10 relative">
-                    <NavMain items={mainNavItems} />
+                    <NavMain 
+                        items={mainNavItems}
+                        isMobile={isMobile} // Pass the current isMobile state
+                    />
                 </SidebarContent>
 
                 <SidebarFooter className="bg-transparent pt-4 transition-all duration-300 z-10 relative">
