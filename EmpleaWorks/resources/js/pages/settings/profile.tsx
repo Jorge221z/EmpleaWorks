@@ -279,30 +279,30 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     {t('curriculum_vitae')}
                                 </Label>
                                 <div
-                                    className={`relative border-2 border-dashed rounded-lg transition-colors
+                                    className={`relative border-2 border-dashed rounded-lg transition-colors cursor-pointer
                                         ${isDragging 
                                             ? 'border-[#7c28eb] animate-pulse shadow-lg' 
                                             : 'border-gray-300 dark:border-gray-700 hover:border-[#7c28eb] dark:hover:border-purple-500'}
-                                    `}
-                                    onClick={() => {
-                                        const cvInput = document.getElementById('cv');
-                                        if (cvInput) {
-                                            cvInput.click();
-                                        }
-                                    }}
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        const file = e.dataTransfer?.files?.[0];
-                                        if (file && (file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-                                            setData('cv', file);
-                                            setData('delete_cv', false);
-                                            setCvName(file.name);
-                                        } else if (file) {
-                                            showToast.error(t('only_pdf_doc'));
-                                        }
-                                    }}
-                                >
+                                `}
+                                onClick={() => {
+                                    const cvInput = document.getElementById('cv');
+                                    if (cvInput) {
+                                        cvInput.click();
+                                    }
+                                }}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                    e.preventDefault();
+                                    const file = e.dataTransfer?.files?.[0];
+                                    if (file && (file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+                                        setData('cv', file);
+                                        setData('delete_cv', false);
+                                        setCvName(file.name);
+                                    } else if (file) {
+                                        showToast.error(t('only_pdf_doc'));
+                                    }
+                                }}
+                            >
                                     <Input
                                         id='cv'
                                         type='file'
@@ -385,7 +385,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 {t('image')}
                             </Label>
                             <div
-                                className={`relative border-2 border-dashed rounded-lg transition-colors
+                                className={`relative border-2 border-dashed rounded-lg transition-colors cursor-pointer
                                     ${isDragging 
                                         ? 'border-[#7c28eb] animate-pulse shadow-lg' 
                                         : 'border-gray-300 dark:border-gray-700 hover:border-[#7c28eb] dark:hover:border-purple-500'}
