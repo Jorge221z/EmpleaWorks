@@ -129,8 +129,16 @@ export default function Login({ status, canResetPassword }: { status?: string; c
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30"
+            transition={{ 
+              duration: 0.5, 
+              delay: 0.2,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            style={{
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+            }}
+            className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30"
           >
             <div className="p-6 md:p-8">
               <LoginForm status={status} canResetPassword={canResetPassword} />

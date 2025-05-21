@@ -167,8 +167,16 @@ export default function Register() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden border border-purple-100/50 dark:border-purple-600/30 p-6 shadow-sm transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30"
+            transition={{ 
+              duration: 0.5, 
+              delay: 0.2,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            style={{
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+            }}
+            className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl overflow-hidden border border-purple-100/50 dark:border-purple-600/30 p-6 shadow-sm hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30"
           >
             {/* Add Google registration option */}
             <div className="mb-6">
