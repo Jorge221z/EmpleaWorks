@@ -60,7 +60,7 @@ class GoogleController extends Controller
                 }
                 
                 Auth::login($user);
-                return redirect()->intended('/dashboard');
+                return redirect()->intended('/dashboard')->with('success', 'Bienvenido de nuevo, ' . $user->name . '!');
             } else {
                 return redirect()->route('google.select.role');
             }
