@@ -495,7 +495,14 @@ export default function CompanyDashboard({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ 
+                    duration: 0.4,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  style={{
+                    willChange: 'opacity',
+                    backfaceVisibility: 'hidden',
+                  }}
                   className="flex justify-center items-center py-20"
                 >
                   <div className="flex flex-col items-center gap-4">
@@ -512,7 +519,14 @@ export default function CompanyDashboard({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ 
+                    duration: 0.4,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  style={{
+                    willChange: 'opacity',
+                    backfaceVisibility: 'hidden',
+                  }}
                   className="grid auto-rows-min gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
                 >
                   {companyOffers.map((offer, index) => (
@@ -520,9 +534,16 @@ export default function CompanyDashboard({
                       key={offer.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      transition={{ 
+                        duration: 0.5,
+                        delay: index * 0.05,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
+                      style={{
+                        willChange: 'transform, opacity',
+                      }}
                       className={cn(
-                        "relative overflow-hidden rounded-xl border p-4 flex flex-col transform transition-colors duration-200",
+                        "relative overflow-hidden rounded-xl border p-4 flex flex-col",
                         borderColor,
                         "bg-white dark:bg-gray-900",
                         "hover:bg-purple-50/70 dark:hover:bg-purple-900/15",
@@ -703,9 +724,16 @@ export default function CompanyDashboard({
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: companyOffers.length * 0.05 }}
+                    transition={{ 
+                      duration: 0.5,
+                      delay: companyOffers.length * 0.05,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    style={{
+                      willChange: 'transform, opacity',
+                    }}
                     className={cn(
-                      "relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px] transform transition-colors duration-200",
+                      "relative overflow-hidden rounded-xl border p-4 flex flex-col justify-center items-center min-h-[250px]",
                       borderColor,
                       "bg-white dark:bg-gray-900",
                       "hover:bg-purple-50/70 dark:hover:bg-purple-900/15",
@@ -730,12 +758,20 @@ export default function CompanyDashboard({
                   key="no-offers"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ 
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  style={{
+                    willChange: 'transform, opacity',
+                    backfaceVisibility: 'hidden',
+                  }}
                   className={cn(
-                    "relative p-8 overflow-hidden rounded-xl border text-center my-6 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30",
+                    "relative p-8 overflow-hidden rounded-xl border text-center my-6",
                     borderColor,
                     "bg-white dark:bg-gray-900",
+                    "hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30",
                   )}
                 >
                   <div className="flex flex-col items-center gap-2 relative z-10">
