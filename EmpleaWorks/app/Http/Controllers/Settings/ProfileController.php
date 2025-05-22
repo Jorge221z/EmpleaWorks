@@ -24,9 +24,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+        
+        // Determina si el usuario se autenticó mediante Google
+        $isGoogleUser = !empty($user->google_id);
+        
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'isGoogleUser' => $isGoogleUser,  // Añadir esta línea
         ]);
     }
 
@@ -172,11 +178,14 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = $request->user();
+        
+        // Si el usuario se registró con Google, no validamos la contraseña
+        if (empty($user->google_id)) {
+            $request->validate([
+                'password' => ['required', 'current_password'],
+            ]);
+        }
 
         // Eliminar imagen de usuario si existe
         if ($user->image && \Storage::disk('public')->exists($user->image)) {

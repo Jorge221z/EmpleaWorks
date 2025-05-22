@@ -14,7 +14,7 @@ const translations: Record<string, Record<string, string>> = {
 
         // Dashboard - Pagina principal
         'welcome_title': 'Welcome to EmpleaWorks',
-        'welcome_subtitle': 'Sign in to access all features and personalize your experience.',
+        'welcome_subtitle': 'Find your ideal job based on your academic qualifications. Connect with companies looking for your specific skills and education.',
         'sign_in': 'Sign in',
         'create_account': 'Create account',
         'recent_jobs': 'Recent job offers',
@@ -481,7 +481,7 @@ const translations: Record<string, Record<string, string>> = {
 
         // Dashboard - Pagina principal
         'welcome_title': 'Bienvenido a EmpleaWorks',
-        'welcome_subtitle': 'Inicia sesión para acceder a todas las funciones y personalizar tu experiencia.',
+        'welcome_subtitle': 'Encuentra tu trabajo ideal basado en tu formación académica. Conecta con empresas que buscan específicamente tus estudios y competencias.',
         'sign_in': 'Iniciar sesión',
         'create_account': 'Crear cuenta',
         'recent_jobs': 'Ofertas de empleo recientes',

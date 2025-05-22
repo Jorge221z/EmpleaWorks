@@ -29,7 +29,7 @@ type ProfileForm = {
     weblink?: string;
 }
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+export default function Profile({ mustVerifyEmail, status, isGoogleUser = false }: { mustVerifyEmail: boolean; status?: string; isGoogleUser: boolean; }) {
     const { auth } = usePage<{ auth: { user: User & { company?: Company; candidate?: Candidate } } }>().props;
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
     const { t } = useTranslation();
@@ -559,7 +559,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     />
                 </div>
 
-                <DeleteUser />
+                <DeleteUser isGoogleUser={isGoogleUser} />
             </SettingsLayout>
         </AppLayout>
     );
