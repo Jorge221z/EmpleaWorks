@@ -6,6 +6,8 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\GoogleController;
+
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CandidateController;
 use App\Http\Controllers\Api\OfferController;
@@ -27,6 +29,10 @@ Route::middleware(['throttle:api'])->group(function () {
     Route::get('/offers/{offer}', [OfferController::class, 'getOffer']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/offers/{offer}', [DashboardController::class, 'showOffer']);
+
+    /* Rutas para autenticacion con google desde la API */
+    Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::post('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 
     // Rutas protegidas con auth:sanctum
     Route::middleware('auth:sanctum')->group(function () {
