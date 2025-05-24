@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CandidateController;
 use App\Http\Controllers\Api\OfferController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\PasswordController;
 
 
 // Rate Limiting para API
@@ -46,6 +47,10 @@ Route::middleware(['throttle:api'])->group(function () {
         Route::get('/profile', [ProfileController::class, 'show']);
         Route::post('/profile', [ProfileController::class, 'update']);
         Route::delete('/profile', [ProfileController::class, 'destroy']);
+
+        // Contraseña
+        Route::get('/password', [PasswordController::class, 'show']);
+        Route::post('/password', [PasswordController::class, 'update']);
 
         // Candidato
         Route::get('/candidate/dashboard', [CandidateController::class, 'dashboard']);
