@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Candidate;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -56,12 +57,21 @@ class GoogleController extends Controller
                     $user->update(['google_id' => $googleId]);
                 }
             } else {
+                // Obtener el ID del rol candidato basado en el nombre
+                $candidateRole = Role::where('name', 'candidate')->first();
+                $roleId = $candidateRole ? $candidateRole->id : null;
+                
+                if (!$roleId) {
+                    Log::error('Role "candidate" not found in the database');
+                    return response()->json(['error' => 'Error al configurar el rol del usuario'], 500);
+                }
+                
                 $user = User::create([
                     'name' => $name,
                     'email' => $email,
                     'password' => Hash::make(Str::random(24)),
                     'email_verified_at' => now(),
-                    'role_id' => 1, // Candidato
+                    'role_id' => $roleId, // Using dynamically fetched role ID
                     'google_id' => $googleId,
                 ]);
                 Candidate::create([
