@@ -64,8 +64,8 @@ Route::middleware(['throttle:api'])->group(function () {
         Route::get('/candidate/offer/{offer}', [CandidateController::class, 'showOffer']);
 
         // Ofertas
-        Route::post('/offers', [OfferController::class, 'store'])->middleware('verified.api');
-        Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->middleware('verified.api');
+        Route::post('/offers', [OfferController::class, 'store']);
+        Route::post('/offers/{offer}/apply', [OfferController::class, 'apply']);
         Route::put('/offers/{offer}', [OfferController::class, 'update']);
         Route::delete('/offers/{offer}', [OfferController::class, 'destroy']);
 
