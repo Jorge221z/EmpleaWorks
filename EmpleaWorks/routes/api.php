@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\CandidateController;
 use App\Http\Controllers\Api\OfferController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PasswordController;
+use App\Http\Controllers\Api\SavedOfferController;
 
 
 // Rate Limiting para API
@@ -61,5 +62,9 @@ Route::middleware(['throttle:api'])->group(function () {
         Route::post('/offers/{offer}/apply', [OfferController::class, 'apply']);
         Route::put('/offers/{offer}', [OfferController::class, 'update']);
         Route::delete('/offers/{offer}', [OfferController::class, 'destroy']);
+
+        // Ofertas guardadas
+        Route::post('/saved-offers/{offer}', [SavedOfferController::class, 'toggle']);
+        Route::get('/saved-offers', [SavedOfferController::class, 'getSavedOffers']);
     });
 });
