@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\RateLimiter;
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\GoogleController;
+use App\Http\Controllers\Api\Auth\EmailVerificationController;
 
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CandidateController;
@@ -44,6 +45,11 @@ Route::middleware(['throttle:api'])->group(function () {
             return $request->user();
         });
 
+        // Verificación de email para API
+        Route::get('/email/verification-status', [EmailVerificationController::class, 'status']);
+        Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend']);
+        Route::get('/email/verification-notice', [EmailVerificationController::class, 'show']);
+
         // Perfil
         Route::get('/profile', [ProfileController::class, 'show']);
         Route::post('/profile', [ProfileController::class, 'update']);
@@ -58,8 +64,8 @@ Route::middleware(['throttle:api'])->group(function () {
         Route::get('/candidate/offer/{offer}', [CandidateController::class, 'showOffer']);
 
         // Ofertas
-        Route::post('/offers', [OfferController::class, 'store']);
-        Route::post('/offers/{offer}/apply', [OfferController::class, 'apply']);
+        Route::post('/offers', [OfferController::class, 'store'])->middleware('verified.api');
+        Route::post('/offers/{offer}/apply', [OfferController::class, 'apply'])->middleware('verified.api');
         Route::put('/offers/{offer}', [OfferController::class, 'update']);
         Route::delete('/offers/{offer}', [OfferController::class, 'destroy']);
 

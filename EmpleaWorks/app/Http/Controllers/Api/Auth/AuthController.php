@@ -54,12 +54,17 @@ class AuthController extends Controller
                 ]);
             }
 
+            // Enviar email de verificación
+            $user->sendEmailVerificationNotification();
+
             // Generar un token de acceso
             $token = $user->createToken('mobile-app')->plainTextToken;
 
             return response()->json([
                 'token' => $token,
                 'user' => $user,
+                'email_verified' => $user->hasVerifiedEmail(),
+                'message' => 'Cuenta creada exitosamente. Por favor verifica tu email.',
             ], 201);
 
         } catch (\Exception $e) {
@@ -94,6 +99,7 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'user' => $user,
+            'email_verified' => $user->hasVerifiedEmail(),
         ]);
     }
 }
