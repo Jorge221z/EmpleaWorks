@@ -403,6 +403,10 @@ export default function Profile({ mustVerifyEmail, status, isGoogleUser = false 
                                     e.preventDefault();
                                     const file = e.dataTransfer?.files?.[0];
                                     if (file && file.type.startsWith('image/')) {
+                                        if (file.size > 2 * 1024 * 1024) {
+                                            showToast.error(t('image_too_large', { size: '2MB' }));
+                                            return;
+                                        }
                                         setData('image', file);
                                         setData('delete_image', false);
                                         const reader = new FileReader();
@@ -423,6 +427,11 @@ export default function Profile({ mustVerifyEmail, status, isGoogleUser = false 
                                         if (e.target.files && e.target.files[0]) {
                                             const file = e.target.files[0];
                                             if (file.type.startsWith('image/')) {
+                                                if (file.size > 2 * 1024 * 1024) {
+                                                    e.target.value = '';
+                                                    showToast.error(t('image_too_large', { size: '2MB' }));
+                                                    return;
+                                                }
                                                 setData('image', file);
                                                 setData('delete_image', false);
                                                 const reader = new FileReader();

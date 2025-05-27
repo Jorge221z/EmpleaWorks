@@ -293,6 +293,7 @@ const translations: Record<string, Record<string, string>> = {
         'verify_email_description': 'Please verify your email address by clicking on the link we just emailed to you.',
         'email_verified': 'Email verified successfully',
         'email_not_verified': 'Email has not been verified yet.',
+        'image_too_large': 'Image is too large. Maximum size allowed is {size}.',
 
         // Searchbar
         'search_placeholder': 'Search by title, company, location, etc...',
@@ -760,6 +761,7 @@ const translations: Record<string, Record<string, string>> = {
         'verify_email_description': 'Por favor, verifica tu dirección de correo electrónico haciendo clic en el enlace que acabamos de enviarte.',
         'email_verified': 'Correo electrónico verificado con éxito',
         'email_not_verified': 'El correo electrónico no ha sido verificado todavía.',
+        'image_too_large': 'La imagen es demasiado grande. El tamaño máximo permitido es {size}.',
 
         // Searchbar
         'search_placeholder': 'Buscar por título, empresa, ubicación, etc...',
