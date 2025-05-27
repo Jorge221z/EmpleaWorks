@@ -16,14 +16,27 @@
                 <div
                     style="max-width: 600px; background-color: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
                     <!-- Header -->
-                    <div
-                        style="background-color: #4F46E5; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-                        <div style="background: #fff; border-radius: 6px; padding: 10px 0; margin-bottom: 10px; text-align: center;">
-                            <img src="http://emplea.works/images/logo.webp" alt="EmpleaWorks Logo" style="height: 100px; display: inline-block;">
-                        </div>
-                        <h1 style="font-size: 28px; margin: 0;">{{ __('messages.new_application_received') }}</h1>
-                        <p style="font-size: 16px; margin: 10px 0 0;">{{ __('messages.for_the_offer') }} {{ $offer->name }}</p>
-                    </div>
+                    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #4F46E5; border-radius: 8px 8px 0 0;">
+                        <tr>
+                            <td style="padding: 20px; text-align: center;">
+                                <!-- Logo Container -->
+                                <table width="120" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 6px; margin: 0 auto 15px auto;">
+                                    <tr>
+                                        <td style="padding: 10px; text-align: center;">
+                                            <img src="http://emplea.works/images/logo.webp" 
+                                                 alt="EmpleaWorks Logo" 
+                                                 width="100" 
+                                                 height="100" 
+                                                 style="width: 100px; height: 100px; max-width: 100px; max-height: 100px; border: 0; display: block; margin: 0 auto;">
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- Title and Subtitle -->
+                                <h1 style="color: #ffffff; font-size: 28px; margin: 0; font-weight: bold;">{{ __('messages.new_application_received') }}</h1>
+                                <p style="color: #ffffff; font-size: 16px; margin: 10px 0 0;">{{ __('messages.for_the_offer') }} {{ $offer->name }}</p>
+                            </td>
+                        </tr>
+                    </table>
                     <!-- Content -->
                     <div style="padding: 30px; font-size: 16px;">
                         <p>{{ __('messages.hello_company', ['name_app' => $company->name]) }}</p>
