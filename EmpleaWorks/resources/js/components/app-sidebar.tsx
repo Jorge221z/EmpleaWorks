@@ -29,6 +29,7 @@ interface ExtendedNavItem extends NavItem {
 }
 
 export function AppSidebar() {
+    // ----- HOOKS & STATE -----
     const { auth, locale } = usePage<SharedData>().props
     const { t } = useTranslation()
     const isAuthenticated = !!auth.user
@@ -39,16 +40,15 @@ export function AppSidebar() {
     const { url } = usePage()
     const userMenuContainerRef = useRef<HTMLDivElement>(null)
 
-    // Detectar si es dispositivo móvil
+    // ----- SIDE EFFECTS -----
+    // Detectar cambios en el tamaño de pantalla para responsive
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 768)
         }
 
-        // Establecer el estado inicial
         handleResize()
 
-        // Añadir el event listener
         window.addEventListener("resize", handleResize)
 
         // Cleanup
@@ -57,22 +57,18 @@ export function AppSidebar() {
         }
     }, [])
 
-
-
-    // Determinar si se debe mostrar el texto del título
+    // ----- UTILITY FUNCTIONS -----
     const shouldShowTitle = isMobile || state !== "collapsed"
 
-    // Check if a route is active with proper path matching
     const isRouteActive = (href: string): boolean => {
-        // Handle root dashboard special case
         if (href === '/dashboard') {
             return url === '/dashboard';
         }
         
-        // For other routes, check if the current URL starts with the href
         return url.startsWith(href);
     };
 
+    // ----- NAVIGATION DATA -----
     const mainNavItems: ExtendedNavItem[] = [
         {
             title: t("dashboard"),
@@ -82,7 +78,7 @@ export function AppSidebar() {
         },
     ]
 
-    // Mostrar diferentes opciones según el rol del usuario
+    // Configurar elementos de navegación según el rol del usuario
     if (isCompany) {
         mainNavItems.push({
             title: t("company_dashboard"),
@@ -133,7 +129,8 @@ export function AppSidebar() {
         });
     }
 
-    // Componente para el selector de idioma
+    // ----- COMPONENT DEFINITIONS -----
+    // Componente selector de idioma
     const LanguageSelector = () => {
         // Detectar si estamos en mobile sidebar abierta
         const isMobileSidebarOpen = mobileMenuOpen && isMobile;
@@ -156,9 +153,8 @@ export function AppSidebar() {
                     <DropdownMenuContent
                         align="start"
                         className="w-40 border-purple-100 dark:border-purple-600/50 dark:bg-gray-900 animate-in slide-in-from-left-5 duration-200"
-                        // Forzar z-index alto en mobile sidebar
                         style={isMobileSidebarOpen ? { zIndex: 13000 } : undefined}
-                        onClick={(e) => e.stopPropagation()} // Evitar propagación
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {locale?.available &&
                             Object.entries(locale.available).map(([code, name]) => (
@@ -170,9 +166,7 @@ export function AppSidebar() {
                                             }`}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            // Cerrar sidebar mobile si está abierta
                                             if (isMobileSidebarOpen) setMobileMenuOpen(false);
-                                            // Navegar directamente
                                             router.visit(route("locale.change", code));
                                         }}
                                     >
@@ -186,7 +180,7 @@ export function AppSidebar() {
         )
     }
 
-    // Componente de Términos y Condiciones
+    // Componente enlace a términos y condiciones
     const TermsAndConditions = () => {
         return (
             <SidebarMenuItem>
@@ -197,9 +191,7 @@ export function AppSidebar() {
                     <button
                         className="flex items-center w-full"
                         onClick={(e) => {
-                            // Detener propagación
                             e.stopPropagation();
-                            // Navegar directamente
                             router.visit(route("terms"));
                         }}
                     >
@@ -218,7 +210,7 @@ export function AppSidebar() {
         )
     }
 
-    // Componente de Contacto
+    // Componente enlace de contacto
     const ContactLink = () => {
         return (
             <SidebarMenuItem>
@@ -229,9 +221,7 @@ export function AppSidebar() {
                     <button
                         className="flex items-center w-full"
                         onClick={(e) => {
-                            // Detener propagación
                             e.stopPropagation();
-                            // Navegar directamente
                             router.visit(route("contact"));
                         }}
                     >
@@ -250,6 +240,7 @@ export function AppSidebar() {
         )
     }
 
+    // ----- RENDER COMPONENT -----
     return (
         <>
             {/* Estilos globales para animar los elementos de navegación */}
@@ -592,7 +583,7 @@ export function AppSidebar() {
                         <NavMain 
                             items={mainNavItems} 
                             onNavigate={() => setMobileMenuOpen(false)}
-                            isMobile={true} // Pass isMobile as true for mobile dialog
+                            isMobile={true}
                         />
                         <div className="pt-10 mt-38">
                             <SidebarMenu className="mt-4">
@@ -616,13 +607,13 @@ export function AppSidebar() {
                 </div>
             </MobileNavDialog>
             
-            {/* Desktop Sidebar - Usar el componente de la UI en desktop, DESACTIVADO completamente en móvil */}
+            {/* Desktop Sidebar */}
             <Sidebar 
                 collapsible="icon" 
                 variant="inset" 
                 className="transition-all duration-300 shadow-sm hidden md:flex"
                 data-sidebar-state={state}
-                mobileSidebarDisabled={true} // Esta prop es crucial para desactivar la versión móvil
+                mobileSidebarDisabled={true}
             >
                 <SidebarHeader className="bg-transparent pb-4 transition-all duration-300 z-10 relative">
                     <SidebarMenu>
@@ -649,7 +640,7 @@ export function AppSidebar() {
                 <SidebarContent className="bg-transparent pt-4 pb-4 transition-all duration-300 z-10 relative">
                     <NavMain 
                         items={mainNavItems}
-                        isMobile={isMobile} // Pass the current isMobile state
+                        isMobile={isMobile}
                     />
                 </SidebarContent>
 

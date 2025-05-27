@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Head, useForm, usePage, Inertia } from "@inertiajs/react"
+import { Head, useForm, usePage } from "@inertiajs/react"
 import AppLayout from "@/layouts/app-layout"
 import { useTranslation } from "@/utils/i18n"
 import type { BreadcrumbItem } from "@/types"
@@ -11,8 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { AlertCircle, CheckCircle2, Mail, Phone, MapPin, Clock, Send, Sparkles, ContactRound } from "lucide-react"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Mail, MapPin, Send, Sparkles, ContactRound } from "lucide-react"
 import { motion } from "framer-motion"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
@@ -22,6 +21,7 @@ import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
 import { Toaster, showToast } from "@/components/toast"
 
+// ----- CONFIGURATION -----
 const leafletIcon = new L.Icon({
     iconUrl: markerIcon,
     iconRetinaUrl: markerIcon2x,
@@ -33,6 +33,7 @@ const leafletIcon = new L.Icon({
 })
 
 export default function Contact() {
+    // ----- HOOKS & STATE -----
     const { t } = useTranslation()
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
@@ -45,6 +46,7 @@ export default function Contact() {
     const [activeField, setActiveField] = useState<string | null>(null)
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props
 
+    // ----- CONFIGURATION -----
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: t("contact_us"),
@@ -52,6 +54,7 @@ export default function Contact() {
         },
     ]
 
+    // ----- EVENT HANDLERS -----
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setData(name as any, value)
@@ -85,6 +88,7 @@ export default function Contact() {
         });
     }
 
+    // ----- SIDE EFFECTS -----
     useEffect(() => {
         if (flash && flash.success) {
             showToast.success(flash.success);
@@ -95,6 +99,7 @@ export default function Contact() {
         }
     }, [flash])
 
+    // Configurar animación de partículas en el fondo para efectos visuales
     useEffect(() => {
         const canvas = document.getElementById("particle-canvas") as HTMLCanvasElement
         if (!canvas) return
@@ -122,9 +127,12 @@ export default function Contact() {
             color: string
 
             constructor() {
+
                 this.x = Math.random() * canvas.width
                 this.y = Math.random() * canvas.height
+                
                 this.size = Math.random() * 3 + 1
+                
                 this.speedX = Math.random() * 0.5 - 0.25
                 this.speedY = Math.random() * 0.5 - 0.25
 
@@ -161,6 +169,7 @@ export default function Contact() {
 
         const animate = () => {
             if (!ctx) return
+            
             ctx.clearRect(0, 0, canvas.width, canvas.height)
 
             for (const particle of particles) {
@@ -178,18 +187,21 @@ export default function Contact() {
         }
     }, [])
 
+    // ----- RENDER COMPONENT -----
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t("contact_us")} />
-
             <Toaster />
 
+            {/* Contenedor principal con fondo animado */}
             <div className="relative flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-hidden">
+                {/* Fondo con gradiente y canvas de partículas */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-900 dark:via-gray-900 dark:to-purple-950/30 z-0">
                     <canvas id="particle-canvas" className="absolute inset-0 w-full h-full bg-[#fefbf2] dark:bg-[#0a0a0a]" />
                 </div>
 
                 <div className="relative z-10 px-2">
+                    {/* Título y descripción de la página con animación de entrada */}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                         <div className="flex items-center gap-3 mb-2">
                             <h2 className="text-3xl font-bold text-[#7c28eb] dark:text-purple-300">{t("contact_us")}</h2>
@@ -201,6 +213,7 @@ export default function Contact() {
                         </p>
                     </motion.div>
 
+                    {/* Grid principal */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <motion.div
                             className="lg:col-span-1 space-y-4"
@@ -208,6 +221,7 @@ export default function Contact() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                         >
+                            {/* Tarjeta de información de contacto */}
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02]">
                                 <div className="p-6">
                                     <h3 className="text-xl font-semibold mb-6 text-[#7c28eb] dark:text-purple-300 flex items-center gap-2">
@@ -217,6 +231,7 @@ export default function Contact() {
                                         {t("contact_info")}
                                     </h3>
 
+                                    {/* Lista de métodos de contacto */}
                                     <div className="space-y-6">
                                         <div className="flex items-start gap-4">
                                             <div className="mt-1 flex-shrink-0 p-2 rounded-full bg-purple-100/80 dark:bg-purple-900/30">
@@ -248,9 +263,11 @@ export default function Contact() {
                                     </div>
                                 </div>
 
+                                {/* Barra decorativa de gradiente */}
                                 <div className="h-2 bg-gradient-to-r from-[#7c28eb] via-[#9645f4] to-[#c79dff]"></div>
                             </div>
 
+                            {/* Mapa interactivo con React Leaflet */}
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 h-64 relative transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30 hover:scale-[1.02] mt-11">
                                 <MapContainer
                                     center={[38.6136, -1.1147]}
@@ -261,12 +278,14 @@ export default function Contact() {
                                     <TileLayer
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     />
+                                    {/* Marcador de ubicación con popup informativo */}
                                     <Marker position={[38.6136, -1.1147]} icon={leafletIcon}>
                                         <Popup>
                                             Yecla, Murcia, España
                                         </Popup>
                                     </Marker>
                                 </MapContainer>
+                                {/* Barra decorativa inferior */}
                                 <div className="h-2 bg-gradient-to-r from-[#7c28eb] via-[#9645f4] to-[#c79dff] absolute bottom-0 left-0 right-0"></div>
                             </div>
                         </motion.div>
@@ -277,6 +296,7 @@ export default function Contact() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5, delay: 0.3 }}
                         >
+                            {/* Tarjeta del formulario */}
                             <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg border border-purple-100/50 dark:border-purple-500/20 transform transition-all duration-300 hover:shadow-purple-200/50 dark:hover:shadow-purple-900/30">
                                 <div className="p-6 md:p-8 relative">
                                     <div className="relative mb-8 pb-4">
@@ -286,9 +306,11 @@ export default function Contact() {
                                             </span>
                                             {t("contact_form")}
                                         </h3>
+                                        {/* Línea decorativa debajo del título */}
                                         <div className="absolute bottom-0 left-0 h-1 w-24 bg-gradient-to-r from-[#7c28eb] to-[#9645f4]"></div>
                                     </div>
 
+                                    {/* Formulario de contacto con validación */}
                                     <form onSubmit={handleSubmit} className="space-y-6">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-2 relative">
@@ -378,6 +400,7 @@ export default function Contact() {
                                                     >
                                                         <SelectValue placeholder={t("select_inquiry_type")} />
                                                     </SelectTrigger>
+                                                    {/* Opciones de consulta categorizadas */}
                                                     <SelectContent className="border-purple-100 dark:border-purple-600/30">
                                                         <SelectItem value="Consulta general">{t("general_inquiry")}</SelectItem>
                                                         <SelectItem value="Consulta sobre ofertas">{t("job_inquiry")}</SelectItem>
@@ -461,6 +484,7 @@ export default function Contact() {
                                             )}
                                         </div>
 
+                                        {/* Botón de envío con estados y animaciones */}
                                         <div className="pt-4">
                                             <Button
                                                 type="submit"
@@ -470,6 +494,7 @@ export default function Contact() {
                                                 <span className="relative z-10 flex items-center gap-2">
                                                     {processing ? (
                                                         <>
+                                                            {/* Spinner de carga */}
                                                             <svg
                                                                 className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -494,6 +519,7 @@ export default function Contact() {
                                                         </>
                                                     ) : (
                                                         <>
+                                                            {/* Icono de envío con animación en hover */}
                                                             <Send className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                                             {t("send_message")}
                                                         </>
@@ -504,6 +530,7 @@ export default function Contact() {
                                         </div>
                                     </form>
 
+                                    {/* Aviso de privacidad */}
                                     <div className="mt-10 pt-6 border-t border-purple-100 dark:border-purple-600/30">
                                         <p className="text-sm text-muted-foreground">
                                             {t("privacy_notice") ||
@@ -517,6 +544,7 @@ export default function Contact() {
                 </div>
             </div>
 
+            {/* Estilos CSS personalizados para animaciones */}
             <style>{`
         @keyframes shimmer {
           0% {
@@ -532,6 +560,7 @@ export default function Contact() {
         }
       `}</style>
 
+            {/* Estilos específicos para el mapa Leaflet */}
             <style>{`
                 .leaflet-container {
                     border-radius: 1rem;
