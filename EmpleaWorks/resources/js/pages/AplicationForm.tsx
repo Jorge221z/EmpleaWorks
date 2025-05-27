@@ -326,7 +326,7 @@ export default function ApplyForm({ offer }: ApplyFormProps) {
                         </label>
                         <p className="text-xs text-muted-foreground">
                           {t("data_processing_notice")}
-                          <Link href={route("terms")} className="hover:underline text-[#7c28eb] dark:text-purple-300">
+                          <Link href={route("terms")} className="hover:underline text-[#7c28eb] dark:text-purple-300 ml-1">
                             {t("terms_and_conditions")}
                           </Link>
                         </p>
