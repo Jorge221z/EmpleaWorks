@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,6 +23,12 @@ class OfferController extends Controller
 
         if (!$user || !$user->isCompany()) {
             return response()->json(['error' => 'Solo las empresas pueden crear ofertas.'], 403);
+        }
+
+        // Verificar si el email está verificado
+        $emailVerificationResponse = EmailVerificationController::requireEmailVerification($user);
+        if ($emailVerificationResponse) {
+            return $emailVerificationResponse;
         }
 
         try {
@@ -129,6 +136,12 @@ class OfferController extends Controller
 
         if (!$user->isCandidate()) {
             return response()->json(['error' => 'Solo los candidatos pueden aplicar.'], 403);
+        }
+
+        // Verificar si el email está verificado
+        $emailVerificationResponse = EmailVerificationController::requireEmailVerification($user);
+        if ($emailVerificationResponse) {
+            return $emailVerificationResponse;
         }
 
         try {
