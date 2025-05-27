@@ -57,6 +57,8 @@ export function AppSidebar() {
         }
     }, [])
 
+
+
     // Determinar si se debe mostrar el texto del título
     const shouldShowTitle = isMobile || state !== "collapsed"
 
@@ -604,7 +606,6 @@ export function AppSidebar() {
                     <div className="pt-4 pb-6 px-2">
                         <div ref={userMenuContainerRef} className="mobile-user-menu-z">
                             <NavUser 
-                                className="user-profile-button"
                                 dropdownContainer={userMenuContainerRef.current}
                                 dropdownClassName="user-dropdown-z"
                                 dropdownAlign="start"
@@ -658,7 +659,7 @@ export function AppSidebar() {
                         <TermsAndConditions />
                         <ContactLink />
                     </SidebarMenu>
-                    <NavUser className="user-profile-button" />
+                    <NavUser />
                 </SidebarFooter>
             </Sidebar>
         </>

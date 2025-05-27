@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { X } from "lucide-react"
 import AppLogo from "./app-logo"
 import { router } from "@inertiajs/react"
@@ -13,6 +13,28 @@ interface MobileNavDialogProps {
 }
 
 export function MobileNavDialog({ open, onOpenChange, children }: MobileNavDialogProps) {
+  const scrollY = useRef(0);
+
+  useEffect(() => {
+    if (open) {
+      scrollY.current = window.scrollY;
+      
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY.current}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        
+        window.scrollTo(0, scrollY.current);
+      };
+    }
+  }, [open]);
+
   const handleNavigate = (url: string) => {
     onOpenChange(false);
     setTimeout(() => router.visit(url), 50);
