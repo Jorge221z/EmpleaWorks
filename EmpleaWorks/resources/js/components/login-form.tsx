@@ -257,13 +257,14 @@ export function LoginForm({
                 </div>
               </div>
             </form>
-            <div className="bg-muted relative hidden md:block">
+            <div className="bg-muted relative hidden md:block overflow-hidden">
               <img
                 src="/images/login-background.webp"
                 alt="Login background"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-center scale-100"
                 loading="lazy"
               />
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-transparent to-purple-800/30"></div>
             </div>
           </CardContent>
         </Card>
