@@ -29,7 +29,7 @@ export function NavMain({ items, onNavigate, isMobile = false }: NavMainProps) {
               >
                 <item.icon className={`h-4 w-4 ${item.disabled ? 'lock-icon-disabled' : 'text-[#9645f4] dark:text-[#c79dff]'}`} />
                 {(!isCollapsed || isMobile) && (
-                  <span className={`sidebar-menu-button-text ${item.disabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
+                  <span className={`sidebar-menu-button-text pl-3 ${item.disabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
                     {item.title}
                   </span>
                 )}
@@ -44,7 +44,7 @@ export function NavMain({ items, onNavigate, isMobile = false }: NavMainProps) {
               <div className={`flex items-center w-full ${isCollapsed && !isMobile ? 'justify-center' : ''}`}>
                 <item.icon className={`h-4 w-4 ${item.disabled ? 'lock-icon-disabled' : 'text-[#9645f4] dark:text-[#c79dff]'}`} />
                 {(!isCollapsed || isMobile) && (
-                  <span className={`sidebar-menu-button-text ${item.disabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
+                  <span className={`sidebar-menu-button-text pl-3 ${item.disabled ? 'text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}`}>
                     {item.title}
                   </span>
                 )}
