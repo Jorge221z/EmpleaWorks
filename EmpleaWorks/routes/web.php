@@ -55,6 +55,11 @@ Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
 
+// Ruta descarga de app móvil
+Route::get('/download-app', function () {
+    return Inertia::render('MobileDownload');
+})->name('download.app');
+
 /**
  * Ruta para procesamiento del formulario de contacto
  * Permite a los usuarios enviar mensajes a través del formulario de contacto
