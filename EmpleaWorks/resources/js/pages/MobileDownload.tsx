@@ -44,7 +44,7 @@ export default function MobileDownload() {
     const handleDownload = () => {
         // En producción, esto descargaría el APK real
         const link = document.createElement('a')
-        link.href = 'https://github.com/Jorge221z/EmpleaWorks-Mobile/releases/download/v0.1.0-beta/EW-AndroidPreviewBuild.apk'
+        link.href = 'https://github.com/Jorge221z/EmpleaWorks-Mobile/releases/download/v1.0.0/EmpleaWorks-v1.apk'
         link.download = 'EmpleaWorks.apk'
         document.body.appendChild(link)
         link.click()
