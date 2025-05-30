@@ -178,8 +178,8 @@ export default function MobileDownload() {
                                         transition={{ duration: 0.3 }}
                                         className="overflow-hidden"
                                     >
-                                        <div className="bg-white rounded-2xl p-4 lg:p-6 text-center border border-gray-200">
-                                            <div className="w-55 h-55 lg:w-57 lg:h-57 mx-auto bg-white rounded-xl flex items-center justify-center mb-3 lg:mb-4 p-2 lg:p-3">
+                                        <div className="bg-white rounded-2xl p-4 lg:p-5 text-center border border-gray-200">
+                                            <div className="w-55 h-55 lg:w-57 lg:h-57 mx-auto bg-white rounded-xl flex items-center justify-center mb-3 lg:mb-0 p-2 lg:p-0">
                                                 <img 
                                                     src="/images/QR.svg" 
                                                     alt={`QR Code - ${t("download_app")} EmpleaWorks`}
